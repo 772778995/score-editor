@@ -1,0 +1,286 @@
+[v-cloak]{
+	display: none;
+}
+/* .music-form-body beg */
+.music-form-box{
+	width: 100%;
+	/* height: 230px; */
+	box-sizing: border-box;
+	position: relative;
+	box-shadow:  0 0 5px rgba(0,0,0, .5);
+	border-radius: 5px;
+}
+
+.ware-form{
+	width: 100%;
+	height: 100%;
+	position: relative;
+	overflow: hidden;
+	border-radius: 5px;
+	border: 1px solid #BEBEBE;
+	box-sizing: border-box;
+}
+
+.ware-form showtitle{
+	border-left:1px solid #E50012 ;
+}
+
+.ware-form timeline{
+	background-color: #F1F1F1;
+}
+
+.ware-form cursor{
+	border-right: none !important;
+	z-index: 5 !important;
+}
+
+.ware-form cursor span{
+	position: relative;
+}
+
+.ware-form cursor span:BEFORE{
+	content: '';
+	width: 23px;
+	height: 45px;
+	display: inline-block;
+	position:absolute;
+	top: -1px;
+	left: -11px;
+	background: url('../images/pointer.png') no-repeat;
+		
+}
+
+.enlarge-narrow{
+    position: absolute;
+    right: 20px;
+    bottom: 0;
+    z-index: 5;
+    background: #fff;
+    display: flex;
+    border: 1px solid #BFBFBF;
+    height: 20px;
+    box-sizing: border-box;
+}
+.enlarge-narrow > span{
+	display: inline-block;
+	width: 50%;
+	vertical-align: middle;
+	box-sizing: border-box;
+	padding: 0 5px ;
+}
+.enlarge-narrow > span:hover{
+	background: rgba(0,0,0,.05);
+}
+.enlarge-narrow > span:first-child{
+	border-right: 1px solid #BFBFBF;
+}
+
+.enlarge-narrow img{
+	width: 20px;
+	height: 20px;
+}
+
+
+/* 自定义滚动条样式 begin */
+/* .ware-form > wave{
+	overflow: scroll hidden !important;
+} */
+.ware-form > wave::-webkit-scrollbar {/*滚动条整体样式*/
+    width: 20px;     /*高宽分别对应横竖滚动条的尺寸*/
+    height: 20px;
+ }
+.ware-form > wave::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+    -webkit-box-shadow: inset 0 0 5px #fff;;
+    background:  #fff;
+   	border: 1px solid #BFBFBF;
+}
+.ware-form > wave::-webkit-scrollbar-track {/*滚动条里面轨道*/
+     -webkit-box-shadow: inset 0 0 5px #BFBFBF;
+     background: #BFBFBF;
+}
+.ware-form > wave::-webkit-scrollbar-button{
+ 	position: relative;
+ 	width: 20px;
+ 	height: 20px;
+	background-size: 20px;
+	background-position: center;
+	background-repeat: no-repeat;
+   	border: 1px solid #BFBFBF;
+}
+.ware-form > wave::-webkit-scrollbar-button:horizontal:start{
+	background-image: url('../images/left.png');
+}
+.ware-form > wave::-webkit-scrollbar-button:horizontal:end{
+	background-image: url('../images/right.png');
+}
+/* 自定义滚动条样式 end */
+
+.regions-box{
+	position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 20px;
+    width: inherit;
+    height: 60px; 
+    white-space: nowrap;
+    user-select: none;
+     overflow: hidden; 
+    z-index: 100;
+    border-top: 1px dashed #666;
+}
+
+.regions-box:BEFORE{
+	content: '';
+	display: inline-block;
+    width: 30000px;
+    height: 1px;
+    opacity: 0;
+    position: absolute;
+}
+
+.regions-box .regions-item{
+	height:30px;
+	line-height: 30px;
+	position: absolute;
+	color: #fff;
+	font-size: 12px;
+	text-align: center;
+	border: 1px solid #fff;
+	box-sizing: border-box;
+}
+
+.regions-box .regions-item.active{
+	/* border:1px solid #FFB53B; */
+	background-color:#FFB53B !important;
+}
+
+
+.wave-box{
+	width: 100%;
+	min-height: 215px;
+	padding: 25px;
+	box-sizing: border-box;
+	display: flex;
+	font-size: 24px;
+}
+
+.wave-box .wave-item{
+	flex: 1;
+	margin-right: 20px;
+}
+.wave-box .wave-item:last-child{
+	margin-right: 0;
+}
+
+.wave-box .wave-item-header{
+    height: 60px;
+    line-height: 60px;
+    display: flex;
+    font-size: 45px;
+}
+
+.wave-box .wave-item-header .wave-no{
+	width: 92px;
+	margin-right: 6px;
+	background-color: #E0E4E5;
+	text-align: center;
+}
+
+.wave-box .wave-item-header .wave-title{
+	flex: 1;
+	background-color: #F0F1F3;
+	padding: 0 15px;
+	box-sizing: border-box;
+}
+
+.wave-box .wave-item-body{
+	padding-top: 20px;
+	box-sizing: border-box;
+	text-indent: 64px;
+	line-height: 160%;
+	text-align:justify;
+}
+
+.wave-item-body{
+	display: flex;
+}
+.wave-content{
+	flex:1;
+	font-size: 45px;
+    line-height: 180%;
+    margin-left: 20px;
+}
+
+
+.staff{
+	position: relative;
+	display: inline-block;
+}
+
+.staff .staff-masking{
+	position: absolute;
+	background: rgba(255, 0, 255, .3);
+}
+
+/* 五线谱 begin */
+text tspan {white-space:pre; fill:currentColor}
+
+svg {display:block}
+ 
+.abcr {fill: #d00000; fill-opacity: 0; z-index: 15}
+/* 五线谱 end */
+
+img.max{
+	max-width: 100%;
+}
+
+#target{
+    position: relative;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    line-height: 0;    
+}
+/* .nobrk{
+	display: inline-block;
+} */
+/* .nobrk > svg{
+	margin: 0 auto;
+} */
+
+/* 覆盖曲谱，防点击  */
+#target.choose:AFTER{
+	content:'';
+	position: absolute;
+	top:0;
+	bottom:0;
+	right:0;
+	left:0;
+	z-index: 20;
+}
+rect.abcr[data-active]{
+	fill: rgb(0,0,255);
+    fill-opacity: 0.5!important;
+	/* height: 1rem; */
+}
+rect.abcr[data-active]:first-child:after{
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+.nobrk{
+	display: inline-block;
+	text-align: center;
+}
+.nobrk::-webkit-scrollbar {
+	display: none;
+}
+.select-ban{
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-o-user-select:none;
+	user-select:none;
+}
+
+/* 谱音同步 */

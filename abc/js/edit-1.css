@@ -1,0 +1,242 @@
+/* edit.css - file used in the abc2svg editor */
+@page {margin-top: 1cm; margin-left: 0cm; margin-right: 0cm}
+text tspan {white-space:pre; fill:currentColor}
+svg {display:block}
+.abcr {fill: #d00000; fill-opacity: 0; z-index: 15}
+.box {
+    outline: 1px solid black;
+    outline-offset: 1px;
+}
+.gradient-text-one{  
+    background-image:-webkit-linear-gradient(bottom,red,#fd8403,yellow); 
+    -webkit-background-clip:text; 
+    -webkit-text-fill-color:transparent; 
+}
+.editor_rect{
+	fill-opacity: 0.4 !important;
+}
+.selected_text{
+	fill: red;
+}
+.selected_path{
+	stroke:red !important;
+}
+@media screen {
+	body, html {height: 90%}
+	/*text, path {pointer-events: none}*/
+	#dleft {
+		width: auto;
+		position: absolute; top: 0; bottom:0; left: 0;
+		background-color:#faf0e6;
+		overflow: auto;
+	}
+	#nav {
+		position:relative;
+		padding: 0;
+		margin: 2px 0 0 2px;
+	}
+	.dropbutton {
+		float: left;
+		display:inline-block;
+		width: 90px;
+		text-align: center;
+	}
+	.dropbutton:hover { outline: solid; outline-width: 2px }
+	.dropbutton:hover > ul { display: block }
+	.droplinks {
+		list-style-type: none;
+		position: absolute;
+		min-width: 80px;
+		background-color: #e0e0e0;
+		display: none;
+		z-index: 20;
+		text-align: left;
+		padding: 0;
+		margin: 0;
+	}
+	.droplinks li:hover { outline: solid; outline-width: 2px }
+	.droplinks li { padding: 0 5px 0 5px; margin: 2px }
+	#dright {
+		width: 80%;
+		max-width: 800px;
+		position: absolute; top: 0; bottom:0; right:0;
+		background-color: white;
+		overflow: auto
+	}
+	#dright:hover {z-index: 10 !important}
+	#dright:active {z-index: 10 !important}
+	.popup {
+		position: absolute; top: 0; right: 20px;
+		padding: 10px;
+		background-color:#e0e0e0;
+		border-radius: 5px;
+		visibility: hidden;
+		z-index:20;
+	}
+	.close {
+		position: absolute;
+		top: 10px;
+		right: 20px;
+		font-size: 20px;
+		font-weight: bold;
+		color: red;
+	}
+	#abckbd td {
+		border: 1px solid black;
+		padding: 0.5rem;
+		text-align: center;
+	}
+	#ctxMenu {
+		position:absolute;
+		display:none;
+		left:0px;
+		top:0px;
+		padding:0;
+		margin:0;
+		border:1px solid;
+		background-color:white;
+		font-weight:normal;
+		white-space:nowrap;
+		z-index:100;
+	}
+	#ctxMenu:hover > .droplinks {
+		display:block;
+	}
+	
+}
+@media print {
+	#dleft, .popup { display: none }
+	body {
+		margin:0; padding:0; border:0;
+		background-color: white;
+	}
+	#dright { margin:0; padding:0; border:0 }
+	.newpage { page-break-before: always }
+	.nobrk { page-break-inside: avoid }
+}
+@page{margin:0}
+.lyric{
+	font-size: 0 !important;
+}
+.lyric tspan{
+	font-size: 13px;
+}
+
+/* beg create by lhj 20201113 */		
+/* å’Œå¼¦æ ·å¼ */		
+.hx3,.hx3-46,.hx3-6, .hx7,.hx7-56,.hx7-34,.hx7-2 {
+	position: relative;
+	font-size: 18px;
+	font-weight: 10;
+	display: inline-block;
+	margin-right: 20px;
+ }
+ /* ä¸‰å’Œå¼¦ ç¬¬äºŒè½¬ä½  */
+ .hx3-46:BEFORE {
+	content: '6';
+	position: absolute;
+	font-size: .4em;
+	top: -.5em;
+	right:  -.8em;
+}
+ .hx3-46:AFTER {
+	content: '4';
+	position: absolute;
+	font-size: .4em;
+	bottom: -.5em;
+	right:  -.8em;
+}
+ /* ä¸‰å’Œå¼¦ ç¬¬ä¸€è½¬ä½  */
+ .hx3-6:AFTER {
+	content: '6';
+	position: absolute;
+	font-size: .4em;
+	bottom: -.5em;
+	right:  -.8em;
+}
+ /* ä¸ƒå’Œå¼¦ åŽŸä½  */
+ .hx7:AFTER {
+	content: '7';
+	position: absolute;
+	font-size: .4em;
+	bottom: -.5em;
+	right:  -.8em;
+}
+ /* ä¸ƒå’Œå¼¦ ç¬¬ä¸€è½¬ä½   */
+ .hx7-56:BEFORE {
+	content: '6';
+	position: absolute;
+	font-size: .4em;
+	top: -.5em;
+	right:  -.8em;
+}
+ .hx7-56:AFTER {
+	content: '5';
+	position: absolute;
+	font-size: .4em;
+	bottom: -.5em;
+	right:  -.8em;
+}
+ /* ä¸ƒå’Œå¼¦ ç¬¬ä¸€è½¬ä½    */
+ .hx7-34:BEFORE {
+	content: '4';
+	position: absolute;
+	font-size: .4em;
+	top: -.5em;
+	right:  -.8em;
+}
+ .hx7-34:AFTER {
+	content: '3';
+	position: absolute;
+	font-size: .4em;
+	bottom: -.5em;
+	right:  -.8em;
+}
+ /* ä¸ƒå’Œå¼¦ ç¬¬ä¸‰è½¬ä½  */
+ .hx7-2:AFTER {
+	content: '2';
+	position: absolute;
+	font-size: .4em;
+	bottom: -.5em;
+	right:  -.8em;
+}
+/*ä¸‹æ ‡*/
+.hx-sub{
+	font-size: .4em;
+    transform: translateY(0.5em) scale(0.8);
+    display: inline-block;
+}
+/*ä¸Šæ ‡*/
+.hx-up{
+    font-size: .4em;
+    transform: translateY(-0.5em) scale(0.8);
+    display: inline-block;
+}
+/* å’Œå¼¦æ ·å¼ end*/		
+
+/* 
+html ç”¨æ³•
+<span class="hx3">â… </span><!-- ä¸‰å’Œå¼¦åŽŸä½ ï¼ˆä¸‰å’Œå¼¦ï¼‰-->
+<span class="hx3-6">â… </span><!-- ä¸‰å’Œå¼¦ç¬¬ä¸€è½¬ä½ï¼ˆå…­å’Œå¼¦ï¼‰ -->
+<span class="hx3-46">â… </span><!-- ä¸‰å’Œå¼¦ç¬¬äºŒè½¬ä½ï¼ˆå››å…­å’Œå¼¦ï¼‰ -->
+<span class="hx7">â… </span><!-- ä¸ƒå’Œå¼¦åŽŸä½ï¼ˆä¸ƒå’Œå¼¦ï¼‰ -->
+<span class="hx7-56">â… </span><!-- ä¸ƒå’Œå¼¦ç¬¬ä¸€è½¬ä½ ï¼ˆäº”å…­å’Œå¼¦ï¼‰-->
+<span class="hx7-34">â… </span><!-- ä¸ƒå’Œå¼¦ç¬¬äºŒè½¬ä½ï¼ˆä¸‰å››å’Œå¼¦ï¼‰ -->
+<span class="hx7-2">â… </span><!-- ä¸ƒå’Œå¼¦ç¬¬ä¸‰è½¬ä½ï¼ˆäºŒå’Œå¼¦ï¼‰ --> 
+*/
+
+/*  end create by lhj 20201113 */
+.js-click{
+	cursor: pointer;
+}
+
+.js-click.active{
+	color: #FF9000;
+	background-color: #fff;
+	border: 1px solid #FF9000 !important;
+}
+ .panel-name .panel-name-item{
+ 	padding: 5px 8px;
+ 	border-radius: 5px;
+ 	border: 1px solid transparent;
+ }
