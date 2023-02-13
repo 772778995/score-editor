@@ -1,0 +1,16 @@
+{
+  "name": "abc.ixzds.com",
+  "version": "1.0.0",
+  "description": "",
+  "main": "tailwind.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "vue-drag-resize": "^1.5.4",
+    "vuedraggable": "^2.24.3"
+  }
+}

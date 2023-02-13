@@ -1009,7 +1009,13 @@ var content_vue = new Vue({
 				after: 0
 			},
 			numberKeypad: {
-				index: 0,
+				isShow: true,
+				isMove: false,
+				moveStart: { x: 0, y: 0 },
+				position: {
+					x: 0,
+					y: 0
+				},
 				list: [
 					[
 						{ code: 'length', url: 'v2/images/note_1.png', value: '1/1',dur:'1536', title: '全音符',class:"operator_sc jp_note",keycode:"103"},		
@@ -1019,6 +1025,22 @@ var content_vue = new Vue({
 						{ code: 'length', url: 'v2/images/note_5.png', value: '1/16',dur:'96', title: '16分音符',class:"operator_sc jp_note",keycode:"99"},
 						{ code: 'length', url: 'v2/images/note_6.png', value: '1/32',dur:'48', title: '32分音符',class:"operator_sc jp_note",keycode:"98"},
 						{ code: 'length', url: 'v2/images/note_7.png', value: '1/64',dur:'24', title: '64分音符',class:"operator_sc jp_note",keycode:"97"},
+						//
+						{ code: 'length', url: 'v2/images/note_1.png', value: '1/1',dur:'1536', title: '全音符',class:"operator_sc jp_note",keycode:"103"},		
+						{ code: 'length', url: 'v2/images/note_2.png', value: '1/2',dur:'768', title: '半音符',class:"operator_sc jp_note",keycode:"102"},
+						{ code: 'length', url: 'v2/images/note_3.png', value: '1/4',dur:'384', title: '四分音符',class:"operator_sc jp_note",keycode:"101"},
+						{ code: 'length', url: 'v2/images/note_4.png', value: '1/8',dur:'192', title: '八分音符',class:"operator_sc selected jp_note",keycode:"100"},
+						{ code: 'length', url: 'v2/images/note_5.png', value: '1/16',dur:'96', title: '16分音符',class:"operator_sc jp_note",keycode:"99"},
+						{ code: 'length', url: 'v2/images/note_6.png', value: '1/32',dur:'48', title: '32分音符',class:"operator_sc jp_note",keycode:"98"},
+						{ code: 'length', url: 'v2/images/note_1.png', value: '1/1',dur:'1536', title: '全音符',class:"operator_sc jp_note",keycode:"103"},		
+						{ code: 'length', url: 'v2/images/note_2.png', value: '1/2',dur:'768', title: '半音符',class:"operator_sc jp_note",keycode:"102"},
+						{ code: 'length', url: 'v2/images/note_3.png', value: '1/4',dur:'384', title: '四分音符',class:"operator_sc jp_note",keycode:"101"},
+						{ code: 'length', url: 'v2/images/note_4.png', value: '1/8',dur:'192', title: '八分音符',class:"operator_sc selected jp_note",keycode:"100"},
+						{ code: 'length', url: 'v2/images/note_5.png', value: '1/16',dur:'96', title: '16分音符',class:"operator_sc jp_note",keycode:"99"},
+						{ code: 'length', url: 'v2/images/note_6.png', value: '1/32',dur:'48', title: '32分音符',class:"operator_sc jp_note",keycode:"98"},
+						{ code: 'length', url: 'v2/images/note_3.png', value: '1/4',dur:'384', title: '四分音符',class:"operator_sc jp_note",keycode:"101"},
+						{ code: 'length', url: 'v2/images/note_4.png', value: '1/8',dur:'192', title: '八分音符',class:"operator_sc selected jp_note",keycode:"100"},
+						{ code: 'length', url: 'v2/images/note_5.png', value: '1/16',dur:'96', title: '16分音符',class:"operator_sc jp_note",keycode:"99"},
 					]
 				]
 			}
@@ -1661,7 +1683,37 @@ var content_vue = new Vue({
 
 		// ———————————————————————————————————————— 分割线 __method ————————————————————————————————————————
 		changeMenuIndex(i) {
+			if (this.m.menuIndex == i) {
+				this.m.menuIndex = -1
+				return
+			}
 			this.m.menuIndex = i
+		},
+		checkIsSelectBar(showAlert = true) {
+			let selectSvg = null
+			$('svg').each((i, e) => {
+				if (!e?.id.includes('mysvgnode')) return
+				selectSvg = e
+			})
+			!selectSvg && showAlert && alert('请选中小节')
+			return selectSvg
+		},
+		checkIsSelectNote(showAlert = true) {
+			const selectNote = $('.selected_text')[0]
+			console.log(selectNote)
+			!selectNote && showAlert && alert('请选中音符')
+			return selectNote
+			// !selectSvg && showAlert && alert('请选中小节')
+			// return selectSvg
+		}
+	},
+	computed: {
+		getMenuTxt() {
+			return this.m.menuList[this.m.menuIndex]?.txt
+		},
+		getNumberKeypadPosStyle() {
+			const { x, y } = this.m.numberKeypad.position
+			return `transform: translate(${x}px, ${y}px);`
 		}
 	},
 	watch: {
@@ -1813,6 +1865,8 @@ var content_vue = new Vue({
 		// ———————————————————————————————————————— 分割线 __created ————————————————————————————————————————
 	}
 })
+
+console.log(content_vue)
 
 /**
  * JS颜色十六进制转换为rgb或rgba,返回的格式为 rgba（255，255，255，0.5）字符串 sHex为传入的十六进制的色值
