@@ -361,7 +361,7 @@
 }
 
 .keySignatures.sharp {
-	background-image: url("../images/editorPalette/sharpSignatures.svg"
+	background-image: url("../images/editorPalette/flatSignatures.svg"
 		/*tpa=https://production-assets.noteflight.com/assets/images/editorPalette/sharpSignatures-a2a89034cc209142db43d1568eab1326.svg*/
 		);
 	margin-bottom: 20px;

@@ -986,7 +986,10 @@ var content_vue = new Vue({
 							// alert(JSON.stringify(obj))
 						} },
 						{ txt: '另存为', fn: () => alert('暂未开发') },
-						{ txt: '打开', fn: () => alert('暂未开发') },
+						{
+							txt: '打开',
+							fn: () => $('#input-file').val('') && $('#input-file').click()
+						},
 						{
 							txt: '导出',
 							fn: (event) => {
@@ -1018,10 +1021,6 @@ var content_vue = new Vue({
 				},
 				list: [
 					[
-						{ code: 'length', url: 'v2/images/note_1.png', value: '1/1',dur:'1536', title: '全音符',class:"operator_sc jp_note",keycode:"103"},		
-						{ code: 'length', url: 'v2/images/note_2.png', value: '1/2',dur:'768', title: '半音符',class:"operator_sc jp_note",keycode:"102"},
-						{ code: 'length', url: 'v2/images/note_3.png', value: '1/4',dur:'384', title: '四分音符',class:"operator_sc jp_note",keycode:"101"},
-						{ code: 'length', url: 'v2/images/note_4.png', value: '1/8',dur:'192', title: '八分音符',class:"operator_sc selected jp_note",keycode:"100"},
 						{ code: 'length', url: 'v2/images/note_5.png', value: '1/16',dur:'96', title: '16分音符',class:"operator_sc jp_note",keycode:"99"},
 						{ code: 'length', url: 'v2/images/note_6.png', value: '1/32',dur:'48', title: '32分音符',class:"operator_sc jp_note",keycode:"98"},
 						{ code: 'length', url: 'v2/images/note_7.png', value: '1/64',dur:'24', title: '64分音符',class:"operator_sc jp_note",keycode:"97"},
@@ -1703,8 +1702,26 @@ var content_vue = new Vue({
 			console.log(selectNote)
 			!selectNote && showAlert && alert('请选中音符')
 			return selectNote
-			// !selectSvg && showAlert && alert('请选中小节')
-			// return selectSvg
+		},
+		inputFile(e) {
+			/** @type { File } */
+			const file = e.target.files[0]
+			/** @type { '' } */
+			const fileExt = (file.name.match(/[^\.]+$/) || [''])[0]
+			switch (fileExt) {
+				case 'xml':
+				case 'musicxml': {
+          leesFile();
+					break
+				}
+				case 'mid': {
+					postmidifile()
+					break
+				}
+				default: {
+					alert('仅支持 xml，musicxml，mid 格式的文件')
+				}
+			}
 		}
 	},
 	computed: {

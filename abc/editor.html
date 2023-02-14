@@ -182,6 +182,36 @@
         margin-top: 5px;
         margin-left: 2px;
       }
+      .text-\#333 { color: #333 }
+      .bg-\#333 { background-color: #333; }
+      .text-\#666 { color: #666; }
+      .bg-\#666 { background-color: #666; }
+      .text-\#999 { color: #999; }
+      .bg-\#999 { background-color: #999 }
+      input[type=range] {
+          -webkit-appearance: none;
+          width: 68px;
+          border-radius: 8px; /*这个属性设置使填充进度条时的图形为圆角*/
+      }
+      input[type=range]::-webkit-slider-thumb {
+          -webkit-appearance: none;
+      }
+      input[type=range]::-webkit-slider-runnable-track {
+          width: 68px;
+          height: 2px;
+          border-radius: 8px; /*将轨道设为圆角的*/
+      }
+      input[type=range]:focus {
+          outline: none;
+      }
+      input[type=range]::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          height: 10px;
+          width: 2px;
+          margin-top: -4px; /*使滑块超出轨道部分的偏移量相等*/
+          background: #ffffff; 
+          border-radius: 8px; /*外观设置为圆形*/
+      }
     </style>
     <title>创编制谱系统</title>
   </head>
@@ -774,6 +804,12 @@
         </div>
       </div>
 
+      <div class="fixed flex items-center space-x-1 z-40 justify-between bottom-11 right-12 rounded-full p-2" style="background: #B0B0B0;">
+        <img src="/img/scale-small.png" class="cursor-pointer" @click="changeScale(-0.01)"/>
+        <input id="scale_control" value="1.5" step="0.01" min="1" max="2" type="range" class="w-16">
+        <img src="/img/scale-big.png" class="cursor-pointer" @click="changeScale(0.01)"/>
+      </div>
+
       <div
         v-show="m.numberKeypad.isMove"
         class="fixed top-0 left-0 w-screen h-screen z-50 cursor-move"
@@ -789,7 +825,7 @@
       >
       </div>
       <!-- TODO 测试小键盘 -->
-      <div v-show="m.numberKeypad.isShow" class="fixed z-40 bg-gray-500 bottom-12 right-24" :style="getNumberKeypadPosStyle">
+      <div v-show="m.numberKeypad.isShow" class="fixed z-30 bg-gray-500 bottom-12 right-24" :style="getNumberKeypadPosStyle">
         <div
           class="relative flex items-center justify-between px-2 py-3 text-white text-xl cursor-pointer"
           @mousedown.stop="(e) => {
@@ -800,7 +836,7 @@
             }
           }"
         >
-          <div>小键盘FBEADGC</div>
+          <div>小键盘</div>
           <div @mousedown.stop @click="isShow = false">X</div>
         </div>
 
@@ -811,7 +847,7 @@
             style="min-height: 40px"
             :class="[
               'tImg.class',
-              { 'row-span-2': [11, 18].includes(idx) }
+              { 'row-span-2': [7, 14].includes(idx) }
             ]"
             :key="'ti' + idx"
             @click="toolItemClick(toolsLengthList.code, tImg.id, tImg.value)"
@@ -850,12 +886,15 @@
         /> -->
       </div>
 
-      <div class="flex items-center py-1 px-2 text-gray-600 space-x-1">
+
+      <input type="file" id="input-file" class="hidden" @change="inputFile"/>
+
+      <div class="flex items-center py-1 px-2 text-#666 space-x-1">
         <div
           v-for="(item, i) in m.menuList"
           :key="item.txt"
           class="cursor-pointer relative w-20 h-10 flex items-center justify-center rounded duration-300"
-          :class="{ 'text-white bg-gray-600 rounded': m.menuIndex ===  i }"
+          :class="{ 'text-white rounded bg-#666': m.menuIndex ===  i }"
           @click.stop="item.fn ? item.fn(i) : changeMenuIndex(i)"
         >
           {{ item.txt }}
@@ -873,11 +912,14 @@
             </div>
           </div>
         </div>
+
+        <div class="cursor-pointer ml-auto">快捷键</div>
+        <div class="mx-1 cursor-pointer">帮助</div>
       </div>
 
       <div
         class="flex items-center py-2 px-3 space-x-5 text-sm border-t border-b"
-        style="border-color: #000"
+        style="border-color: #999"
       >
         <div class="flex flex-col items-center">
           <img src="" class="bg-black w-6 h-6" />
@@ -894,7 +936,7 @@
         </div> -->
         <div
           id="graphEditorMenuInsert"
-          class="flex flex-col items-center"
+          class="flex flex-col items-center cursor-pointer"
           @click="switchPrachEditor"
         >
           <img src="images/bianji.png" class="w-8 h-8" />
@@ -925,14 +967,14 @@
           </div>
         </div>
 
-        <div class="h-full bg-black w-0.5"></div>
+        <div class="h-full bg-#999 w-0.5"></div>
 
         <div class="flex flex-col items-center space-y-1.5 text-xs">
           <img src="" class="bg-black w-4 h-3" />
           <div>符干</div>
         </div>
 
-        <div class="h-full bg-black w-0.5"></div>
+        <div class="h-full bg-#999 w-0.5"></div>
 
         <div
           class="flex flex-col items-center space-y-1.5 text-xs relative"
@@ -999,7 +1041,7 @@
           <div>删除小节</div>
         </div>
 
-        <div class="h-full bg-black w-0.5"></div>
+        <div class="h-full bg-#999 w-0.5"></div>
 
         <template v-if="getMenuTxt === '文本'">
           <div
@@ -1023,6 +1065,61 @@
             属性面板
           </button>
         </template>
+
+        <template v-else-if="getMenuTxt === '工具'">
+          <div
+            class="flex flex-col items-center space-y-1.5 cursor-pointer shift-key"
+            @click="$('#Z_div').modal('toggle') && openZDiv()"
+          >
+            <img src="" class="bg-black w-4 h-3" />
+            <span>移调</span>
+          </div>
+
+          <div
+            id="instrumentSelectByType"
+            class="flex flex-col items-center space-y-1.5 cursor-pointer"
+          >
+            <img src="" class="bg-black w-4 h-3" />
+            <span>音色</span>
+          </div>
+
+          <div
+            class="flex flex-col items-center space-y-1.5 cursor-pointer"
+          >
+            <img src="" class="bg-black w-4 h-3" />
+            <span>折行</span>
+          </div>
+
+          <div
+            class="flex flex-col items-center space-y-1.5 cursor-pointer"
+          >
+            <img src="" class="bg-black w-4 h-3" />
+            <span>声部</span>
+          </div>
+        </template>
+
+        <div class="h-full bg-#999 w-0.5 ml-auto"></div>
+
+        <div
+          id="metronomesetting"
+          @click="switchMetro()"
+          class="flex flex-col space-y-1.5 items-center cursor-pointer"
+        >
+          <img src="images/jpq.png" />
+          <div>节拍器</div>
+        </div>
+
+        <div class="space-y-1.5">
+          <div class="flex items-center space-x-3 cursor-pointer" @click="myplay()">
+            <img class="bg-black w-5 h-5" alt="">
+            <div id="playspan">播放</div>
+          </div>
+
+          <div class="flex items-center space-x-3 cursor-pointer" @click="mystop() || myplay()">
+            <img class="bg-black w-5 h-5" alt="">
+            <div>从头</div>
+          </div>
+        </div>
       </div>
 
       <!-- TODO ------------------------------顶部导航菜单------------------------------ -->
@@ -1522,7 +1619,7 @@
       </div> -->
 
       <!-- TODO 第二行工具栏 -->
-      <div class="tools-box">
+      <div class="tools-box hidden">
         <!-- 编辑 -->
         <div
           id="graphEditorMenuInsert"
@@ -2237,7 +2334,7 @@
         </div>
       </div>
       <!-- 中间主要内容 -->
-      <div class="body-box">
+      <div class="body-box" style="background: #717171;">
         <!-- 左边列表 -->
         <div class="body-left">
           <div class="body-left-content scroll">
@@ -2261,7 +2358,7 @@
               style="display: none"
               onchange="loadxzdsfile()"
             />
-            <input
+            <!-- <input
               type="file"
               id="midifile"
               accept=".mid,.midi"
@@ -2273,7 +2370,7 @@
               id="xmlfile"
               accept=".xml,.musicxml"
               style="display: none"
-            />
+            /> -->
             <div class="panel-name">
               符号面板<img
                 src="v2/images/close.png"
@@ -3830,7 +3927,7 @@
         </div>
         <!-- 右边琴谱 -->
         <div
-          class="body-right"
+          class="body-right flex justify-center"
           :style="keyboardShow ? 'padding-bottom: 200px;' : ''"
         >
           <!--左侧符号面板区域  -->
@@ -3840,9 +3937,9 @@
             src="v2/images/left.png"
           />
           <!-- 谱子区域 -->
-          <div class="right-top">
+          <div class="right-top" style="width: 768px">
             <div
-              class="right-top-content scroll overflow-y-hidden"
+              class="right-top-content scroll overflow-y-auto flex justify-end"
               onmousedown="rightTopContentMouseDown(event)"
               onmousemove="rightTopContentmoving(event)"
               onmouseup="rightTopContentMouseUp(event)"
@@ -4257,6 +4354,8 @@
               </div>
             </div>
           </div>
+
+          <div class="h-5 border fixed bottom-0 left-0 w-full" style="background-color: #C1C1C1; border-color: #AFAFAF;"></div>
           <!--  曲式分析编辑框 end -->
           <!-- 钢琴键盘展开、收起按钮  -->
           <!-- <img class="keyboard-show-img pointer" :style="keyboardShow ? 'bottom: 200px;' : ''" :src="keyboardShow ? 'v2/images/bottom.png' : 'v2/images/top.png'" @click="keyboardClick" /> -->
@@ -7257,13 +7356,13 @@
       </div>
     </div>
 
-    <input
+    <!-- <input
       type="range"
       id="scale_control"
       value="1.4"
       step="0.2"
       style="display: none"
-    />
+    /> -->
     <form
       action="exportVoicePart"
       id="voicePartForm"

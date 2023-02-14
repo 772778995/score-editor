@@ -52,7 +52,7 @@ function readEnc (data) {
 function readFile (doRes, enc) {
     var file;
     if (drop_files) file = drop_files [0]
-    else            file = $('#xmlfile').prop ('files')[0];
+    else            file = $('#input-file').prop ('files')[0];
     if (!file) return
     var freader = new FileReader ();
     freader.onload = function (e) { doRes (freader.result); }

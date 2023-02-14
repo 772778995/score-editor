@@ -2812,11 +2812,11 @@ function loadxzdsfile(){
 function postmidifile(){
 	var formData = new FormData();
 
-    formData.append("midifile",$('#midifile')[0].files[0]);
+    formData.append("midifile",$('#input-file')[0].files[0]);
     var pathName=window.document.location.pathname;
     var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1); 
     $.ajax({
-        url:projectName + '/midi2abc',
+        url:'https://abc.ixzds.com/abc/midi2abc',
         dataType:'json',
         type:'POST',
         async: false,
@@ -8344,6 +8344,7 @@ function synSpeed(val){
 //初始化音色
 function initInstrMenu(){
 	var items = getMenuContent();
+	console.log(items)
 	$.contextMenu({
         selector: "#instrumentSelectByType" ,
         callback: function (key, options) {

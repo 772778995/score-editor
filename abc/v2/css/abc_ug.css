@@ -114,8 +114,8 @@
 	left: 120px;
 	top: 0;
 }
-.right-top{
-	background:#ddd;
+.right-top > div{
+	padding: 0 !important;
 }
 /* tools-box */
 .tools-box {
@@ -238,7 +238,7 @@
 	z-index: 1000;
 }
 .abc-content{
-	background: #fff;
+	background: #FFF9F2;
     box-sizing: border-box;
     display: inline-block;
 /* 	height: calc(100% - 30px); */
@@ -248,7 +248,7 @@
 }
 .right-top-content,
 .right-top{
-	background-color: #ddd;
+	/* background-color: #ddd; */
 }
 
 #target{
