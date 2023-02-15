@@ -1241,14 +1241,14 @@ $(document).ready(function(){
 			}
 		}
 		//处理小键盘的数字键
-		if((e.keyCode>=96 && e.keyCode<=105)){
-			console.log("----",e.keyCode)
-			$(".operator_sc[keycode="+e.keyCode+"]").click();
-		}
-		//小键盘的小数点键
-		if(e.keyCode==110){
-			$(".dotstatus[value='3/']").click();
-		}
+		// if((e.keyCode>=96 && e.keyCode<=105)){
+		// 	console.log("----",e.keyCode)
+		// 	$(".operator_sc[keycode="+e.keyCode+"]").click();
+		// }
+		// //小键盘的小数点键
+		// if(e.keyCode==110){
+		// 	$(".dotstatus[value='3/']").click();
+		// }
 		
 		
 		var pianoKeys = sd.KeyBoard;

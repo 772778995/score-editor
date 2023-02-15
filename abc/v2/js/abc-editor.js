@@ -309,6 +309,18 @@ var toolTemp = {
 
 }
 
+function changeNumberKeypadIndex(i) {
+	let index = content_vue.m.numberKeypad.page
+	index += i
+	if (index < 0) {
+		index = content_vue.m.numberKeypad.staffList.length - 1
+	}
+	else if (index > content_vue.m.numberKeypad.staffList.length - 1) {
+		index = 0
+	}
+	content_vue.m.numberKeypad.page = index
+}
+
 var content_vue = new Vue({
 	el: '#content',
 	data: {
@@ -1019,27 +1031,64 @@ var content_vue = new Vue({
 					x: 0,
 					y: 0
 				},
-				list: [
+				page: 0,
+				staffList: [
 					[
-						{ code: 'length', url: 'v2/images/note_5.png', value: '1/16',dur:'96', title: '16分音符',class:"operator_sc jp_note",keycode:"99"},
-						{ code: 'length', url: 'v2/images/note_6.png', value: '1/32',dur:'48', title: '32分音符',class:"operator_sc jp_note",keycode:"98"},
-						{ code: 'length', url: 'v2/images/note_7.png', value: '1/64',dur:'24', title: '64分音符',class:"operator_sc jp_note",keycode:"97"},
-						//
-						{ code: 'length', url: 'v2/images/note_1.png', value: '1/1',dur:'1536', title: '全音符',class:"operator_sc jp_note",keycode:"103"},		
-						{ code: 'length', url: 'v2/images/note_2.png', value: '1/2',dur:'768', title: '半音符',class:"operator_sc jp_note",keycode:"102"},
-						{ code: 'length', url: 'v2/images/note_3.png', value: '1/4',dur:'384', title: '四分音符',class:"operator_sc jp_note",keycode:"101"},
-						{ code: 'length', url: 'v2/images/note_4.png', value: '1/8',dur:'192', title: '八分音符',class:"operator_sc selected jp_note",keycode:"100"},
-						{ code: 'length', url: 'v2/images/note_5.png', value: '1/16',dur:'96', title: '16分音符',class:"operator_sc jp_note",keycode:"99"},
-						{ code: 'length', url: 'v2/images/note_6.png', value: '1/32',dur:'48', title: '32分音符',class:"operator_sc jp_note",keycode:"98"},
-						{ code: 'length', url: 'v2/images/note_1.png', value: '1/1',dur:'1536', title: '全音符',class:"operator_sc jp_note",keycode:"103"},		
-						{ code: 'length', url: 'v2/images/note_2.png', value: '1/2',dur:'768', title: '半音符',class:"operator_sc jp_note",keycode:"102"},
-						{ code: 'length', url: 'v2/images/note_3.png', value: '1/4',dur:'384', title: '四分音符',class:"operator_sc jp_note",keycode:"101"},
-						{ code: 'length', url: 'v2/images/note_4.png', value: '1/8',dur:'192', title: '八分音符',class:"operator_sc selected jp_note",keycode:"100"},
-						{ code: 'length', url: 'v2/images/note_5.png', value: '1/16',dur:'96', title: '16分音符',class:"operator_sc jp_note",keycode:"99"},
-						{ code: 'length', url: 'v2/images/note_6.png', value: '1/32',dur:'48', title: '32分音符',class:"operator_sc jp_note",keycode:"98"},
-						{ code: 'length', url: 'v2/images/note_3.png', value: '1/4',dur:'384', title: '四分音符',class:"operator_sc jp_note",keycode:"101"},
-						{ code: 'length', url: 'v2/images/note_4.png', value: '1/8',dur:'192', title: '八分音符',class:"operator_sc selected jp_note",keycode:"100"},
-						{ code: 'length', url: 'v2/images/note_5.png', value: '1/16',dur:'96', title: '16分音符',class:"operator_sc jp_note",keycode:"99"},
+						{ url: '', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'images/rest.png', title: '休止符', fn: () => $('.operator_sc.jp_note[keycode=103]').click() && $('.reststatus').click(), isSelect: false },
+						{ url: 'v2/images/cs.png', title: '重升', selector: '.pitchbtn[value="^^"]', isSelect: false },
+						{ url: 'v2/images/cj.png', title: '重降', selector: '.pitchbtn[value="^^"]', isSelect: false },
+						{ url: 'v2/images/yingao3.png', title: '还原', selector: '.pitchbtn[value="="]', isSelect: false },
+						{ url: 'v2/images/yingao1.png', title: '升号', selector: '.pitchbtn[value="^"]', isSelect: false },
+						{ url: 'v2/images/yingao2.png', title: '降号', selector: '.pitchbtn[value="_"]', isSelect: false },
+						{ url: '', title: '上一页', fn: () => changeNumberKeypadIndex(-1), isSelect: false },
+						{ url: 'v2/images/note_3.png', title: '四分音符', selector: '.operator_sc.jp_note[keycode=101]', isSelect: false },
+						{ url: 'v2/images/note_2.png', title: '半音符', selector: '.operator_sc.jp_note[keycode=102]', isSelect: false },
+						{ url: 'v2/images/note_1.png', title: '全音符', selector: '.operator_sc.jp_note[keycode=103]', isSelect: false },
+						{ url: 'v2/images/note_6.png', title: '32分音符', selector: '.operator_sc.jp_note[keycode=98]', isSelect: false },
+						{ url: 'v2/images/note_5.png', title: '16分音符', selector: '.operator_sc.jp_note[keycode=99]', isSelect: false },
+						{ url: 'v2/images/note_4.png', title: '八分音符', selector: '.operator_sc.jp_note[keycode=100]', isSelect: false },
+						{ url: '', title: '下一页', fn: () => changeNumberKeypadIndex(1), isSelect: false },
+						{ url: 'images/rest.png', title: '休止符', selector: '.reststatus', isSelect: false },
+						{ url: 'images/dot3.png', title: '附点', selector: '.dotstatus[value="3/"]', isSelect: false },
+					],
+					[
+						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_1.png', title: '上一页', fn: () => changeNumberKeypadIndex(-1), isSelect: false },
+						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_1.png', title: '下一页', fn: () => changeNumberKeypadIndex(1), isSelect: false },
+						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+					],
+					[
+						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_2.png', title: '上一页', fn: () => changeNumberKeypadIndex(-1), isSelect: false },
+						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_2.png', title: '下一页', fn: () => changeNumberKeypadIndex(1), isSelect: false },
+						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
 					]
 				]
 			}
@@ -1706,8 +1755,8 @@ var content_vue = new Vue({
 		inputFile(e) {
 			/** @type { File } */
 			const file = e.target.files[0]
-			/** @type { '' } */
-			const fileExt = (file.name.match(/[^\.]+$/) || [''])[0]
+			/** @type { 'xml' | 'musicxml' | 'mid' } */
+			const fileExt = (file.name.match(/[^\.]+$/) || [''])[0].toLowerCase()
 			switch (fileExt) {
 				case 'xml':
 				case 'musicxml': {
@@ -1722,6 +1771,35 @@ var content_vue = new Vue({
 					alert('仅支持 xml，musicxml，mid 格式的文件')
 				}
 			}
+		},
+		emitNumKeybordFn(/** @type { string }*/ code) {
+			const i = {
+				NumLock: 0,
+				NumpadDivide: 1,
+				NumpadMultiply: 2,
+				NumpadSubtract: 3,
+				Numpad7: 4,
+				Numpad8: 5,
+				Numpad9: 6,
+				NumpadAdd: 7,
+				Numpad4: 8,
+				Numpad5: 9,
+				Numpad6: 10,
+				Numpad1: 11,
+				Numpad2: 12,
+				Numpad3: 13,
+				NumpadEnter: 14,
+				Numpad0: 15,
+				NumpadDecimal: 16,
+			}[code]
+			if (i === undefined) return
+			const { page } = this.m.numberKeypad
+			const type = ['staffList', 'all', 'easyList'][musicType]
+			const { selector, fn } = this.m.numberKeypad[type][page][i]
+			fn && fn()
+			if (!selector) return
+			const el = $(selector)
+			el && el.click && el.click()
 		}
 	},
 	computed: {
@@ -1879,11 +1957,25 @@ var content_vue = new Vue({
 			}
 		}
 
-		// ———————————————————————————————————————— 分割线 __created ————————————————————————————————————————
+	},
+	mounted() {
+		document.addEventListener('keydown', e => this.emitNumKeybordFn(e.code))
+		const changeNumKeypadSelect = () => {
+			const { page } = this.m.numberKeypad
+			const type = ['staffList', 'all', 'easyList'][musicType]
+			const list = this.m.numberKeypad[type][page]
+			list.forEach((item, i) => {
+				if (!item.selector) return
+				setTimeout(() => {
+					item.isSelect = $(item.selector).hasClass('selected')
+				})
+			})
+		}
+		changeNumKeypadSelect()
+		document.addEventListener('keyup', changeNumKeypadSelect)
+		document.addEventListener('mouseup', changeNumKeypadSelect)
 	}
 })
-
-console.log(content_vue)
 
 /**
  * JS颜色十六进制转换为rgb或rgba,返回的格式为 rgba（255，255，255，0.5）字符串 sHex为传入的十六进制的色值

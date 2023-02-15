@@ -26018,12 +26018,20 @@ function switchPrachEditor(obj){
 		if($("#graphEditorMenuInsert")){
 			$("#graphEditorMenuInsert").addClass("menu-pressed");
 		}
-		
+
+        let selectSvg = null
+        $('svg').each((i, e) => {
+            if (e?.id.includes('mysvgnode')) selectSvg = e
+        })
+        if (selectSvg) {
+            selectSvg.remove()
+            $('#nodeMenu').css({ display: 'none' })
+        }
 	}else{
 		//$("#graphEditorMenu").attr("title","当前模式：修改");
-		
 		graph_update = true;
 		$("#use_black").remove();
+		$(".editor_rect").removeClass('editor_rect');
 		if($("#graphEditorMenuUpdate")){
 			$("#graphEditorMenuUpdate").addClass("menu-pressed");
 		}
