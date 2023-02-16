@@ -842,7 +842,7 @@
 
         <div class="p-2 bg-gray-300 grid grid-cols-4 gap-2 text-base">
           <div
-            v-for="(item, idx) in m.numberKeypad.staffList[m.numberKeypad.page]"
+            v-for="(item, idx) in m.numberKeypad[['staffList', 'all', 'easyList'][musicType]][m.numberKeypad.page]"
             class="min-w-10 p-1.5 bg-gray-500 cursor-pointer flex justify-center items-center"
             style="min-height: 40px"
             :class="[
@@ -902,16 +902,7 @@
           <div>保存</div>
         </div>
 
-        <!-- <div
-          id="graphEditorMenuInsert"
-          title="插入模式(N)"
-          class="tools-li"
-          onclick="switchPrachEditor(this);"
-        >
-          <img src="images/bianji.png" style="width: 30px; height: 30px" />
-        </div> -->
         <div
-          id="graphEditorMenuInsert"
           class="flex flex-col items-center cursor-pointer"
           @click="switchPrachEditor"
         >
@@ -1043,12 +1034,7 @@
 
           <button @click="m.numberKeypad.isShow = !m.numberKeypad.isShow">小键盘</button>
 
-          <button
-            @click="() => {
-              content_vue.keyboardClick();
-		          content_vue.menuActive = '';
-            }"
-          >
+          <button @click="(menuActive = '') | keyboardClick()">
             虚拟键盘
           </button>
         </template>
