@@ -850,7 +850,7 @@
               { 'col-span-2': idx === 15 },
               { 'bg-blue-500': item.isSelect }
             ]"
-            :key="item.title"
+            :key="idx"
             @click.stop="() => {
               $(item.selector)?.click()
               item.fn && item.fn()
@@ -4023,153 +4023,155 @@
             </div>
           </div>
           <!-- 编辑器 -->
-          <div class="right-bottom">
-            <label
-              id="er"
-              onclick="popshow('errlist', true)"
-              style="
-                display: none;
-                background: #ff8080;
-                cursor: pointer;
-                position: absolute;
-                left: 0;
-                top: 0px;
-                font-size: 14px;
-              "
-              >语法有错</label
-            >
-            <form
-              action="abcservlet"
-              id="abcform"
-              target="target_iframe"
-              method="post"
-              style="height: 100%"
-            >
-              <input type="hidden" id="personid" name="personid" />
-              <input type="hidden" id="personname" name="personname" />
-              <input type="hidden" id="groupid" name="groupid" />
-              <input type="hidden" id="stafftypeid" name="stafftypeid" />
-              <input
-                type="hidden"
-                id="createbuttontype"
-                name="createbuttontype"
-              />
-              <input type="hidden" id="appid" name="appid" />
-              <input type="hidden" id="title" name="title" />
-              <input type="hidden" id="dir_str" name="dir_str" />
-              <input type="hidden" id="png_attachid" name="png_attachid" />
-              <input type="hidden" id="pic_url" name="pic_url" />
-              <input type="hidden" id="mp3_attachid" name="mp3_attachid" />
-              <input type="hidden" id="abc_attachid" name="abc_attachid" />
-              <input type="hidden" id="txt_attachid" name="txt_attachid" />
-              <input type="hidden" id="appid" name="appid" />
-              <input type="hidden" id="nodelinedata" name="nodelinedata" />
-
-              <input
-                type="hidden"
-                id="wxp_barlinecoor"
-                name="wxp_barlinecoor"
-              /><!-- 五线谱小节线数据 -->
-              <input
-                type="hidden"
-                id="jp_barlinecoor"
-                name="jp_barlinecoor"
-              /><!-- 简谱小节线数据 -->
-              <input
-                type="hidden"
-                id="jxhp_barlinecoor"
-                name="jxhp_barlinecoor"
-              /><!-- 简线混排小节线数据 -->
-              <input type="hidden" id="weakbar" name="weakbar" />
-              <input type="hidden" id="iecdata" name="iecdata" />
-              <input type="hidden" id="exporttype" name="exporttype" />
-              <input
-                type="hidden"
-                id="transpose"
-                name="transpose"
-                value="0"
-              /><!-- 移调后导出midi有点问题 -->
-              <input
-                type="hidden"
-                id="picdata"
-                name="picdata"
-              /><!-- 五线谱图片base64数据 -->
-              <input
-                type="hidden"
-                id="jxhp_picdata"
-                name="jxhp_picdata"
-              /><!-- 简线混排图片base64数据 -->
-              <input
-                type="hidden"
-                id="jp_picdata"
-                name="jp_picdata"
-              /><!-- 简谱图片base64数据 -->
-              <input type="hidden" id="picdata-speed" name="picdata-speed" />
-              <input
-                type="hidden"
-                id="overwritemp3"
-                name="overwritemp3"
-                value="1"
-              />
-              <input type="hidden" id="mp3desc" name="mp3desc" />
-              <input type="hidden" id="speed" name="speed" />
-              <input
-                type="hidden"
-                id="mustype"
-                name="mustype"
-              /><!-- 谱子类型：0:五线谱；1：间线混排；2：简谱 -->
-              <input
-                type="hidden"
-                id="pictype"
-                name="pictype"
-              /><!-- 图片类型：compute/mobile -->
-
-              <textarea
-                id="source"
-                name="source"
-                rows="14"
-                cols="73"
-                wrap="off"
+          <div style="display: none">
+            <div class="right-bottom">
+              <label
+                id="er"
+                onclick="popshow('errlist', true)"
                 style="
-                  font: 20px monospace;
-                  height: 100%;
-                  width: 100% !important;
-                  padding-bottom: 10px;
+                  display: none;
+                  background: #ff8080;
+                  cursor: pointer;
+                  position: absolute;
+                  left: 0;
+                  top: 0px;
+                  font-size: 14px;
                 "
-                ondrop="dropped(event)"
-                ondragenter="drag_over(event)"
-                ondragover="drag_over(event)"
-                oninput="abc_change()"
-                onclick="source_click()"
-                onmouseup="source_mouseup()"
-              ></textarea>
-              <textarea
-                id="src1"
-                rows="40"
-                cols="73"
-                wrap="off"
-                style="font: 14px monospace; display: none"
-                oninput="abc_change()"
-              ></textarea>
-              <textarea
-                id="source-speed"
-                name="source-speed"
-                style="display: none"
-                rows=""
-                cols=""
-              ></textarea>
-              <textarea
-                id="source-gen-midi"
-                name="source-gen-midi"
-                style="display: none"
-                rows=""
-                cols=""
-              ></textarea>
-              <div id="errlist" class="popup" style="width: 600px">
-                <div class="close" onclick="popshow('errlist')">x</div>
-                <div id="diverr" style="font-size: 14px"></div>
-              </div>
-            </form>
+                >语法有错</label
+              >
+              <form
+                action="abcservlet"
+                id="abcform"
+                target="target_iframe"
+                method="post"
+                style="height: 100%;"
+              >
+                <input type="hidden" id="personid" name="personid" />
+                <input type="hidden" id="personname" name="personname" />
+                <input type="hidden" id="groupid" name="groupid" />
+                <input type="hidden" id="stafftypeid" name="stafftypeid" />
+                <input
+                  type="hidden"
+                  id="createbuttontype"
+                  name="createbuttontype"
+                />
+                <input type="hidden" id="appid" name="appid" />
+                <input type="hidden" id="title" name="title" />
+                <input type="hidden" id="dir_str" name="dir_str" />
+                <input type="hidden" id="png_attachid" name="png_attachid" />
+                <input type="hidden" id="pic_url" name="pic_url" />
+                <input type="hidden" id="mp3_attachid" name="mp3_attachid" />
+                <input type="hidden" id="abc_attachid" name="abc_attachid" />
+                <input type="hidden" id="txt_attachid" name="txt_attachid" />
+                <input type="hidden" id="appid" name="appid" />
+                <input type="hidden" id="nodelinedata" name="nodelinedata" />
+  
+                <input
+                  type="hidden"
+                  id="wxp_barlinecoor"
+                  name="wxp_barlinecoor"
+                /><!-- 五线谱小节线数据 -->
+                <input
+                  type="hidden"
+                  id="jp_barlinecoor"
+                  name="jp_barlinecoor"
+                /><!-- 简谱小节线数据 -->
+                <input
+                  type="hidden"
+                  id="jxhp_barlinecoor"
+                  name="jxhp_barlinecoor"
+                /><!-- 简线混排小节线数据 -->
+                <input type="hidden" id="weakbar" name="weakbar" />
+                <input type="hidden" id="iecdata" name="iecdata" />
+                <input type="hidden" id="exporttype" name="exporttype" />
+                <input
+                  type="hidden"
+                  id="transpose"
+                  name="transpose"
+                  value="0"
+                /><!-- 移调后导出midi有点问题 -->
+                <input
+                  type="hidden"
+                  id="picdata"
+                  name="picdata"
+                /><!-- 五线谱图片base64数据 -->
+                <input
+                  type="hidden"
+                  id="jxhp_picdata"
+                  name="jxhp_picdata"
+                /><!-- 简线混排图片base64数据 -->
+                <input
+                  type="hidden"
+                  id="jp_picdata"
+                  name="jp_picdata"
+                /><!-- 简谱图片base64数据 -->
+                <input type="hidden" id="picdata-speed" name="picdata-speed" />
+                <input
+                  type="hidden"
+                  id="overwritemp3"
+                  name="overwritemp3"
+                  value="1"
+                />
+                <input type="hidden" id="mp3desc" name="mp3desc" />
+                <input type="hidden" id="speed" name="speed" />
+                <input
+                  type="hidden"
+                  id="mustype"
+                  name="mustype"
+                /><!-- 谱子类型：0:五线谱；1：间线混排；2：简谱 -->
+                <input
+                  type="hidden"
+                  id="pictype"
+                  name="pictype"
+                /><!-- 图片类型：compute/mobile -->
+  
+                <textarea
+                  id="source"
+                  name="source"
+                  rows="14"
+                  cols="73"
+                  wrap="off"
+                  style="
+                    font: 20px monospace;
+                    height: 100%;
+                    width: 100% !important;
+                    padding-bottom: 10px;
+                  "
+                  ondrop="dropped(event)"
+                  ondragenter="drag_over(event)"
+                  ondragover="drag_over(event)"
+                  oninput="abc_change()"
+                  onclick="source_click()"
+                  onmouseup="source_mouseup()"
+                ></textarea>
+                <textarea
+                  id="src1"
+                  rows="40"
+                  cols="73"
+                  wrap="off"
+                  style="font: 14px monospace; display: none"
+                  oninput="abc_change()"
+                ></textarea>
+                <textarea
+                  id="source-speed"
+                  name="source-speed"
+                  style="display: none"
+                  rows=""
+                  cols=""
+                ></textarea>
+                <textarea
+                  id="source-gen-midi"
+                  name="source-gen-midi"
+                  style="display: none"
+                  rows=""
+                  cols=""
+                ></textarea>
+                <div id="errlist" class="popup" style="width: 600px">
+                  <div class="close" onclick="popshow('errlist')">x</div>
+                  <div id="diverr" style="font-size: 14px"></div>
+                </div>
+              </form>
+            </div>
           </div>
 
           <!--  曲式分析编辑框 beg -->

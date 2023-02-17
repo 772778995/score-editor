@@ -1,3 +1,74 @@
+function getSelectAbcCodeInfo() {
+	localtosource()
+	const txt = window.getSelection().toString()
+	const selectEl = $('.selected_text')[0]
+	if (!selectEl) return false
+	const istart = +selectEl.getAttribute('istart')
+	const length = txt.length
+	const iend = istart + length
+	return { txt, istart, iend, length }
+}
+
+/** @returns { number[] }*/
+function getIstartList() {
+	return [...new Set([...$('[istart]')].map(el => el.getAttribute('istart')))].sort()
+}
+
+/**
+ * 
+ * @param { number? } istart - 字符下标，默认选中音符的下标
+ * @param { number? } offset - 偏移量，默认 0
+ * @returns 
+ */
+function getNearAbcCodeInfo(istart, offset = 0) {
+	if (istart === undefined) {
+		const selectEl = $('.selected_text')[0]
+		if (!selectEl) return alert('未选中音符')
+		istart = +selectEl.getAttribute('istart')
+	}
+	const istartList = getIstartList()	
+	const i = istartList.findIndex(istart)
+	if (i === -1) return alert('未找到 istart')
+	const targetIstart = istartList.find(i + offset)
+	if (targetIstart === undefined) return alert('未找到目标istart')
+	
+}
+
+function replaceCharsInRange(str, start, end, newChars) {
+  if (start > end || start < 0 || end > str.length) {
+    return str;
+  }
+  return str.slice(0, start) + newChars + str.slice(end);
+}
+
+/**
+ * @param { (str: string, rawTxt: string) => string } cb 更改 abc 代码回调函数
+ */
+function changeAbc(cb) {
+	const info = getSelectAbcCodeInfo()
+	if (!info) return alert('请选中音符')
+	let { istart, iend, txt } = info
+	const abcCode = $('#source').val()
+	const newCode = replaceCharsInRange(abcCode, istart, iend, cb(txt))
+	$('#source').val(newCode)
+	abc_change()
+}
+
+function lineTo() {
+	const info = getSelectAbcCodeInfo()
+	if (!info) return alert('请选中音符')
+	const { istart, iend, txt } = info
+	let abcCode = $('#source').val()
+	
+	let tailCode = abcCode.substr(istart - 1).replace(txt, '')
+	const nextCode = (tailCode.match(/\s*\|*[a-gA-G][,']?/) || [''])[0]
+	const matchCode = txt + nextCode
+	tailCode.replace(matchCode, s => `(${s})`)
+	abcCode = abcCode.substr(0, istart) + tailCode
+	$('#source').val(abcCode)
+	abc_change()
+}
+
 
 //工具栏的所有样本数据
 var toolTemp = {
@@ -333,7 +404,7 @@ var content_vue = new Vue({
 //				imgList: [
 //					{url: 'v2/images/back.png', value: 'back', title: '上一步',id:"back",class:"back cmenu"},		
 //					{url: 'v2/images/forward.png', value: 'forward', title: '下一步',id:"forward",class:"forward cmenu"},
-////					{url: 'v2/images/cut.png', value: 'cut', title: '剪切',id:"cut",class:"cut cmenu"},
+					{url: 'v2/images/cut.png', value: 'cut', title: '剪切',id:"cut",class:"cut cmenu"},
 ////					{url: 'v2/images/copy.png', value: 'copy', title: '复制',id:"copy",class:"copy cmenu"},
 ////					{url: 'v2/images/past.png', value: 'past', title: '粘贴',id:"past",class:"past cmenu"},
 //					{url: 'v2/images/del.png', value: 'del', title: '删除',id:"del",class:"del cmenu"},
@@ -1056,19 +1127,19 @@ var content_vue = new Vue({
 					],
 					[
 						{ url: '', title: '箭头/插入', fn: switchPrachEditor, isSelect: false, updateIsSelect() { this.isSelect = draw_editor } },
-						{ url: 'images/slur.png', title: '连句线', fn: switchPrachEditor, isSelect: false },
-						{ url: 'images/b5.png', title: '延长记号', fn: switchPrachEditor, isSelect: false },
+						{ url: 'images/b5.png', title: '延长记号', fn: () => changeAbc(txt => `!fermata!${txt}`), isSelect: false },
+						{ url: 'images/slur.png', title: '连句线', fn: lineTo, isSelect: false },
 						{},
-						{ url: 'images/other3.png', title: '重音记号', fn: switchPrachEditor, isSelect: false },
-						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
-						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'images/other3.png', title: '重音记号', fn: () => changeAbc(txt => `!>!${txt}`), isSelect: false },
+						{ url: 'images/other4.png', title: '跳音', fn: () => changeAbc(txt => `.${txt}`), isSelect: false },
+						{ url: 'images/other5.png', title: '保持音', fn: () => changeAbc(txt => `!emb!${txt}`), isSelect: false },
 						{ url: 'v2/images/note_1.png', title: '上一页', fn: () => changeNumberKeypadIndex(-1), isSelect: false },
+						{ url: 'images/yy2.png', title: '倚音', fn: () => changeAbc(txt => `{b}${txt}`), isSelect: false },
+						{ url: 'images/yy1.png', title: '倚音', fn: () => changeAbc(txt => `{/b}${txt}`), isSelect: false },
 						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
-						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
-						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
-						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
-						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
-						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'images/pa.png', title: '瑟音', fn: () => changeAbc(txt => `!arpeggio!${txt}`), isSelect: false },
+						{ url: 'images/padown.png', title: '向下瑟音', fn: () => changeAbc(txt => `!arpeggiodown!${txt}`), isSelect: false },
+						{ url: 'images/paup.png', title: '向上瑟音', fn: () => changeAbc(txt => `!arpeggioup!${txt}`), isSelect: false },
 						{ url: 'v2/images/note_1.png', title: '下一页', fn: () => changeNumberKeypadIndex(1), isSelect: false },
 						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
 						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false }
@@ -1390,30 +1461,30 @@ var content_vue = new Vue({
 			if(isNumStaffEditorShow){
 				this.numstaffClick()
 			}
-			if(this.editorShow){
-				$('.right-top').css({
-					height: '60%'
-				});
-				$('.right-bottom').css("height","40%").show();
-				$("#numstaffinput").css("display","none");
-				$('#editor').addClass('menu-pressed');
-				if($("#source_float_div").css("display")=="block"){
+			// if(this.editorShow){
+			// 	$('.right-top').css({
+			// 		height: '60%'
+			// 	});
+			// 	$('.right-bottom').css("height","40%").show();
+			// 	$("#numstaffinput").css("display","none");
+			// 	$('#editor').addClass('menu-pressed');
+			// 	if($("#source_float_div").css("display")=="block"){
 					
-					$("#abcform").append($("#source"))
-					$( '#source' ).each(function () {
-						this.style.setProperty( 'width', '100%', 'important' );
-					});
-					$("#source").height($(".right-bottom").height())
-					$("#source").css("position","static");
-					$("#source_float_div").hide();
-				}
-			}else{
-				$('.right-top').css({
-					height: '100%'
-				});
-				$('.right-bottom').hide();
-				$('#editor').removeClass('menu-pressed');
-			}
+			// 		$("#abcform").append($("#source"))
+			// 		$( '#source' ).each(function () {
+			// 			this.style.setProperty( 'width', '100%', 'important' );
+			// 		});
+			// 		$("#source").height($(".right-bottom").height())
+			// 		$("#source").css("position","static");
+			// 		$("#source_float_div").hide();
+			// 	}
+			// }else{
+			// 	$('.right-top').css({
+			// 		height: '100%'
+			// 	});
+			// 	$('.right-bottom').hide();
+			// 	$('#editor').removeClass('menu-pressed');
+			// }
 		},
 		
 		// 节拍器打开、关闭

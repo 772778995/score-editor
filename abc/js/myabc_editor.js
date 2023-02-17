@@ -664,7 +664,7 @@ $(document).ready(function(){
 				doLog();
 			}
 		}else{
-			window.top.swAutoAlert('未选中音符');
+			window.alert('未选中音符');
 		}
 	});
 	$("#K_div .keyChoice").click(function(){
@@ -852,6 +852,7 @@ $(document).ready(function(){
 	})
 	// 监听键盘点击事件
 	$(document).on("keydown",function(event){
+		console.log(event.which)
 		console.log('keydown');
 		var e = event || window.event || arguments.callee.caller.arguments[0];
 		var obj = $(event.srcElement || e.target);
@@ -867,23 +868,9 @@ $(document).ready(function(){
 			user.isShift = true;
 		}
 		if(event.which == 27){
-			
 			//按下esc键，还原编辑状态
 			restoreEditor();
 			$(".editor-div").remove();
-			/*
-			graph_update = true;
-			draw_editor = false;
-			$("#use_black").remove();
-			if($("#graphEditorMenu")){
-				$("#graphEditorMenu").removeClass("menu-pressed");
-				$("#graphEditorMenu").attr("title","当前模式：修改");
-			}
-			$("rect").css("fill-opacity","0");
-			$("#use_black").remove();
-			$("use[type='demo_hl']").remove();
-			$(".editor_rect").removeClass("editor_rect");
-			*/
 		}
 		//Alt+左：音符向左移动
 	      if(event.which == 37 && event.altKey){
@@ -915,44 +902,45 @@ $(document).ready(function(){
 			return false;
 		}
 		// ctrl+z
-      if (event.which === 90 && event.ctrlKey) {
-    	  console.log("按下ctrl+z")
-    	  console.log("目标元素：",event.target)
-    	  if($(event.target).attr("class")=="editor-div"){
-    		  return;
-    	  }
-      	  setTimeout(function(){
-      		goback();
-      		event.preventDefault();
-      	},100)
-      	return false;
-          /*
-			 * log.pop(); $("#source").val(log[log.length - 1]); src_change();
-			 * return;
-			 */
-      }
-      // ctrl+y
-      if (event.which === 89 && event.ctrlKey){
-        	$(".forward").click();
-        	return false;
-      }     
+		if (event.which === 90 && event.ctrlKey) {
+			console.log("按下ctrl+z")
+			console.log("目标元素：",event.target)
+			if($(event.target).attr("class")=="editor-div"){
+				return;
+			}
+				setTimeout(function(){
+				goback();
+				event.preventDefault();
+			},100)
+			return false;
+				/*
+			* log.pop(); $("#source").val(log[log.length - 1]); src_change();
+			* return;
+			*/
+		}
+		// ctrl+y
+		if (event.which === 89 && event.ctrlKey){
+				$(".forward").click();
+				return false;
+		}     
       
-      //ctrl + d//显示隐藏钢琴键盘
-      if (event.which === 68 && event.ctrlKey){
-    	  content_vue.keyboardShow = !content_vue.keyboardShow;
-  		  setAttrPanelHei();
-  		  return false;
-      } 
-      //ctrl + e//显示隐藏语法框
-      if (event.which === 69 && event.ctrlKey){
-    	  $("#editor").click();
-  		  return false;
-      } 
-      //ctrl + q//显示隐藏语法框
-      if (event.which === 81 && event.ctrlKey){
-    	  $("#selectedStatus").click();
-  		  return false;
-      } 
+		//ctrl + d//显示隐藏钢琴键盘
+		// if (event.which === 68 && event.ctrlKey){
+		//   content_vue.keyboardShow = !content_vue.keyboardShow;
+		//   setAttrPanelHei();
+		//   return false;
+		// }
+
+		// //ctrl + e//显示隐藏语法框
+		// if (event.which === 69 && event.ctrlKey){
+		// 	$("#editor").click();
+		// 	return false;
+		// } 
+		// //ctrl + q//显示隐藏语法框
+		// if (event.which === 81 && event.ctrlKey){
+		// 	$("#selectedStatus").click();
+		// 	return false;
+		// } 
       //ctrl + 左
       if(event.which === 37 && event.ctrlKey){
     	  $("img[dur].selected").removeClass("selected").prev().click();
@@ -963,16 +951,16 @@ $(document).ready(function(){
     	  $("img[dur].selected").removeClass("selected").next().click();
     	  return false;
       }
-      //N键输入模式
-      if(event.which==78){
-    	  $("#graphEditorMenuInsert").click();
-    	  return false;
-      }
-      //U更新模式
-      if(event.which==85){
-    	  $("#graphEditorMenuUpdate").click();
-    	  return false;
-      }
+      // //N键输入模式
+      // if(event.which==78){
+    	//   $("#graphEditorMenuInsert").click();
+    	//   return false;
+      // }
+      // //U更新模式
+      // if(event.which==85){
+    	//   $("#graphEditorMenuUpdate").click();
+    	//   return false;
+      // }
       
 //      如果当前焦点是文本框或文本域则正常走
       if(obj[0].tagName.toUpperCase()=="TEXTAREA" ||obj[0].tagName.toUpperCase()=="INPUT"){
@@ -1021,23 +1009,23 @@ $(document).ready(function(){
     		}
       }
       //BackSpace
-      if(event.which == 8){
-    	  if($(".selected_text").length>0 && cen!=null){
-				//在有选中音符的情况下，按下BackSpace，去掉前面一个空格
-    		  	var istart = $(".selected_text").attr("istart");
-    		  	var s = syms[istart];
-    		  	if(s && s.prev && s.prev.type==8){
-    		  		var content = $("#source").val();
-    		  		var midStr = content.substring(s.prev.iend,s.istart).replace(/\s/g,"");
-    		  		var newContent = content.substring(0,s.prev.iend) + midStr + content.substring(s.istart);
-    		  		$("#source").val(newContent);
-    		  		doLog();
-					src_change();
-					return false;
-    		  	}
+      // if(event.which == 8){
+    	//   if($(".selected_text").length>0 && cen!=null){
+			// 	//在有选中音符的情况下，按下BackSpace，去掉前面一个空格
+    	// 	  	var istart = $(".selected_text").attr("istart");
+    	// 	  	var s = syms[istart];
+    	// 	  	if(s && s.prev && s.prev.type==8){
+    	// 	  		var content = $("#source").val();
+    	// 	  		var midStr = content.substring(s.prev.iend,s.istart).replace(/\s/g,"");
+    	// 	  		var newContent = content.substring(0,s.prev.iend) + midStr + content.substring(s.istart);
+    	// 	  		$("#source").val(newContent);
+    	// 	  		doLog();
+			// 		src_change();
+			// 		return false;
+    	// 	  	}
 				
-			}
-      }
+			// 	}
+      // }
       
       
       //左箭头  选中前一个音符
@@ -1099,43 +1087,43 @@ $(document).ready(function(){
 		}
 		// 按下空格键
 		if(e.keyCode==32 ){
+			myplay()
+			// var activeEle = document.activeElement;
+			// if($(activeEle).hasClass("editor-div")){
+			// 	return false;
+			// }
+			// if(activeEle.id=="source" ){
+			// 	return;
+			// }
+			// if(obj[0].tagName.toUpperCase()=="INPUT" || obj[0].tagName.toUpperCase()=="TEXTAREA"){
+			// 	return;
+			// } 
+			// if($(".selected_text").length>0 && cen!=null){
+			// 	//在有选中音符的情况下，按下空格键，增加一个空格
+			// 	var content = $("#source").val();
+			// 	var newContent = content.substring(0,cen.istart)+ " "+content.substring(cen.istart);
+			// 	$("#source").val(newContent);
+			// 	src_change();
+			// 	doLog();
+			// 	return false;
+			// }
 			
-			var activeEle = document.activeElement;
-			if($(activeEle).hasClass("editor-div")){
-				return false;
-			}
-			if(activeEle.id=="source" ){
-				return;
-			}
-			if(obj[0].tagName.toUpperCase()=="INPUT" || obj[0].tagName.toUpperCase()=="TEXTAREA"){
-				return;
-			} 
-			if($(".selected_text").length>0 && cen!=null){
-				//在有选中音符的情况下，按下空格键，增加一个空格
-				var content = $("#source").val();
-				var newContent = content.substring(0,cen.istart)+ " "+content.substring(cen.istart);
-				$("#source").val(newContent);
-				src_change();
-				doLog();
-				return false;
-			}
-			
-			var st = getSelectText("source");
-			if(st!=""){
-				// insertText(" "+st);
-				replaceSelected(st," "+st);
-				abc_change();
-				$("#source").blur();
-				return false;
-			}else{
-				// 从光标位置处加一个空格
-				var index = getStartPos(getById("source"));
-				$("#source").val($("#source").val().substr(0,index)+" "+$("#source").val().substr(index));
-				var obj = document.getElementById("source");
-				obj.selectionStart = obj.selectionEnd = index+1;
-				abc_change();
-				return false;
-			}
+			// var st = getSelectText("source");
+			// if(st!=""){
+			// 	// insertText(" "+st);
+			// 	replaceSelected(st," "+st);
+			// 	abc_change();
+			// 	$("#source").blur();
+			// 	return false;
+			// }else{
+			// 	// 从光标位置处加一个空格
+			// 	var index = getStartPos(getById("source"));
+			// 	$("#source").val($("#source").val().substr(0,index)+" "+$("#source").val().substr(index));
+			// 	var obj = document.getElementById("source");
+			// 	obj.selectionStart = obj.selectionEnd = index+1;
+			// 	abc_change();
+			// 	return false;
+			// }
 		}
 		// ctrl + 向上箭头
 		if (event.which === 38 && event.ctrlKey){
@@ -1206,8 +1194,8 @@ $(document).ready(function(){
 			return false;
 		}
 		
-		// del键
-		if(e.keyCode==46){
+		// del键 || BackSpace
+		if(e.keyCode==46 || event.which == 8){
 			//图形化编辑的删除功能
 			if(graph_update){
 				delSelNote();
@@ -1221,10 +1209,6 @@ $(document).ready(function(){
 			
 		}
 		var keyValue = e.key;
-		
-		
-		
-		
 		
 		//cdefgab按键处理,这里不再响应字母事件
 		if(e.keyCode>=65 && e.keyCode<=71){
@@ -2195,7 +2179,7 @@ function insertDesc(flag){
 	setTimeout(function(){
 		var selEle = $("rect[type='note'][style='fill-opacity: 0.4;']");
 		if(selEle.length == 0){
-			window.top.alert("未选中音符")
+			alert("未选中音符")
 			return;
 		}
 		var istart = $(selEle).attr("istart");
