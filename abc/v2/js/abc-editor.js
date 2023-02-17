@@ -1105,12 +1105,12 @@ var content_vue = new Vue({
 				page: 0,
 				staffList: [
 					[
-						{ url: '', title: '箭头/插入', fn: switchPrachEditor, isSelect: false, updateIsSelect() { this.isSelect = draw_editor } },
+						{},
 						{ url: 'images/rest.png', title: '休止符', fn: () => $('.operator_sc.jp_note[keycode=103]').click() | $('.reststatus').click(), isSelect: false,
 							updateIsSelect() { this.isSelect = $('.operator_sc.jp_note[keycode=103]').hasClass('selected') && $('.reststatus').hasClass('selected') }
 						},
 						{ url: 'v2/images/cs.png', title: '重升', selector: '.pitchbtn[value="^^"]', isSelect: false },
-						{ url: 'v2/images/cj.png', title: '重降', selector: '.pitchbtn[value="^^"]', isSelect: false },
+						{ url: 'v2/images/cj.png', title: '重降', selector: '.pitchbtn[value="__"]', isSelect: false },
 						{ url: 'v2/images/yingao3.png', title: '还原', selector: '.pitchbtn[value="="]', isSelect: false },
 						{ url: 'v2/images/yingao1.png', title: '升号', selector: '.pitchbtn[value="^"]', isSelect: false },
 						{ url: 'v2/images/yingao2.png', title: '降号', selector: '.pitchbtn[value="_"]', isSelect: false },
@@ -1126,7 +1126,7 @@ var content_vue = new Vue({
 						{ url: 'images/dot3.png', title: '附点', selector: '.dotstatus[value="3/"]', isSelect: false },
 					],
 					[
-						{ url: '', title: '箭头/插入', fn: switchPrachEditor, isSelect: false, updateIsSelect() { this.isSelect = draw_editor } },
+						{},
 						{ url: 'images/b5.png', title: '延长记号', fn: () => changeAbc(txt => `!fermata!${txt}`), isSelect: false },
 						{ url: 'images/slur.png', title: '连句线', fn: lineTo, isSelect: false },
 						{},
@@ -1136,7 +1136,7 @@ var content_vue = new Vue({
 						{ url: 'v2/images/note_1.png', title: '上一页', fn: () => changeNumberKeypadIndex(-1), isSelect: false },
 						{ url: 'images/yy2.png', title: '倚音', fn: () => changeAbc(txt => `{b}${txt}`), isSelect: false },
 						{ url: 'images/yy1.png', title: '倚音', fn: () => changeAbc(txt => `{/b}${txt}`), isSelect: false },
-						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ url: 'v2/images/note_1.png', title: '重复小节', fn: switchPrachEditor, isSelect: false },
 						{ url: 'images/pa.png', title: '瑟音', fn: () => changeAbc(txt => `!arpeggio!${txt}`), isSelect: false },
 						{ url: 'images/padown.png', title: '向下瑟音', fn: () => changeAbc(txt => `!arpeggiodown!${txt}`), isSelect: false },
 						{ url: 'images/paup.png', title: '向上瑟音', fn: () => changeAbc(txt => `!arpeggioup!${txt}`), isSelect: false },
@@ -1166,7 +1166,7 @@ var content_vue = new Vue({
 				],
 				easyList: [
 					[
-						{ url: '', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{},
 						{ url: 'images/rest.png', title: '低8度', fn: () => upDownKeyWord(-12), isSelect: false },
 						{ url: 'images/rest.png', title: '高8度', fn: () => upDownKeyWord(12), isSelect: false },
 						{},
@@ -1183,6 +1183,10 @@ var content_vue = new Vue({
 						{ url: '', title: '下一页', fn: () => changeNumberKeypadIndex(1), isSelect: false },
 						{ url: 'images/rest.png', title: '休止符', selector: '.reststatus', isSelect: false },
 						{ url: 'v2/images/note_3_j.png', title: '四分音符', selector: '.operator_sc.jp_note[keycode=101]', isSelect: false },
+					],
+					[
+						{},
+						{ url: 'images/other3.png', title: '重音记号', fn: () => changeAbc(txt => `!>!${txt}`), isSelect: false }
 					]
 				]
 			}

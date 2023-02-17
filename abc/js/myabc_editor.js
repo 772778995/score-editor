@@ -941,26 +941,29 @@ $(document).ready(function(){
 		// 	$("#selectedStatus").click();
 		// 	return false;
 		// } 
-      //ctrl + 左
-      if(event.which === 37 && event.ctrlKey){
-    	  $("img[dur].selected").removeClass("selected").prev().click();
-    	  return false;
-      }
-      //ctrl + 右
-      if(event.which == 39 && event.ctrlKey){
-    	  $("img[dur].selected").removeClass("selected").next().click();
-    	  return false;
-      }
-      // //N键输入模式
-      // if(event.which==78){
-    	//   $("#graphEditorMenuInsert").click();
-    	//   return false;
-      // }
-      // //U更新模式
-      // if(event.which==85){
-    	//   $("#graphEditorMenuUpdate").click();
-    	//   return false;
-      // }
+
+		//ctrl + 左
+		// if(event.which === 37 && event.ctrlKey){
+		//   $("img[dur].selected").removeClass("selected").prev().click();
+		//   return false;
+		// }
+		// //ctrl + 右
+		// if(event.which == 39 && event.ctrlKey){
+		//   $("img[dur].selected").removeClass("selected").next().click();
+		//   return false;
+		// }
+
+		//N键输入模式
+		if(event.which==78){
+			if (musicType === 2) return
+			draw_editor ?  $("#graphEditorMenuInsert").click() :  $("#graphEditorMenuUpdate").click()
+			return
+		}
+		//U更新模式
+		// if(event.which==85){
+		//   $("#graphEditorMenuUpdate").click();
+		//   return false;
+		// }
       
 //      如果当前焦点是文本框或文本域则正常走
       if(obj[0].tagName.toUpperCase()=="TEXTAREA" ||obj[0].tagName.toUpperCase()=="INPUT"){
@@ -1197,15 +1200,15 @@ $(document).ready(function(){
 		// del键 || BackSpace
 		if(e.keyCode==46 || event.which == 8){
 			//图形化编辑的删除功能
-			if(graph_update){
+			// if(graph_update){
 				delSelNote();
-				return false;
-			}
+				// return false;
+			// }
 			
-			if($(".right-bottom").css("display")=="none"){
-				$("#del").click();
-				return false;
-			}
+			// if($(".right-bottom").css("display")=="none"){
+			// 	$("#del").click();
+			// 	return false;
+			// }
 			
 		}
 		var keyValue = e.key;
