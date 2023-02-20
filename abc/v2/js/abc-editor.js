@@ -55,23 +55,26 @@ function lineTo() {
  * @returns 
  */
 function changeGroupNote(dir, type) {
-	const info = getSelectAbcCodeInfo()
-	if (!info) return alert('请选中音符')
-	let { istart } = info
-	/** @type { string } */
-	let abcCode = $('#source').val()
-	let headCode = abcCode.substr(0, istart)
-	let tailCode = abcCode.substr(istart)
-	if (type === 'merge') {
-		if (['left', 'all'].includes(dir)) headCode = headCode.trimEnd()
-		if (['right', 'all'].includes(dir)) tailCode = tailCode.trimStart()
-	}
-	if (type === 'split') {
-		if (['left', 'all'].includes(dir)) headCode = headCode.trimEnd() + ' '
-		if (['right', 'all'].includes(dir)) tailCode = ' ' + tailCode.trimStart()
-	}
-	abcCode = headCode + tailCode
-	$('#source').val(abcCode)
+	setTimeout(() => {
+		const info = getSelectAbcCodeInfo()
+		if (!info) return alert('请选中音符')
+		let { istart, txt } = info
+		/** @type { string } */
+		let abcCode = $('#source').val()
+		let headCode = abcCode.substr(0, istart)
+		let tailCode = abcCode.substr(istart).replace(txt, '')
+		if (type === 'merge') {
+			if (['left', 'all'].includes(dir)) headCode = headCode.trimEnd()
+			if (['right', 'all'].includes(dir)) tailCode = tailCode.trimStart()
+		}
+		if (type === 'split') {
+			if (['left', 'all'].includes(dir)) txt = ' ' + txt
+			if (['right', 'all'].includes(dir)) txt += ' '
+		}
+		abcCode = headCode + txt + tailCode
+		$('#source').val(abcCode)
+		abc_change()
+	})
 }
 
 
@@ -1152,19 +1155,19 @@ var content_vue = new Vue({
 						{},
 						{},
 						{},
+						{},
+						{},
+						{},
+						{ title: '上一页', fn: () => changeNumberKeypadIndex(-1), isSelect: false },
 						{ url: 'images/tremolo/1.png', title: '颤音', fn: () => changeAbc(txt => `!/!${txt}`), isSelect: false },
 						{ url: 'images/tremolo/2.png', title: '颤音', fn: () => changeAbc(txt => `!//!${txt}`), isSelect: false },
 						{ url: 'images/tremolo/3.png', title: '颤音', fn: () => changeAbc(txt => `!///!${txt}`), isSelect: false },
-						{ url: 'v2/images/note_2.png', title: '上一页', fn: () => changeNumberKeypadIndex(-1), isSelect: false },
-						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
-						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
-						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
-						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
-						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
-						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
-						{ url: 'v2/images/note_2.png', title: '下一页', fn: () => changeNumberKeypadIndex(1), isSelect: false },
-						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
-						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ title: '启动符杠', fn: () => changeGroupNote('right', 'merge'), isSelect: false },
+						{ title: '结束符杠', fn: () => changeGroupNote('left', 'merge'), isSelect: false },
+						{ title: '符杠中间', fn: () => changeGroupNote('all', 'merge'), isSelect: false },
+						{ title: '下一页', fn: () => changeNumberKeypadIndex(1), isSelect: false },
+						{},
+						{ title: '无符杠', fn: () => changeGroupNote('all', 'split'), isSelect: false }
 					]
 				],
 				easyList: [
