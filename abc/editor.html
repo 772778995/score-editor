@@ -854,6 +854,7 @@
             @click.stop="() => {
               $(item.selector)?.click()
               item.fn && item.fn()
+              changeNumKeypadSelect()
             }"
             :title="item.title"
           >

@@ -48,6 +48,32 @@ function lineTo() {
 	abc_change()
 }
 
+/**
+ * 切割或合并音符
+ * @param { 'left' | 'right' | 'all' } dir - 方向
+ * @param { 'split' | 'merge' } type - 方式
+ * @returns 
+ */
+function changeGroupNote(dir, type) {
+	const info = getSelectAbcCodeInfo()
+	if (!info) return alert('请选中音符')
+	let { istart } = info
+	/** @type { string } */
+	let abcCode = $('#source').val()
+	let headCode = abcCode.substr(0, istart)
+	let tailCode = abcCode.substr(istart)
+	if (type === 'merge') {
+		if (['left', 'all'].includes(dir)) headCode = headCode.trimEnd()
+		if (['right', 'all'].includes(dir)) tailCode = tailCode.trimStart()
+	}
+	if (type === 'split') {
+		if (['left', 'all'].includes(dir)) headCode = headCode.trimEnd() + ' '
+		if (['right', 'all'].includes(dir)) tailCode = ' ' + tailCode.trimStart()
+	}
+	abcCode = headCode + tailCode
+	$('#source').val(abcCode)
+}
+
 
 //工具栏的所有样本数据
 var toolTemp = {
@@ -1084,12 +1110,10 @@ var content_vue = new Vue({
 				page: 0,
 				staffList: [
 					[
-						{},
-						{ url: 'images/rest.png', title: '休止符', fn: () => $('.operator_sc.jp_note[keycode=103]').click() | $('.reststatus').click(), isSelect: false,
-							updateIsSelect() { this.isSelect = $('.operator_sc.jp_note[keycode=103]').hasClass('selected') && $('.reststatus').hasClass('selected') }
-						},
+						{ title: '箭头', fn: switchPrachEditor, isSelect: false, updateIsSelect() { this.isSelect = !draw_editor } },
 						{ url: 'v2/images/cs.png', title: '重升', selector: '.pitchbtn[value="^^"]', isSelect: false },
 						{ url: 'v2/images/cj.png', title: '重降', selector: '.pitchbtn[value="__"]', isSelect: false },
+						{},
 						{ url: 'v2/images/yingao3.png', title: '还原', selector: '.pitchbtn[value="="]', isSelect: false },
 						{ url: 'v2/images/yingao1.png', title: '升号', selector: '.pitchbtn[value="^"]', isSelect: false },
 						{ url: 'v2/images/yingao2.png', title: '降号', selector: '.pitchbtn[value="_"]', isSelect: false },
@@ -1105,7 +1129,7 @@ var content_vue = new Vue({
 						{ url: 'images/dot3.png', title: '附点', selector: '.dotstatus[value="3/"]', isSelect: false },
 					],
 					[
-						{},
+						{ title: '箭头', fn: switchPrachEditor, isSelect: false, updateIsSelect() { this.isSelect = !draw_editor } },
 						{ url: 'images/b5.png', title: '延长记号', fn: () => changeAbc(txt => `!fermata!${txt}`), isSelect: false },
 						{ url: 'images/slur.png', title: '连句线', fn: lineTo, isSelect: false },
 						{},
@@ -1124,13 +1148,13 @@ var content_vue = new Vue({
 						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false }
 					],
 					[
-						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
-						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
-						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
-						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
-						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
-						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
-						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
+						{ title: '箭头', fn: switchPrachEditor, isSelect: false, updateIsSelect() { this.isSelect = !draw_editor } },
+						{},
+						{},
+						{},
+						{ url: 'images/tremolo/1.png', title: '颤音', fn: () => changeAbc(txt => `!/!${txt}`), isSelect: false },
+						{ url: 'images/tremolo/2.png', title: '颤音', fn: () => changeAbc(txt => `!//!${txt}`), isSelect: false },
+						{ url: 'images/tremolo/3.png', title: '颤音', fn: () => changeAbc(txt => `!///!${txt}`), isSelect: false },
 						{ url: 'v2/images/note_2.png', title: '上一页', fn: () => changeNumberKeypadIndex(-1), isSelect: false },
 						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
 						{ url: 'v2/images/note_2.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
@@ -1877,6 +1901,18 @@ var content_vue = new Vue({
 			if (!selector) return
 			const el = $(selector)
 			el && el.click && el.click()
+		},
+		changeNumKeypadSelect() {
+			const { page } = this.m.numberKeypad
+			const type = ['staffList', 'all', 'easyList'][musicType]
+			const list = this.m.numberKeypad[type][page]
+			setTimeout(() => {
+				list.forEach((item, i) => {
+					if (item.updateIsSelect) return item.updateIsSelect()
+					if (!item.selector) return
+					item.isSelect = $(item.selector).hasClass('selected')
+				})
+			})
 		}
 	},
 	computed: {
@@ -2037,21 +2073,9 @@ var content_vue = new Vue({
 	},
 	mounted() {
 		document.addEventListener('keydown', e => this.emitNumKeybordFn(e.code))
-		const changeNumKeypadSelect = () => {
-			const { page } = this.m.numberKeypad
-			const type = ['staffList', 'all', 'easyList'][musicType]
-			const list = this.m.numberKeypad[type][page]
-			list.forEach((item, i) => {
-				setTimeout(() => {
-					if (item.updateIsSelect) return item.updateIsSelect()
-					if (!item.selector) return
-					item.isSelect = $(item.selector).hasClass('selected')
-				})
-			})
-		}
-		changeNumKeypadSelect()
-		document.addEventListener('keyup', changeNumKeypadSelect)
-		document.addEventListener('mouseup', changeNumKeypadSelect)
+		this.changeNumKeypadSelect()
+		document.addEventListener('keyup', this.changeNumKeypadSelect)
+		document.addEventListener('click', this.changeNumKeypadSelect)
 	}
 })
 
