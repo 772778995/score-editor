@@ -1,7 +1,7 @@
 function initScore() {
 	setTimeout(() => {
 		const params = new URLSearchParams(location.search)
-		musicType = params.get('musicType')
+		musicType = params.get('musicType') || '0'
 		if (musicType === '2') changeStaffType(this,2) | restoreEditor()
 	}, 500)
 }
