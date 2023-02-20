@@ -35,7 +35,6 @@ function changeAbc(cb) {
 }
 
 function lineTo() {
-	debugger
 	const info = getSelectAbcCodeInfo()
 	if (!info) return alert('请选中音符')
 	let { istart, txt } = info
