@@ -14,26 +14,6 @@ function getIstartList() {
 	return [...new Set([...$('[istart]')].map(el => el.getAttribute('istart')))].sort()
 }
 
-/**
- * 
- * @param { number? } istart - 字符下标，默认选中音符的下标
- * @param { number? } offset - 偏移量，默认 0
- * @returns 
- */
-function getNearAbcCodeInfo(istart, offset = 0) {
-	if (istart === undefined) {
-		const selectEl = $('.selected_text')[0]
-		if (!selectEl) return alert('未选中音符')
-		istart = +selectEl.getAttribute('istart')
-	}
-	const istartList = getIstartList()	
-	const i = istartList.findIndex(istart)
-	if (i === -1) return alert('未找到 istart')
-	const targetIstart = istartList.find(i + offset)
-	if (targetIstart === undefined) return alert('未找到目标istart')
-	
-}
-
 function replaceCharsInRange(str, start, end, newChars) {
   if (start > end || start < 0 || end > str.length) {
     return str;
@@ -55,16 +35,16 @@ function changeAbc(cb) {
 }
 
 function lineTo() {
+	debugger
 	const info = getSelectAbcCodeInfo()
 	if (!info) return alert('请选中音符')
-	const { istart, iend, txt } = info
+	let { istart, txt } = info
 	let abcCode = $('#source').val()
-	
-	let tailCode = abcCode.substr(istart - 1).replace(txt, '')
-	const nextCode = (tailCode.match(/\s*\|*[a-gA-G][,']?/) || [''])[0]
-	const matchCode = txt + nextCode
-	tailCode.replace(matchCode, s => `(${s})`)
-	abcCode = abcCode.substr(0, istart) + tailCode
+	const headCode = abcCode.substr(0, istart)
+	let tailCode = abcCode.substr(istart).replace(txt, '')
+	txt = '(' + txt
+	tailCode = tailCode.replace(/[H-Zh-z]*({.*})?(!.*!)?\(?[A-Ga-g]\)?/, s => s + ')')
+	abcCode = headCode + txt + tailCode
 	$('#source').val(abcCode)
 	abc_change()
 }
