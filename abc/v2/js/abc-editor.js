@@ -431,7 +431,7 @@ var content_vue = new Vue({
 //				imgList: [
 //					{url: 'v2/images/back.png', value: 'back', title: '上一步',id:"back",class:"back cmenu"},		
 //					{url: 'v2/images/forward.png', value: 'forward', title: '下一步',id:"forward",class:"forward cmenu"},
-					{url: 'v2/images/cut.png', value: 'cut', title: '剪切',id:"cut",class:"cut cmenu"},
+					// {url: 'v2/images/cut.png', value: 'cut', title: '剪切',id:"cut",class:"cut cmenu"},
 ////					{url: 'v2/images/copy.png', value: 'copy', title: '复制',id:"copy",class:"copy cmenu"},
 ////					{url: 'v2/images/past.png', value: 'past', title: '粘贴',id:"past",class:"past cmenu"},
 //					{url: 'v2/images/del.png', value: 'del', title: '删除',id:"del",class:"del cmenu"},
