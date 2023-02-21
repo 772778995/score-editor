@@ -6,6 +6,15 @@ function initScore() {
 	}, 500)
 }
 
+function keepSelectNote(cb) {
+	const istart = $('.selected_text').attr('istart')
+	cb()
+	setTimeout(() => {
+		const el = $(`[type="hd"][istart="${istart}"]`)
+		el.addClass('selected_text')
+	}, 100)
+}
+
 function getSelectAbcCodeInfo() {
 	localtosource()
 	const txt = window.getSelection().toString()
@@ -43,17 +52,19 @@ function changeAbc(cb) {
 }
 
 function lineTo() {
-	const info = getSelectAbcCodeInfo()
-	if (!info) return alert('请选中音符')
-	let { istart, txt } = info
-	let abcCode = $('#source').val()
-	const headCode = abcCode.substr(0, istart)
-	let tailCode = abcCode.substr(istart).replace(txt, '')
-	txt = '(' + txt
-	tailCode = tailCode.replace(/[H-Zh-z]*({.*})?(!.*!)?\(?[A-Ga-g]\)?/, s => s + ')')
-	abcCode = headCode + txt + tailCode
-	$('#source').val(abcCode)
-	abc_change()
+	keepSelectNote(() => {
+		const info = getSelectAbcCodeInfo()
+		if (!info) return alert('请选中音符')
+		let { istart, txt } = info
+		let abcCode = $('#source').val()
+		const headCode = abcCode.substr(0, istart)
+		let tailCode = abcCode.substr(istart).replace(txt, '')
+		txt = '(' + txt
+		tailCode = tailCode.replace(/[H-Zh-z]*({.*})?(!.*!)?\(?[A-Ga-g]\)?/, s => s + ')')
+		abcCode = headCode + txt + tailCode
+		$('#source').val(abcCode)
+		abc_change()
+	})
 }
 
 /**
@@ -63,7 +74,7 @@ function lineTo() {
  * @returns 
  */
 function changeGroupNote(dir, type) {
-	setTimeout(() => {
+	keepSelectNote(() => {
 		const info = getSelectAbcCodeInfo()
 		if (!info) return alert('请选中音符')
 		let { istart, txt } = info
@@ -1122,12 +1133,12 @@ var content_vue = new Vue({
 				staffList: [
 					[
 						{ title: '箭头', fn: switchPrachEditor, isSelect: false, updateIsSelect() { this.isSelect = !draw_editor } },
-						{ url: 'v2/images/cs.png', title: '重升', selector: '.pitchbtn[value="^^"]', isSelect: false },
-						{ url: 'v2/images/cj.png', title: '重降', selector: '.pitchbtn[value="__"]', isSelect: false },
+						{ url: 'v2/images/cs.png', isKeepSelect: true, title: '重升', selector: '.pitchbtn[value="^^"]', isSelect: false },
+						{ url: 'v2/images/cj.png', isKeepSelect: true, title: '重降', selector: '.pitchbtn[value="__"]', isSelect: false },
 						{},
-						{ url: 'v2/images/yingao3.png', title: '还原', selector: '.pitchbtn[value="="]', isSelect: false },
-						{ url: 'v2/images/yingao1.png', title: '升号', selector: '.pitchbtn[value="^"]', isSelect: false },
-						{ url: 'v2/images/yingao2.png', title: '降号', selector: '.pitchbtn[value="_"]', isSelect: false },
+						{ url: 'v2/images/yingao3.png', isKeepSelect: true, title: '还原', selector: '.pitchbtn[value="="]', isSelect: false },
+						{ url: 'v2/images/yingao1.png', isKeepSelect: true, title: '升号', selector: '.pitchbtn[value="^"]', isSelect: false },
+						{ url: 'v2/images/yingao2.png', isKeepSelect: true, title: '降号', selector: '.pitchbtn[value="_"]', isSelect: false },
 						{ url: '', title: '上一页', fn: () => changeNumberKeypadIndex(-1), isSelect: false },
 						{ url: 'v2/images/note_3.png', title: '四分音符', selector: '.operator_sc.jp_note[keycode=101]', isSelect: false },
 						{ url: 'v2/images/note_2.png', title: '半音符', selector: '.operator_sc.jp_note[keycode=102]', isSelect: false },
@@ -1136,27 +1147,27 @@ var content_vue = new Vue({
 						{ url: 'v2/images/note_5.png', title: '16分音符', selector: '.operator_sc.jp_note[keycode=99]', isSelect: false },
 						{ url: 'v2/images/note_4.png', title: '八分音符', selector: '.operator_sc.jp_note[keycode=100]', isSelect: false },
 						{ url: '', title: '下一页', fn: () => changeNumberKeypadIndex(1), isSelect: false },
-						{ url: 'images/rest.png', title: '休止符', selector: '.reststatus', isSelect: false },
-						{ url: 'images/dot3.png', title: '附点', selector: '.dotstatus[value="3/"]', isSelect: false },
+						{ url: 'images/rest.png', isKeepSelect: true, title: '休止符', selector: '.reststatus', isSelect: false },
+						{ url: 'images/dot3.png', isKeepSelect: true, title: '附点', selector: '.dotstatus[value="3/"]', isSelect: false },
 					],
 					[
 						{ title: '箭头', fn: switchPrachEditor, isSelect: false, updateIsSelect() { this.isSelect = !draw_editor } },
-						{ url: 'images/b5.png', title: '延长记号', fn: () => changeAbc(txt => `!fermata!${txt}`), isSelect: false },
-						{ url: 'images/slur.png', title: '连线', fn: lineTo, isSelect: false },
+						{ url: 'images/b5.png', isKeepSelect: true, title: '延长', fn: () => changeAbc(txt => `!fermata!${txt}`), isSelect: false },
+						{ url: 'images/slur.png', isKeepSelect: true, title: '连线', fn: lineTo, isSelect: false },
 						{},
-						{ url: 'images/other3.png', title: '重音记号', fn: () => changeAbc(txt => `!>!${txt}`), isSelect: false },
-						{ url: 'images/other4.png', title: '跳音', fn: () => changeAbc(txt => `.${txt}`), isSelect: false },
-						{ url: 'images/other5.png', title: '保持音', fn: () => changeAbc(txt => `!emb!${txt}`), isSelect: false },
+						{ url: 'images/other3.png', isKeepSelect: true, title: '重音', fn: () => changeAbc(txt => `!>!${txt}`), isSelect: false },
+						{ url: 'images/other4.png', isKeepSelect: true, title: '跳音', fn: () => changeAbc(txt => `.${txt}`), isSelect: false },
+						{ url: 'images/other5.png', isKeepSelect: true, title: '保持音', fn: () => changeAbc(txt => `!emb!${txt}`), isSelect: false },
 						{ url: 'v2/images/note_1.png', title: '上一页', fn: () => changeNumberKeypadIndex(-1), isSelect: false },
-						{ url: 'images/yy2.png', title: '倚音', fn: () => changeAbc(txt => `{b}${txt}`), isSelect: false },
-						{ url: 'images/yy1.png', title: '倚音', fn: () => changeAbc(txt => `{/b}${txt}`), isSelect: false },
-						{ url: 'v2/images/note_1.png', title: '重复小节', fn: switchPrachEditor, isSelect: false },
-						{ url: 'images/pa.png', title: '瑟音', fn: () => changeAbc(txt => `!arpeggio!${txt}`), isSelect: false },
-						{ url: 'images/padown.png', title: '向下瑟音', fn: () => changeAbc(txt => `!arpeggiodown!${txt}`), isSelect: false },
-						{ url: 'images/paup.png', title: '向上瑟音', fn: () => changeAbc(txt => `!arpeggioup!${txt}`), isSelect: false },
+						{ url: 'images/yy2.png', isKeepSelect: true, title: '倚音', fn: () => changeAbc(txt => `{b}${txt}`), isSelect: false },
+						{ url: 'images/yy1.png', isKeepSelect: true, title: '倚音', fn: () => changeAbc(txt => `{/b}${txt}`), isSelect: false },
+						{ url: 'images/grace16b.png', isKeepSelect: true, title: '倚音', fn: () => changeAbc(txt => `{g/}${txt}`), isSelect: false },
+						{ url: 'images/pa.png', isKeepSelect: true, title: '瑟音', fn: () => changeAbc(txt => `!arpeggio!${txt}`), isSelect: false },
+						{ url: 'images/padown.png', isKeepSelect: true, title: '向下瑟音', fn: () => changeAbc(txt => `!arpeggiodown!${txt}`), isSelect: false },
+						{ url: 'images/paup.png', isKeepSelect: true, title: '向上瑟音', fn: () => changeAbc(txt => `!arpeggioup!${txt}`), isSelect: false },
 						{ url: 'v2/images/note_1.png', title: '下一页', fn: () => changeNumberKeypadIndex(1), isSelect: false },
-						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false },
-						{ url: 'v2/images/note_1.png', title: '箭头', fn: switchPrachEditor, isSelect: false }
+						{},
+						{ url: 'images/dot4.png', isKeepSelect: true, title: '复附点', selector: '.dotstatus[value="7//"]', isSelect: false },
 					],
 					[
 						{ title: '箭头', fn: switchPrachEditor, isSelect: false, updateIsSelect() { this.isSelect = !draw_editor } },
@@ -1167,15 +1178,15 @@ var content_vue = new Vue({
 						{},
 						{},
 						{ title: '上一页', fn: () => changeNumberKeypadIndex(-1), isSelect: false },
-						{ url: 'images/tremolo/1.png', title: '颤音', fn: () => changeAbc(txt => `!/!${txt}`), isSelect: false },
-						{ url: 'images/tremolo/2.png', title: '颤音', fn: () => changeAbc(txt => `!//!${txt}`), isSelect: false },
-						{ url: 'images/tremolo/3.png', title: '颤音', fn: () => changeAbc(txt => `!///!${txt}`), isSelect: false },
-						{ title: '启动符杠', fn: () => changeGroupNote('right', 'merge'), isSelect: false },
-						{ title: '结束符杠', fn: () => changeGroupNote('left', 'merge'), isSelect: false },
-						{ title: '符杠中间', fn: () => changeGroupNote('all', 'merge'), isSelect: false },
-						{ title: '下一页', fn: () => changeNumberKeypadIndex(1), isSelect: false },
+						{ url: 'images/tremolo/1.png', isKeepSelect: true, title: '颤音', fn: () => changeAbc(txt => `!/!${txt}`), isSelect: false },
+						{ url: 'images/tremolo/2.png', isKeepSelect: true, title: '颤音', fn: () => changeAbc(txt => `!//!${txt}`), isSelect: false },
+						{ url: 'images/tremolo/3.png', isKeepSelect: true, title: '颤音', fn: () => changeAbc(txt => `!///!${txt}`), isSelect: false },
+						{ isKeepSelect: true, title: '启动符杠', fn: () => changeGroupNote('right', 'merge'), isSelect: false },
+						{ isKeepSelect: true, title: '结束符杠', fn: () => changeGroupNote('left', 'merge'), isSelect: false },
+						{ isKeepSelect: true, title: '符杠中间', fn: () => changeGroupNote('all', 'merge'), isSelect: false },
+						{ isKeepSelect: true, title: '下一页', fn: () => changeNumberKeypadIndex(1), isSelect: false },
 						{},
-						{ title: '无符杠', fn: () => changeGroupNote('all', 'split'), isSelect: false }
+						{ isKeepSelect: true, title: '无符杠', fn: () => changeGroupNote('all', 'split'), isSelect: false }
 					]
 				],
 				easyList: [
@@ -1184,8 +1195,8 @@ var content_vue = new Vue({
 						{ url: 'images/rest.png', title: '低8度', fn: () => upDownKeyWord(-12), isSelect: false },
 						{ url: 'images/rest.png', title: '高8度', fn: () => upDownKeyWord(12), isSelect: false },
 						{},
-						{ url: 'images/dot3.png', title: '附点', selector: '.dotstatus[value="3/"]', isSelect: false },
-						{ url: 'images/dot4.png', title: '复附点', selector: '.dotstatus[value="7//"]', isSelect: false },
+						{ url: 'images/dot3.png', isKeepSelect: true, title: '附点', selector: '.dotstatus[value="3/"]', isSelect: false },
+						{ url: 'images/dot4.png', isKeepSelect: true, title: '复附点', selector: '.dotstatus[value="7//"]', isSelect: false },
 						{},
 						{ url: '', title: '上一页', fn: () => changeNumberKeypadIndex(-1), isSelect: false },
 						{ url: 'v2/images/note_2_j.png', title: '2拍', selector: '.operator_sc.jp_note[keycode=102]', isSelect: false },
@@ -1200,19 +1211,19 @@ var content_vue = new Vue({
 					],
 					[
 						{ title: '箭头', fn: switchPrachEditor, isSelect: false, updateIsSelect() { this.isSelect = !draw_editor } },
-						{ url: 'images/other3.png', title: '重音记号', fn: () => changeAbc(txt => `!>!${txt}`), isSelect: false },
-						{ url: 'images/other4.png', title: '跳音', fn: () => changeAbc(txt => `.${txt}`), isSelect: false },
-						{ url: 'images/other5.png', title: '保持音', fn: () => changeAbc(txt => `!emb!${txt}`), isSelect: false },
-						{ url: 'v2/images/yingao3.png', title: '还原', selector: '.pitchbtn[value="="]', isSelect: false },
-						{ url: 'v2/images/yingao1.png', title: '升号', selector: '.pitchbtn[value="^"]', isSelect: false },
-						{ url: 'v2/images/yingao2.png', title: '降号', selector: '.pitchbtn[value="_"]', isSelect: false },
+						{ url: 'images/other3.png', isKeepSelect: true, title: '重音记号', fn: () => changeAbc(txt => `!>!${txt}`), isSelect: false },
+						{ url: 'images/other4.png', isKeepSelect: true, title: '跳音', fn: () => changeAbc(txt => `.${txt}`), isSelect: false },
+						{ url: 'images/other5.png', isKeepSelect: true, title: '保持音', fn: () => changeAbc(txt => `!emb!${txt}`), isSelect: false },
+						{ url: 'v2/images/yingao3.png', isKeepSelect: true, title: '还原', selector: '.pitchbtn[value="="]', isSelect: false },
+						{ url: 'v2/images/yingao1.png', isKeepSelect: true, title: '升号', selector: '.pitchbtn[value="^"]', isSelect: false },
+						{ url: 'v2/images/yingao2.png', isKeepSelect: true, title: '降号', selector: '.pitchbtn[value="_"]', isSelect: false },
 						{ url: '', title: '上一页', fn: () => changeNumberKeypadIndex(-1), isSelect: false },
-						{ url: 'images/yy2.png', title: '倚音', fn: () => changeAbc(txt => `{b}${txt}`), isSelect: false },
-						{ url: 'v2/images/cs.png', title: '重升', selector: '.pitchbtn[value="^^"]', isSelect: false },
-						{ url: 'v2/images/cj.png', title: '重降', selector: '.pitchbtn[value="__"]', isSelect: false },
-						{ url: 'images/yy1.png', title: '倚音', fn: () => changeAbc(txt => `{/b}${txt}`), isSelect: false },
-						{ url: 'images/slur.png', title: '连线', fn: lineTo, isSelect: false },
-						{ url: 'images/b5.png', title: '延长记号', fn: () => changeAbc(txt => `!fermata!${txt}`), isSelect: false },
+						{ url: 'images/yy2.png', isKeepSelect: true, title: '倚音', fn: () => changeAbc(txt => `{b}${txt}`), isSelect: false },
+						{ url: 'v2/images/cs.png', isKeepSelect: true, title: '重升', selector: '.pitchbtn[value="^^"]', isSelect: false },
+						{ url: 'v2/images/cj.png', isKeepSelect: true, title: '重降', selector: '.pitchbtn[value="__"]', isSelect: false },
+						{ url: 'images/yy1.png', isKeepSelect: true, title: '倚音', fn: () => changeAbc(txt => `{/b}${txt}`), isSelect: false },
+						{ url: 'images/slur.png', isKeepSelect: true, title: '连线', fn: lineTo, isSelect: false },
+						{ url: 'images/b5.png', isKeepSelect: true, title: '延长记号', fn: () => changeAbc(txt => `!fermata!${txt}`), isSelect: false },
 						{ url: '', title: '下一页', fn: () => changeNumberKeypadIndex(1), isSelect: false },
 						{},
 						{}
@@ -1922,11 +1933,15 @@ var content_vue = new Vue({
 			if (i === undefined) return
 			const { page } = this.m.numberKeypad
 			const type = ['staffList', 'all', 'easyList'][musicType]
-			const { selector, fn } = this.m.numberKeypad[type][page][i]
-			fn && fn()
-			if (!selector) return
-			const el = $(selector)
-			el && el.click && el.click()
+			const { selector, fn, isKeepSelect } = this.m.numberKeypad[type][page][i]
+			if (fn) {
+				if (isKeepSelect) keepSelectNote(fn)
+				else fn()
+			}
+			if (selector) {
+				if (isKeepSelect) keepSelectNote(() => $(selector).click())
+				else $(selector).click()
+			}
 		},
 		changeNumKeypadSelect() {
 			const { page } = this.m.numberKeypad
