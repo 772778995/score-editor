@@ -2316,7 +2316,7 @@
       <!-- 中间主要内容 -->
       <div class="body-box relative" style="overflow: auto; background: #717171;">
         <!-- 左边列表 -->
-        <div class="body-left z-40">
+        <div class="body-left z-40" style="position: fixed; top: 122px; left: 0px;">
           <div class="body-left-content scroll">
             <!--abcString 相关  -->
             <input
@@ -3920,10 +3920,10 @@
           <div class="right-top" style="width: 768px">
             <div
               class="right-top-content scroll overflow-y-auto flex justify-end"
-              onmousedown="rightTopContentMouseDown(event)"
-              onmousemove="rightTopContentmoving(event)"
-              onmouseup="rightTopContentMouseUp(event)"
-              onmouseleave="rightTopContentMouseLeave(event)"
+              onmousedown.stop="rightTopContentMouseDown(event)"
+              onmousemove.stop="rightTopContentmoving(event)"
+              onmouseup.stop="rightTopContentMouseUp(event)"
+              onmouseleave.stop="rightTopContentMouseLeave(event)"
             >
               <div class="abc-content">
                 <div id="nodeMenu" style="display: none">
@@ -3981,7 +3981,7 @@
 							</div>
 							<span>同步钢琴键盘时值</span>
 						</div> -->
-                <div id="target">
+                <div id="target" class="panzoom-exclude">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink"
