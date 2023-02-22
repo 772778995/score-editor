@@ -805,9 +805,15 @@
       </div>
 
       <div class="fixed flex items-center space-x-1 z-40 justify-between bottom-11 right-12 rounded-full p-2" style="background: #B0B0B0;">
-        <img src="/img/scale-small.png" class="cursor-pointer" @click="changeScale(-0.01)"/>
-        <input id="scale_control" value="1.5" step="0.01" min="1" max="2" type="range" class="w-16">
-        <img src="/img/scale-big.png" class="cursor-pointer" @click="changeScale(0.01)"/>
+        <img src="/img/scale-small.png" class="cursor-pointer" @click="() => {
+          m.panzoom.scale -= 0.1
+          panzoom.zoom(m.panzoom.scale)
+        }"/>
+        <input v-model="m.panzoom.scale" step="0.1" min="0.5" max="1.5" type="range" class="w-16" @change="panzoom.zoom($event.target.value)"/>
+        <img src="/img/scale-big.png" class="cursor-pointer" @click="() => {
+          m.panzoom.scale += 0.1
+          panzoom.zoom(m.panzoom.scale)
+        }"/>
       </div>
 
       <div
@@ -2308,9 +2314,9 @@
         </div>
       </div>
       <!-- 中间主要内容 -->
-      <div class="body-box" style="background: #717171;">
+      <div class="body-box relative" style="overflow: auto; background: #717171;">
         <!-- 左边列表 -->
-        <div class="body-left">
+        <div class="body-left z-40">
           <div class="body-left-content scroll">
             <!--abcString 相关  -->
             <input
@@ -3901,15 +3907,15 @@
         </div>
         <!-- 右边琴谱 -->
         <div
-          class="body-right flex justify-center"
-          :style="keyboardShow ? 'padding-bottom: 200px;' : ''"
+          id="panZoom"
+          class="body-right flex w-screen  h-full justify-center top-0 left-0 overflow-auto"
         >
           <!--左侧符号面板区域  -->
-          <img
+          <!-- <img
             class="left-show-img pointer hide"
             :style="keyboardShow ? 'margin-top: -208px;' : ''"
             src="v2/images/left.png"
-          />
+          /> -->
           <!-- 谱子区域 -->
           <div class="right-top" style="width: 768px">
             <div
@@ -4017,14 +4023,14 @@
                 <strong>友情提醒:</strong> 您已经有3分钟未保存数据,请及时保存.
               </div>
               <!-- <div class="mode-change compute-mobile-change play-way-box">
-						<div class="play-way piano active" title="钢琴播放" onclick="setAbcPlayWay(0)"><img src="v2/images/piano_play.png" /></div>
-						<div class="play-way system" title="系统播放" onclick="setAbcPlayWay(1)"><img src="v2/images/system_play.png" /></div>
-					</div>
-					<span class="play-vol">按键声音：<a href="javascript: setNoteOnVol()" style="text-decoration: underline;">关</a></span> -->
+            <div class="play-way piano active" title="钢琴播放" onclick="setAbcPlayWay(0)"><img src="v2/images/piano_play.png" /></div>
+            <div class="play-way system" title="系统播放" onclick="setAbcPlayWay(1)"><img src="v2/images/system_play.png" /></div>
+          </div>
+          <span class="play-vol">按键声音：<a href="javascript: setNoteOnVol()" style="text-decoration: underline;">关</a></span> -->
             </div>
           </div>
           <!-- 编辑器 -->
-          <div class="right-bottom" style="display: block; position: fixed; z-index: -99;">
+          <div class="right-bottom opacity-0 pointer-events-none" style="display: block; position: fixed; z-index: -99;">
             <label
               id="er"
               onclick="popshow('errlist', true)"
@@ -4328,8 +4334,6 @@
               </div>
             </div>
           </div>
-
-          <div class="h-5 border fixed bottom-0 left-0 w-full" style="background-color: #C1C1C1; border-color: #AFAFAF;"></div>
           <!--  曲式分析编辑框 end -->
           <!-- 钢琴键盘展开、收起按钮  -->
           <!-- <img class="keyboard-show-img pointer" :style="keyboardShow ? 'bottom: 200px;' : ''" :src="keyboardShow ? 'v2/images/bottom.png' : 'v2/images/top.png'" @click="keyboardClick" /> -->
@@ -7479,6 +7483,7 @@
   onload="setAbcPlayWay(1, true)"
   type="text/javascript"
 ></script>
+<script src="../node_modules/@panzoom/panzoom/dist/panzoom.min.js"></script>
 <script src="js/abc2svg-1-splnum.js?v=20221027" type="text/javascript"></script>
 <script src="js/notes.js" type="text/javascript"></script>
 <script src="js/saveSvgAsPng.js"></script>

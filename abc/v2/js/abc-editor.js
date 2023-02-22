@@ -1229,6 +1229,9 @@ var content_vue = new Vue({
 						{}
 					]
 				]
+			},
+			panzoom: {
+				scale: 1
 			}
 		}
 	},
@@ -1954,6 +1957,44 @@ var content_vue = new Vue({
 					item.isSelect = $(item.selector).hasClass('selected')
 				})
 			})
+		},
+		initPanZoom() {
+			/** @type { HTMLElement } */
+			const panZoomEl = document.querySelector('#panZoom')
+			window.panzoom = Panzoom(panZoomEl, {
+				animate: true,
+				minScale: 0.5,
+				maxScale: 1.5,
+				step: 0.1,
+				overflow: 'auto',
+				cursor: 'move',
+				// disablePan: true
+			})
+
+			panZoomEl.addEventListener('panzoomzoom', e => {
+				this.m.panzoom.scale = e.detail.scale
+			})
+
+			window.addEventListener('wheel', e => {
+				if (!e.ctrlKey) return
+				e.preventDefault()
+				panzoom.zoomWithWheel(e)
+			}, { passive: false })
+			// window.addEventListener('keydown', e => {
+			// 	if (e.code !== 'Space') return
+			// 	e.preventDefault()
+			// 	panzoom.setOptions({ disablePan: false, cursor: 'grab' })
+			// })
+			// window.addEventListener('keyup', e => {
+			// 	if (e.code !== 'Space') return
+			// 	panzoom.setOptions({ disablePan: true, cursor: 'default' })
+			// })
+		},
+		/**
+		 * @param { HTMLInputElement } e 
+		 */
+		setPanZoomScale(e) {
+			
 		}
 	},
 	computed: {
@@ -2118,6 +2159,7 @@ var content_vue = new Vue({
 		document.addEventListener('keyup', this.changeNumKeypadSelect)
 		document.addEventListener('click', this.changeNumKeypadSelect)
 		initScore()
+		this.initPanZoom()
 	}
 })
 

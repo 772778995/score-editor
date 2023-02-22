@@ -1090,6 +1090,7 @@ $(document).ready(function(){
 		}
 		// 按下空格键
 		if(e.keyCode==32 ){
+			e.preventDefault()
 			myplay()
 			// var activeEle = document.activeElement;
 			// if($(activeEle).hasClass("editor-div")){

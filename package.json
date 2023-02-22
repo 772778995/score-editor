@@ -9,8 +9,11 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "@panzoom/panzoom": "^4.5.1"
+  },
   "devDependencies": {
-    "@types/jquery": "^3.5.16"
+    "@types/jquery": "^3.5.16",
+    "@types/vue": "^1.0.30"
   }
 }
