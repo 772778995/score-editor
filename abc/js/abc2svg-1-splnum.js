@@ -27899,6 +27899,7 @@ function switchPrachEditor(obj) {
     graph_update = true;
     $("#use_black").remove();
     $(".editor_rect").removeClass("editor_rect");
+    $('use[type="demo_hl"]').remove();
     if ($("#graphEditorMenuUpdate")) {
       $("#graphEditorMenuUpdate").addClass("menu-pressed");
     }
