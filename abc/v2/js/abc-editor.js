@@ -1,3 +1,84 @@
+function copy() {
+	//复制小节 
+	var selectedBars = $("svg[type='rectbar']");
+	if($(selectedBars).length>0){
+		copyNodes();
+		return false;
+	}
+	var selectedNodes = $("svg[type='rectnode']");
+	if($(selectedNodes).length>0){
+		copyNodes();
+		return false;
+	}
+	//复制音符
+	var selectNotes = $(".selected_text[type*='HD'],.selected_text[type^='r'],.selected_text[type='note']")
+	if(selectNotes.length>0){
+		copyNote();
+		return false;
+	}
+}
+
+function paste() {
+	var selectedBars = $("svg[type='rectbar']");
+	if($(selectedBars).length>0){
+		//粘贴小节
+		pasteNode();
+		return false;
+	}
+	var selectedNodes = $("svg[type='rectnode']");
+	if($(selectedNodes).length>0){
+		//粘贴小节
+		pasteNode();
+		return false;
+	}
+	var selectNotes = $(".selected_text[type*='HD'],.selected_text[type^='r'],.selected_text[type='note']")
+	if(selectNotes.length>0){
+		pasteNote();
+		return false;
+	}
+}
+function up8() {
+	var selectedBars = $("svg[type='rectnode'],svg[type='rectbar']");
+		//选中的是小节()
+		if(selectedBars.length>0){
+			var handleGraphEditor = upDownKeyWord(12);
+			if(handleGraphEditor){
+				return false;
+			}
+			return;
+		}
+		//选中的是单个音符
+		if($(".selected_text").length>0 || $(".select_text_g").length>0){
+			var handleGraphEditor = upDownKeyWord(12);
+			if(handleGraphEditor){
+				return false;
+			}
+			return;
+		}
+		staffUp8('source');
+}
+
+function down8() {
+	var selectedBars = $("svg[type='rectnode'],svg[type='rectbar']");
+	//选中的是小节()
+	if(selectedBars.length>0){
+		var handleGraphEditor = upDownKeyWord(-12);
+		if(handleGraphEditor){
+			return false;
+		}
+		return;
+	}
+	//选中的是单个音符
+	if($(".selected_text").length>0 || $(".select_text_g").length>0){
+		var handleGraphEditor = upDownKeyWord(-12);
+		if(handleGraphEditor){
+			return false;
+		}
+		return;
+	}
+	staffDown8('source')
+}
+
 function initScore() {
 	setTimeout(() => {
 		const params = new URLSearchParams(location.search)
@@ -65,6 +146,32 @@ function lineTo() {
 		$('#source').val(abcCode)
 		abc_change()
 	})
+}
+
+/**
+ * 模拟键盘事件
+ * @param { Object } opts - 选项
+ * @param { ('keydown' | 'keyup')? } opts.method - 事件类型
+ * @param { string } opts.key - 键值
+ * @param { boolean? } opts.ctrlKey - 是否按下 ctrl 键
+ * @param { boolean? } opts.altKey - 是否按下 alt 键
+ * @param { boolean? } opts.shiftKey - 是否按下 shift 键
+ * @param { boolean? } opts.metaKey - 是否按下 meta 键
+ */
+function emitDownKeyboardEvent(opts) {
+	const defaultOpts = {
+		method: 'keydown',
+		isBubbles: true,
+		key: '',
+		ctrlKey: false,
+		altKey: false,
+		shiftKey: false,
+		metaKey: false
+	}
+	const	{ method, key, ctrlKey, altKey, shiftKey, metaKey } = { ...defaultOpts, ...opts }
+	const event = document.createEvent('KeyboardEvent');
+	event.initKeyboardEvent(method, true, true, window, ctrlKey, altKey, shiftKey, metaKey, key, 0);
+	document.dispatchEvent(event)
 }
 
 /**
@@ -1232,6 +1339,14 @@ var content_vue = new Vue({
 			},
 			panzoom: {
 				scale: 1
+			},
+			ctxMenu: {
+				isShow: false,
+				x: 0, y: 0,
+				isSelectNote: false,
+				isSelectBar: false,
+				copyNoteInfo: user.copyNoteInfo,
+				copyBarInfo: copyNodeInfo
 			}
 		}
 	},
@@ -1958,6 +2073,9 @@ var content_vue = new Vue({
 				})
 			})
 		},
+		initCtxMenu() {
+			this.m.ctxMenu.isShow = false
+		},
 		initPanZoom() {
 			/** @type { HTMLElement } */
 			const panZoomEl = document.querySelector('#panZoom')
@@ -1990,11 +2108,26 @@ var content_vue = new Vue({
 			// 	panzoom.setOptions({ disablePan: true, cursor: 'default' })
 			// })
 		},
+		getSelectedNote() {
+			if ($('.selected_text').length <= 1) return $('.selected_text')[0]
+			return $('.selected_text')
+		},
+		getSelectedBar() {
+			if ($('svg[type="rectnode"]').length <= 1) return $('svg[type="rectnode"]')[0]
+			return $('svg[type="rectnode"]')
+		},
 		/**
-		 * @param { HTMLInputElement } e 
+		 * 打开右键菜单
+		 * @param { MouseEvent } e 
 		 */
-		setPanZoomScale(e) {
-			
+		openCtxMenu(e) {
+			this.m.ctxMenu.x = e.clientX
+			this.m.ctxMenu.y = e.clientY
+			this.m.ctxMenu.isSelectNote = !!this.getSelectedNote()
+			this.m.ctxMenu.isSelectBar = !!this.getSelectedBar()
+			this.m.ctxMenu.copyNodeInfo = user.copyNoteInfo
+			this.m.ctxMenu.copyBarInfo = copyNodeInfo
+			this.m.ctxMenu.isShow = this.m.ctxMenu.isSelectNote || this.m.ctxMenu.isSelectBar
 		}
 	},
 	computed: {
@@ -2004,6 +2137,25 @@ var content_vue = new Vue({
 		getNumberKeypadPosStyle() {
 			const { x, y } = this.m.numberKeypad.position
 			return `transform: translate(${x}px, ${y}px);`
+		},
+		getCtxMenuList() {
+			const { isSelectNote, isSelectBar, copyNodeInfo, copyBarInfo } = this.m.ctxMenu
+			const selectType = isSelectBar ? '小节' : '音符'
+			const menuList = [
+				{ title: `复制`, subTitle: 'Ctrl + C', fn: copy },
+				{ title: `粘贴`, subTitle: 'Ctrl + V', disabled: !(isSelectBar && copyBarInfo.size) && !(isSelectNote && copyNodeInfo.s) , fn: paste },
+				{ title: `剪切`, subTitle: 'Ctrl + X', fn: () => copy() | isSelectBar ? delSelectedNode() : delSelNote() },
+				{ title: '删除', subTitle: 'Backspace', fn: () => isSelectBar ? delSelectedNode() : delSelNote() },
+				{ title: '撤回', subTitle: 'Ctrl + Z', fn: goback },
+				{ title: '添加小节', childList: [] },
+				{ title: '添加歌词', childList: [
+					{ title: '添加歌词', fn: () => createLyricEditor() }
+				] },
+				{ title: '曲式标记' },
+				{ title: '移高八度', fn: up8 },
+				{ title: '移低八度', fn: down8 }
+			]
+			return menuList
 		}
 	},
 	watch: {
@@ -2156,8 +2308,8 @@ var content_vue = new Vue({
 	mounted() {
 		document.addEventListener('keydown', e => this.emitNumKeybordFn(e.code))
 		this.changeNumKeypadSelect()
-		document.addEventListener('keyup', this.changeNumKeypadSelect)
-		document.addEventListener('click', this.changeNumKeypadSelect)
+		document.addEventListener('keyup', () => this.changeNumKeypadSelect() | this.initCtxMenu())
+		document.addEventListener('click', () => this.changeNumKeypadSelect() | this.initCtxMenu())
 		initScore()
 		this.initPanZoom()
 	}

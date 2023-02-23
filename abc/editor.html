@@ -3905,6 +3905,39 @@
             </ul>
           </div>
         </div>
+
+        <!-- 右键菜单 -->
+        <div
+          v-show="m.ctxMenu.isShow"
+          class="fixed panzoom-exclude w-44 py-2 bg-white border"
+          @mouseup.stop
+          @click.stop
+          :style="{
+            left: m.ctxMenu.x + 'px',
+            top: m.ctxMenu.y + 'px',
+            zIndex: 9999
+          }"
+        >
+          <div
+            v-for="item in getCtxMenuList"
+            class="flex justify-between px-2 cursor-pointer hover:bg-gray-200 relative"
+            :class="[
+              { 'pointer-events-none text-gray-400 cursor-default': item.disabled }
+            ]"
+            @click="item.fn && item.fn() | (() => (m.ctxMenu.isShow = false))()"
+          >
+            <div>{{ item.title }}</div>
+            <div v-if="item.subTitle">{{ item.subTitle }}</div>
+
+            <div v-if="item.childList" class="absolute right-0 translate-x-full transform-gpu bg-white">
+              <div v-for="item in item.childList" @click="item.fn && item.fn() | (() => (m.ctxMenu.isShow = false))()">
+                {{ item.title }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+
         <!-- 右边琴谱 -->
         <div
           id="panZoom"
@@ -3926,52 +3959,54 @@
               onmouseleave.stop="rightTopContentMouseLeave(event)"
             >
               <div class="abc-content">
-                <div id="nodeMenu" style="display: none">
-                  <button
-                    id="btnAddBr"
-                    class="btn btn-success"
-                    onclick="addBr()"
-                  >
-                    换行
-                  </button>
-                  <!-- <button id="btnSplitVoice" class="btn btn-success" onclick="splitVoice()">分声部</button> -->
-                  <button
-                    id="delStaff"
-                    class="btn btn-danger"
-                    onclick="delVoice()"
-                  >
-                    删除声部
-                  </button>
-                  <button
-                    id="changeInstrBtn"
-                    class="btn btn-info"
-                    onclick="showInstruSelector(event)"
-                  >
-                    换音色
-                  </button>
-                  <button
-                    id=""
-                    class="btn btn-warning"
-                    onclick="splitNode(event)"
-                  >
-                    上下声部
-                  </button>
-                  <button
-                    id=""
-                    class="btn btn-info"
-                    onclick="setStaffNameHandle()"
-                  >
-                    声部名称
-                  </button>
-                  <!-- <button id="btnChangeSpeed" class="btn btn-info" onclick="showSpeedDiv()">变速</button> -->
-                  <!-- <button id="btnChangeKey" class="btn btn-warning" onclick="showKeyDiv()">变调</button> -->
-                  <!-- <button id="btnChangeMeter" class="btn btn-danger" onclick="showMeterDiv()">变拍号</button> -->
-
-                  <!-- <button id="btnChangeNodeBgColor" class="btn btn-warning" onclick="showNodeBgColorPicker()">添加背景色</button>
-						<button id="btnClearNodeBgColor" class="btn btn-warning" onclick="clearNodeBgColor()">清除背景色</button> -->
-
-                  <!-- <button id="btnDelNode" onclick="addBr()">删除</button>
-						<button id="btnInsertNode" onclick="addBr()">插入</button> -->
+                <div style="display: none;">
+                  <div id="nodeMenu" style="display: none">
+                    <button
+                      id="btnAddBr"
+                      class="btn btn-success"
+                      onclick="addBr()"
+                    >
+                      换行
+                    </button>
+                    <!-- <button id="btnSplitVoice" class="btn btn-success" onclick="splitVoice()">分声部</button> -->
+                    <button
+                      id="delStaff"
+                      class="btn btn-danger"
+                      onclick="delVoice()"
+                    >
+                      删除声部
+                    </button>
+                    <button
+                      id="changeInstrBtn"
+                      class="btn btn-info"
+                      onclick="showInstruSelector(event)"
+                    >
+                      换音色
+                    </button>
+                    <button
+                      id=""
+                      class="btn btn-warning"
+                      onclick="splitNode(event)"
+                    >
+                      上下声部
+                    </button>
+                    <button
+                      id=""
+                      class="btn btn-info"
+                      onclick="setStaffNameHandle()"
+                    >
+                      声部名称
+                    </button>
+                    <!-- <button id="btnChangeSpeed" class="btn btn-info" onclick="showSpeedDiv()">变速</button> -->
+                    <!-- <button id="btnChangeKey" class="btn btn-warning" onclick="showKeyDiv()">变调</button> -->
+                    <!-- <button id="btnChangeMeter" class="btn btn-danger" onclick="showMeterDiv()">变拍号</button> -->
+  
+                    <!-- <button id="btnChangeNodeBgColor" class="btn btn-warning" onclick="showNodeBgColorPicker()">添加背景色</button>
+              <button id="btnClearNodeBgColor" class="btn btn-warning" onclick="clearNodeBgColor()">清除背景色</button> -->
+  
+                    <!-- <button id="btnDelNode" onclick="addBr()">删除</button>
+              <button id="btnInsertNode" onclick="addBr()">插入</button> -->
+                  </div>
                 </div>
                 <!-- <input type="button" style="position: absolute;right:10px;top:10px;width: 30px;" value="+" onclick="changeScale(0.2)">
 						<input type="button" style="position: absolute;right:10px;top:40px;width: 30px;" value="-" onclick="changeScale(-0.2)"> -->
@@ -3981,7 +4016,7 @@
 							</div>
 							<span>同步钢琴键盘时值</span>
 						</div> -->
-                <div id="target" class="panzoom-exclude">
+                <div id="target" class="panzoom-exclude" @click.right="draw_editor || openCtxMenu($event)">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -5854,69 +5889,72 @@
         >
       </li>
     </ul>
-    <ul id="ctxMenu" class="dropdown-menu">
-      <li class="dropdown-submenu">
-        <a class="dropdown-item">小节</a>
-        <ul class="dropdown-menu">
-          <li>
-            <a
-              class="dropdown-item"
-              href="javascript:appendNodes(1);hiddenMenu();"
-              >追加一小节</a
-            >
-          </li>
-          <li>
-            <a
-              class="dropdown-item"
-              href="javascript:popAppendNode();hiddenMenu();"
-              >追加多个小节</a
-            >
-          </li>
-          <li>
-            <a
-              class="dropdown-item"
-              href="javascript:delSelectedNode();hiddenMenu();"
-              >删除小节</a
-            >
-          </li>
-          <li>
-            <a
-              class="dropdown-item"
-              href="javascript:insertNodes();hiddenMenu();"
-              >插入小节</a
-            >
-          </li>
-        </ul>
-      </li>
-      <!-- <li><a class="dropdown-item" href="javascript:$('#plsx').click();hiddenMenu()">谱例属性</a></li> -->
-      <!--  <li><a class="dropdown-item" href="javascript:popStaffProp();hiddenMenu()">谱表属性</a></li> -->
-      <li class="noterelli">
-        <a class="dropdown-item" href="javascript:editorCurrNoteAnnot();"
-          >添加文字</a
-        >
-      </li>
-      <li class="noterelli">
-        <a class="dropdown-item" href="javascript:editCurrNoteLyric();"
-          >编辑歌词</a
-        >
-      </li>
-      <li class="noterelli">
-        <a class="dropdown-item" href="javascript:copyNote();">复制音符</a>
-      </li>
-      <li class="noterelli">
-        <a class="dropdown-item" href="javascript:pasteNote();">粘贴音符</a>
-      </li>
-      <li class="noterelli">
-        <a class="dropdown-item" href="javascript:localtosource();hiddenMenu()"
-          >定位语法框</a
-        >
-      </li>
-      <li class="noterelli">
-        <a class="dropdown-item" href="javascript:mergeNote();hiddenMenu();"
-          >连接符尾</a
-        >
-      </li>
-    </ul>
+
+    <div class="hidden">
+      <ul id="ctxMenu" class="dropdown-menu">
+        <li class="dropdown-submenu">
+          <a class="dropdown-item">小节</a>
+          <ul class="dropdown-menu">
+            <li>
+              <a
+                class="dropdown-item"
+                href="javascript:appendNodes(1);hiddenMenu();"
+                >追加一小节</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                href="javascript:popAppendNode();hiddenMenu();"
+                >追加多个小节</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                href="javascript:delSelectedNode();hiddenMenu();"
+                >删除小节</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                href="javascript:insertNodes();hiddenMenu();"
+                >插入小节</a
+              >
+            </li>
+          </ul>
+        </li>
+        <!-- <li><a class="dropdown-item" href="javascript:$('#plsx').click();hiddenMenu()">谱例属性</a></li> -->
+        <!--  <li><a class="dropdown-item" href="javascript:popStaffProp();hiddenMenu()">谱表属性</a></li> -->
+        <li class="noterelli">
+          <a class="dropdown-item" href="javascript:editorCurrNoteAnnot();"
+            >添加文字</a
+          >
+        </li>
+        <li class="noterelli">
+          <a class="dropdown-item" href="javascript:editCurrNoteLyric();"
+            >编辑歌词</a
+          >
+        </li>
+        <li class="noterelli">
+          <a class="dropdown-item" href="javascript:copyNote();">复制音符</a>
+        </li>
+        <li class="noterelli">
+          <a class="dropdown-item" href="javascript:pasteNote();">粘贴音符</a>
+        </li>
+        <li class="noterelli">
+          <a class="dropdown-item" href="javascript:localtosource();hiddenMenu()"
+            >定位语法框</a
+          >
+        </li>
+        <li class="noterelli">
+          <a class="dropdown-item" href="javascript:mergeNote();hiddenMenu();"
+            >连接符尾</a
+          >
+        </li>
+      </ul>
+    </div>
 
     <!-- Modal -->
     <div
