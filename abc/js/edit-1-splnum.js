@@ -1,12 +1,18 @@
 const getAllNote = () => $('rect[type="note"]')
-const getNotIstartList = () => [...getAllNote()].map(item => item.getAttribute('istart'))
+const getNotIstartList = () => [...new Set([...getAllNote()].map(item => item.getAttribute('istart')))]
 let oldNoteList = []
 
 const selectNewNote = () => {
   const newNoteIstartList = getNotIstartList()
-  const istart = newNoteIstartList.find(newIstart => oldNoteList.every(oldIstart => newIstart !== oldIstart))
-  if (istart) $(`text[istart="${istart}"][type="hd"]`).addClass('selected_text')
+  const lengthDiff = newNoteIstartList.length - oldNoteList.length
+  if (lengthDiff === 1) {
+    const istart = newNoteIstartList.find(newIstart => oldNoteList.every(oldIstart => newIstart !== oldIstart))
+    if (istart) $(`text[istart="${istart}"][type="hd"]`).addClass('selected_text')
+  }
   oldNoteList = newNoteIstartList
+  delObj = {
+    click_obj: $('text.selected_text')
+  }
 }
 
 /***************************************************************************/
