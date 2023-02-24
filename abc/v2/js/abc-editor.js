@@ -84,6 +84,7 @@ function initScore() {
 		const params = new URLSearchParams(location.search)
 		musicType = params.get('musicType') || '0'
 		if (musicType === '2') changeStaffType(this,2) | restoreEditor()
+		switchPrachEditor()
 	}, 500)
 }
 
@@ -1187,6 +1188,8 @@ var content_vue = new Vue({
 		// ———————————————————————————————————————— 分割线 __data ————————————————————————————————————————
 		// 在远古项目基础上二次开发，新数据在 m 对象之中避免命名冲突
 		m: {
+			selectNote: null,
+			selectBar: null,
 			menuIndex: -1,
 			menuList: [
 				{
@@ -1986,6 +1989,14 @@ var content_vue = new Vue({
 		},
 
 		// ———————————————————————————————————————— 分割线 __method ————————————————————————————————————————
+		changeSelectNote() {
+			this.selectNote = $('.selected_text')[0] || null
+		},
+		changeSelectBar() {
+			setTimeout(() => {
+				this.selectBar = $('svg[type="rectnode"]')[0] || null
+			}, 300)
+		},
 		changeMenuIndex(i) {
 			if (this.m.menuIndex == i) {
 				this.m.menuIndex = -1
@@ -2127,7 +2138,7 @@ var content_vue = new Vue({
 			this.m.ctxMenu.isSelectBar = !!this.getSelectedBar()
 			this.m.ctxMenu.copyNodeInfo = user.copyNoteInfo
 			this.m.ctxMenu.copyBarInfo = copyNodeInfo
-			this.m.ctxMenu.isShow = this.m.ctxMenu.isSelectNote || this.m.ctxMenu.isSelectBar
+			this.m.ctxMenu.isShow = true
 		}
 	},
 	computed: {
@@ -2140,21 +2151,29 @@ var content_vue = new Vue({
 		},
 		getCtxMenuList() {
 			const { isSelectNote, isSelectBar, copyNodeInfo, copyBarInfo } = this.m.ctxMenu
-			const selectType = isSelectBar ? '小节' : '音符'
-			const menuList = [
-				{ title: `复制`, subTitle: 'Ctrl + C', fn: copy },
-				{ title: `粘贴`, subTitle: 'Ctrl + V', disabled: !(isSelectBar && copyBarInfo.size) && !(isSelectNote && copyNodeInfo.s) , fn: paste },
-				{ title: `剪切`, subTitle: 'Ctrl + X', fn: () => copy() | isSelectBar ? delSelectedNode() : delSelNote() },
-				{ title: '删除', subTitle: 'Backspace', fn: () => isSelectBar ? delSelectedNode() : delSelNote() },
-				{ title: '撤回', subTitle: 'Ctrl + Z', fn: goback },
-				{ title: '添加小节', childList: [] },
-				{ title: '添加歌词', childList: [
-					{ title: '添加歌词', fn: () => createLyricEditor() }
-				] },
-				{ title: '曲式标记' },
+			const menuList = []
+			if (this.abcSel.isOpen) return [
+				{ title: '删除全部曲式', fn: delAllMF },
+				{ title: '退出曲式标记', fn: this.startDrawMF }
+			]
+			if (isSelectNote || isSelectBar) {
+				menuList.push(
+					{ title: `复制`, subTitle: 'Ctrl + C', fn: copy },
+					{ title: `粘贴`, subTitle: 'Ctrl + V', disabled: !(isSelectBar && copyBarInfo.size) && !(isSelectNote && copyNodeInfo.s) , fn: paste },
+					{ title: `剪切`, subTitle: 'Ctrl + X', fn: () => copy() | isSelectBar ? delSelectedNode() : delSelNote() },
+					{ title: '删除', subTitle: 'Backspace', fn: () => isSelectBar ? delSelectedNode() : delSelNote() },
+				)
+			}
+			menuList.push({ title: '撤回', subTitle: 'Ctrl + Z', fn: goback })
+			if (isSelectBar) menuList.push({ title: '添加小节', childList: [] })
+			if (isSelectNote) menuList.push({ title: '添加歌词', childList: [
+				{ title: '添加歌词', fn: () => createLyricEditor() }
+			] })
+			menuList.push({ title: '曲式标记', fn: this.startDrawMF })
+			if (isSelectBar || isSelectNote) menuList.push(
 				{ title: '移高八度', fn: up8 },
 				{ title: '移低八度', fn: down8 }
-			]
+			)
 			return menuList
 		}
 	},
@@ -2308,8 +2327,14 @@ var content_vue = new Vue({
 	mounted() {
 		document.addEventListener('keydown', e => this.emitNumKeybordFn(e.code))
 		this.changeNumKeypadSelect()
-		document.addEventListener('keyup', () => this.changeNumKeypadSelect() | this.initCtxMenu())
-		document.addEventListener('click', () => this.changeNumKeypadSelect() | this.initCtxMenu())
+		const event = () => {
+			this.changeNumKeypadSelect()
+			this.initCtxMenu()
+			this.changeSelectNote()
+			this.changeSelectBar()
+		}
+		document.addEventListener('keyup', event)
+		document.addEventListener('click', event)
 		initScore()
 		this.initPanZoom()
 	}
