@@ -1143,6 +1143,18 @@
             <img src="" class="bg-black w-4 h-3" />
             <span>歌词</span>
           </div>
+
+          <div class="dropdown" style="width: auto;">
+            <a class="btn btn-sm dropdown-toggle flex items-center" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+              {{ m.lyricStyle.fontFamily }}
+            </a>
+          
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </div>
         </template>
 
         <template v-else-if="getMenuTxt === '视图'">

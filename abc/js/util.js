@@ -3136,6 +3136,7 @@ function getNodeCoor(){
 		staff.lineIndex = parseInt(lineIndex);
 		staff.top = $(item).offset().top;
 		data.staff.push(staff);
+		setLyricStyle()
 	});
 	return data;
 }

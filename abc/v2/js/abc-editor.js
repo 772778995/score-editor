@@ -1188,6 +1188,12 @@ var content_vue = new Vue({
 		// ———————————————————————————————————————— 分割线 __data ————————————————————————————————————————
 		// 在远古项目基础上二次开发，新数据在 m 对象之中避免命名冲突
 		m: {
+			lyricStyle: {
+				color: 'blue',
+				fontWeight: 'bold',
+				fontSize: '50px',
+				fontFamily: 'Microsoft YaHei'
+			},
 			selectNote: null,
 			selectBar: null,
 			menuIndex: -1,
@@ -2261,7 +2267,11 @@ var content_vue = new Vue({
 				leftPanelClick('.left-show-img', !isShow);
 				timer = setTimeout(resizeStaff, 500)
 			}
-		})()
+		})(),
+		'm.lyric': {
+			handler: setLyricStyle,
+			deep: true
+		}
 	},
 	components : {
 		FileUpload : VueUploadComponent
