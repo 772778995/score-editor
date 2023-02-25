@@ -7198,7 +7198,7 @@ $(function(){
 	$('.keyboard-bar .minimize').off('click').on('click', function(){
 		$('.keyboard-box').animate({ 'height' : '0px'}, 100);
 		$('#scoreEditorPianoKeyboardContainer').animate({ 'bottom' : - 200 + 'px'}, 100);
-		$('.body-box .body-right').css({ 'padding-bottom': 0});
+		// $('.body-box .body-right').css({ 'padding-bottom': 0});
 		$(this).addClass('hide');
 		$('.restore').removeClass('hide');
 		setAttrPanelHei();
@@ -7207,7 +7207,7 @@ $(function(){
 	$('.keyboard-bar .restore').off('click').on('click', function(){
 		$('.keyboard-box').animate({ 'height' : '200px'}, 100);
 		$('#scoreEditorPianoKeyboardContainer').animate({ 'bottom' :  '0px'}, 100);	
-		$('.body-box .body-right').css({ 'padding-bottom': '200px'});
+		// $('.body-box .body-right').css({ 'padding-bottom': '200px'});
 		$(this).addClass('hide');
 		$('.minimize').removeClass('hide');
 		setAttrPanelHei();

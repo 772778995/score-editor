@@ -188,6 +188,8 @@
       .bg-\#666 { background-color: #666; }
       .text-\#999 { color: #999; }
       .bg-\#999 { background-color: #999 }
+      .text-ea { color: #eaeaea }
+      .bg-ea { background-color: #eaeaea }
       input[type=range] {
           -webkit-appearance: none;
           width: 68px;
@@ -212,6 +214,28 @@
           background: #ffffff; 
           border-radius: 8px; /*外观设置为圆形*/
       }
+      .deep-blue {
+        color: #25649E;
+      }
+      .deep-blue-line { position: relative; }
+      .deep-blue-line::after {
+        content: '';
+        position: absolute;
+        width: 100%; height: 4px;
+        bottom: 0; left: 0;
+        transition: all 300ms;
+      }
+      .deep-blue-line.show::after {
+        background-color: #25649E;
+      }
+      .bg-deep-blue {
+        background-color: #25649E;
+      }
+      .sky-blue { color: #E7EFFF; }
+      .bg-sky-blue { background-color: #E7EFFF; }
+      .\#f5f5f6 { color: #f5f5f6; }
+      .bg-\#f5f5f6 { background-color: #f5f5f6; }
+      .bg-\#dededf { background-color: #dededf; }
     </style>
     <title>创编制谱系统</title>
   </head>
@@ -244,6 +268,42 @@
       m.addBar = { show: false, before: 0, after: 0 }
     }"
     >
+      <div
+        class="fixed top-0 left-0 duration-300 h-screen w-screen flex items-center justify-center opacity-0"
+        :class="{ 'opacity-100': m.newScore.show }"
+        :style="{ 'z-index': m.newScore.show ? 9999 : -1 }"
+      >
+        <div class="bg-white rounded-xl overflow-hidden" style="box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);">
+          <b class="flex justify-between items-center text-xl py-3 px-5">
+            <div>新建乐谱</div>
+            <img src="/img/close.png" class="cursor-pointer" @click="m.newScore.show = false"/>
+          </b>
+  
+          <div class="" style="background: #F5F5F5; padding: 50px 80px 40px 70px;">
+            <div class="mb-12" style="color: #575757;">请选择模板文件：</div>
+            <div class="flex justify-between space-x-12">
+              <div v-for="(item, i) in m.newScore.list" :key="i" class="flex flex-col items-center">
+                <div class="duration-300 cursor-pointer flex" @click="m.newScore.index = i" :style="`width: 128px; height: 161px; border-radius: 17px 6px 6px 6px; border: 2px solid ${ i === m.newScore.index ? '#25649E' : '#B6B6B6' }; background: #fff`">
+                  <img :src="item.img" class="m-auto" style="width: 97px; height: 143px;" />
+                </div>
+                <div
+                  class="mt-6 rounded-md text-center py-1 text-#666 bg-ea cursor-pointer duration-300"
+                  :class="{ 'bg-deep-blue text-white': m.newScore.index === i }"
+                  style="width: 110px;"
+                  @click="m.newScore.index = i"
+                >
+                  {{ item.title }}
+                </div>
+              </div>
+            </div>
+
+            <div class="flex justify-end mt-10">
+              <button class="bg-deep-blue text-white px-8 py-1 rounded-md ml-auto" @click="openNewTab">下一步</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- 导出pdf -->
       <div
         class="modal fade"
@@ -872,12 +932,12 @@
 
       <input type="file" id="input-file" class="hidden" @change="inputFile"/>
 
-      <div class="flex items-center py-1 px-2 text-#666 space-x-1">
+      <div class="flex items-center text-#666 text-sm bg-#f5f5f6">
         <div
           v-for="(item, i) in m.menuList"
           :key="item.txt"
-          class="cursor-pointer relative w-20 h-10 flex items-center justify-center rounded duration-300"
-          :class="{ 'text-white rounded bg-#666': m.menuIndex ===  i }"
+          class="cursor-pointer relative w-20 h-8 deep-blue-line flex items-center justify-center rounded duration-300"
+          :class="{ 'text-#333 rounded bg-sky-blue show': m.menuIndex ===  i }"
           @click.stop="item.fn ? item.fn(i) : changeMenuIndex(i)"
         >
           {{ item.txt }}
@@ -901,8 +961,8 @@
       </div>
 
       <div
-        class="flex items-center py-2 px-3 space-x-5 text-sm border-t border-b"
-        style="border-color: #999"
+        class="flex items-center py-2 px-3 space-x-5 text-sm border-t border-b bg-#f5f5f6"
+        style="border-color: #DEDEDF;"
       >
         <div class="flex flex-col items-center">
           <img src="" class="bg-black w-6 h-6" />
@@ -941,26 +1001,18 @@
           </div>
         </div>
 
-        <div class="h-full bg-#999 w-0.5"></div>
+        <div class="h-full bg-#dededf w-0.5"></div>
 
         <div class="flex flex-col items-center space-y-1.5 text-xs">
           <img src="" class="bg-black w-4 h-3" />
           <div>符干</div>
         </div>
 
-        <div class="h-full bg-#999 w-0.5"></div>
+        <div class="h-full bg-#dededf w-0.5"></div>
 
         <div
-          class="flex flex-col items-center space-y-1.5 text-xs relative"
-          @click.stop="() => {
-            let selectSvg = null
-            $('svg').each((i, e) => {
-              if (!e?.id.includes('mysvgnode')) return
-              selectSvg = e
-            })
-            if (!selectSvg) return alert('请选中小节')
-            m.addBar.show = true
-          }"
+          class="flex flex-col items-center space-y-1.5 text-xs relative cursor-pointer"
+          @click.stop="checkIsSelectBar() && (m.addBar.show = true)"
         >
           <img src="" class="bg-black w-4 h-3" />
           <div>添加小节</div>
@@ -1008,14 +1060,14 @@
         </div>
 
         <div
-          class="flex flex-col items-center space-y-1.5 text-xs"
-          @click="checkIsSelectBar() || delSelectedNode()"
+          class="flex flex-col items-center space-y-1.5 text-xs cursor-pointer"
+          @click="checkIsSelectBar() && delSelectedNode()"
         >
           <img src="" class="bg-black w-4 h-3" />
           <div>删除小节</div>
         </div>
 
-        <div class="h-full bg-#999 w-0.5"></div>
+        <div class="h-full bg-#dededf w-0.5"></div>
 
         <template v-if="getMenuTxt === '文本'">
           <div
@@ -1078,7 +1130,7 @@
           </div>
         </template>
 
-        <div class="h-full bg-#999 w-0.5 ml-auto"></div>
+        <div class="h-full bg-#dededf w-0.5 ml-auto"></div>
 
         <div
           id="metronomesetting"
@@ -2314,9 +2366,9 @@
         </div>
       </div>
       <!-- 中间主要内容 -->
-      <div class="body-box relative" style="overflow: auto; background: #717171;">
+      <div class="body-box relative" style="overflow: auto; background: #B5C5D3;">
         <!-- 左边列表 -->
-        <div class="body-left z-40" style="position: fixed; top: 122px; left: 0px;">
+        <div class="body-left z-40" style="position: fixed; top: 106px; left: 0px;">
           <div class="body-left-content scroll">
             <!--abcString 相关  -->
             <input
@@ -3952,13 +4004,13 @@
           <!-- 谱子区域 -->
           <div class="right-top" style="width: 768px">
             <div
-              class="right-top-content scroll overflow-y-auto flex justify-end"
+              class="right-top-content scroll overflow-y-auto flex justify-end m-4"
               onmousedown.stop="rightTopContentMouseDown(event)"
               onmousemove.stop="rightTopContentmoving(event)"
               onmouseup.stop="rightTopContentMouseUp(event)"
               onmouseleave.stop="rightTopContentMouseLeave(event)"
             >
-              <div class="abc-content">
+              <div class="abc-content rounded-md overflow-hidden" style="background: #F5F5F5; box-shadow: 4px 4px 24px 0px rgba(0,22,41,0.14);">
                 <div style="display: none;">
                   <div id="nodeMenu" style="display: none">
                     <button
@@ -4016,7 +4068,7 @@
 							</div>
 							<span>同步钢琴键盘时值</span>
 						</div> -->
-                <div id="target" class="panzoom-exclude" @click.right="draw_editor || openCtxMenu($event)">
+                <div id="target" class="panzoom-exclude" @click.right="draw_editor || openCtxMenu($event)" style="background: rgb(245, 245, 245)">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -7498,6 +7550,7 @@
   var noteOnVol = false;
 </script>
 <script src="js/vue.min.js"></script>
+<script src="component/dialog.js"></script>
 <script src="v2/js/popper.min.js"></script>
 <script src="v2/js/bootstrap.min.js"></script>
 <script src="compont/sweetalert/sweetalert.min.js?v=20221027"></script>

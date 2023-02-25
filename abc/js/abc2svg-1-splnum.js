@@ -17426,7 +17426,8 @@ abc2svg = {
 
         style += "pointer-events: auto;";
         if (!color) {
-          style += "fill:url(#g34);";
+          style += "font-family: Perpetua-Bold, cursive, fangsong, monospace, serif; font-weight: normal;"
+          // style += "fill:url(#g34);";
         }
         if (T_url != "") {
           style += "text-decoration: underline;cursor:pointer;";

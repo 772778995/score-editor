@@ -1195,7 +1195,7 @@ var content_vue = new Vue({
 				{
 					txt: '文件',
 					children: [
-						{ txt: '新建', fn: () => window.open(window.location.href) },
+						{ txt: '新建', fn: () => content_vue.m.newScore.show = true  },
 						{ txt: '保存', fn: () => {
 							const form = new FormData(document.getElementById("abcform"))
 							const obj = {}
@@ -1350,6 +1350,17 @@ var content_vue = new Vue({
 				isSelectBar: false,
 				copyNoteInfo: user.copyNoteInfo,
 				copyBarInfo: copyNodeInfo
+			},
+			newScore: {
+				show: false,
+				index: 0,
+				list: [
+					{ title: '简谱', img: '/img/jianpu.png' },
+					{ title: '大谱表', img: '/img/da_pu_piao.png' },
+					{ title: '高音谱表', img: '/img/gao_yin.png' },
+					{ title: '低音谱表', img: '/img/di_yin.png' },
+					{ title: '合唱四声部', img: '/img/he_chang.png' },
+				]
 			}
 		}
 	},
@@ -2005,6 +2016,7 @@ var content_vue = new Vue({
 			this.m.menuIndex = i
 		},
 		checkIsSelectBar(showAlert = true) {
+			console.log(1234)
 			let selectSvg = null
 			$('svg').each((i, e) => {
 				if (!e?.id.includes('mysvgnode')) return
@@ -2139,6 +2151,10 @@ var content_vue = new Vue({
 			this.m.ctxMenu.copyNodeInfo = user.copyNoteInfo
 			this.m.ctxMenu.copyBarInfo = copyNodeInfo
 			this.m.ctxMenu.isShow = true
+		},
+
+		openNewTab() {
+
 		}
 	},
 	computed: {
@@ -2152,10 +2168,11 @@ var content_vue = new Vue({
 		getCtxMenuList() {
 			const { isSelectNote, isSelectBar, copyNodeInfo, copyBarInfo } = this.m.ctxMenu
 			const menuList = []
-			if (this.abcSel.isOpen) return [
-				{ title: '删除全部曲式', fn: delAllMF },
-				{ title: '退出曲式标记', fn: this.startDrawMF }
-			]
+			// TODO 曲式标记
+			// if (this.abcSel.isOpen) return [
+			// 	{ title: '删除全部曲式', fn: delAllMF },
+			// 	{ title: '退出曲式标记', fn: this.startDrawMF }
+			// ]
 			if (isSelectNote || isSelectBar) {
 				menuList.push(
 					{ title: `复制`, subTitle: 'Ctrl + C', fn: copy },
@@ -2169,7 +2186,8 @@ var content_vue = new Vue({
 			if (isSelectNote) menuList.push({ title: '添加歌词', childList: [
 				{ title: '添加歌词', fn: () => createLyricEditor() }
 			] })
-			menuList.push({ title: '曲式标记', fn: this.startDrawMF })
+			// TODO 曲式标记
+			// menuList.push({ title: '曲式标记', fn: this.startDrawMF })
 			if (isSelectBar || isSelectNote) menuList.push(
 				{ title: '移高八度', fn: up8 },
 				{ title: '移低八度', fn: down8 }
@@ -2643,25 +2661,25 @@ function initBodyHeight(){
 	 * var bodyHeight = $(window).height() - $('.header-box').outerHeight() -
 	 * $('.tool-box').outerHeight();
 	 */
-	if(content_vue.headerInBottom){
-		$('#content').css({
-			'padding-top': 0,
-			'padding-bottom': 0
-		})
-	}else{
-		if(content_vue.keyboardShow){
-			$('#content').css({
-				'padding-bottom': '200px'
-			})
-		}else{
-			$('#content').css({
-				'padding-bottom': 0
-			})
-		}
-		$('#content').css({
-			'padding-top': $('.header-box').outerHeight()
-		})
-	}
+	// if(content_vue.headerInBottom){
+	// 	$('#content').css({
+	// 		'padding-top': 0,
+	// 		'padding-bottom': 0
+	// 	})
+	// }else{
+	// 	if(content_vue.keyboardShow){
+	// 		$('#content').css({
+	// 			'padding-bottom': '200px'
+	// 		})
+	// 	}else{
+	// 		$('#content').css({
+	// 			'padding-bottom': 0
+	// 		})
+	// 	}
+	// 	$('#content').css({
+	// 		'padding-top': $('.header-box').outerHeight()
+	// 	})
+	// }
 }
 
 // 隐藏菜单下拉框，取消选中状态
