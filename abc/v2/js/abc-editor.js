@@ -1188,11 +1188,23 @@ var content_vue = new Vue({
 		// ———————————————————————————————————————— 分割线 __data ————————————————————————————————————————
 		// 在远古项目基础上二次开发，新数据在 m 对象之中避免命名冲突
 		m: {
-			lyricStyle: {
-				color: 'blue',
-				fontWeight: 'bold',
-				fontSize: '50px',
-				fontFamily: 'Microsoft YaHei'
+			lyric: {
+				style: {
+					color: '#333',
+					fontWeight: 'normal',
+					fontStyle: 'normal',
+					fontSize: '14px',
+					fontFamily: 'inherit'
+				},
+				fontSizeList: ['10px', '12px', '14px', '16px', '18px', '20px', '24px'],
+				fontFamilyList: [
+					{ label: '默认', val: 'inherit' },
+					{ label: '黑体', val: 'SimHei' },
+					{ label: '宋体', val: 'SimSun' },
+					{ label: '仿宋', val: 'FangSong' },
+					{ label: '楷体', val: 'KaiTi' },
+					{ label: '微软雅黑', val: 'Microsoft YaHei' }
+				]
 			},
 			selectNote: null,
 			selectBar: null,

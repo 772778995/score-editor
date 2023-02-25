@@ -1144,15 +1144,67 @@
             <span>歌词</span>
           </div>
 
-          <div class="dropdown" style="width: auto;">
-            <a class="btn btn-sm dropdown-toggle flex items-center" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-              {{ m.lyricStyle.fontFamily }}
-            </a>
-          
-            <div class="dropdown-menu">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
+          <div>
+            <div>
+              <div class="dropdown mx-0" style="width: auto;">
+                <button class="btn btn-sm dropdown-toggle flex items-center px-1 py-0.5" role="button" data-toggle="dropdown" aria-expanded="false">
+                  {{ m.lyric.fontFamilyList.find(item => item.val === m.lyric.style.fontFamily).label }}
+                </button>
+                <div class="dropdown-menu">
+                  <button
+                    v-for="item in m.lyric.fontFamilyList"
+                    :key="item.val"
+                    class="dropdown-item"
+                    :style="{ fontFamily: item.val }"
+                    @click="m.lyric.style.fontFamily = item.val"
+                  >
+                    {{ item.label }}
+                </button>
+                </div>
+              </div>
+
+              <div class="dropdown mx-0" style="width: auto;">
+                <a class="btn btn-sm dropdown-toggle flex items-center" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                  {{ m.lyric.style.fontSize }}
+                </a>
+                <div class="dropdown-menu">
+                  <button
+                    v-for="item in m.lyric.fontSizeList"
+                    :key="item"
+                    class="dropdown-item"
+                    @click="m.lyric.style.fontSize = item"
+                  >
+                    {{ item }}
+                </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-x-2">
+              <button
+                class="btn relative w-5 h-5 p-0"
+                :style="{ color: m.lyric.style.color }"
+                @click="$refs.lyricColorRef.click()"
+              >
+                A
+                <input v-model="m.lyric.style.color" ref="lyricColorRef" type="color" class="top-0 left-0 absolute opacity-0 pointer-events-none"/>
+              </button>
+              <button
+                class="btn w-5 h-5 p-0"
+                :class="{ 'focus': m.lyric.style.fontWeight === 'bold' }"
+                :style="{ 'box-shadow': m.lyric.style.fontWeight === 'bold' ? '' : 'none' }"
+                @click="() => m.lyric.style.fontWeight = m.lyric.style.fontWeight === 'bold' ? 'normal' : 'bold'"
+              >
+                B
+              </button>
+              <button
+                class="btn w-5 h-5 p-0"
+                :class="{ 'focus': m.lyric.style.fontStyle !== 'normal' }"
+                :style="{ 'box-shadow': m.lyric.style.fontStyle === 'normal' ? 'none' : '' }"
+                @click="() => m.lyric.style.fontStyle = m.lyric.style.fontStyle === 'italic' ? 'normal' : 'italic'"
+              >
+                /
+              </button>
             </div>
           </div>
         </template>
