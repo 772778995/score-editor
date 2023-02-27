@@ -79,15 +79,6 @@ function down8() {
 	staffDown8('source')
 }
 
-function initScore() {
-	setTimeout(() => {
-		const params = new URLSearchParams(location.search)
-		musicType = params.get('musicType') || '0'
-		if (musicType === '2') changeStaffType(this,2) | restoreEditor()
-		switchPrachEditor()
-	}, 500)
-}
-
 function keepSelectNote(cb) {
 	const istart = $('.selected_text').attr('istart')
 	cb()
@@ -2375,7 +2366,6 @@ var content_vue = new Vue({
 		}
 		document.addEventListener('keyup', event)
 		document.addEventListener('click', event)
-		initScore()
 		this.initPanZoom()
 	}
 })
