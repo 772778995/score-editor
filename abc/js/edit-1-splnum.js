@@ -7,6 +7,11 @@ const initScore = (function() {
       musicType = params.get('musicType') || '0'
       if (musicType === '2') changeStaffType(this,2) | restoreEditor()
       switchPrachEditor()
+      if (scoreOpts.isWeak) {
+        $("#weakBarTop").val(scoreOpts.weakBarTop)
+        $("#weakBarBot").val(scoreOpts.weakBarBot)
+        genInitStaff()
+      }
     }
   }
 })()

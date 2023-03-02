@@ -1179,6 +1179,7 @@ var content_vue = new Vue({
 		// ———————————————————————————————————————— 分割线 __data ————————————————————————————————————————
 		// 在远古项目基础上二次开发，新数据在 m 对象之中避免命名冲突
 		m: {
+			scoreOpts,
 			lyric: {
 				style: {
 					color: '#333',
@@ -1204,7 +1205,7 @@ var content_vue = new Vue({
 				{
 					txt: '文件',
 					children: [
-						{ txt: '新建', fn: () => content_vue.m.newScore.show = true  },
+						{ txt: '新建', fn: () => content_vue.m.newScore.chooseType.show = true  },
 						{ txt: '保存', fn: () => {
 							const form = new FormData(document.getElementById("abcform"))
 							const obj = {}
@@ -1361,15 +1362,55 @@ var content_vue = new Vue({
 				copyBarInfo: copyNodeInfo
 			},
 			newScore: {
-				show: false,
-				index: 0,
-				list: [
-					{ title: '简谱', img: '/img/jianpu.png' },
-					{ title: '大谱表', img: '/img/da_pu_piao.png' },
-					{ title: '高音谱表', img: '/img/gao_yin.png' },
-					{ title: '低音谱表', img: '/img/di_yin.png' },
-					{ title: '合唱四声部', img: '/img/he_chang.png' },
-				]
+				chooseType: {
+					show: true,
+					index: 0,
+					list: [
+						{ title: '简谱', img: '/img/jianpu.png' },
+						{ title: '大谱表', img: '/img/da_pu_piao.png' },
+						{ title: '高音谱表', img: '/img/gao_yin.png' },
+						{ title: '低音谱表', img: '/img/di_yin.png' },
+						{ title: '合唱四声部', img: '/img/he_chang.png' },
+					]
+				},
+				scoreOptsShow: true,
+				keySignType: 'up',
+				keySignUpList: [
+					{ title: 'C大调', img: '/img/C.png', val: 'C' },
+					{ title: 'G大调', img: '/img/G.png', val: 'G' },
+					{ title: 'D大调', img: '/img/D.png', val: 'D' },
+					{ title: 'A大调', img: '/img/A.png', val: 'A' },
+					{ title: 'E大调', img: '/img/E.png', val: 'E' },
+					{ title: 'B大调', img: '/img/B.png', val: 'B' },
+					{ title: '#F大调', img: '/img/-F.png', val: 'F#' },
+					{ title: '#C大调', img: '/img/-C.png', val: 'C#' },
+				],
+				keySignDownList: [
+					{ title: 'C大调', img: '/img/C.png', val: 'C' },
+					{ title: 'F大调', img: '/img/F.png', val: 'F' },
+					{ title: 'bB大调', img: '/img/bB.png', val: 'Bb' },
+					{ title: 'bE大调', img: '/img/bE.png', val: 'Eb' },
+					{ title: 'bA大调', img: '/img/bA.png', val: 'Ab' },
+					{ title: 'bD大调', img: '/img/bD.png', val: 'Db' },
+					{ title: 'bG大调', img: '/img/bG.png', val: 'Gb' },
+					{ title: 'bC大调', img: '/img/bC.png', val: 'Cb' }
+				],
+				isBeatNoteListShow: false,
+				beatNoteList: new Array(12).fill(0).map((v, i) => ({ title: i + 1 + '', value: i + 1 + '' })),
+				isBeatNoteList2Show: false,
+				beatNoteList2: [
+					{ title: '2', value: '2' },
+					{ title: '4', value: '4' },
+					{ title: '8', value: '8' },
+					{ title: '16', value: '16' },
+				],
+				scoreOpts: {
+					title: '',
+					subTitle: '',
+					compose: '',
+					lyricist: '',
+					beatNote: '',
+				}
 			}
 		}
 	},
