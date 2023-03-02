@@ -1205,7 +1205,7 @@ var content_vue = new Vue({
 				{
 					txt: '文件',
 					children: [
-						{ txt: '新建', fn: () => content_vue.m.newScore.chooseType.show = true  },
+						{ txt: '新建', fn: () => content_vue.m.newScore.musicType.show = true  },
 						{ txt: '保存', fn: () => {
 							const form = new FormData(document.getElementById("abcform"))
 							const obj = {}
@@ -1238,8 +1238,8 @@ var content_vue = new Vue({
 			isMusicNoteShow: false,
 			addBar: {
 				show: false,
-				before: 0,
-				after: 0
+				before: 1,
+				after: 1
 			},
 			numberKeypad: {
 				isShow: true,
@@ -1362,18 +1362,17 @@ var content_vue = new Vue({
 				copyBarInfo: copyNodeInfo
 			},
 			newScore: {
-				chooseType: {
+				musicType: {
 					show: true,
-					index: 0,
 					list: [
-						{ title: '简谱', img: '/img/jianpu.png' },
-						{ title: '大谱表', img: '/img/da_pu_piao.png' },
-						{ title: '高音谱表', img: '/img/gao_yin.png' },
-						{ title: '低音谱表', img: '/img/di_yin.png' },
-						{ title: '合唱四声部', img: '/img/he_chang.png' },
+						{ title: '简谱', val: 'easy', img: '/img/jianpu.png' },
+						{ title: '大谱表', val: 'big', img: '/img/da_pu_piao.png' },
+						{ title: '高音谱表', val: 'treble', img: '/img/gao_yin.png' },
+						{ title: '低音谱表', val: 'bass', img: '/img/di_yin.png' },
+						{ title: '合唱四声部', val: 'four', img: '/img/he_chang.png' },
 					]
 				},
-				scoreOptsShow: true,
+				scoreOptsShow: false,
 				keySignType: 'up',
 				keySignUpList: [
 					{ title: 'C大调', img: '/img/C.png', val: 'C' },
@@ -1396,21 +1395,46 @@ var content_vue = new Vue({
 					{ title: 'bC大调', img: '/img/bC.png', val: 'Cb' }
 				],
 				isBeatNoteListShow: false,
-				beatNoteList: new Array(12).fill(0).map((v, i) => ({ title: i + 1 + '', value: i + 1 + '' })),
+				beatNoteList: new Array(12).fill(0).map((v, i) => i + 1 + ''),
 				isBeatNoteList2Show: false,
-				beatNoteList2: [
-					{ title: '2', value: '2' },
-					{ title: '4', value: '4' },
-					{ title: '8', value: '8' },
-					{ title: '16', value: '16' },
+				beatNoteList2: ['2', '4', '8', '16'],
+				speedTxtList: [
+					{ val: "40", txt: "Grave" },
+					{ val: "46", txt: "Largo" },
+					{ val: "52", txt: "Lento" },
+					{ val: "56", txt: "Adagio" },
+					{ val: "60", txt: "Larghtto" },
+					{ val: "66", txt: "Andante" },
+					{ val: "69", txt: "Andantino" },
+					{ val: "88", txt: "Moderato" },
+					{ val: "108", txt: "Allegretto" },
+					{ val: "132", txt: "Allegro" },
+					{ val: "160", txt: "Vivace" },
+					{ val: "184", txt: "Presto" },
+					{ val: "208", txt: "Prestissimo" },
+				],
+				speedNoteList: [
+					{ val: '4/4', img: '' },
+					{ val: '2/4', img: '' },
+					{ val: '1/4', img: '' },
+					{ val: '1/8', img: '' }
 				],
 				scoreOpts: {
-					title: '',
-					subTitle: '',
-					compose: '',
-					lyricist: '',
-					beatNote: '',
-				}
+					title: '标题',
+					subTitle: '副标题',
+					compose: '作曲家',
+					lyricist: '作词家',
+					keySign: 'C',
+					beatNote1: '4',
+					beatNote2: '4',
+					beatType: 'custom',
+					musicType: 'easy',
+					speedType: 'txt',
+					speedText: 'Moderato',
+					speedNote: "1/4",
+					speedNum: "88"
+				},
+				previewUrl: './preview.html'
 			}
 		}
 	},
@@ -2205,6 +2229,9 @@ var content_vue = new Vue({
 
 		openNewTab() {
 
+		},
+		renderNewScore() {
+
 		}
 	},
 	computed: {
@@ -2315,6 +2342,15 @@ var content_vue = new Vue({
 		'm.lyric': {
 			handler: setLyricStyle,
 			deep: true
+		},
+		'm.newScore.scoreOptsShow'(isShow) {
+			if (isShow) this.$refs.previewIframeRef?.contentWindow.postMessage(this.m.newScore.scoreOpts, '*')
+		},
+		'm.newScore.scoreOpts': {
+			handler(val) {
+				this.$refs.previewIframeRef?.contentWindow.postMessage(val, '*')
+			},
+			deep: true
 		}
 	},
 	components : {
@@ -2397,6 +2433,7 @@ var content_vue = new Vue({
 
 	},
 	mounted() {
+		if (Object.keys(scoreOpts).length) $('#source').val(getAbcTemplateCode(scoreOpts))
 		document.addEventListener('keydown', e => this.emitNumKeybordFn(e.code))
 		this.changeNumKeypadSelect()
 		const event = () => {

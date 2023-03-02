@@ -23,6 +23,196 @@ var clipdataContent = "";
 //3.用$符号标记换行
 // 默认的单谱表
 
+/**
+ * @typedef {Object} ScoreOpts 乐谱参数
+ * @property {string} title 标题
+ * @property {string} subTitle 副标题
+ * @property {string} compose 作曲
+ * @property {string} lyricist 作词
+ * @property {string} keySign 调号
+ * @property {boolean} isWeak 是否弱起小节
+ * @property {string} weakBarTop 弱起小节分子
+ * @property {string} weakBarBot 弱起小节分母
+ * @property {'sign' | 'txt'} speedType 速度类型
+ * @property {string} speedText 速度文本
+ * @property {string} speedNote1 节拍音符
+ * @property {string} speedNote2 节拍音符
+ * @property {string} speedNum 节拍速度
+ * @property {'custom' | 'C' | 'C|'} beatType 节拍类型
+ * @property {string} beatNote1 节拍音符
+ * @property {string} beatNote2 节拍音符
+ * @property {'easy' | 'big' | 'treble' | 'bass', 'four'} musicType 乐谱类型
+ */
+
+
+/** 速度文本列表 */
+const speedTxtList = [
+	{ val: "40", txt: "Grave" },
+	{ val: "46", txt: "Largo" },
+	{ val: "52", txt: "Lento" },
+	{ val: "56", txt: "Adagio" },
+	{ val: "60", txt: "Larghtto" },
+	{ val: "66", txt: "Andante" },
+	{ val: "69", txt: "Andantino" },
+	{ val: "88", txt: "Moderato" },
+	{ val: "108", txt: "Allegretto" },
+	{ val: "132", txt: "Allegro" },
+	{ val: "160", txt: "Vivace" },
+	{ val: "184", txt: "Presto" },
+	{ val: "208", txt: "Prestissimo" },
+]
+
+/** @type {ScoreOpts} */
+const defaultScoreOpts = {
+	title: "标题",
+	subTitle: '副标题',
+	compose: "作曲",
+	lyricist: "作词",
+	keySign: "C",
+
+	isWeak: false,
+	weakBarTop: "1",
+	weakBarBot: "4",
+
+	speedType: "sign",
+	speedText: "Moderato",
+	speedNote: "1/4",
+	speedNum: "88",
+
+	beatType: "custom",
+	beatNote1: "4",
+	beatNote2: "4",
+
+	musicType: "treble"
+}
+const scoreOpts = Object.assign(
+	defaultScoreOpts,
+	JSON.parse(new URLSearchParams(window.location.search).get('scoreOpts') || '{}')
+)
+
+const abcTemplateHeadCode = `%%staffsep 60
+%%sysstaffsep 60
+%%keydefined C=higher
+%%contbarnb 1
+%%leftmargin 20
+%%rightmargin 10
+%%titlefont Microsoft-YaHei 28
+%%stretchlast 0.9
+%%linebreak $
+%%pos vocal down 
+%%createby abc.ixzds.com  2023-02-28 
+%%equalbars 0 
+%%keywarn 0 
+%%cancelkey 0 
+I:abc-charset utf-8
+X: 1`
+
+/**
+ * 
+ * @param {ScoreOpts} opts 
+ * @returns {string}
+ */
+const getBeatNote = (opts) => {
+	if (['C', 'C|'].includes(opts.beatType)) return opts.beatType
+	return `${opts.beatNote1}/${opts.beatNote2}`
+}
+
+/**
+ * 获取速度代码
+ * @param {ScoreOpts} opts
+ */
+const _getSpeed = (opts) => {
+	if (opts.speedType === 'txt') {
+		return `
+Q: 1/4=${speedTxtList.find(item => item.txt === opts.speedText).val}`
+	}
+	if (opts.speedNote && opts.speedNum) {
+		return `
+Q: ${opts.speedNote}=${opts.speedNum}`
+	}
+	return ``
+}
+
+/**
+ * 
+ * @param {ScoreOpts} opts
+ * @returns {string}
+ */
+const getAbcInfoCode = (opts) => {
+	return `
+T: ${opts.title}
+T: ${opts.subTitle}
+C: ${opts.compose}
+C: ${opts.lyricist}${_getSpeed(opts)}
+M: ${getBeatNote(opts)}
+L: 1/8
+K: ${opts.keySign}`
+}
+
+/**
+ * 
+ * @param {ScoreOpts} opts 
+ * @returns {string}
+ */
+const getAbcContCode = (opts) => {
+	return {
+		easy: `
+%%score 1
+V:1 treble
+%%MIDI program 0
+z,8|z,8|z,8|z,8|$z,8|z,8|z,8|z,8|`,
+		big: `
+%%vsetting_start
+%%score {1 | 2}
+V:1 treble
+%%MIDI program 0
+V:2 bass
+%%MIDI program 0
+%%vsetting_end
+V:1
+z,8|z,8|z,8|z,8|$z,8|z,8|z,8|z,8|
+V:2
+z,8|z,8|z,8|z,8|$z,8|z,8|z,8|z,8|
+`,
+		treble: `
+%%score 1
+V:1 treble
+%%MIDI program 0
+z,8|z,8|z,8|z,8|$z,8|z,8|z,8|z,8|`,
+		bass: `
+%%score 1
+V:1 bass
+%%MIDI program 0
+z,8|z,8|z,8|z,8|$z,8|z,8|z,8|z,8|`,
+		four: `
+%%vsetting_start
+%%score [1 2 3 4]
+V:1 treble nm="Soprano" snm="S."
+%%MIDI program 0
+V:2 treble nm="Alto" snm="A."
+%%MIDI program 0
+V:3 treble-8 nm="Tenor" snm="T."
+%%MIDI program 0
+V:4 bass nm="Bass" snm="B."
+%%MIDI program 0
+%%vsetting_end
+V:1
+z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|$ z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 |
+V:2 
+z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 |$ z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 |
+V:3 
+z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 |$ z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 |
+V:4 
+z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 |$ z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 |`
+	}[opts.musicType]
+}
+
+/**
+ * 
+ * @param {ScoreOpts} opts 
+ * @returns {string}
+ */
+const getAbcTemplateCode = (opts) => abcTemplateHeadCode + getAbcInfoCode(opts) + getAbcContCode(opts)
 
 var headStr = "%%staffsep 60\n%%sysstaffsep 60\n%%keydefined C=higher\n"+
 				"%%contbarnb 1\n"+
