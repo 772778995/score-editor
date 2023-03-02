@@ -1432,7 +1432,9 @@ var content_vue = new Vue({
 					speedType: 'txt',
 					speedText: 'Moderato',
 					speedNote: "1/4",
-					speedNum: "88"
+					speedNum: "88",
+					rows: '2',
+					rowBars: '4'
 				},
 				previewUrl: './preview.html'
 			}

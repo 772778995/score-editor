@@ -30,17 +30,23 @@ var clipdataContent = "";
  * @property {string} compose 作曲
  * @property {string} lyricist 作词
  * @property {string} keySign 调号
+ * 
  * @property {boolean} isWeak 是否弱起小节
  * @property {string} weakBarTop 弱起小节分子
  * @property {string} weakBarBot 弱起小节分母
+ * 
+ * @property {number} rows 行数
+ * @property {number} rowBars 每行小节数
+ * 
  * @property {'sign' | 'txt'} speedType 速度类型
  * @property {string} speedText 速度文本
- * @property {string} speedNote1 节拍音符
- * @property {string} speedNote2 节拍音符
- * @property {string} speedNum 节拍速度
+ * @property {string} speedNote 速度音符
+ * @property {string} speedNum 速度数值
+ * 
  * @property {'custom' | 'C' | 'C|'} beatType 节拍类型
  * @property {string} beatNote1 节拍音符
  * @property {string} beatNote2 节拍音符
+ * 
  * @property {'easy' | 'big' | 'treble' | 'bass', 'four'} musicType 乐谱类型
  */
 
@@ -160,7 +166,8 @@ const getAbcContCode = (opts) => {
 %%score 1
 V:1 treble
 %%MIDI program 0
-z,8|z,8|z,8|z,8|$z,8|z,8|z,8|z,8|`,
+V:1
+${new Array(+opts.rows).fill('z,8|'.repeat(+opts.rowBars)).join('$')}`,
 		big: `
 %%vsetting_start
 %%score {1 | 2}
@@ -170,20 +177,22 @@ V:2 bass
 %%MIDI program 0
 %%vsetting_end
 V:1
-z,8|z,8|z,8|z,8|$z,8|z,8|z,8|z,8|
+${new Array(+opts.rows).fill('z,8|'.repeat(+opts.rowBars)).join('$\n')}
 V:2
-z,8|z,8|z,8|z,8|$z,8|z,8|z,8|z,8|
+${new Array(+opts.rows).fill('z,8|'.repeat(+opts.rowBars)).join('$\n')}
 `,
 		treble: `
 %%score 1
 V:1 treble
 %%MIDI program 0
-z,8|z,8|z,8|z,8|$z,8|z,8|z,8|z,8|`,
+V:1
+${new Array(+opts.rows).fill('z,8|'.repeat(+opts.rowBars)).join('$')}`,
 		bass: `
 %%score 1
 V:1 bass
 %%MIDI program 0
-z,8|z,8|z,8|z,8|$z,8|z,8|z,8|z,8|`,
+V:1
+${new Array(+opts.rows).fill('z,8|'.repeat(+opts.rowBars)).join('$')}`,
 		four: `
 %%vsetting_start
 %%score [1 2 3 4]
@@ -197,13 +206,13 @@ V:4 bass nm="Bass" snm="B."
 %%MIDI program 0
 %%vsetting_end
 V:1
-z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|$ z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 |
+${new Array(+opts.rows).fill('z,8|'.repeat(+opts.rowBars)).join('$\n')}
 V:2 
-z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 |$ z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 |
+${new Array(+opts.rows).fill('z,8|'.repeat(+opts.rowBars)).join('$\n')}
 V:3 
-z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 |$ z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 |
+${new Array(+opts.rows).fill('z,8|'.repeat(+opts.rowBars)).join('$\n')}
 V:4 
-z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 |$ z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 | z,8 |`
+${new Array(+opts.rows).fill('z,8|'.repeat(+opts.rowBars)).join('$\n')}`
 	}[opts.musicType]
 }
 

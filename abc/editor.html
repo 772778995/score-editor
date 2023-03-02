@@ -75,7 +75,7 @@
     <link rel="stylesheet" href="v2/css/abc.css?v=20221027" />
     <link rel="stylesheet" href="v2/css/abc_ug.css?v=20221027" />
     <link
-      href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+      href="css/tailwindcss.min.css"
       rel="stylesheet"
     />
 
@@ -467,7 +467,7 @@
               <iframe
                 ref="previewIframeRef"
                 :src="m.newScore.previewUrl"
-                class="w-full h-full rounded-md"
+                class="w-full h-full rounded-md border-none"
               ></iframe>
             </div>
   
@@ -597,10 +597,10 @@
                 <b class="text-xl -top-4 absolute" style="background: #f7f7f7">排版</b>
                 <div class="flex items-center">
                   <div>行数：</div>
-                  <input type="number" class="form-control input-sm w-20 text-sm">
+                  <input v-model="m.newScore.scoreOpts.rows" type="number" class="form-control input-sm w-20 text-sm">
 
                   <div>小节：</div>
-                  <input type="number" class="form-control input-sm w-20 text-sm">
+                  <input v-model="m.newScore.scoreOpts.rowBars" type="number" class="form-control input-sm w-20 text-sm">
                   <div>/行</div>
                 </div>
                 <div class="mt-2">提示：您也可以在创建乐谱后再添加或移除小节。</div>
