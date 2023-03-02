@@ -8,11 +8,6 @@ const initScore = (function() {
         isWeak, weakBarTop, weakBarBot
       } = scoreOpts
       if (musicType === 'easy') changeStaffType(this,2) | restoreEditor()
-      if (isWeak) {
-        $("#weakBarTop").val(weakBarTop)
-        $("#weakBarBot").val(weakBarBot)
-        genInitStaff()
-      }
     }
   }
 })()

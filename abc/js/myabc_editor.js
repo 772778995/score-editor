@@ -80,6 +80,9 @@ const defaultScoreOpts = {
 	weakBarTop: "1",
 	weakBarBot: "4",
 
+	rows: 2,
+	rowBars: 4,
+
 	speedType: "sign",
 	speedText: "Moderato",
 	speedNote: "1/4",
@@ -140,6 +143,23 @@ Q: ${opts.speedNote}=${opts.speedNum}`
 }
 
 /**
+ * 获取音符代码
+ * @param {ScoreOpts} opts 
+ */
+const getAbcNoteCode = (opts, isFirst = false) => {
+	let noteCode = new Array(+opts.rows).fill('z,8|'.repeat(+opts.rowBars)).join('$\n')
+	if (isFirst && opts.isWeak) {
+		noteCode = noteCode.replace('z,8|', {
+			'2': 'z2z2',
+			'4': 'z2',
+			'8': 'z',
+			'16': 'z/'
+		}[opts.weakBarBot].repeat(opts.weakBarTop))
+	}
+	return noteCode
+}
+
+/**
  * 
  * @param {ScoreOpts} opts
  * @returns {string}
@@ -167,7 +187,7 @@ const getAbcContCode = (opts) => {
 V:1 treble
 %%MIDI program 0
 V:1
-${new Array(+opts.rows).fill('z,8|'.repeat(+opts.rowBars)).join('$')}`,
+${getAbcNoteCode(opts, true)}`,
 		big: `
 %%vsetting_start
 %%score {1 | 2}
@@ -177,22 +197,22 @@ V:2 bass
 %%MIDI program 0
 %%vsetting_end
 V:1
-${new Array(+opts.rows).fill('z,8|'.repeat(+opts.rowBars)).join('$\n')}
+${getAbcNoteCode(opts, true)}
 V:2
-${new Array(+opts.rows).fill('z,8|'.repeat(+opts.rowBars)).join('$\n')}
+${getAbcNoteCode(opts)}
 `,
 		treble: `
 %%score 1
 V:1 treble
 %%MIDI program 0
 V:1
-${new Array(+opts.rows).fill('z,8|'.repeat(+opts.rowBars)).join('$')}`,
+${getAbcNoteCode(opts, true)}`,
 		bass: `
 %%score 1
 V:1 bass
 %%MIDI program 0
 V:1
-${new Array(+opts.rows).fill('z,8|'.repeat(+opts.rowBars)).join('$')}`,
+${getAbcNoteCode(opts, true)}`,
 		four: `
 %%vsetting_start
 %%score [1 2 3 4]
@@ -206,13 +226,13 @@ V:4 bass nm="Bass" snm="B."
 %%MIDI program 0
 %%vsetting_end
 V:1
-${new Array(+opts.rows).fill('z,8|'.repeat(+opts.rowBars)).join('$\n')}
+${getAbcNoteCode(opts, true)}
 V:2 
-${new Array(+opts.rows).fill('z,8|'.repeat(+opts.rowBars)).join('$\n')}
+${getAbcNoteCode(opts)}
 V:3 
-${new Array(+opts.rows).fill('z,8|'.repeat(+opts.rowBars)).join('$\n')}
+${getAbcNoteCode(opts)}
 V:4 
-${new Array(+opts.rows).fill('z,8|'.repeat(+opts.rowBars)).join('$\n')}`
+${getAbcNoteCode(opts)}`
 	}[opts.musicType]
 }
 

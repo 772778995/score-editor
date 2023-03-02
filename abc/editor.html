@@ -606,15 +606,32 @@
                 <div class="mt-2">提示：您也可以在创建乐谱后再添加或移除小节。</div>
               </div>
 
-              <div class="mt-11 relative rounded p-8 items-center flex" style="border: 2px #B0B0B0 dashed;">
-                <b class="text-xl -top-4 absolute" style="background: #f7f7f7">
-                  <input type="checkbox" />
+              <div class="mt-11 relative rounded p-8" style="border: 2px #B0B0B0 dashed;">
+                <b class="text-xl -top-4 absolute" style="background: #f7f7f7" @click="m.newScore.scoreOpts.isWeak = !m.newScore.scoreOpts.isWeak">
+                  <input type="checkbox" :checked="m.newScore.scoreOpts.isWeak"/>
                   <span>不完全小节（弱起小节）</span>
                 </b>
-                <div>时值：</div>
-                <input type="number" class="form-control input-sm w-20 text-sm">
-                <div>/</div>
-                <input type="number" class="form-control input-sm w-20 text-sm">
+                <div class="items-center flex" :class="{ 'pointer-events-none opacity-70': !m.newScore.scoreOpts.isWeak }">
+                  <div>时值：</div>
+                  <input v-model="m.newScore.scoreOpts.weakBarTop" type="number" class="form-control input-sm w-20 text-sm">
+                  <div>/</div>
+                  <!-- <input v-model="m.newScore.scoreOpts.weakBarBot" type="number" class="form-control input-sm w-20 text-sm"> -->
+                  <div class="dropdown mx-0" style="width: 100px;">
+                    <div class="input-group dropdown-toggle items-center" data-toggle="dropdown" aria-expanded="false">
+                      <input :value="m.newScore.scoreOpts.weakBarBot" onfocus="this.blur()" class="cursor-pointer form-control form-control-sm"/>
+                    </div>
+                    <div class="dropdown-menu h-36 overflow-y-auto">
+                      <button
+                        v-for="item in ['2', '4', '8', '16']"
+                        :key="item"
+                        class="dropdown-item"
+                        @click="m.newScore.scoreOpts.weakBarBot = item"
+                      >
+                        {{ item }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div class="mt-11 relative rounded p-8 items-center" style="border: 2px #B0B0B0 dashed;">

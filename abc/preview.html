@@ -14,9 +14,10 @@
       if (typeof scoreOpts === 'object') {
         // if (flashTimer) clearTimeout(flashTimer)
         // flashTimer = setTimeout(() => {
-          for(const k in scoreOpts) if (!scoreOpts[k]) delete scoreOpts[k]
+          for(const k in scoreOpts) if (scoreOpts[k] === undefined) delete scoreOpts[k]
           const code = getAbcTemplateCode(Object.assign(defaultScoreOpts, scoreOpts))
           $('#source').val(code)
+          console.log($('#source').val(), scoreOpts.isWeak)
           abc_change()
         //   flashTimer = null
         // }, 600)
