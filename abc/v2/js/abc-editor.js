@@ -1,3 +1,4 @@
+let isNewTab = false
 function copy() {
 	//复制小节 
 	var selectedBars = $("svg[type='rectbar']");
@@ -1205,7 +1206,7 @@ var content_vue = new Vue({
 				{
 					txt: '文件',
 					children: [
-						{ txt: '新建', fn: () => content_vue.m.newScore.musicType.show = true  },
+						{ txt: '新建', fn: () => (content_vue.m.newScore.musicType.show = true) | (isNewTab = true)  },
 						{ txt: '保存', fn: () => {
 							const form = new FormData(document.getElementById("abcform"))
 							const obj = {}
@@ -1363,7 +1364,7 @@ var content_vue = new Vue({
 			},
 			newScore: {
 				musicType: {
-					show: true,
+					show: false,
 					list: [
 						{ title: '简谱', val: 'easy', img: '/img/jianpu.png' },
 						{ title: '大谱表', val: 'big', img: '/img/da_pu_piao.png' },
@@ -2231,12 +2232,13 @@ var content_vue = new Vue({
 			this.m.ctxMenu.copyBarInfo = copyNodeInfo
 			this.m.ctxMenu.isShow = true
 		},
-
-		openNewTab() {
-
-		},
-		renderNewScore() {
-
+		createNewScore() {
+			if (isNewTab) window.open(location.href + `?scoreOpts=${JSON.stringify(this.m.newScore.scoreOpts)}`)
+			else {
+				initScore(this.m.newScore.scoreOpts)
+				this.m.newScore.musicType.show = false
+				this.m.newScore.scoreOptsShow = false
+			}
 		}
 	},
 	computed: {
@@ -2438,6 +2440,10 @@ var content_vue = new Vue({
 
 	},
 	mounted() {
+		const params = new URLSearchParams(location.search)
+		if (!params.get('scoreOpts')) {
+			this.m.newScore.musicType.show = true
+		}
 		if (Object.keys(scoreOpts).length) $('#source').val(getAbcTemplateCode(scoreOpts))
 		document.addEventListener('keydown', e => this.emitNumKeybordFn(e.code))
 		this.changeNumKeypadSelect()

@@ -459,7 +459,7 @@
         <div class="rounded-md overflow-hidden" style="width: 1246px;">
           <b class="flex justify-between items-center text-xl py-3 px-5 bg-white">
             <div>新建乐谱</div>
-            <img src="/img/close.png" class="cursor-pointer" @click="m.newScore.scoreOptsShow = false"/>
+            <img src="/img/close.png" class="cursor-pointer" @click="m.newScore.scoreOptsShow = m.newScore.musicType.show = false"/>
           </b>
   
           <div class="flex" style="height: 675px; background: #B5C5D3;">
@@ -685,9 +685,9 @@
               </div>
 
               <div class="mt-20 flex justify-end space-x-10">
-                <button class="btn">取消</button>
-                <button class="btn">上一步</button>
-                <button class="btn">创建</button>
+                <button class="btn" @click="m.newScore.scoreOptsShow = m.newScore.musicType = false">取消</button>
+                <button class="btn" @click="m.newScore.scoreOptsShow = false">上一步</button>
+                <button class="btn" @click="createNewScore">创建</button>
               </div>
             </div>
           </div>

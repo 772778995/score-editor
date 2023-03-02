@@ -99,6 +99,19 @@ const scoreOpts = Object.assign(
 	JSON.parse(new URLSearchParams(window.location.search).get('scoreOpts') || '{}')
 )
 
+/**
+ * 初始化乐谱
+ * @param {ScoreOpts} scoreOpts 
+ */
+function initScore(scoreOpts) {
+	for(const k in scoreOpts) if (scoreOpts[k] === undefined) delete scoreOpts[k]
+	changeStaffType(null, scoreOpts?.musicType === 'easy' ? 2 : 0) | restoreEditor()
+	const code = getAbcTemplateCode(Object.assign(defaultScoreOpts, scoreOpts))
+	$('#source').val(code)
+	console.log($('#source').val(), scoreOpts.isWeak)
+	abc_change()
+}
+
 const abcTemplateHeadCode = `%%staffsep 60
 %%sysstaffsep 60
 %%keydefined C=higher
