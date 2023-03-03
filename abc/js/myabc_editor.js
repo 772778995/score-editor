@@ -159,15 +159,26 @@ Q: ${opts.speedNote}=${opts.speedNum}`
  * 获取音符代码
  * @param {ScoreOpts} opts 
  */
-const getAbcNoteCode = (opts, isFirst = false) => {
+const getAbcNoteCode = (opts) => {
 	let noteCode = new Array(+opts.rows).fill('z,8|'.repeat(+opts.rowBars)).join('$\n')
-	if (isFirst && opts.isWeak) {
-		noteCode = noteCode.replace('z,8|', {
-			'2': 'z2z2',
-			'4': 'z2',
-			'8': 'z',
-			'16': 'z/'
-		}[opts.weakBarBot].repeat(opts.weakBarTop))
+	if (opts.isWeak) {
+		let num = (opts.weakBarTop / opts.weakBarBot)
+		// const d1 = ~~(num / 1)
+		// num = num % 1
+		// const d2 = ~~(num / 0.5)
+		// num = num % 0.5
+		const d4 = ~~(num / 0.25)
+		num = num % 0.25
+		const d8 = ~~(num / 0.125)
+		num = num % 0.125
+		const d16 = ~~(num / 0.0625)
+		// let restStr = 'z8'.repeat(d1)
+		// restStr += 'z4'.repeat(d2)
+		let restStr = 'z2'.repeat(d4)
+		restStr += 'z'.repeat(d8)
+		restStr += 'z/'.repeat(d16)
+		restStr += '|'
+		noteCode = noteCode.replace('z,8|', restStr)
 	}
 	return noteCode
 }
@@ -200,7 +211,7 @@ const getAbcContCode = (opts) => {
 V:1 treble
 %%MIDI program 0
 V:1
-${getAbcNoteCode(opts, true)}`,
+${getAbcNoteCode(opts)}`,
 		big: `
 %%vsetting_start
 %%score {1 | 2}
@@ -210,7 +221,7 @@ V:2 bass
 %%MIDI program 0
 %%vsetting_end
 V:1
-${getAbcNoteCode(opts, true)}
+${getAbcNoteCode(opts)}
 V:2
 ${getAbcNoteCode(opts)}
 `,
@@ -219,13 +230,13 @@ ${getAbcNoteCode(opts)}
 V:1 treble
 %%MIDI program 0
 V:1
-${getAbcNoteCode(opts, true)}`,
+${getAbcNoteCode(opts)}`,
 		bass: `
 %%score 1
 V:1 bass
 %%MIDI program 0
 V:1
-${getAbcNoteCode(opts, true)}`,
+${getAbcNoteCode(opts)}`,
 		four: `
 %%vsetting_start
 %%score [1 2 3 4]
@@ -239,7 +250,7 @@ V:4 bass nm="Bass" snm="B."
 %%MIDI program 0
 %%vsetting_end
 V:1
-${getAbcNoteCode(opts, true)}
+${getAbcNoteCode(opts)}
 V:2 
 ${getAbcNoteCode(opts)}
 V:3 

@@ -17,7 +17,6 @@
           for(const k in scoreOpts) if (scoreOpts[k] === undefined) delete scoreOpts[k]
           const code = getAbcTemplateCode(Object.assign(defaultScoreOpts, scoreOpts))
           $('#source').val(code)
-          console.log($('#source').val(), scoreOpts.isWeak)
           abc_change()
         //   flashTimer = null
         // }, 600)
