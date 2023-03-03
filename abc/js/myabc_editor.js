@@ -160,7 +160,7 @@ Q: ${opts.speedNote}=${opts.speedNum}`
  * @param {ScoreOpts} opts 
  */
 const getAbcNoteCode = (opts) => {
-	let noteCode = new Array(+opts.rows).fill('z,8|'.repeat(+opts.rowBars)).join('$\n')
+	let noteCode = new Array(+opts.rows).fill('z,8|'.repeat(+opts.rowBars)).join('$')
 	if (opts.isWeak) {
 		let num = (opts.weakBarTop / opts.weakBarBot)
 		// const d1 = ~~(num / 1)
