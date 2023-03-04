@@ -3,3 +3,4 @@ tailwind.config.js
 your-graph-editor.test.js
 yourabc_plus.test.js
 package.json
+dist/
