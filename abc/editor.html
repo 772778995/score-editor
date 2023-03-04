@@ -414,7 +414,7 @@
         >
           <b class="flex justify-between items-center text-xl py-3 px-5">
             <div>新建乐谱</div>
-            <img src="/abc/img/close.png" class="cursor-pointer" @click="m.newScore.musicType.show = false"/>
+            <img src="../abc/img/close.png" class="cursor-pointer" @click="m.newScore.musicType.show = false"/>
           </b>
   
           <div class="" style="background: #F5F5F5; padding: 50px 80px 40px 70px;">
@@ -459,7 +459,7 @@
         <div class="rounded-md overflow-hidden" style="width: 1246px;">
           <b class="flex justify-between items-center text-xl py-3 px-5 bg-white">
             <div>新建乐谱</div>
-            <img src="/abc/img/close.png" class="cursor-pointer" @click="m.newScore.scoreOptsShow = m.newScore.musicType.show = false"/>
+            <img src="../abc/img/close.png" class="cursor-pointer" @click="m.newScore.scoreOptsShow = m.newScore.musicType.show = false"/>
           </b>
   
           <div class="flex" style="height: 675px; background: #B5C5D3;">
@@ -584,13 +584,13 @@
                   :checked="m.newScore.scoreOpts.beatType === 'C'"
                   @click="m.newScore.scoreOpts.beatType = 'C'"
                 />
-                <img class="ml-1" src="/abc/img/beatSign-C.png" />
+                <img class="ml-1" src="../abc/img/beatSign-C.png" />
                 <input
                   type="radio"
                   :checked="m.newScore.scoreOpts.beatType === 'C|'"
                   @click="m.newScore.scoreOpts.beatType = 'C|'"
                 />
-                <img class="ml-1" src="/abc/img/beatSign-C.png" />
+                <img class="ml-1" src="../abc/img/beatSign-C.png" />
               </div>
 
               <div class="mt-11 relative rounded p-8 items-center " style="border: 2px #B0B0B0 dashed;">
@@ -1255,12 +1255,12 @@
       </div>
 
       <div class="fixed flex items-center space-x-1 z-40 justify-between bottom-11 right-12 rounded-full p-2" style="background: #B0B0B0;">
-        <img src="/abc/img/scale-small.png" class="cursor-pointer" @click="() => {
+        <img src="../abc/img/scale-small.png" class="cursor-pointer" @click="() => {
           m.panzoom.scale -= 0.1
           panzoom.zoom(m.panzoom.scale)
         }"/>
         <input v-model="m.panzoom.scale" step="0.1" min="0.5" max="1.5" type="range" class="w-16" @change="panzoom.zoom($event.target.value)"/>
-        <img src="/abc/img/scale-big.png" class="cursor-pointer" @click="() => {
+        <img src="../abc/img/scale-big.png" class="cursor-pointer" @click="() => {
           m.panzoom.scale += 0.1
           panzoom.zoom(m.panzoom.scale)
         }"/>
@@ -2861,7 +2861,7 @@
               <div class="panel-name">
                 音符面板
                 <img
-                  src="/abc/img/arrow-2.png"
+                  src="../abc/img/arrow-2.png"
                   class="plsx-close"
                   @click="m.isMusicNoteShow = false"
                 />
@@ -2875,7 +2875,7 @@
                 >
                   <div class="flex space-x-1 px-1 cursor-pointer">
                     <div class="w-5 h-5 flex items-center justify-center hover:bg-gray-300">
-                      <img src="/abc/img/right.png" :class="{'arrow-down': model.isExpand}" class="duration-300" />
+                      <img src="../abc/img/right.png" :class="{'arrow-down': model.isExpand}" class="duration-300" />
                     </div>
                     <span class="font-bold">{{model.name}}</span>
                   </div>
@@ -2991,7 +2991,9 @@
                           :class="[model.className]"
                           style="margin-left: -2px; margin-top: -2px; border: 1px solid #E6E6E6; transform: translate(1px, 1px);"
                           @click="() => {
+                            if (!model.canClick) return
                             if ($('.selected_text')) {
+                              if (tImg.fn) return tImg.fn()
                               changeAbc((txt) => `${tImg.value || ''}${txt}${tImg.value2 || ''}`);
                             }
                           }"

@@ -2785,34 +2785,38 @@ var content_vue = new Vue({
         musicType: {
           show: false,
           list: [
-            { title: "简谱", val: "easy", img: "/abc/img/jianpu.png" },
-            { title: "大谱表", val: "big", img: "/abc/img/da_pu_piao.png" },
-            { title: "高音谱表", val: "treble", img: "/abc/img/gao_yin.png" },
-            { title: "低音谱表", val: "bass", img: "/abc/img/di_yin.png" },
-            { title: "合唱四声部", val: "four", img: "/abc/img/he_chang.png" },
+            { title: "简谱", val: "easy", img: "../abc/img/jianpu.png" },
+            { title: "大谱表", val: "big", img: "../abc/img/da_pu_piao.png" },
+            { title: "高音谱表", val: "treble", img: "../abc/img/gao_yin.png" },
+            { title: "低音谱表", val: "bass", img: "../abc/img/di_yin.png" },
+            {
+              title: "合唱四声部",
+              val: "four",
+              img: "../abc/img/he_chang.png",
+            },
           ],
         },
         scoreOptsShow: false,
         keySignType: "up",
         keySignUpList: [
-          { title: "C大调", img: "/abc/img/C.png", val: "C" },
-          { title: "G大调", img: "/abc/img/G.png", val: "G" },
-          { title: "D大调", img: "/abc/img/D.png", val: "D" },
-          { title: "A大调", img: "/abc/img/A.png", val: "A" },
-          { title: "E大调", img: "/abc/img/E.png", val: "E" },
-          { title: "B大调", img: "/abc/img/B.png", val: "B" },
-          { title: "#F大调", img: "/abc/img/-F.png", val: "F#" },
-          { title: "#C大调", img: "/abc/img/-C.png", val: "C#" },
+          { title: "C大调", img: "../abc/img/C.png", val: "C" },
+          { title: "G大调", img: "../abc/img/G.png", val: "G" },
+          { title: "D大调", img: "../abc/img/D.png", val: "D" },
+          { title: "A大调", img: "../abc/img/A.png", val: "A" },
+          { title: "E大调", img: "../abc/img/E.png", val: "E" },
+          { title: "B大调", img: "../abc/img/B.png", val: "B" },
+          { title: "#F大调", img: "../abc/img/-F.png", val: "F#" },
+          { title: "#C大调", img: "../abc/img/-C.png", val: "C#" },
         ],
         keySignDownList: [
-          { title: "C大调", img: "/abc/img/C.png", val: "C" },
-          { title: "F大调", img: "/abc/img/F.png", val: "F" },
-          { title: "bB大调", img: "/abc/img/bB.png", val: "Bb" },
-          { title: "bE大调", img: "/abc/img/bE.png", val: "Eb" },
-          { title: "bA大调", img: "/abc/img/bA.png", val: "Ab" },
-          { title: "bD大调", img: "/abc/img/bD.png", val: "Db" },
-          { title: "bG大调", img: "/abc/img/bG.png", val: "Gb" },
-          { title: "bC大调", img: "/abc/img/bC.png", val: "Cb" },
+          { title: "C大调", img: "../abc/img/C.png", val: "C" },
+          { title: "F大调", img: "../abc/img/F.png", val: "F" },
+          { title: "bB大调", img: "../abc/img/bB.png", val: "Bb" },
+          { title: "bE大调", img: "../abc/img/bE.png", val: "Eb" },
+          { title: "bA大调", img: "../abc/img/bA.png", val: "Ab" },
+          { title: "bD大调", img: "../abc/img/bD.png", val: "Db" },
+          { title: "bG大调", img: "../abc/img/bG.png", val: "Gb" },
+          { title: "bC大调", img: "../abc/img/bC.png", val: "Cb" },
         ],
         isBeatNoteListShow: false,
         beatNoteList: new Array(12).fill(0).map((v, i) => i + 1 + ""),
@@ -2863,6 +2867,7 @@ var content_vue = new Vue({
       },
       toolList: [
         {
+          canClick: false,
           code: "clef",
           name: "谱号",
           cols: 4,
@@ -2905,12 +2910,13 @@ var content_vue = new Vue({
           isShow: !0,
         },
         {
+          canClick: false,
           code: "key",
           name: "调号",
           cols: 3,
           imgList: [
             {
-              url: "/abc/img/key/1.png",
+              url: "../abc/img/key/1.png",
               value: "[K:C]",
               class: "cmenu",
               type: "nodeline",
@@ -2918,7 +2924,7 @@ var content_vue = new Vue({
               title: "C大调",
             },
             {
-              url: "/abc/img/key/2.png",
+              url: "../abc/img/key/2.png",
               value: "[K:G]",
               class: "cmenu",
               type: "nodeline",
@@ -2926,7 +2932,7 @@ var content_vue = new Vue({
               title: "G大调",
             },
             {
-              url: "/abc/img/key/3.png",
+              url: "../abc/img/key/3.png",
               value: "[K:D]",
               class: "cmenu",
               type: "nodeline",
@@ -2934,7 +2940,7 @@ var content_vue = new Vue({
               title: "D大调",
             },
             {
-              url: "/abc/img/key/4.png",
+              url: "../abc/img/key/4.png",
               value: "[K:A]",
               class: "cmenu",
               type: "nodeline",
@@ -2942,7 +2948,7 @@ var content_vue = new Vue({
               title: "A大调",
             },
             {
-              url: "/abc/img/key/5.png",
+              url: "../abc/img/key/5.png",
               value: "[K:E]",
               class: "cmenu",
               type: "nodeline",
@@ -2950,7 +2956,7 @@ var content_vue = new Vue({
               title: "E大调",
             },
             {
-              url: "/abc/img/key/6.png",
+              url: "../abc/img/key/6.png",
               value: "[K:B]",
               class: "cmenu",
               type: "nodeline",
@@ -2958,7 +2964,7 @@ var content_vue = new Vue({
               title: "B大调",
             },
             {
-              url: "/abc/img/key/7.png",
+              url: "../abc/img/key/7.png",
               value: "[K:F#]",
               class: "cmenu",
               type: "nodeline",
@@ -2966,7 +2972,7 @@ var content_vue = new Vue({
               title: "#F大调",
             },
             {
-              url: "/abc/img/key/8.png",
+              url: "../abc/img/key/8.png",
               value: "[K:C#]",
               class: "cmenu",
               type: "nodeline",
@@ -2974,7 +2980,7 @@ var content_vue = new Vue({
               title: "#C大调",
             },
             {
-              url: "/abc/img/key/9.png",
+              url: "../abc/img/key/9.png",
               value: "[K:Cb]",
               class: "cmenu",
               type: "nodeline",
@@ -2982,7 +2988,7 @@ var content_vue = new Vue({
               title: "bC大调",
             },
             {
-              url: "/abc/img/key/10.png",
+              url: "../abc/img/key/10.png",
               value: "[K:Gb]",
               class: "cmenu",
               type: "nodeline",
@@ -2990,7 +2996,7 @@ var content_vue = new Vue({
               title: "bG大调",
             },
             {
-              url: "/abc/img/key/11.png",
+              url: "../abc/img/key/11.png",
               value: "[K:Db]",
               class: "cmenu",
               type: "nodeline",
@@ -2998,7 +3004,7 @@ var content_vue = new Vue({
               title: "bD大调",
             },
             {
-              url: "/abc/img/key/12.png",
+              url: "../abc/img/key/12.png",
               value: "[K:Ab]",
               class: "cmenu",
               type: "nodeline",
@@ -3006,7 +3012,7 @@ var content_vue = new Vue({
               title: "bA大调",
             },
             {
-              url: "/abc/img/key/13.png",
+              url: "../abc/img/key/13.png",
               value: "[K:Eb]",
               class: "cmenu",
               type: "nodeline",
@@ -3014,7 +3020,7 @@ var content_vue = new Vue({
               title: "bE大调",
             },
             {
-              url: "/abc/img/key/14.png",
+              url: "../abc/img/key/14.png",
               value: "[K:Bb]",
               class: "cmenu",
               type: "nodeline",
@@ -3022,7 +3028,7 @@ var content_vue = new Vue({
               title: "bB大调",
             },
             {
-              url: "/abc/img/key/15.png",
+              url: "../abc/img/key/15.png",
               value: "[K:F]",
               class: "cmenu",
               type: "nodeline",
@@ -3034,6 +3040,7 @@ var content_vue = new Vue({
           isExpand: !1,
         },
         {
+          canClick: false,
           code: "meter",
           cols: 4,
           name: "拍号",
@@ -3099,6 +3106,7 @@ var content_vue = new Vue({
           isExpand: !1,
         },
         {
+          canClick: true,
           name: "临时记号",
           code: "tempMark",
           cols: 4,
@@ -3153,6 +3161,7 @@ var content_vue = new Vue({
           ],
         },
         {
+          canClick: true,
           code: "dur",
           name: "连音",
           cols: 3,
@@ -3204,6 +3213,7 @@ var content_vue = new Vue({
           isShow: !1,
         },
         {
+          canClick: false,
           code: "bar",
           name: "小节线",
           cols: 4,
@@ -3245,6 +3255,7 @@ var content_vue = new Vue({
           isShow: !0,
         },
         {
+          canClick: true,
           code: "linemark",
           name: "线条记号",
           cols: 2,
@@ -3347,6 +3358,7 @@ var content_vue = new Vue({
           code: "grace",
           name: "装饰音",
           cols: 3,
+          canClick: true,
           imgList: [
             {
               url: "images/yy1.png",
@@ -3355,6 +3367,11 @@ var content_vue = new Vue({
               title: "倚音",
               position: "before",
               type: "8",
+              fn: () => {
+                const type = $(".selected_text")?.attr("type") || "";
+                if (type[0] === "r") return;
+                changeAbc((txt) => `{/${txt}}${txt}`);
+              },
             },
             {
               url: "images/yy2.png",
@@ -3363,6 +3380,11 @@ var content_vue = new Vue({
               title: "倚音",
               position: "before",
               type: "8",
+              fn: () => {
+                const type = $(".selected_text")?.attr("type") || "";
+                if (type[0] === "r") return;
+                changeAbc((txt) => `{${txt}}${txt}`);
+              },
             },
             {
               url: "images/grace4b.png",
@@ -3371,6 +3393,11 @@ var content_vue = new Vue({
               title: "倚音",
               position: "before",
               type: "4",
+              fn: () => {
+                const type = $(".selected_text")?.attr("type") || "";
+                if (type[0] === "r") return;
+                changeAbc((txt) => `{2${txt}}${txt}`);
+              },
             },
             {
               url: "images/grace16b.png",
@@ -3379,6 +3406,11 @@ var content_vue = new Vue({
               title: "倚音",
               position: "before",
               type: "16",
+              fn: () => {
+                const type = $(".selected_text")?.attr("type") || "";
+                if (type[0] === "r") return;
+                changeAbc((txt) => `${txt}{${txt}/}`);
+              },
             },
             {
               url: "images/pa.png",
@@ -3451,6 +3483,7 @@ var content_vue = new Vue({
               value: "!~(!note!~)!",
               class: "cmenu",
               type: "gliss",
+              fn: () => changeAbc((txt) => `!~(!${txt}!)~!`),
             },
             {
               url: "images/b1.png",
@@ -3465,6 +3498,7 @@ var content_vue = new Vue({
           code: "",
           name: "力度记号",
           cols: 4,
+          canClick: true,
           imgList: [
             {
               url: "images/other12.png",
@@ -3539,6 +3573,7 @@ var content_vue = new Vue({
           ],
         },
         {
+          canClick: true,
           code: "playMark",
           name: "演奏记号",
           cols: 3,
@@ -3584,6 +3619,7 @@ var content_vue = new Vue({
           speedList: speedTxtList,
         },
         {
+          canClick: true,
           code: "repeatAndJump",
           name: "重复与跳转",
           cols: 2,
@@ -3652,21 +3688,46 @@ var content_vue = new Vue({
           ],
         },
         {
+          cabClick: true,
           name: "符尾",
           code: "tail",
           cols: 3,
           imgList: [
             {
-              url: "images/other16.png",
-              value: "!D.C.alcoda!",
+              url: "images/jz_wxp_416.png",
+              title: "无符杆",
+              class: "cmenu",
+              fn: () => changeGroupNote("all", "split"),
+              value: "$split",
             },
             {
-              url: "images/jq.png",
-              value: "!<(!",
-              value2: "!<)!",
-              title: "渐强",
+              url: "images/jz_wxp_hxfd.png",
+              title: "启动符杆",
               class: "cmenu",
-              position: "surround",
+              fn: () => changeGroupNote("right", "merge"),
+              value: "$mergeRight",
+            },
+            {
+              url: "images/jz_wxp_xfd.png",
+              title: "结束符杆",
+              class: "cmenu",
+              fn: () => changeGroupNote("left", "merge"),
+              value: "$mergeLeft",
+            },
+            {
+              url: "images/jz_wxp_hxfd.png",
+              title: "符杆中间",
+              class: "cmenu",
+              fn: () => changeGroupNote("all", "merge"),
+              value: "$mergeAll",
+            },
+            {
+              url: "images/jz_wxp_416.png",
+              class: "opacity-0 pointer-events-none h-full",
+            },
+            {
+              url: "images/jz_wxp_416.png",
+              class: "opacity-0 pointer-events-none h-full",
             },
           ],
         },
