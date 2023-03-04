@@ -414,7 +414,7 @@
         >
           <b class="flex justify-between items-center text-xl py-3 px-5">
             <div>新建乐谱</div>
-            <img src="/img/close.png" class="cursor-pointer" @click="m.newScore.musicType.show = false"/>
+            <img src="/abc/img/close.png" class="cursor-pointer" @click="m.newScore.musicType.show = false"/>
           </b>
   
           <div class="" style="background: #F5F5F5; padding: 50px 80px 40px 70px;">
@@ -459,7 +459,7 @@
         <div class="rounded-md overflow-hidden" style="width: 1246px;">
           <b class="flex justify-between items-center text-xl py-3 px-5 bg-white">
             <div>新建乐谱</div>
-            <img src="/img/close.png" class="cursor-pointer" @click="m.newScore.scoreOptsShow = m.newScore.musicType.show = false"/>
+            <img src="/abc/img/close.png" class="cursor-pointer" @click="m.newScore.scoreOptsShow = m.newScore.musicType.show = false"/>
           </b>
   
           <div class="flex" style="height: 675px; background: #B5C5D3;">
@@ -584,13 +584,13 @@
                   :checked="m.newScore.scoreOpts.beatType === 'C'"
                   @click="m.newScore.scoreOpts.beatType = 'C'"
                 />
-                <img class="ml-1" src="/img/beatSign-C.png" />
+                <img class="ml-1" src="/abc/img/beatSign-C.png" />
                 <input
                   type="radio"
                   :checked="m.newScore.scoreOpts.beatType === 'C|'"
                   @click="m.newScore.scoreOpts.beatType = 'C|'"
                 />
-                <img class="ml-1" src="/img/beatSign-C.png" />
+                <img class="ml-1" src="/abc/img/beatSign-C.png" />
               </div>
 
               <div class="mt-11 relative rounded p-8 items-center " style="border: 2px #B0B0B0 dashed;">
@@ -1255,12 +1255,12 @@
       </div>
 
       <div class="fixed flex items-center space-x-1 z-40 justify-between bottom-11 right-12 rounded-full p-2" style="background: #B0B0B0;">
-        <img src="/img/scale-small.png" class="cursor-pointer" @click="() => {
+        <img src="/abc/img/scale-small.png" class="cursor-pointer" @click="() => {
           m.panzoom.scale -= 0.1
           panzoom.zoom(m.panzoom.scale)
         }"/>
         <input v-model="m.panzoom.scale" step="0.1" min="0.5" max="1.5" type="range" class="w-16" @change="panzoom.zoom($event.target.value)"/>
-        <img src="/img/scale-big.png" class="cursor-pointer" @click="() => {
+        <img src="/abc/img/scale-big.png" class="cursor-pointer" @click="() => {
           m.panzoom.scale += 0.1
           panzoom.zoom(m.panzoom.scale)
         }"/>
@@ -2823,7 +2823,7 @@
       <div class="body-box relative" style="overflow: auto; background: #B5C5D3;">
         <!-- 左边列表 -->
         <div class="body-left z-40" style="position: fixed; top: 106px; left: 0px;">
-          <div class="body-left-content scroll">
+          <div class="body-left-content scroll" style="background: #F5F5F6">
             <!--abcString 相关  -->
             <input
               id="s0"
@@ -2857,1558 +2857,158 @@
               accept=".xml,.musicxml"
               style="display: none"
             /> -->
-            <div class="panel-name">
-              符号面板<img
-                src="v2/images/close.png"
-                title="关闭"
-                class="plsx-close"
-                @click="m.isMusicNoteShow = false"
-              />
+            <div class="flex flex-col h-full pb-4">
+              <div class="panel-name">
+                音符面板
+                <img
+                  src="/abc/img/arrow-2.png"
+                  class="plsx-close"
+                  @click="m.isMusicNoteShow = false"
+                />
+              </div>
+              <ul class="flex-1 flex flex-col" style="padding: 18px; border-top: 1px solid #D9D9D9;">
+                <li
+                  v-for="(model, index) in m.toolList"
+                  :class="model.code"
+                  :key="model.code"
+                  @click="model.isExpand = !model.isExpand"
+                >
+                  <div class="flex space-x-1 px-1 cursor-pointer">
+                    <div class="w-5 h-5 flex items-center justify-center hover:bg-gray-300">
+                      <img src="/abc/img/right.png" :class="{'arrow-down': model.isExpand}" class="duration-300" />
+                    </div>
+                    <span class="font-bold">{{model.name}}</span>
+                  </div>
+                  <img
+                    class="switch"
+                    :id="model.code + '_swtich'"
+                    title="切换"
+                    @click.stop="model.isExpand = true"
+                    v-if="model.canSwitch"
+                    src="v2/images/switch.png"
+                  />
+                  <div
+                    class="left-hide-content mb-3 bg-transparent"
+                    :class="{'left-hide-content-show': model.isExpand}"
+                  >
+                    <div v-if="model.code == 'note'" class="note-box">
+                      <select class="form-control select" id="notegroup">
+                        <option value="C0">大字二组</option>
+                        <option value="C1">大字一组</option>
+                        <option value="C2">大字组</option>
+                        <option value="C3">小字组</option>
+                        <option value="C4" selected="selected">小字一组</option>
+                        <option value="C5">小字二组</option>
+                        <option value="C6">小字三组</option>
+                        <option value="C7">小字四组</option>
+                        <option value="C7">小字四组</option>
+                        <option value="C8">小字五组</option>
+                      </select>
+                    </div>
+                    <ul v-if="model.code == 'note'" class="yinfu-ul">
+                      <li
+                        value="C"
+                        class="notes"
+                        @click="toolItemClick('note', 'C')"
+                      >
+                        C
+                      </li>
+                      <li
+                        value="D"
+                        class="notes"
+                        @click="toolItemClick('note', 'D')"
+                      >
+                        D
+                      </li>
+                      <li
+                        value="E"
+                        class="notes"
+                        @click="toolItemClick('note', 'E')"
+                      >
+                        E
+                      </li>
+                      <li
+                        value="F"
+                        class="notes"
+                        @click="toolItemClick('note', 'F')"
+                      >
+                        F
+                      </li>
+                      <li
+                        value="G"
+                        class="notes"
+                        @click="toolItemClick('note', 'G')"
+                      >
+                        G
+                      </li>
+                      <li
+                        value="A"
+                        class="notes"
+                        @click="toolItemClick('note', 'A')"
+                      >
+                        A
+                      </li>
+                      <li
+                        value="B"
+                        class="notes"
+                        @click="toolItemClick('note', 'B')"
+                      >
+                        B
+                      </li>
+                      <li
+                        value="z"
+                        class="notes"
+                        @click="toolItemClick('note', 'z')"
+                        id="znotes"
+                      >
+                        z
+                      </li>
+                    </ul>
+                    <div
+                      class="grid items-center justify-center bg-white border-l border-t"
+                      :class="[`grid-cols-${model.cols || 1}`]"
+                    >
+                      <template v-if="model.code === 'speedTerm'">
+                        <div
+                          v-for="(item) in [...model.speedList, {}]"
+                          :key="item.val"
+                          class="flex items-center justify-center h-8"
+                          style="margin-left: -2px; margin-top: -2px; border: 1px solid #E6E6E6; transform: translate(1px, 1px);"
+                        >
+                          {{ item.txt }}
+                        </div>
+                      </template>
+                      <template v-else>
+                        <div
+                          v-for="(tImg, idx) in model.imgList"
+                          :key="'ti' + idx"
+                          class="flex items-center justify-center"
+                          :class="[model.className]"
+                          style="margin-left: -2px; margin-top: -2px; border: 1px solid #E6E6E6; transform: translate(1px, 1px);"
+                        >
+                          <img
+                            :title="tImg.title"
+                            @click="toolItemClick(model.code, tImg.id, tImg.value)"
+                            :src="tImg.url"
+                            :id="tImg.id"
+                            :value="tImg.value"
+                            :value2="tImg.value2"
+                            :level="tImg.level"
+                            :chord="tImg.chord"
+                            :class="[tImg.class, 'object-contain']"
+                            :position="tImg.position"
+                            :type="tImg.type"
+                            :dur="tImg.dur"
+                            :data-toggle="tImg.datatoggle"
+                            :data-target="tImg.datatarget"
+                          />
+                        </div>
+                      </template>
+                    </div>
+                  </div>
+                </li>
+              </ul>
             </div>
-            <ul>
-              <li
-                v-for="(model, index) in toolList"
-                :class="model.code"
-                v-if="model.code != 'length'"
-                :key="model.code"
-                @click="model.isExpand = !model.isExpand"
-              >
-                <img
-                  src="v2/images/arrow.png"
-                  class="arrow"
-                  :class="{'arrow-down': model.isExpand}"
-                />
-                <span :class="{'left-hide-content-show': model.isExpand}"
-                  >{{model.name}}</span
-                >
-                <img
-                  class="switch"
-                  :id="model.code + '_swtich'"
-                  title="切换"
-                  @click.stop="model.isExpand = true"
-                  v-if="model.canSwitch"
-                  src="v2/images/switch.png"
-                />
-                <div
-                  class="left-hide-content"
-                  :class="{'left-hide-content-show': model.isExpand}"
-                >
-                  <div v-if="model.code == 'note'" class="note-box">
-                    <select class="form-control select" id="notegroup">
-                      <option value="C0">大字二组</option>
-                      <option value="C1">大字一组</option>
-                      <option value="C2">大字组</option>
-                      <option value="C3">小字组</option>
-                      <option value="C4" selected="selected">小字一组</option>
-                      <option value="C5">小字二组</option>
-                      <option value="C6">小字三组</option>
-                      <option value="C7">小字四组</option>
-                      <option value="C7">小字四组</option>
-                      <option value="C8">小字五组</option>
-                    </select>
-                  </div>
-                  <ul v-if="model.code == 'note'" class="yinfu-ul">
-                    <li
-                      value="C"
-                      class="notes"
-                      @click="toolItemClick('note', 'C')"
-                    >
-                      C
-                    </li>
-                    <li
-                      value="D"
-                      class="notes"
-                      @click="toolItemClick('note', 'D')"
-                    >
-                      D
-                    </li>
-                    <li
-                      value="E"
-                      class="notes"
-                      @click="toolItemClick('note', 'E')"
-                    >
-                      E
-                    </li>
-                    <li
-                      value="F"
-                      class="notes"
-                      @click="toolItemClick('note', 'F')"
-                    >
-                      F
-                    </li>
-                    <li
-                      value="G"
-                      class="notes"
-                      @click="toolItemClick('note', 'G')"
-                    >
-                      G
-                    </li>
-                    <li
-                      value="A"
-                      class="notes"
-                      @click="toolItemClick('note', 'A')"
-                    >
-                      A
-                    </li>
-                    <li
-                      value="B"
-                      class="notes"
-                      @click="toolItemClick('note', 'B')"
-                    >
-                      B
-                    </li>
-                    <li
-                      value="z"
-                      class="notes"
-                      @click="toolItemClick('note', 'z')"
-                      id="znotes"
-                    >
-                      z
-                    </li>
-                  </ul>
-                  <img
-                    v-for="(tImg, idx) in model.imgList"
-                    :key="'ti' + idx"
-                    :src="tImg.url"
-                    :title="tImg.title"
-                    @click="toolItemClick(model.code, tImg.id, tImg.value)"
-                    :id="tImg.id"
-                    :value="tImg.value"
-                    :value2="tImg.value2"
-                    :level="tImg.level"
-                    :chord="tImg.chord"
-                    :class="tImg.class"
-                    :position="tImg.position"
-                    :type="tImg.type"
-                    :dur="tImg.dur"
-                    :data-toggle="tImg.datatoggle"
-                    :data-target="tImg.datatarget"
-                  />
-                </div>
-              </li>
-              <!-- <li>
-						<img src="v2/images/arrow.png" class="arrow" />
-						<span>和弦</span>
-						<div class="left-hide-content " style="padding-left: 20px;padding-bottom: 10px;">
-							<div style="height:5px;"></div>
-							<span value="3" class="category selected">三和弦</span>
-							<span value="7" class="category">七和弦</span>
-							<div style="height:5px;"></div>
-							<span type="Ⅰ" level="1" class="level selected">Ⅰ</span>
-							<span type="Ⅱ" level="2" class="level">Ⅱ</span>
-							<span type="Ⅲ" level="3" class="level">Ⅲ</span>
-							<span type="Ⅳ" level="4" class="level">Ⅳ</span>
-							<span type="Ⅴ" level="5" class="level">Ⅴ</span>
-							<span type="Ⅵ" level="6" class="level">Ⅵ</span>
-							<span type="Ⅶ" level="7" class="level">Ⅶ</span>
-							<div style="height:5px;"></div>
-							<span class="chord" value="yuanwei" type3="" type7="7">原位</span>
-							<span class="chord" value="zhuangwei1" type3="6" type7="56">第一转位</span>
-							<span class="chord" value="zhuangwei2" type3="46" type7="34">第二转位</span>
-							<span class="chord" value="zhuangwei3" type3="" type7="2" style="display: none;">第三转位</span>
-							<img src="images/I.png" category="3" title="原位" level="1" chord="yuanwei" type="Ⅰ" class="chord_ins cmenu">
-							<img src="images/I6.png" category="3" title="第一转位" level="1" chord="zhuangwei1" type="Ⅰ6" class="chord_ins cmenu">
-							<img src="images/I46.png" category="3" title="第二转位" level="1" chord="zhuangwei2" type="Ⅰ46" class="chord_ins cmenu">
-							<img src="images/IV.png" category="3" title="原位" level="4" chord="yuanwei" type="Ⅳ" class="chord_ins cmenu">
-							<img src="images/IV6.png" category="3" title="第一转位" level="4" chord="zhuangwei1" type="Ⅳ6" class="chord_ins cmenu">
-							<img src="images/IV46.png" category="3" title="第二转位" level="4" chord="zhuangwei2" type="Ⅳ46" class="chord_ins cmenu">
-							<img src="images/V.png" category="3" title="原位" level="5" chord="yuanwei" type="Ⅴ" class="chord_ins cmenu">
-							<img src="images/V6.png" category="3" title="第一转位" level="5" chord="zhuangwei1" type="Ⅴ6" class="chord_ins cmenu">
-							<img src="images/V46.png" category="3" title="第二转位" level="5" chord="zhuangwei2" type="Ⅴ46" class="chord_ins cmenu">
-						</div>
-					</li> -->
-              <!-- <li>
-						<img src="v2/images/arrow.png" class="arrow" />
-						<span>连音线</span>
-						<div class="left-hide-content">
-
-						</div>
-					</li> -->
-              <!-- <li>
-						<img src="v2/images/arrow.png" class="arrow" />
-						<span>附点</span>
-						<div class="left-hide-content">
-							<img src="images/dot1.png" class="cmenu" value=">" position="after" title="节奏附点:当前音符时值*1.5，下一个音符时值减半"/>
-							<img src="images/dot2.png" class="cmenu" value="<" position="before" title="节奏附点:当前音符时值*1.5，前一个音符时值减半"/>
-							<img src="images/dot3.png" class="cmenu" value="3/" position="after" title="节奏附点"/>
-							<img src="images/dot4.png" class="cmenu" value="7//" position="after" title="节奏附点"/>
-						</div>
-					</li> -->
-              <!-- 					<li>
-						<img src="v2/images/arrow.png" class="arrow" />
-						<span>倚音</span>
-						<div class="left-hide-content">
-							<img src="images/yy1.png" class="cmenu" value="{/}" position="before"/>
-							<img src="images/yy2.png" class="cmenu" value="{}" position="before"/>
-							<img src="images/yy6.png" class="cmenu" value="{}" position="after"/>
-							<img src="images/yy11.png" class="cmenu" value="{}" position="before" type="syy"/>
-							<img src="images/yy22.png" class="cmenu" value="{}" position="after" type="syy"/>
-						</div>
-					</li> -->
-              <!-- <li>
-						<img src="v2/images/arrow.png" class="arrow" />
-						<span>琶音与滑音</span>
-						<div class="left-hide-content">
-							<img src="images/pa.png" class="cmenu" value="!arpeggio!" position="before" title="琶音"/>
-							<img src="images/arp_link.png" class="cmenu" title="琶音" onclick="setArpLink('source')"/>
-							<img src="images/paup.png" class="cmenu" value="!arpeggioup!" position="before" title="琶音"/>
-							<img src="images/padown.png" class="cmenu" value="!arpeggiodown!" position="before" title="琶音"/>
-							<img src="images/gliss.png" class="cmenu" value="!~(!note!~)!" type="gliss" title="滑音"/>
-							<img src="images/fall.png" class="cmenu" value="!slidelu!" position="before" title=""/>
-							<img src="images/doit.png" class="cmenu" value="!slide!" position="before" title=""/>
-							<img src="images/plop.png" class="cmenu" value="!sliderd!" position="before" title=""/>
-							<img src="images/scoop.png" class="cmenu" value="!slideru!" position="before" title=""/>
-							
-							<img src="images/h1.png" class="cmenu" value="!glsru!" position="before" title=""/>
-							<img src="images/h2.png" class="cmenu" value="!glsrd!" position="before" title=""/>
-						</div>
-					</li> -->
-              <!-- <li>
-						<img src="v2/images/arrow.png" class="arrow" />
-						<span>谱号</span>
-						<div class="left-hide-content">
-							<img src="images/ph_gy.png" title="高音谱号" class="node_puhao" value="1 treble"/>
-							<img src="images/ph_dy.png" title="低音谱号" class="node_puhao"  value="1 bass"/>
-							<img src="images/ph_zy.png" title="中音谱号" class="node_puhao" value="1 alto"/>
-							<img src="images/ph_czy.png" title="次中音谱号" class="node_puhao" value="1 tenor"/>
-						</div>
-					</li> -->
-              <li>
-                <img src="v2/images/arrow.png" class="arrow" />
-                <span>力度记号</span>
-                <div class="left-hide-content">
-                  <img
-                    src="images/pppp.png"
-                    value="!pppp!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/other11.png"
-                    value="!ppp!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/other10.png"
-                    value="!pp!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/other9.png"
-                    value="!p!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/other15.png"
-                    value="!mp!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/other16.png"
-                    value="!mf!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/other12.png"
-                    value="!f!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/other13.png"
-                    value="!ff!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/other14.png"
-                    value="!fff!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/ffff.png"
-                    value="!ffff!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/sf.png"
-                    value="!sf!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/other17.png"
-                    value="!sfz!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/sff.png"
-                    value="!sff!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/sfp.png"
-                    value="!sfp!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/fp.png"
-                    value="!fp!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/fz.png"
-                    value="!fz!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <!-- 强弱 -->
-                  <img
-                    src="images/strong.png"
-                    value="!strong!"
-                    title="强"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/sec_strong.png"
-                    value="!sec_strong!"
-                    title="次强"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/weak.png"
-                    value="!weak!"
-                    class="cmenu"
-                    title="弱"
-                    position="before"
-                  />
-                </div>
-              </li>
-              <li>
-                <img src="v2/images/arrow.png" class="arrow" />
-                <span>柯尔文手势</span>
-                <div class="left-hide-content">
-                  <img
-                    src="images/kew1.png"
-                    title="Do"
-                    class="kew cmenu"
-                    value="!kew1!"
-                    position="before"
-                  />
-                  <img
-                    src="images/kew2.png"
-                    title="Re"
-                    class="kew cmenu"
-                    value="!kew2!"
-                    position="before"
-                  />
-                  <img
-                    src="images/kew3.png"
-                    title="Mi"
-                    class="kew cmenu"
-                    value="!kew3!"
-                    position="before"
-                  />
-                  <img
-                    src="images/kew4.png"
-                    title="Fa"
-                    class="kew cmenu"
-                    value="!kew4!"
-                    position="before"
-                  />
-                  <img
-                    src="images/kew5.png"
-                    title="So"
-                    class="kew cmenu"
-                    value="!kew5!"
-                    position="before"
-                  />
-                  <img
-                    src="images/kew6.png"
-                    title="La"
-                    class="kew cmenu"
-                    value="!kew6!"
-                    position="before"
-                  />
-                  <img
-                    src="images/kew7.png"
-                    title="Si"
-                    class="kew cmenu"
-                    value="!kew7!"
-                    position="before"
-                  />
-                  <img
-                    src="images/kew8.png"
-                    title="Do"
-                    class="kew cmenu"
-                    value="!kew8!"
-                    position="before"
-                  />
-                </div>
-              </li>
-              <li>
-                <img src="v2/images/arrow.png" class="arrow" />
-                <span>奥尔夫</span>
-                <div class="left-hide-content">
-                  <img
-                    src="images/lingu.png"
-                    title="铃鼓"
-                    class="kew cmenu"
-                    value="!inst_lingu!"
-                    position="before"
-                  />
-                  <img
-                    src="images/pengl.png"
-                    title="碰铃"
-                    class="kew cmenu"
-                    value="!inst_pengl!"
-                    position="before"
-                  />
-                  <img
-                    src="images/shac.png"
-                    title="沙锤"
-                    class="kew cmenu"
-                    value="!inst_shac!"
-                    position="before"
-                  />
-                  <img
-                    src="images/shanjt.png"
-                    title="三角铁"
-                    class="kew cmenu"
-                    value="!inst_shanjt!"
-                    position="before"
-                  />
-                  <img
-                    src="images/shoul.png"
-                    title="手铃"
-                    class="kew cmenu"
-                    value="!inst_shoul!"
-                    position="before"
-                  />
-                  <img
-                    src="images/shuanxt.png"
-                    title="双响筒"
-                    class="kew cmenu"
-                    value="!inst_shuanxt!"
-                    position="before"
-                  />
-                  <img
-                    src="images/xiangb.png"
-                    title="响板"
-                    class="kew cmenu"
-                    value="!inst_xiangb!"
-                    position="before"
-                  />
-                  <img
-                    src="images/xiaojg.png"
-                    title="小军鼓"
-                    class="kew cmenu"
-                    value="!inst_xiaojg!"
-                    position="before"
-                  />
-                  <img
-                    src="images/feizg.png"
-                    title="非洲鼓"
-                    class="kew cmenu"
-                    value="!inst_feizg!"
-                    position="before"
-                  />
-
-                  <!-- <img src="images/shuanglin.png" title="双铃" class="kew cmenu" value="!inst_shuanglin!" hasinst="0" position="before"/>
-							<img src="images/xiangzhan.png" title="响盏" class="kew cmenu" value="!inst_xiangzhan!" hasinst="0" position="before"/> -->
-                  <img
-                    src="images/xiaojiao.png"
-                    title="小叫(木鱼)"
-                    class="kew cmenu"
-                    value="!inst_xiaojiao!"
-                    position="before"
-                  />
-                  <img
-                    src="images/xiaojiaoxiaoluo.png"
-                    title="小叫(小锣)"
-                    class="kew cmenu"
-                    value="!inst_xiaojiaoxiaoluo!"
-                    position="before"
-                  />
-
-                  <!-- <img src="images/8yinqq.png" title="8音敲琴" class="kew cmenu" value="!img_inst/8yinqq!" hasinst="0" position="before"/>
-							<img src="images/bangbtg.png" title="棒棒糖鼓" class="kew cmenu" value="!img_inst/bangbtg!" hasinst="0" position="before"/>
-							<img src="images/danxt.png" title="单响筒" class="kew cmenu" value="!img_inst/danxt!" hasinst="0" position="before"/>
-							<img src="images/jiezb.png" title="节奏棒" class="kew cmenu" value="!img_inst/jiezb!" hasinst="0" position="before"/> -->
-                  <img
-                    src="images/yaol.png"
-                    title="摇铃"
-                    class="kew cmenu"
-                    value="!inst_yaoling!"
-                    position="before"
-                  />
-                  <!-- <img src="images/yuanmsd.png" title="原木沙蛋" class="kew cmenu" value="!img_inst/yuanmsd!" hasinst="0" position="before"/> -->
-                  <img
-                    src="images/wamt.png"
-                    title="蛙鸣筒"
-                    class="kew cmenu"
-                    value="!inst_wamt!"
-                    position="before"
-                  />
-
-                  <img
-                    src="images/bo.png"
-                    title="钹"
-                    class="kew cmenu"
-                    value="!inst_bo!"
-                    position="before"
-                  />
-                  <img
-                    src="images/daluo.png"
-                    title="大锣"
-                    class="kew cmenu"
-                    value="!inst_daluo!"
-                    position="before"
-                  />
-                  <img
-                    src="images/bksd.png"
-                    title="八孔竖笛"
-                    class="kew cmenu"
-                    value="!showsd8!"
-                    position="before"
-                  />
-                  <!-- <img src="images/zhonggg.png" title="中国鼓" class="kew cmenu" value="!img_inst/zhonggg!" hasinst="0" position="before"/> -->
-                </div>
-              </li>
-              <li>
-                <img src="v2/images/arrow.png" class="arrow" />
-                <span>方向控制</span>
-                <div class="left-hide-content">
-                  <img
-                    src="images/direct/posstemdown.png"
-                    title="符干方向朝下"
-                    class="cmenu"
-                    value="[I:pos stem down]"
-                    position="before"
-                  />
-                  <img
-                    src="images/direct/posstemup.png"
-                    title="符干方向朝上"
-                    class="cmenu"
-                    value="[I:pos stem up]"
-                    position="before"
-                  />
-                  <img
-                    src="images/direct/1down.png"
-                    title="显示在下方"
-                    class="cmenu"
-                    value="[I:pos orn down]"
-                    position="before"
-                  />
-                  <img
-                    src="images/direct/1up.png"
-                    title="显示在上方"
-                    class="cmenu"
-                    value="[I:pos orn up]"
-                    position="before"
-                  />
-                  <img
-                    src="images/direct/jqbelow.png"
-                    title="显示在下方"
-                    class="cmenu"
-                    value="[I:pos dyn below]"
-                    position="before"
-                  />
-                  <img
-                    src="images/direct/jqabove.png"
-                    title="显示在上方"
-                    class="cmenu"
-                    value="[I:pos dyn above]"
-                    position="before"
-                  />
-                  <img
-                    src="images/direct/fpdown.png"
-                    title="显示在下方"
-                    class="cmenu"
-                    value="[I:pos volume below]"
-                    position="before"
-                  />
-                  <img
-                    src="images/direct/fpup.png"
-                    title="显示在上方"
-                    class="cmenu"
-                    value="[I:pos volume above]"
-                    position="before"
-                  />
-                  <img
-                    src="v2/images/contact.png"
-                    title="连音线在上方"
-                    class="cmenu"
-                    value="'"
-                    position="before"
-                  />
-                  <img
-                    src="v2/images/contact2.png"
-                    title="连音线在下方"
-                    class="cmenu"
-                    value=","
-                    position="before"
-                  />
-                  <img
-                    src="images/dot_down.png"
-                    title="显示在下方"
-                    class="cmenu"
-                    value='".down"'
-                    position="before"
-                  />
-                  <img
-                    src="images/other4.png"
-                    title="显示在上方"
-                    class="cmenu"
-                    value='".up"'
-                    position="before"
-                  />
-                  <img
-                    src="images/graceup.png"
-                    title="倚音开口朝上"
-                    class="cmenu"
-                    value='"graceup"'
-                    position="before"
-                  />
-                  <img
-                    src="images/gracedown.png"
-                    title="倚音开口朝下"
-                    class="cmenu"
-                    value='"gracedown"'
-                    position="before"
-                  />
-                </div>
-              </li>
-              <li>
-                <img src="v2/images/arrow.png" class="arrow" />
-                <span>重复与跳转</span>
-                <div class="left-hide-content">
-                  <img
-                    src="images/other18.png"
-                    value="!coda!"
-                    class="cmenu"
-                    position="preInsert"
-                    type="nodeline"
-                  />
-                  <!--该记号会导致谱子的各种解析出现错乱，所以先不用 <img src="images/noderepeat.png" value="%%repeat" class="cmenu" position="replaceNodeContent" type="nodeline"/> -->
-                  <img
-                    src="images/other19.png"
-                    value="!segno!"
-                    title="segno记号"
-                    class="cmenu"
-                    position="preInsert"
-                    type="nodeline"
-                  />
-                  <img
-                    src="images/other20.png"
-                    value="!D.C.!"
-                    title="从头反复"
-                    class="cmenu"
-                    position="afterInsert"
-                    type="nodeline"
-                  />
-                  <img
-                    src="images/dcalfine.png"
-                    value="!D.C.alfine!"
-                    title="从头反复到fine终止"
-                    class="cmenu"
-                    position="afterInsert"
-                    type="nodeline"
-                  />
-                  <img
-                    src="images/dcalcoda.png"
-                    value="!D.C.alcoda!"
-                    title=""
-                    class="cmenu"
-                    position="afterInsert"
-                    type="nodeline"
-                  />
-                  <img
-                    src="images/other21.png"
-                    value="!D.S.!"
-                    title="跳转到segno记号"
-                    class="cmenu"
-                    position="afterInsert"
-                    type="nodeline"
-                  />
-                  <img
-                    src="images/dsalfine.png"
-                    value="!D.S.alfine!"
-                    title="跳转到segno记号到fine终止"
-                    class="cmenu"
-                    position="afterInsert"
-                    type="nodeline"
-                  />
-                  <img
-                    src="images/dsalcoda.png"
-                    value="!D.S.alcoda!"
-                    title=""
-                    class="cmenu"
-                    position="afterInsert"
-                    type="nodeline"
-                  />
-                  <img
-                    src="images/other22.png"
-                    value="!fine!"
-                    class="cmenu"
-                    position="afterInsert"
-                    type="nodeline"
-                  />
-                  <img
-                    src="images/tocoda.png"
-                    value="!tocoda!"
-                    class="cmenu"
-                    position="afterInsert"
-                    type="nodeline"
-                  />
-                  <img
-                    src="v2/images/other24.png"
-                    title="反复开始"
-                    value="|:"
-                    position="preReplace"
-                    type="nodeline"
-                    class="cmenu"
-                    draggable="false"
-                  />
-                  <img
-                    src="v2/images/other25.png"
-                    title="反复结束"
-                    value=":|"
-                    position="afterReplace"
-                    type="nodeline"
-                    class="cmenu"
-                    draggable="false"
-                  />
-                  <img
-                    src="v2/images/other26.png"
-                    title="反复结束-反复开始"
-                    value=":||:"
-                    position="afterReplace"
-                    type="nodeline"
-                    class="cmenu"
-                    draggable="false"
-                  />
-                  <!-- <img src="images/bhffjh.png" title="变化的反复记号" value="" position="afterReplace" type="nodeline" class="cmenu" draggable="false">
-							<img src="images/bhws.png" title="变化的尾声" value="" position="afterReplace" type="nodeline" class="cmenu" draggable="false"> 这两个都不知道怎么实现，先不要了-->
-                </div>
-              </li>
-              <li>
-                <img src="v2/images/arrow.png" class="arrow" />
-                <span>品格图</span>
-                <div class="left-hide-content">
-                  <div class="left-hide-content" mkey="C" style="display: none">
-                    <img
-                      src="images/jita/C.png"
-                      value='"C"'
-                      title="C"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/Dm.png"
-                      value='"Dm"'
-                      title="Dm"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/Em.png"
-                      value='"Em"'
-                      title="Em"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/F.png"
-                      value='"F"'
-                      title="F"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/G.png"
-                      value='"G"'
-                      title="G"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/Am.png"
-                      value='"Am"'
-                      title="Am"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/G7.png"
-                      value='"G7"'
-                      title="G7"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                  </div>
-                  <div class="left-hide-content" mkey="D" style="display: none">
-                    <img
-                      src="images/jita/D.png"
-                      value='"D"'
-                      title="D"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/Em.png"
-                      value='"Em"'
-                      title="Em"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/%23Fm.png"
-                      value='"#Fm"'
-                      title="#Fm"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/G.png"
-                      value='"G"'
-                      title="G"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/A.png"
-                      value='"A"'
-                      title="A"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/Bm.png"
-                      value='"Bm"'
-                      title="Bm"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/A7.png"
-                      value='"A7"'
-                      title="A7"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                  </div>
-                  <div class="left-hide-content" mkey="E" style="display: none">
-                    <img
-                      src="images/jita/E.png"
-                      value='"E"'
-                      title="E"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/%23Fm.png"
-                      value='"#Fm"'
-                      title="#Fm"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/%23Gm.png"
-                      value='"#Gm"'
-                      title="#Gm"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/A.png"
-                      value='"A"'
-                      title="A"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/B.png"
-                      value='"B"'
-                      title="B"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/%23Cm.png"
-                      value='"#Cm"'
-                      title="#Cm"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/B7.png"
-                      value='"B7"'
-                      title="B7"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                  </div>
-                  <div class="left-hide-content" mkey="F" style="display: none">
-                    <img
-                      src="images/jita/F.png"
-                      value='"F"'
-                      title="F"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/Gm.png"
-                      value='"Gm"'
-                      title="Gm"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/Am.png"
-                      value='"Am"'
-                      title="Am"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/bB.png"
-                      value='"bB"'
-                      title="bB"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/C.png"
-                      value='"C"'
-                      title="C"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/Dm.png"
-                      value='"Dm"'
-                      title="Dm"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/C7.png"
-                      value='"C7"'
-                      title="C7"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                  </div>
-                  <div class="left-hide-content" mkey="G" style="display: none">
-                    <img
-                      src="images/jita/G.png"
-                      value='"G"'
-                      title="G"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/Am.png"
-                      value='"Am"'
-                      title="Am"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/Bm.png"
-                      value='"Bm"'
-                      title="Bm"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/C.png"
-                      value='"C"'
-                      title="C"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/D.png"
-                      value='"D"'
-                      title="D"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/Em.png"
-                      value='"Em"'
-                      title="Em"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/D7.png"
-                      value='"D7"'
-                      title="D7"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                  </div>
-                  <div class="left-hide-content" mkey="A" style="display: none">
-                    <img
-                      src="images/jita/A.png"
-                      value='"A"'
-                      title="A"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/Bm.png"
-                      value='"Bm"'
-                      title="Bm"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/%23Cm.png"
-                      value='"#Cm"'
-                      title="#Cm"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/D.png"
-                      value='"D"'
-                      title="D"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/E.png"
-                      value='"E"'
-                      title="E"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/%23Fm.png"
-                      value='"#Fm"'
-                      title="#Fm"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/E7.png"
-                      value='"E7"'
-                      title="E7"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                  </div>
-                  <div class="left-hide-content" mkey="B" style="display: none">
-                    <img
-                      src="images/jita/B.png"
-                      value='"B"'
-                      title="B"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/%23Cm.png"
-                      value='"#Cm"'
-                      title="#Cm"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/%23Dm.png"
-                      value='"#Dm"'
-                      title="#Dm"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/E.png"
-                      value='"E"'
-                      title="E"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/%23F.png"
-                      value='"#F"'
-                      title="#F"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/%23Gm.png"
-                      value='"#Gm"'
-                      title="#Gm"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                    <img
-                      src="images/jita/%23F7.png"
-                      value='"#F7"'
-                      title="#F7"
-                      type="pgt"
-                      class="cmenu pgt"
-                      position="before"
-                    />
-                  </div>
-                </div>
-              </li>
-              <li>
-                <img src="v2/images/arrow.png" class="arrow" />
-                <span>功能标记</span>
-                <div class="left-hide-content" chord="d3">
-                  <!-- 大三 -->
-                  <img
-                    src="images/gongneng/3/T.png"
-                    value="T"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                  <img
-                    src="images/gongneng/3/SII.png"
-                    value="SⅡ"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                  <img
-                    src="images/gongneng/3/DTIII.png"
-                    value="DTⅢ"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                  <img
-                    src="images/gongneng/3/S.png"
-                    value="S"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                  <img
-                    src="images/gongneng/3/D.png"
-                    value="D"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                  <img
-                    src="images/gongneng/3/TSVI.png"
-                    value="TSⅥ"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                  <img
-                    src="images/gongneng/3/DVII.png"
-                    value="DⅦ"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                </div>
-                <div class="left-hide-content" chord="x3">
-                  <!-- 小三 -->
-                  <img
-                    src="images/gongneng/3/t_xd.png"
-                    value="t"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                  <img
-                    src="images/gongneng/3/sII_xd.png"
-                    value="sⅡ"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                  <img
-                    src="images/gongneng/3/dtIII_xd.png"
-                    value="dtⅢ"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                  <img
-                    src="images/gongneng/3/s_xd.png"
-                    value="s"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                  <img
-                    src="images/gongneng/3/d_xd.png"
-                    value="d"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                  <img
-                    src="images/gongneng/3/tsVI_xd.png"
-                    value="tsⅥ"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                  <img
-                    src="images/gongneng/3/dVII_xd.png"
-                    value="dⅦ"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                </div>
-                <div class="left-hide-content" chord="d7">
-                  <!-- 大7 -->
-                  <img
-                    src="images/gongneng/7/T.png"
-                    value="T7"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                  <img
-                    src="images/gongneng/7/SII.png"
-                    value="SⅡ7"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                  <img
-                    src="images/gongneng/7/DTIII.png"
-                    value="DTⅢ7"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                  <img
-                    src="images/gongneng/7/S.png"
-                    value="S7"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                  <img
-                    src="images/gongneng/7/D.png"
-                    value="D7"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                  <img
-                    src="images/gongneng/7/TSVI.png"
-                    value="TSⅥ7"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                  <img
-                    src="images/gongneng/7/DVII.png"
-                    value="DⅦ7"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                </div>
-                <div class="left-hide-content" chord="x7">
-                  <!-- 小7 -->
-                  <img
-                    src="images/gongneng/7/t_xd.png"
-                    value="t7"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                  <img
-                    src="images/gongneng/7/sII_xd.png"
-                    value="sⅡ7"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                  <img
-                    src="images/gongneng/7/dtIII_xd.png"
-                    value="dtⅢ7"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                  <img
-                    src="images/gongneng/7/s_xd.png"
-                    value="s7"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                  <img
-                    src="images/gongneng/7/d_xd.png"
-                    value="d7"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                  <img
-                    src="images/gongneng/7/tsVI_xd.png"
-                    value="tsⅥ7"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                  <img
-                    src="images/gongneng/7/dVII_xd.png"
-                    value="dⅦ7"
-                    type="lyric"
-                    class="cmenu lyric"
-                  />
-                </div>
-              </li>
-              <li>
-                <img src="v2/images/arrow.png" class="arrow" />
-                <span>其它符号</span>
-                <div class="left-hide-content">
-                  <img
-                    src="images/k1.png"
-                    value="!lb!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/k2l.png"
-                    value="!rbl!"
-                    class="cmenu"
-                    type="all"
-                    position="before"
-                  />
-                  <img
-                    src="images/k2r.png"
-                    value="!rbr!"
-                    class="cmenu"
-                    type="all"
-                    position="before"
-                  />
-                  <img
-                    src="images/other1.png"
-                    value="!dnb!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/other2.png"
-                    value="!upb!"
-                    class="cmenu"
-                    position="before"
-                    type="all"
-                  />
-                  <img
-                    src="images/marcato.png"
-                    value="!^!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/sanjiao.png"
-                    value="!wedge!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/other3.png"
-                    value="!>!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/other4.png"
-                    value="."
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/other5.png"
-                    value="!tenuto!"
-                    title="位置不跟随符头方向"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/other5.png"
-                    value="!emb!"
-                    title="位置跟随符头方向"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/other6.png"
-                    value="!open!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/other7.png"
-                    value="!plus!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/other8.png"
-                    value="!snap!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/b1.png"
-                    value="!trill!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/b2.png"
-                    value="!umrd!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/b3.png"
-                    value="!mordent!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/b4.png"
-                    value="!roll!"
-                    class="cmenu"
-                    position="before"
-                  />
-
-                  <img
-                    src="images/rit.png"
-                    value="!rit!"
-                    title="渐慢"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/accel.png"
-                    value="!accel!"
-                    title="渐快"
-                    class="cmenu"
-                    position="before"
-                  />
-
-                  <img
-                    src="images/b12.png"
-                    value="!turn!"
-                    title="顺回音"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <!-- <img src="images/b13.png" value="!turnx!" class="cmenu" position="before"/> -->
-                  <img
-                    src="images/b14.png"
-                    value="!invertedturn!"
-                    title="逆回音"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <!-- <img src="images/b15.png" value="!invertedturnx!" class="cmenu" position="before"/> -->
-                  <img
-                    src="images/b16.png"
-                    value="!breath!"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/b17.png"
-                    value="!shortphrase!"
-                    class="cmenu"
-                    position="before"
-                  />
-
-                  <img
-                    src="images/ped.png"
-                    value="!ped!"
-                    title="踩下"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/ped-up.png"
-                    value="!ped-up!"
-                    title="放松"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/pedall.png"
-                    value="!pedall!"
-                    title="踩下后放松"
-                    class="cmenu"
-                    position="before"
-                  />
-                  <img
-                    src="images/pedall2.png"
-                    value="!pedall2!"
-                    title="踩下后放松"
-                    class="cmenu"
-                    position="before"
-                  />
-
-                  <img
-                    src="images/bc.png"
-                    value="!bc!"
-                    class="cmenu"
-                    title="占位符"
-                    position="before"
-                  />
-                  <img
-                    src="images/bc.png"
-                    value="!bcb!"
-                    class="cmenu"
-                    title="占位符"
-                    position="before"
-                  />
-                </div>
-              </li>
-            </ul>
           </div>
         </div>
 
@@ -4882,7 +3482,7 @@
         <!-- 属性面板 -->
         <div
           class="body-attr scroll"
-          :style="{width: attrPanelShow ? '220px': '0px'}"
+          :style="{width: attrPanelShow ? '256px': '0px'}"
         >
           <div class="panel-name">
             <span

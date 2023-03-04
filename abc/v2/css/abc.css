@@ -570,7 +570,7 @@ ul, li{ padding:0; margin:0; list-style:none; display: inline-block; }
 }
 
 .left-hide-content-show{
-	color: #F99D34;
+	/* color: #F99D34; */
 	font-weight: bold;
 	display: block;
 }
