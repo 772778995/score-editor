@@ -2972,8 +2972,13 @@
                         <div
                           v-for="(item) in [...model.speedList, {}]"
                           :key="item.val"
-                          class="flex items-center justify-center h-8"
+                          class="flex items-center justify-center h-8 text-sm font-normal"
                           style="margin-left: -2px; margin-top: -2px; border: 1px solid #E6E6E6; transform: translate(1px, 1px);"
+                          @click="() => {
+                            scoreOpts.speedType = 'txt'
+                            scoreOpts.speedText = item.txt
+                            abc_change()
+                          }"
                         >
                           {{ item.txt }}
                         </div>
@@ -2985,6 +2990,11 @@
                           class="flex items-center justify-center"
                           :class="[model.className]"
                           style="margin-left: -2px; margin-top: -2px; border: 1px solid #E6E6E6; transform: translate(1px, 1px);"
+                          @click="() => {
+                            if ($('.selected_text')) {
+                              changeAbc((txt) => `${tImg.value || ''}${txt}${tImg.value2 || ''}`);
+                            }
+                          }"
                         >
                           <img
                             :title="tImg.title"
@@ -3274,6 +3284,7 @@
 
               <textarea
                 id="source"
+                readonly="true"
                 name="source"
                 rows="14"
                 cols="73"

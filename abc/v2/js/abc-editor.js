@@ -2188,7 +2188,7 @@ var content_vue = new Vue({
     // ———————————————————————————————————————— 分割线 __data ————————————————————————————————————————
     // 在远古项目基础上二次开发，新数据在 m 对象之中避免命名冲突
     m: {
-      scoreOpts,
+      // scoreOpts,
       lyric: {
         style: {
           color: "#333",
@@ -3648,6 +3648,25 @@ var content_vue = new Vue({
               class: "cmenu",
               position: "afterInsert",
               type: "nodeline",
+            },
+          ],
+        },
+        {
+          name: "符尾",
+          code: "tail",
+          cols: 3,
+          imgList: [
+            {
+              url: "images/other16.png",
+              value: "!D.C.alcoda!",
+            },
+            {
+              url: "images/jq.png",
+              value: "!<(!",
+              value2: "!<)!",
+              title: "渐强",
+              class: "cmenu",
+              position: "surround",
             },
           ],
         },
