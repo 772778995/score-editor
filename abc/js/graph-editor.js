@@ -5617,6 +5617,7 @@ function genNoteDeco(_0x16251, _0x189B1, _0x15F54, _0x1873B) {
   if ($(".editor_rect[type='rest']")[0]) {
     if (["^", "^^", "=", "_", "__"].includes(_0x16251)) return;
   }
+  if (["$mergeAll", "$mergeLeft", "$mergeRight"].includes(_0x16251)) return;
   console[_$_4d63[75]](_$_4d63[593], cen);
   var _0x195A5 = $(_$_4d63[568]);
   if (_0x195A5["length"] > 0) {
