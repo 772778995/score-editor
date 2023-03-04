@@ -3099,6 +3099,60 @@ var content_vue = new Vue({
           isExpand: !1,
         },
         {
+          name: "临时记号",
+          code: "tempMark",
+          cols: 4,
+          imgList: [
+            {
+              url: "v2/images/yingao1.png",
+              value: "^",
+              title: "升号",
+              class: "cmenu",
+              position: "before",
+            },
+            {
+              url: "v2/images/yingao2.png",
+              value: "_",
+              title: "降号",
+              class: "cmenu",
+              position: "before",
+            },
+            {
+              url: "v2/images/yingao3.png",
+              value: "=",
+              title: "还原",
+              class: "cmenu",
+              position: "before",
+            },
+            {
+              url: "v2/images/cs.png",
+              value: "^^",
+              title: "重升",
+              class: "cmenu",
+              position: "before",
+            },
+            {
+              url: "v2/images/cj.png",
+              value: "__",
+              title: "重降",
+              class: "cmenu",
+              position: "before",
+            },
+            {
+              url: "images/pa.png",
+              class: "opacity-0 pointer-events-none h-full",
+            },
+            {
+              url: "images/pa.png",
+              class: "opacity-0 pointer-events-none h-full",
+            },
+            {
+              url: "images/pa.png",
+              class: "opacity-0 pointer-events-none h-full",
+            },
+          ],
+        },
+        {
           code: "dur",
           name: "连音",
           cols: 3,
