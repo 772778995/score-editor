@@ -1140,32 +1140,10 @@ $(document).ready(function(){
 			return;
 		}
 		//ctrl + L输入歌词
-		if(event.which === 76 && event.ctrlKey){
-			createLyricEditor(false)
-			return false;
-		}
-		// ctrl+z
-		if (event.which === 90 && event.ctrlKey) {
-			console.log("按下ctrl+z")
-			console.log("目标元素：",event.target)
-			if($(event.target).attr("class")=="editor-div"){
-				return;
-			}
-				setTimeout(function(){
-				goback();
-				event.preventDefault();
-			},100)
-			return false;
-				/*
-			* log.pop(); $("#source").val(log[log.length - 1]); src_change();
-			* return;
-			*/
-		}
-		// ctrl+y
-		if (event.which === 89 && event.ctrlKey){
-				$(".forward").click();
-				return false;
-		}     
+		// if(event.which === 76 && event.ctrlKey){
+		// 	createLyricEditor(false)
+		// 	return false;
+		// }
       
 		//ctrl + d//显示隐藏钢琴键盘
 		// if (event.which === 68 && event.ctrlKey){
@@ -1202,76 +1180,13 @@ $(document).ready(function(){
 			draw_editor ?  $("#graphEditorMenuInsert").click() :  $("#graphEditorMenuUpdate").click()
 			return
 		}
-		//U更新模式
-		// if(event.which==85){
-		//   $("#graphEditorMenuUpdate").click();
-		//   return false;
-		// }
+
       
-//      如果当前焦点是文本框或文本域则正常走
+//    如果当前焦点是文本框或文本域则正常走
       if(obj[0].tagName.toUpperCase()=="TEXTAREA" ||obj[0].tagName.toUpperCase()=="INPUT"){
 			
 			return;
 	  }
-      //ctrl+c
-      if(event.ctrlKey && event.which == 67){
-    	 //复制小节 
-    	  var selectedBars = $("svg[type='rectbar']");
-    	  if($(selectedBars).length>0){
-    		  copyNodes();
-    		  return false;
-    	  }
-    	  var selectedNodes = $("svg[type='rectnode']");
-    	  if($(selectedNodes).length>0){
-    		  copyNodes();
-    		  return false;
-    	  }
-    	  //复制音符
-    	  var selectNotes = $(".selected_text[type*='HD'],.selected_text[type^='r'],.selected_text[type='note']")
-    		if(selectNotes.length>0){
-    			copyNote();
-    			return false;
-    		}
-    	  
-    	  
-      }
-      if(event.ctrlKey && event.which == 86){
-    	  var selectedBars = $("svg[type='rectbar']");
-    	  if($(selectedBars).length>0){
-    		  //粘贴小节
-    		  pasteNode();
-    		  return false;
-    	  }
-    	  var selectedNodes = $("svg[type='rectnode']");
-    	  if($(selectedNodes).length>0){
-    		  //粘贴小节
-    		  pasteNode();
-    		  return false;
-    	  }
-    	  var selectNotes = $(".selected_text[type*='HD'],.selected_text[type^='r'],.selected_text[type='note']")
-    		if(selectNotes.length>0){
-    			pasteNote();
-    			return false;
-    		}
-      }
-      //BackSpace
-      // if(event.which == 8){
-    	//   if($(".selected_text").length>0 && cen!=null){
-			// 	//在有选中音符的情况下，按下BackSpace，去掉前面一个空格
-    	// 	  	var istart = $(".selected_text").attr("istart");
-    	// 	  	var s = syms[istart];
-    	// 	  	if(s && s.prev && s.prev.type==8){
-    	// 	  		var content = $("#source").val();
-    	// 	  		var midStr = content.substring(s.prev.iend,s.istart).replace(/\s/g,"");
-    	// 	  		var newContent = content.substring(0,s.prev.iend) + midStr + content.substring(s.istart);
-    	// 	  		$("#source").val(newContent);
-    	// 	  		doLog();
-			// 		src_change();
-			// 		return false;
-    	// 	  	}
-				
-			// 	}
-      // }
       
       
       //左箭头  选中前一个音符
@@ -1331,47 +1246,7 @@ $(document).ready(function(){
 				}
 			} 
 		}
-		// 按下空格键
-		if(e.keyCode==32 ){
-			e.preventDefault()
-			myplay()
-			// var activeEle = document.activeElement;
-			// if($(activeEle).hasClass("editor-div")){
-			// 	return false;
-			// }
-			// if(activeEle.id=="source" ){
-			// 	return;
-			// }
-			// if(obj[0].tagName.toUpperCase()=="INPUT" || obj[0].tagName.toUpperCase()=="TEXTAREA"){
-			// 	return;
-			// } 
-			// if($(".selected_text").length>0 && cen!=null){
-			// 	//在有选中音符的情况下，按下空格键，增加一个空格
-			// 	var content = $("#source").val();
-			// 	var newContent = content.substring(0,cen.istart)+ " "+content.substring(cen.istart);
-			// 	$("#source").val(newContent);
-			// 	src_change();
-			// 	doLog();
-			// 	return false;
-			// }
-			
-			// var st = getSelectText("source");
-			// if(st!=""){
-			// 	// insertText(" "+st);
-			// 	replaceSelected(st," "+st);
-			// 	abc_change();
-			// 	$("#source").blur();
-			// 	return false;
-			// }else{
-			// 	// 从光标位置处加一个空格
-			// 	var index = getStartPos(getById("source"));
-			// 	$("#source").val($("#source").val().substr(0,index)+" "+$("#source").val().substr(index));
-			// 	var obj = document.getElementById("source");
-			// 	obj.selectionStart = obj.selectionEnd = index+1;
-			// 	abc_change();
-			// 	return false;
-			// }
-		}
+
 		// ctrl + 向上箭头
 		if (event.which === 38 && event.ctrlKey){
 			console.log("按下ctrl+向上箭头")
@@ -1441,20 +1316,6 @@ $(document).ready(function(){
 			return false;
 		}
 		
-		// del键 || BackSpace
-		if(e.keyCode==46 || event.which == 8){
-			//图形化编辑的删除功能
-			// if(graph_update){
-				delSelNote();
-				// return false;
-			// }
-			
-			// if($(".right-bottom").css("display")=="none"){
-			// 	$("#del").click();
-			// 	return false;
-			// }
-			
-		}
 		var keyValue = e.key;
 		
 		//cdefgab按键处理,这里不再响应字母事件
@@ -7642,12 +7503,23 @@ function delSelectedNode(){
 	}
 }
 //插入小节
-function insertNodes(){
-	var barIndex = $("svg[type='rectnode'],svg[type='rectbar']").attr("barindex");
-	if(barIndex==undefined){
-		barIndex = $("svg[type='rectnode'],svg[type='rectbar']").attr("barIndex");
+function insertNodes(num, isAfter, isFirst){
+	if(!content_vue.checkIsSelectBar()) return
+	for (let i = 1; i <= num; i++) {
+		var barIndex = $("svg[type='rectnode'],svg[type='rectbar']").attr("barindex");
+		if(barIndex==undefined){
+			barIndex = $("svg[type='rectnode'],svg[type='rectbar']").attr("barIndex");
+		}
+		if (isFirst) barIndex = 0
+		if(isAfter) {
+			barIndex = +barIndex + 1
+			if (!$(`svg[barindex='${barIndex}']`)[0]) {
+				appendNodes(1)
+			}
+		} else {
+			insertNodeByIndex(barIndex);
+		}
 	}
-	insertNodeByIndex(barIndex);
 }
 /**
  * 改变连音线弧度

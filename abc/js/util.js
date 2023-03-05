@@ -5923,6 +5923,7 @@ function handleKeyPress(e, editorType) {
 }
 //处理数字键的输入事件,e为事件，editorType为输入界面类型(old,editor)
 function handleNumPress(e, editorType) {
+  if (e.ctrlKey || e.shiftKey || e.aliKey) return;
   if (e.keyCode == 96 || e.keyCode == 48) {
     //处理输入0的情况
     val = "z";

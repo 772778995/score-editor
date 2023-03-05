@@ -1,3 +1,54 @@
+function liaison(val) {
+  var selectEl = $('.selected_text')[0]
+  if (!selectEl) return alert('请先选中音符')
+  var _0x15C57 = $('#source').val()
+  var matchArr = val.match(/\((\d)/);
+    var num = matchArr[1];
+    var cen = syms[selectEl.getAttribute('istart')]
+    console[_$_4d63[75]](cen);
+    var _0x1927B = cen[_$_4d63[104]];
+    var _0x17115 = _0x15C57[_$_4d63[177]](cen[_$_4d63[69]], cen[_$_4d63[155]]);
+    var _0x1946A = _0x1927B / 2;
+    var _0x19497 = _$_4d63[3];
+    var _0x18BA0 = cen[_$_4d63[592]];
+    if (_0x1946A > _0x18BA0) {
+      var _0x1738B = parseInt(_0x1946A / _0x18BA0);
+      if (_0x1738B != 1) {
+        _0x19497 = _0x1738B + _$_4d63[3];
+      }
+    } else {
+      if (_0x1946A < _0x18BA0) {
+        var _0x1738B = parseInt(_0x18BA0 / _0x1946A);
+        if (_0x1738B > 1) {
+          for (var _0x15CDE = 1; _0x15CDE < _0x1738B; _0x15CDE = _0x15CDE * 2) {
+            _0x19497 += _$_4d63[630];
+          }
+        }
+      }
+    }
+    if (/\d{1,}|\/{1,}/[_$_4d63[623]](_0x17115)) {
+      _0x17115 = _0x17115[_$_4d63[122]](/\d{1,}|\/{1,}/, _0x19497);
+    } else {
+      _0x17115 = _0x17115 + _0x19497;
+    }
+    for (var _0x15CDE = 0; _0x15CDE < num - 1; _0x15CDE++) {
+      _0x17115 += _$_4d63[124] + _0x19497;
+    }
+    var _0x1638C =
+      _0x15C57[_$_4d63[177]](0, cen[_$_4d63[69]]) +
+      val +
+      _0x17115 +
+      _$_4d63[159] +
+      _0x15C57[_$_4d63[177]](cen[_$_4d63[155]]);
+    $(_$_4d63[120])[_$_4d63[119]](_0x1638C);
+    if (musicType == 2) {
+      src_change();
+    } else {
+      render();
+    }
+    doLog();
+    return;
+}
 let isNewTab = false;
 function copy() {
   //复制小节
@@ -3172,6 +3223,7 @@ var content_vue = new Vue({
               title: "2连音",
               class: "cmenu",
               position: "before",
+              fn: () => liaison('(2')
             },
             {
               url: "images/con3.png",
@@ -3179,6 +3231,7 @@ var content_vue = new Vue({
               title: "3连音",
               class: "cmenu",
               position: "before",
+              fn: () => liaison('(3')
             },
             {
               url: "images/con4.png",
@@ -3186,6 +3239,7 @@ var content_vue = new Vue({
               title: "4连音",
               class: "cmenu",
               position: "before",
+              fn: () => liaison('(4')
             },
             {
               url: "images/con5.png",
@@ -3193,6 +3247,7 @@ var content_vue = new Vue({
               title: "5连音",
               class: "cmenu",
               position: "before",
+              fn: () => liaison('(5')
             },
             {
               url: "images/con6.png",
@@ -3200,6 +3255,7 @@ var content_vue = new Vue({
               title: "6连音",
               class: "cmenu",
               position: "before",
+              fn: () => liaison('(6')
             },
             {
               url: "images/con7.png",
@@ -3207,6 +3263,7 @@ var content_vue = new Vue({
               title: "7连音",
               class: "cmenu",
               position: "before",
+              fn: () => liaison('(7')
             },
           ],
           isExpand: !1,
@@ -3738,7 +3795,12 @@ var content_vue = new Vue({
           {
             title: "基本操作",
             leftList: [
-              { title: "新建", shortList: ["Ctrl", "N"] },
+              {
+                title: "新建",
+                shortList: ["Ctrl", "N"],
+                valueList: [],
+                fn: () => (content_vue.newScore.musicType.show = true),
+              },
               { title: "打开", shortList: ["Ctrl", "O"] },
               { title: "导出", shortList: ["Ctrl", "D"] },
               { title: "保存", shortList: ["Ctrl", "S"] },
@@ -3749,14 +3811,27 @@ var content_vue = new Vue({
               { title: "谱面拖动", shortList: ["鼠标左击"] },
             ],
             rightList: [
-              { title: "删除", shortList: ["Backspace", "/", "Del"] },
-              { title: "撤回", shortList: ["Ctrl", "Z"] },
-              { title: "恢复", shortList: ["Ctrl", "Shift", "Z"] },
-              { title: "复制", shortList: ["Ctrl", "C"] },
-              { title: "粘贴", shortList: ["Ctrl", "V"] },
-              { title: "全选", shortList: ["Ctrl", "A"] },
-              { title: "剪切", shortList: ["Ctrl", "X"] },
-              { title: "删除小节", shortList: ["Ctrl", "Backspace"] },
+              { title: "删除", shortList: ["Backspace", "/", "Del"], valueList: ["Backspace", "Delete"], fn: () => delSelNote() },
+              { title: "撤回", shortList: ["Ctrl", "Z"], valueList: ["z"], fn: (e) => {
+                if($(e.target).attr("class")=="editor-div"){
+                  return;
+                }
+                  setTimeout(function(){
+                  goback();
+                  e.preventDefault();
+                },100)
+              } },
+              { title: "恢复", shortList: ["Ctrl", "Shift", "Z"], valueList: ["z"], fn: () => $(".forward").click() },
+              { title: "复制", shortList: ["Ctrl", "C"], valueList: ["c"], fn: () => copy() },
+              { title: "粘贴", shortList: ["Ctrl", "V"], valueList: ["v"], fn: () => paste() },
+              {
+                title: "全选",
+                shortList: ["Ctrl", "A"],
+                valueList: ["a"],
+                fn: () => $('text[type="hd"]').addClass("selected_text"),
+              },
+              { title: "剪切", shortList: ["Ctrl", "X"], valueList: ["x"], fn: () => (copy() | content_vue.getSelectedBar() ? delSelectedNode() : delSelNote()) },
+              { title: "删除小节", shortList: ["Ctrl", "Backspace"], valueList: ["Backspace"], fn: () => delSelectedNode() },
             ],
           },
           {
@@ -3777,13 +3852,13 @@ var content_vue = new Vue({
           {
             title: "连音",
             leftList: [
-              { title: "三连音", shortList: ["Ctrl", "3"] },
-              { title: "四连音", shortList: ["Ctrl", "4"] },
-              { title: "五连音", shortList: ["Ctrl", "5"] },
-              { title: "六连音", shortList: ["Ctrl", "6"] },
-              { title: "七连音", shortList: ["Ctrl", "7"] },
-              { title: "八连音", shortList: ["Ctrl", "8"] },
-              { title: "九连音", shortList: ["Ctrl", "9"] },
+              { title: "三连音", shortList: ["Ctrl", "3"], valueList: ['3'], fn: () => liaison('(3') },
+              { title: "四连音", shortList: ["Ctrl", "4"], valueList: ['4'], fn: () => liaison('(4') },
+              { title: "五连音", shortList: ["Ctrl", "5"], valueList: ['5'], fn: () => liaison('(5') },
+              { title: "六连音", shortList: ["Ctrl", "6"], valueList: ['6'], fn: () => liaison('(6') },
+              { title: "七连音", shortList: ["Ctrl", "7"], valueList: ['7'], fn: () => liaison('(7') },
+              { title: "八连音", shortList: ["Ctrl", "8"], valueList: ['8'], fn: () => liaison('(8') },
+              { title: "九连音", shortList: ["Ctrl", "9"], valueList: ['9'], fn: () => liaison('(9') },
             ],
             rightList: [],
           },
@@ -3795,7 +3870,7 @@ var content_vue = new Vue({
               { title: "乐谱开始处插入小节", shortList: ["Alt", "B"] },
               { title: "乐谱结尾处插入小节", shortList: ["Alt", "Ctrl", "6"] },
               { title: "折行", shortList: ["Enter"] },
-              { title: "播放/暂停", shortList: ["空格键"] },
+              { title: "播放/暂停", shortList: ["空格键"], valueList: [" "], fn: () => myplay()},
               { title: "回到开始处", shortList: ["Home"] },
             ],
             rightList: [
@@ -4693,6 +4768,28 @@ var content_vue = new Vue({
         this.m.newScore.scoreOptsShow = false;
       }
     },
+    /**
+     * @param {KeyboardEvent} e
+     */
+    listenKeydown(e) {
+      const { ctrlKey, shiftKey, altKey, key } = e;
+      const shortcutList = this.m.shortcutsPanel.typeList
+        .map((item) => item.leftList.concat(item.rightList))
+        .flat()
+        .sort((pre, nxt) => pre.shortList.length - nxt.shortList.length);
+      for (const item of shortcutList) {
+        if (!item.fn) continue;
+        if (ctrlKey !== item.shortList.includes("Ctrl")) continue;
+        if (shiftKey !== item.shortList.includes("Shift")) continue;
+        if (altKey !== item.shortList.includes("Alt")) continue;
+        if (item.valueList.includes(key)) {
+          item.fn(e);
+          e.preventDefault()
+          e.returnValue = false
+          return false
+        }
+      }
+    },
   },
   computed: {
     getMenuTxt() {
@@ -4920,7 +5017,11 @@ var content_vue = new Vue({
     }
     if (Object.keys(scoreOpts).length)
       $("#source").val(getAbcTemplateCode(scoreOpts));
-    document.addEventListener("keydown", (e) => this.emitNumKeybordFn(e.code));
+    document.addEventListener("keydown", (e) => {
+      if (['TEXTAREA', 'INPUT'].includes(e.target.tagName)) return
+      this.emitNumKeybordFn(e.code);
+      this.listenKeydown(e);
+    });
     this.changeNumKeypadSelect();
     const event = () => {
       this.changeNumKeypadSelect();
