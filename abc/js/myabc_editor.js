@@ -7504,21 +7504,15 @@ function delSelectedNode(){
 }
 //插入小节
 function insertNodes(num, isAfter, isFirst){
-	if(!content_vue.checkIsSelectBar()) return
+	if(!isFirst && !content_vue.checkIsSelectBar()) return
 	for (let i = 1; i <= num; i++) {
 		var barIndex = $("svg[type='rectnode'],svg[type='rectbar']").attr("barindex");
 		if(barIndex==undefined){
 			barIndex = $("svg[type='rectnode'],svg[type='rectbar']").attr("barIndex");
 		}
+		if(isAfter) barIndex = +barIndex + 1
 		if (isFirst) barIndex = 0
-		if(isAfter) {
-			barIndex = +barIndex + 1
-			if (!$(`svg[barindex='${barIndex}']`)[0]) {
-				appendNodes(1)
-			}
-		} else {
-			insertNodeByIndex(barIndex);
-		}
+		insertNodeByIndex(barIndex);
 	}
 }
 /**

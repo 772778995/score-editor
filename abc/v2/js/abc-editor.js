@@ -3865,10 +3865,10 @@ var content_vue = new Vue({
           {
             title: "工具",
             leftList: [
-              { title: "元素前插入小节", shortList: ["Ctrl", "B"] },
-              { title: "元素后插入小节", shortList: ["Ctrl", "Shift", "B"] },
-              { title: "乐谱开始处插入小节", shortList: ["Alt", "B"] },
-              { title: "乐谱结尾处插入小节", shortList: ["Alt", "Ctrl", "6"] },
+              { title: "元素前插入小节", shortList: ["Ctrl", "B"], valueList: ["b"], fn: () => insertNodes(1) },
+              { title: "元素后插入小节", shortList: ["Ctrl", "Shift", "B"], valueList: ["b"], fn: () => insertNodes(1, true) },
+              { title: "乐谱开始处插入小节", shortList: ["Alt", "B"], valueList: ["b"], fn: () => insertNodes(1, false, true) },
+              { title: "乐谱结尾处插入小节", shortList: ["Alt", "Ctrl", "B"], valueList: ["b"], fn: () => appendNodes(1) },
               { title: "折行", shortList: ["Enter"] },
               { title: "播放/暂停", shortList: ["空格键"], valueList: [" "], fn: () => myplay()},
               { title: "回到开始处", shortList: ["Home"] },
@@ -4772,6 +4772,7 @@ var content_vue = new Vue({
      * @param {KeyboardEvent} e
      */
     listenKeydown(e) {
+      console.log(e)
       const { ctrlKey, shiftKey, altKey, key } = e;
       const shortcutList = this.m.shortcutsPanel.typeList
         .map((item) => item.leftList.concat(item.rightList))
@@ -4782,7 +4783,7 @@ var content_vue = new Vue({
         if (ctrlKey !== item.shortList.includes("Ctrl")) continue;
         if (shiftKey !== item.shortList.includes("Shift")) continue;
         if (altKey !== item.shortList.includes("Alt")) continue;
-        if (item.valueList.includes(key)) {
+        if (item.valueList.includes(key.toLowerCase())) {
           item.fn(e);
           e.preventDefault()
           e.returnValue = false
