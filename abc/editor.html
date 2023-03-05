@@ -266,6 +266,7 @@
       .text-\#333 { color: #333 }
       .bg-\#333 { background-color: #333; }
       .text-\#666 { color: #666; }
+      .text-\#535353 { color: #535353; }
       .bg-\#666 { background-color: #666; }
       .text-\#999 { color: #999; }
       .bg-\#999 { background-color: #999 }
@@ -342,6 +343,9 @@
         z-index: 3;
         right: 8px;
       }
+      .theme-blue-bg {
+        background-color: #B5C5D3;
+      }
     </style>
     <title>创编制谱系统</title>
   </head>
@@ -405,8 +409,8 @@
     >
       <div
         :class="m.newScore.musicType.show ? '_show' : '_hide'"
-        class="fixed top-0 left-0 duration-300 h-screen w-screen flex items-center justify-center"
-        style="z-index: 9999;"
+        class="fixed top-0 left-0 duration-300 h-screen w-screen flex items-center justify-center theme-blue-bg"
+        style="z-index: 9998;"
       >
         <div
           class="bg-white rounded-xl overflow-hidden"
@@ -453,10 +457,10 @@
 
       <div
         class="fixed flex top-0 left-0 duration-300 transform-gpu h-screen w-screen items-center justify-center"
-        style="z-index: 9999;"
+        style="z-index: 9998;"
         :class="{ 'opacity-0 pointer-events-none' : !m.newScore.scoreOptsShow }"
       >
-        <div class="rounded-md overflow-hidden" style="width: 1246px;">
+        <div class="rounded-md overflow-hidden" style="width: 1246px; box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);">
           <b class="flex justify-between items-center text-xl py-3 px-5 bg-white">
             <div>新建乐谱</div>
             <img src="../abc/img/close.png" class="cursor-pointer" @click="m.newScore.scoreOptsShow = m.newScore.musicType.show = false"/>
@@ -693,6 +697,81 @@
           </div>
         </div>
       </div>
+
+    <div
+      :class="m.shortcutsPanel.index !== -1 ? '_show' : '_hide'"
+      class="fixed top-0 left-0 duration-300 h-screen w-screen flex items-center justify-center theme-blue-bg"
+      style="z-index: 9998;"
+    >
+      <div
+        class="rounded-xl overflow-hidden"
+        style="background: #F5F5F5; box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);"
+      >
+        <b class="flex justify-between items-center text-xl py-3 px-5">
+          <div>快捷键</div>
+          <img src="../abc/img/close.png" class="cursor-pointer" @click="m.shortcutsPanel.index = -1"/>
+        </b>
+
+        <div class="flex bg-white" style="height: 503px; padding: 22px 30px 22px 30px; width: 876px; color: #535353;">
+          <div class="h-full rounded p-0.5 mr-2 text-#535353" style="border: 2px solid #E7E7E7;">
+            <div
+              v-for="(item, i) in m.shortcutsPanel.typeList.map(item => item.title)"
+              :key="i"
+              class="cursor-pointer duration-300 px-3 py-2 mb-2"
+              :class="{ 'bg-deep-blue text-white': m.shortcutsPanel.index === i }"
+              style="width: 145px;"
+              @click="m.shortcutsPanel.index = i"
+            >
+              {{ item }}
+            </div>
+          </div>
+
+          <div class="flex h-full flex-1 rounded" style="padding: 20px 25px 12px 25px; border: 2px solid #E7E7E7;">
+            <div class="flex-1 pr-6 mr-6" style="border-right: 2px solid #E7E7E7;">
+              <div
+                v-for="item in m.shortcutsPanel.typeList[m.shortcutsPanel.index]?.leftList"
+                :key="item.title"
+                class="mb-3"
+              >
+                <div class="flex">
+                  <div>{{ item.title }}</div>
+                  <div class="flex ml-auto space-x-2 items-center">
+                    <div
+                      v-for="item in item.shortList"
+                      class="rounded"
+                      :style="item !== '/' ? 'background: #F2F2F2; color: #767676; font-size: 14px; padding: 5px 8px;' : ''"
+                    >
+                      {{ item }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex-1">
+              <div 
+                v-for="item in m.shortcutsPanel.typeList[m.shortcutsPanel.index]?.rightList"
+                :key="item.title"
+                class="mb-3"
+              >
+                <div class="flex">
+                  <div>{{ item.title }}</div>
+                  <div class="flex ml-auto space-x-2 items-center">
+                    <div
+                      v-for="item2 in item.shortList"
+                      class="rounded"
+                      :style="item2 !== '/' || item.shortList.length === 1 ? 'background: #F2F2F2; color: #767676; font-size: 14px; padding: 5px 8px;' : ''"
+                    >
+                      {{ item2 }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
       <!-- 导出pdf -->
       <div
@@ -1346,7 +1425,7 @@
           </div>
         </div>
 
-        <div class="cursor-pointer ml-auto">快捷键</div>
+        <div class="cursor-pointer ml-auto" @click="m.shortcutsPanel.index = 0">快捷键</div>
         <div class="mx-1 cursor-pointer">帮助</div>
       </div>
 
