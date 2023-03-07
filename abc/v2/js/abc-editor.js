@@ -3913,7 +3913,10 @@ var content_vue = new Vue({
               } },
               { title: "小键盘", shortList: ["P"], valueList: ['p'], fn: () => content_vue.m.numberKeypad.isShow = !content_vue.m.numberKeypad.isShow },
               { title: "音符面板", shortList: ["U"], valueList: ['u'], fn: () => content_vue.m.isMusicNoteShow = !content_vue.m.isMusicNoteShow },
-              { title: "MID键盘", shortList: ["M"] },
+              { title: "MID键盘", shortList: ["M"], valueList: ['m'], fn: () => {
+                content_vue.menuActive = '';
+                 content_vue.keyboardClick()
+              } },
             ],
           },
           {
