@@ -2239,6 +2239,28 @@ var content_vue = new Vue({
     // ———————————————————————————————————————— 分割线 __data ————————————————————————————————————————
     // 在远古项目基础上二次开发，新数据在 m 对象之中避免命名冲突
     m: {
+      key: {
+        show: false,
+        val: 'C',
+        previewV: 'C',
+        list: [
+          { txt: 'C大调', val: 'C', valueSelector: 'c' },
+          { txt: 'G大调', val: 'G', valueSelector: 'g' },
+          { txt: 'D大调', val: 'D', valueSelector: 'd' },
+          { txt: 'A大调', val: 'A', valueSelector: 'a' },
+          { txt: 'E大调', val: 'E', valueSelector: 'e' },
+          { txt: '升B大调', val: 'B', valueSelector: 'b,' },
+          { txt: '升F大调', val: '#F', valueSelector: '^f' },
+          { txt: '升C大调', val: '#C', valueSelector: '^c' },
+          { txt: 'F大调', val: 'F', valueSelector: 'f' },
+          { txt: '降B大调', val: 'Bb', valueSelector: '_b' },
+          { txt: '降E大调', val: 'Eb', valueSelector: '_e' },
+          { txt: '降A大调', val: 'Ab', valueSelector: '_a' },
+          { txt: '降D大调', val: 'Db', valueSelector: '_d' },
+          { txt: '降G大调', val: 'Gb', valueSelector: '_g' },
+          { txt: '降C大调', val: 'Cb', valueSelector: '_c' },
+        ]
+      },
       // scoreOpts,
       lyric: {
         style: {
@@ -3881,7 +3903,7 @@ var content_vue = new Vue({
             rightList: [
               { title: "歌词", shortList: ["B"] },
               { title: "节拍器", shortList: ["J"] },
-              { title: "移调", shortList: ["Y"] },
+              { title: "移调", shortList: ["Y"], valueList: ["y"], fn: () => content_vue.m.key.show = !content_vue.m.key.show },
               { title: "符干", shortList: ["L"] },
               { title: "音色", shortList: ["S"] },
               { title: "小键盘", shortList: ["P"] },
@@ -4761,11 +4783,11 @@ var content_vue = new Vue({
       this.m.ctxMenu.isShow = true;
     },
     createNewScore() {
-      if (isNewTab)
+      if (isNewTab) {
         window.open(
-          location.href +
-            `?scoreOpts=${JSON.stringify(this.m.newScore.scoreOpts)}`
+          location.href + `?scoreOpts=${encodeURIComponent(JSON.stringify(this.m.newScore.scoreOpts))}`
         );
+      }
       else {
         initScore(this.m.newScore.scoreOpts);
         this.m.newScore.musicType.show = false;
@@ -4916,6 +4938,18 @@ var content_vue = new Vue({
     },
 
     // ———————————————————————————————————————— 分割线 __watch ————————————————————————————————————————
+    'm.key.val'(val) {
+      const valueSelector = this.m.key.list.find(item => item.val === val)?.valueSelector
+      $(`.keyChoice[value="${valueSelector}"]`).click()
+      changeYG(val,"doPos2");
+      changeZKey()
+    },
+    'm.key.previewV'(val) {
+      const valueSelector = this.m.key.list.find(item => item.val === val)?.valueSelector
+      $(`.keyChoice[value="${valueSelector}"]`).click()
+      changeYG(val,"doPos2");
+      changeZKey()
+    },
     "m.isMusicNoteShow": (function () {
       let timer = null;
       return function (isShow) {
@@ -5034,10 +5068,15 @@ var content_vue = new Vue({
   mounted() {
     const params = new URLSearchParams(location.search);
     if (!params.get("scoreOpts")) {
-      this.m.newScore.musicType.show = true;
+      // this.m.newScore.musicType.show = true;
     }
-    if (Object.keys(scoreOpts).length)
+    if (Object.keys(scoreOpts).length) {
       $("#source").val(getAbcTemplateCode(scoreOpts));
+      let keySign = scoreOpts.keySign
+      if (keySign.includes('#')) keySign = [...keySign].reverse().join('')
+      this.m.key.val = keySign;
+      this.m.key.previewV = keySign;
+    }
     document.addEventListener("keydown", (e) => {
       if (['TEXTAREA', 'INPUT'].includes(e.target.tagName)) return
       this.emitNumKeybordFn(e.code);

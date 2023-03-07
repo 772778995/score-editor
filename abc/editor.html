@@ -99,6 +99,12 @@
     <script src="js/main.js?v=20221027"></script>
     <script src="js/xml2abcutil.js?v=20221027"></script>
     <style type="text/css">
+      ._border{
+        border: 1px solid #D4D4D4;
+      }
+      ._border.active {
+        border: 1px solid #25649E;
+      }
       ._btn {
         cursor: pointer;
         padding: 5px 30px;
@@ -334,6 +340,7 @@
         background-color: #25649E;
       }
       .sky-blue { color: #E7EFFF; }
+      .hover\:sky-blue-bg:hover { background-color: #E7EFFF; }
       .bg-sky-blue { background-color: #E7EFFF; }
       .\#f5f5f6 { color: #f5f5f6; }
       .bg-\#f5f5f6 { background-color: #f5f5f6; }
@@ -483,6 +490,7 @@
         <div class="rounded-md bg-white overflow-hidden" style="width: 359px; height: 209px; box-shadow: 0px 4px 30px 0px rgba(3,35,63,0.28);">
           <div class="flex justify-between font-bold" style="font-size: 20px; padding: 13px 20px 11px 20px; background: #F5F5F5">
             折行自定义
+            <img src="../abc/img/close.png" class="cursor-pointer" @click="m.foldLine.show = false"/>
           </div>
 
           <div class="mt-10 flex items-center justify-center" style="color: #606060;">
@@ -498,6 +506,46 @@
           </div>
         </div>
       </div>
+
+      <div
+        class="fixed flex top-0 left-0 duration-300 transform-gpu h-screen w-screen items-center justify-center"
+        style="z-index: 9997;"
+        :class="{ 'opacity-0 pointer-events-none' : !m.key.show }"
+      >
+        <div class="rounded-md bg-white" style="box-shadow: 0px 4px 30px 0px rgba(3,35,63,0.28);">
+          <div class="flex justify-between items-center rounded-t-md font-bold" style="font-size: 20px; padding: 13px 20px 11px 20px; background: #F5F5F5">
+            按音调移调
+            <img src="../abc/img/close.png" class="cursor-pointer" @click="() => {
+              m.key.previewV = m.key.val
+              m.key.show = false
+            }"/>
+          </div>
+
+          <select-input v-model="m.key.previewV" size="sm" :list="m.key.list" class="mx-20 mt-10" style="width: 300px; height: 40px;"></select-input>
+
+          <div class="mt-7 mb-8 flex justify-center">
+            <div
+              class="_btn _border"
+              @click="() => {
+                m.key.previewV = m.key.val
+                m.key.show = false
+              }"
+            >
+              取消
+            </div>
+            <div class="w-14"></div>
+            <div
+              class="_btn"
+              @click="() => {
+                m.key.val = m.key.previewV
+                m.key.show = false
+              }"
+            >
+              确定
+            </div>
+          </div>
+        </div>
+      </div>      
 
       <div
         class="fixed flex top-0 left-0 duration-300 transform-gpu h-screen w-screen items-center justify-center"
@@ -1678,7 +1726,7 @@
         <template v-else-if="getMenuTxt === '工具'">
           <div
             class="flex flex-col items-center space-y-1.5 cursor-pointer shift-key"
-            @click="$('#Z_div').modal('toggle') && openZDiv()"
+            @click="m.key.show = true"
           >
             <img src="" class="bg-black w-4 h-3" />
             <span>移调</span>
@@ -6740,6 +6788,7 @@
 <link rel="stylesheet" href="/abc/css/element-ui.css">
 <script src="js/vue.min.js"></script>
 <script src="components/NumberInput.js"></script>
+<script src="components/SelectInput.js"></script>
 <script src="/abc/js/element-ui.js"></script>
 <script src="v2/js/popper.min.js"></script>
 <script src="v2/js/bootstrap.min.js"></script>
