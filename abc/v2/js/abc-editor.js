@@ -3905,7 +3905,12 @@ var content_vue = new Vue({
               { title: "节拍器", shortList: ["J"], valueList: ["j"], fn: () => $('#metronomesetting').click() },
               { title: "移调", shortList: ["Y"], valueList: ["y"], fn: () => content_vue.m.key.show = !content_vue.m.key.show },
               { title: "符干", shortList: ["L"] },
-              { title: "音色", shortList: ["S"] },
+              { title: "音色", shortList: ["S"], valueList: ['s'], fn: () => {
+                content_vue.m.menuIndex = 2
+                content_vue.$nextTick(() => {
+                  $('#instrumentSelectByType').click()
+                })
+              } },
               { title: "小键盘", shortList: ["P"] },
               { title: "音符面板", shortList: ["U"] },
               { title: "MID键盘", shortList: ["M"] },
