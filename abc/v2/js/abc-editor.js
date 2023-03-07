@@ -3902,7 +3902,7 @@ var content_vue = new Vue({
             ],
             rightList: [
               { title: "歌词", shortList: ["L"], valueList: ["l"], fn: () => content_vue.checkIsSelectNote() && createLyricEditor() },
-              { title: "节拍器", shortList: ["J"] },
+              { title: "节拍器", shortList: ["J"], valueList: ["j"], fn: () => $('#metronomesetting').click() },
               { title: "移调", shortList: ["Y"], valueList: ["y"], fn: () => content_vue.m.key.show = !content_vue.m.key.show },
               { title: "符干", shortList: ["L"] },
               { title: "音色", shortList: ["S"] },
