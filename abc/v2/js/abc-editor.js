@@ -3901,7 +3901,7 @@ var content_vue = new Vue({
               { title: "回到开始处", shortList: ["Home"] },
             ],
             rightList: [
-              { title: "歌词", shortList: ["B"] },
+              { title: "歌词", shortList: ["L"], valueList: ["l"], fn: () => content_vue.checkIsSelectNote() && createLyricEditor() },
               { title: "节拍器", shortList: ["J"] },
               { title: "移调", shortList: ["Y"], valueList: ["y"], fn: () => content_vue.m.key.show = !content_vue.m.key.show },
               { title: "符干", shortList: ["L"] },
