@@ -3911,7 +3911,7 @@ var content_vue = new Vue({
                   $('#instrumentSelectByType').click()
                 })
               } },
-              { title: "小键盘", shortList: ["P"] },
+              { title: "小键盘", shortList: ["P"], valueList: ['p'], fn: () => content_vue.m.numberKeypad.isShow = !content_vue.m.numberKeypad.isShow },
               { title: "音符面板", shortList: ["U"] },
               { title: "MID键盘", shortList: ["M"] },
             ],
