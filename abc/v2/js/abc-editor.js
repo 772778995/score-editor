@@ -3789,6 +3789,10 @@ var content_vue = new Vue({
           ],
         },
       ],
+      foldLine: {
+        show: false,
+        line: 4,
+      },
       shortcutsPanel: {
         index: -1,
         typeList: [
@@ -3869,7 +3873,8 @@ var content_vue = new Vue({
               { title: "元素后插入小节", shortList: ["Ctrl", "Shift", "B"], valueList: ["b"], fn: () => insertNodes(1, true) },
               { title: "乐谱开始处插入小节", shortList: ["Alt", "B"], valueList: ["b"], fn: () => insertNodes(1, false, true) },
               { title: "乐谱结尾处插入小节", shortList: ["Alt", "Ctrl", "B"], valueList: ["b"], fn: () => appendNodes(1) },
-              { title: "折行", shortList: ["Enter"] },
+              { title: "折行", shortList: ["Enter"], valueList: ['Enter'], fn: () => content_vue.checkIsSelectBar() && addBr() },
+              { title: "自定义折行", shortList: ["Ctrl", "Enter"], valueList: [' '], fn: () => content_vue.m.foldLine.show = true },
               { title: "播放/暂停", shortList: ["空格键"], valueList: [" "], fn: () => myplay()},
               { title: "回到开始处", shortList: ["Home"] },
             ],
@@ -4615,7 +4620,6 @@ var content_vue = new Vue({
       this.m.menuIndex = i;
     },
     checkIsSelectBar(showAlert = true) {
-      console.log(1234);
       let selectSvg = null;
       $("svg").each((i, e) => {
         if (!e?.id.includes("mysvgnode")) return;
@@ -4777,6 +4781,10 @@ var content_vue = new Vue({
       const shortcutList = this.m.shortcutsPanel.typeList
         .map((item) => item.leftList.concat(item.rightList))
         .flat()
+        .map(item => ({
+          ...item,
+          valueList: item.valueList?.map(item => item.toLowerCase()) || []
+        }))
         .sort((pre, nxt) => pre.shortList.length - nxt.shortList.length);
       for (const item of shortcutList) {
         if (!item.fn) continue;
@@ -4933,6 +4941,18 @@ var content_vue = new Vue({
       },
       deep: true,
     },
+    'm.newScore.scoreOpts.rowBars'(num) {
+      this.m.foldLine.line = num
+    },
+    'm.foldLine.line': {
+      handler(num) {
+        $('#barsperstaff').val(num)
+        var newContent = handleBreakLine($('#source').val(), num);
+        $($('#source')).val(newContent);
+        abc_change()
+      },
+      deep: true
+    }
   },
   components: {
     FileUpload: VueUploadComponent,

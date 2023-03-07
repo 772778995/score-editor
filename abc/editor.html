@@ -99,6 +99,26 @@
     <script src="js/main.js?v=20221027"></script>
     <script src="js/xml2abcutil.js?v=20221027"></script>
     <style type="text/css">
+      ._btn {
+        cursor: pointer;
+        padding: 5px 30px;
+        border-radius: 6px;
+        background-color: #25649E;
+        color: #fff;
+        transition: all 0.3s;
+      }
+      ._btn:hover {
+        filter: brightness(0.85);
+      }
+      ._btn:active {
+        filter: brightness(0.75);
+      }
+      ._btn._border {
+        border-radius: 6px 6px 6px 6px;
+        background-color: #fff;
+        border: 1px solid #6C6C6C;
+        color: #6C6C6C;
+      }
       [_radio] {
         width: 13px; height: 13px;
         border-radius: 50%;
@@ -451,6 +471,30 @@
                 下一步
               </button>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="fixed flex top-0 left-0 duration-300 transform-gpu h-screen w-screen items-center justify-center"
+        style="z-index: 9997;"
+        :class="{ 'opacity-0 pointer-events-none' : !m.foldLine.show }"
+      >
+        <div class="rounded-md bg-white overflow-hidden" style="width: 359px; height: 209px; box-shadow: 0px 4px 30px 0px rgba(3,35,63,0.28);">
+          <div class="flex justify-between font-bold" style="font-size: 20px; padding: 13px 20px 11px 20px; background: #F5F5F5">
+            折行自定义
+          </div>
+
+          <div class="mt-10 flex items-center justify-center" style="color: #606060;">
+            <div>每行</div>
+            <number-input v-model="m.foldLine.line" class="mx-4" min="1"></number-input>
+            <div>小节</div>
+          </div>
+
+          <div class="mt-7 flex justify-center">
+            <div class="_btn _border" @click="m.foldLine.show = false">取消</div>
+            <div class="w-14"></div>
+            <div class="_btn" @click="m.foldLine.show = false">确定</div>
           </div>
         </div>
       </div>
@@ -6695,6 +6739,7 @@
 </script>
 <link rel="stylesheet" href="/abc/css/element-ui.css">
 <script src="js/vue.min.js"></script>
+<script src="components/NumberInput.js"></script>
 <script src="/abc/js/element-ui.js"></script>
 <script src="v2/js/popper.min.js"></script>
 <script src="v2/js/bootstrap.min.js"></script>
