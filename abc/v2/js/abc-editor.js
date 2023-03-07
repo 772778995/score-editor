@@ -3814,6 +3814,7 @@ var content_vue = new Vue({
       foldLine: {
         show: false,
         line: 4,
+        previewV: 4
       },
       shortcutsPanel: {
         index: -1,
@@ -3896,7 +3897,7 @@ var content_vue = new Vue({
               { title: "乐谱开始处插入小节", shortList: ["Alt", "B"], valueList: ["b"], fn: () => insertNodes(1, false, true) },
               { title: "乐谱结尾处插入小节", shortList: ["Alt", "Ctrl", "B"], valueList: ["b"], fn: () => appendNodes(1) },
               { title: "折行", shortList: ["Enter"], valueList: ['Enter'], fn: () => content_vue.checkIsSelectBar() && addBr() },
-              { title: "自定义折行", shortList: ["Ctrl", "Enter"], valueList: [' '], fn: () => content_vue.m.foldLine.show = true },
+              { title: "自定义折行", shortList: ["Ctrl", "Enter"], valueList: ['Enter'], fn: () => content_vue.m.foldLine.show = true },
               { title: "播放/暂停", shortList: ["空格键"], valueList: [" "], fn: () => myplay()},
               { title: "回到开始处", shortList: ["Home"] },
             ],
@@ -4806,7 +4807,7 @@ var content_vue = new Vue({
      * @param {KeyboardEvent} e
      */
     listenKeydown(e) {
-      console.log(e)
+      if (e.code === 'NumpadEnter') return
       const { ctrlKey, shiftKey, altKey, key } = e;
       const shortcutList = this.m.shortcutsPanel.typeList
         .map((item) => item.leftList.concat(item.rightList))
@@ -4986,15 +4987,18 @@ var content_vue = new Vue({
     'm.newScore.scoreOpts.rowBars'(num) {
       this.m.foldLine.line = num
     },
-    'm.foldLine.line': {
-      handler(num) {
-        $('#barsperstaff').val(num)
-        var newContent = handleBreakLine($('#source').val(), num);
-        $($('#source')).val(newContent);
-        abc_change()
-      },
-      deep: true
-    }
+    'm.foldLine.previewV'(num) {
+      $('#barsperstaff').val(num)
+      var newContent = handleBreakLine($('#source').val(), num);
+      $($('#source')).val(newContent);
+      abc_change()
+    },
+    // 'm.foldLine.line'(num) {
+    //     $('#barsperstaff').val(num)
+    //     var newContent = handleBreakLine($('#source').val(), num);
+    //     $($('#source')).val(newContent);
+    //     abc_change()
+    //   }
   },
   components: {
     FileUpload: VueUploadComponent,
@@ -5084,6 +5088,8 @@ var content_vue = new Vue({
       if (keySign.includes('#')) keySign = [...keySign].reverse().join('')
       this.m.key.val = keySign;
       this.m.key.previewV = keySign;
+      this.m.foldLine.line = scoreOpts.rowBars
+      this.m.foldLine.previewV = scoreOpts.rowBars
     }
     document.addEventListener("keydown", (e) => {
       if (['TEXTAREA', 'INPUT'].includes(e.target.tagName)) return
