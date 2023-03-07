@@ -4807,8 +4807,9 @@ var content_vue = new Vue({
      * @param {KeyboardEvent} e
      */
     listenKeydown(e) {
-      if (e.code === 'NumpadEnter') return
-      const { ctrlKey, shiftKey, altKey, key } = e;
+      const { ctrlKey, shiftKey, altKey, key, target, code } = e;
+      if (code === 'NumpadEnter') return
+      if ([...target.classList].includes('editor-div')) return
       const shortcutList = this.m.shortcutsPanel.typeList
         .map((item) => item.leftList.concat(item.rightList))
         .flat()

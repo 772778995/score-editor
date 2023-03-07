@@ -1111,9 +1111,10 @@ $(document).ready(function(){
 			user.isShift = true;
 		}
 		if(event.which == 27){
-			//按下esc键，还原编辑状态
-			restoreEditor();
-			$(".editor-div").remove();
+			$('.editor-div').blur()
+			// //按下esc键，还原编辑状态
+			// restoreEditor();
+			// $(".editor-div").remove();
 		}
 		//Alt+左：音符向左移动
 	      if(event.which == 37 && event.altKey){
