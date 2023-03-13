@@ -6,7 +6,7 @@ Vue.component('number-input', {
     },
     min: {
       type: Number,
-      default: -Infinity
+      default: 0
     },
     max: {
       type: Number,
@@ -23,7 +23,7 @@ Vue.component('number-input', {
   },
   template: `
     <div class="rounded flex h-6" style="border: 1px solid #D9D9D9;">
-      <input type="text" class="outline-none rounded w-14 text-center" :value="displayValue" @input="updateValue($event.target.value, $event)" />
+      <input type="text" class="outline-none rounded flex-1 w-0 text-center" :value="displayValue" @input="updateValue($event.target.value, $event)" />
       <div class="flex flex-col h-full">
         <div
           class="flex-1 w-5 flex justify-center items-center cursor-pointer hover:bg-gray-200 duration-300"
@@ -52,7 +52,7 @@ Vue.component('number-input', {
   },
   methods: {
     increment() {
-      const newValue = this.value + this.step;
+      const newValue = +this.value + +this.step;
       if (newValue <= this.max) {
         this.$emit('input', newValue);
       }
@@ -64,7 +64,7 @@ Vue.component('number-input', {
       }
     },
     updateValue(newValue, e) {
-      let parsedValue = parseFloat(newValue);
+      let parsedValue = parseFloat(newValue || this.min);
       if (isNaN(parsedValue)) {
         parsedValue = this.min;
       }

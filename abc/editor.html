@@ -100,6 +100,25 @@
     <script src="js/xml2abcutil.js?v=20221027"></script>
     <script src="../node_modules/file-saver/dist/FileSaver.js"></script>
     <style type="text/css">
+      .blue-title {
+        position: relative;
+        padding-left: 10px;
+        font-weight: bold;
+        font-size: 18px;
+        color: #000;
+      }
+      .form-control:focus {
+        border-color: #25649E !important;
+      }
+      .blue-title::after {
+        content: '';
+        position: absolute;
+        left: 0; top: 50%;
+        transform: translateY(-50%);
+        width: 3px; height: 15px;
+        border-radius: 120px;
+        background: #0E518F;
+      }
       ._border{
         border: 1px solid #D4D4D4;
       }
@@ -346,12 +365,13 @@
       .\#f5f5f6 { color: #f5f5f6; }
       .bg-\#f5f5f6 { background-color: #f5f5f6; }
       .bg-\#dededf { background-color: #dededf; }
-      .key-sign-up > .bg-deep-blue { transform: translateX(-60px); }
-      .key-sign-down > .bg-deep-blue { transform: translateX(40px); }
+      .key-sign-up > .bg-deep-blue { transform: translateX(-89px); }
+      .key-sign-down > .bg-deep-blue { transform: translateX(38px); }
       .key-sign-up > div:nth-child(1) { color: #333 }
       .key-sign-down > div:nth-child(2) { color: #333 }
-      .select-key-sign:hover { background-color: #D9D9D9; }
-      .select-key-sign.is-select { background-color: rgba(14, 81, 143, 0.49); }
+      .select-key-sign { background-color: #F4F4F4; }
+      /* .select-key-sign:hover { background-color: #D9D9D9; } */
+      .select-key-sign.is-select { background-color: #B5C5D3; } 
       img { -webkit-user-drag: none; }
       ::-webkit-scrollbar {
         width: 10px;
@@ -437,7 +457,7 @@
     >
       <div
         :class="m.newScore.musicType.show ? '_show' : '_hide'"
-        class="fixed top-0 left-0 duration-300 h-screen w-screen flex items-center justify-center theme-blue-bg"
+        class="fixed top-0 left-0 duration-300 h-screen w-screen flex items-center justify-center"
         style="z-index: 9998;"
       >
         <div
@@ -482,6 +502,233 @@
           </div>
         </div>
       </div>
+
+    <div
+      class="fixed flex top-0 left-0 duration-300 transform-gpu h-screen w-screen items-center justify-center"
+      style="z-index: 9998;"
+      :class="{ 'opacity-0 pointer-events-none' : !m.newScore.scoreOptsShow }"
+    >
+      <div class="rounded-md overflow-hidden" style="box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);">
+        <b class="flex justify-between items-center text-xl py-3 px-5 bg-#f5f5f6">
+          <div>新建乐谱</div>
+          <img src="../abc/img/close.png" class="cursor-pointer" @click="m.newScore.scoreOptsShow = m.newScore.musicType.show = false"/>
+        </b>
+
+        <div class="flex" style="height: 650px; background: #B5C5D3;">
+          <div class="p-5" style="width: 712px;">
+            <iframe
+              ref="previewIframeRef"
+              :src="m.newScore.previewUrl"
+              class="w-full h-full rounded-md border-none"
+            ></iframe>
+          </div>
+
+          <div class="bg-white overflow-y-auto"> 
+            <div class="rounded" style="padding: 20px 17px; border-bottom: 2px solid #F5F5F5;">
+              <div class="blue-title mb-7">基本信息</div>
+              <div class="relative" style="margin-bottom: 16px;">
+                <div style="position: absolute; left: 13px; top: -14px; font-size: 16px; z-index:10; background: #fff">标题</div>
+                <div class="input-group">
+                  <input v-model="m.newScore.scoreOpts.title" class="form-control"/>
+                </div>
+              </div>
+
+              <div class="input-group" style="margin-bottom: 16px;">
+                <input v-model="m.newScore.scoreOpts.subTitle" class="form-control" placeholder="副标题"/>
+              </div>
+
+              <div class="flex space-x-4">
+                <input v-model="m.newScore.scoreOpts.compose" class="form-control" placeholder="曲作者"/>
+                <input v-model="m.newScore.scoreOpts.lyricist" class="form-control" placeholder="词作者"/>
+              </div>
+            </div>
+
+            <div class="relative rounded flex-shrink-0" style="width: 491px; padding: 16px 21px 10px 21px; border-bottom: 2px solid #F5F5F5;">
+              <div class="flex items-center">
+                <div class="blue-title">调号</div>
+                <div v-if="m.newScore.scoreOpts.musicType !== 'easy'" class="ml-auto flex justify-center space-x-12 text-#999 relative pb-1" :class="`key-sign-${m.newScore.keySignType}`">
+                  <div class="cursor-pointer" @click="m.newScore.keySignType = 'up'">升记号大调</div>
+                  <div class="cursor-pointer" @click="m.newScore.keySignType = 'down'">降记号大调</div>
+                  <div class="absolute bg-deep-blue w-24 h-1 rounded-full bottom-0 duration-300"></div>
+                </div>
+              </div>
+              <div v-if="m.newScore.scoreOpts.musicType === 'easy'" class="flex items-center" style="margin-top: 16px;">
+                <div>简谱：</div>
+                <div style="margin: 0 13px 0 6px">1=</div>
+                <select-input v-model="m.newScore.scoreOpts.keySign" :list="m.newScore.keySignEasyList" style="z-index: 51;"></select-input>
+              </div>
+              <div v-else class="mt-4 w-full overflow-hidden">
+                <div
+                  class="flex duration-300"
+                  :style="{
+                    width: '200%',
+                    transform: `translateX(-${m.newScore.keySignType === 'up' ? 0 : 50}%)`,
+                  }"
+                >
+                  <div class="w-1/2 grid grid-cols-4 gap-1">
+                    <div
+                      v-for="item in m.newScore.keySignUpList"
+                      :key="item.title"
+                      class="flex justify-center items-center pt-2"
+                    >
+                      <div
+                        class="select-key-sign w-24 h-24 px-2 rounded-md overflow-hidden cursor-pointer justify-center items-center flex flex-col duration-300"
+                        :class="{ 'is-select': m.newScore.scoreOpts.keySign === item.val }"
+                        @click="m.newScore.scoreOpts.keySign = item.val"
+                      >
+                        <img :src="item.img" />
+                        <div class="flex items-center">
+                          <img v-if="item.isUp" :src="`./img/up${m.newScore.scoreOpts.keySign === item.val ? '1' : '2'}.png`" alt="">
+                          <div :style="m.newScore.scoreOpts.keySign === item.val ? 'color: #001F3B' : ''">{{ item.title }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="w-1/2 grid grid-cols-4 gap-1 items-center">
+                    <div
+                      v-for="item in m.newScore.keySignDownList"
+                      :key="item.title"
+                      class="flex justify-center items-center  pt-2"
+                    >
+                      <div
+                        class="select-key-sign w-24 h-24 px-2 rounded-md overflow-hidden cursor-pointer justify-center items-center flex flex-col duration-300"
+                        :class="{ 'is-select': m.newScore.scoreOpts.keySign === item.val }"
+                        @click="m.newScore.scoreOpts.keySign = item.val"
+                      >
+                        <img :src="item.img" />
+                        <div class="flex items-center">
+                          <img v-if="item.isDown" :src="`./img/b${m.newScore.scoreOpts.keySign === item.val ? '1' : '2'}.png`" alt="">
+                          <div :style="m.newScore.scoreOpts.keySign === item.val ? 'color: #001F3B' : ''">{{ item.title }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="relative rounded" style="padding: 16px 18px 0 18px; border-bottom: 2px solid #F5F5F5;">
+              <div class="blue-title">拍号</div>
+              <div class="flex items-center" style="margin: 16px 0">
+                <img
+                  :src="`./img/radio${m.newScore.scoreOpts.beatType === 'custom' ? '1' : '2'}.png`"
+                  class="cursor-pointer"
+                  @click="m.newScore.scoreOpts.beatType = 'custom'"
+                />
+  
+                <div class="flex h-full items-center duration-300" :class="{ 'pointer-events-none opacity-50': m.newScore.scoreOpts.beatType !== 'custom' }">
+                  <select-input
+                    v-model="m.newScore.scoreOpts.beatNote1"
+                    :list="m.newScore.beatNoteList"
+                    style="width: 64px; margin-left: 10px;"
+                  ></select-input>
+                  <div class="mx-1.5">/</div>
+                  <select-input
+                    v-model="m.newScore.scoreOpts.beatNote2"
+                    :list="m.newScore.beatNoteList2"
+                    style="width: 64px;"
+                  ></select-input> 
+                </div>
+                
+                <img
+                  :src="`./img/radio${m.newScore.scoreOpts.beatType === 'C' ? '1' : '2'}.png`"
+                  class="cursor-pointer ml-auto"
+                  @click="m.newScore.scoreOpts.beatType = 'C'"
+                />
+                <img style="margin-left: 13px" src="../abc/img/beatSign-C.png" />
+                <img
+                  :src="`./img/radio${m.newScore.scoreOpts.beatType === 'C|' ? '1' : '2'}.png`"
+                  class="cursor-pointer"
+                  style="margin-right: 13px; margin-left: 44px;"
+                  @click="m.newScore.scoreOpts.beatType = 'C|'"
+                />
+                <img style="margin-right: 66px" src="./img/beatSign-CI.png" />
+              </div>
+            </div>
+
+            <div class="relative rounded items-center" style="padding: 16px 18px; border-bottom: 2px solid #F5F5F5;">
+              <div class="flex items-center" style="color: #8F8F8F; font-size: 12px">
+                <div class="blue-title">排版</div>
+                <img src="./img/warning.png" style="margin: 0 2px 0 7px;" />
+                您也可以在创建乐谱后再添加或移除小节。
+              </div>
+              <div class="flex items-center" style="margin-top: 20px;">
+                <div>行数：</div>
+                <number-input
+                  v-model="m.newScore.scoreOpts.rows"
+                  :min="1"
+                  style="width: 64px; height: 28px;">
+                </number-input>
+                <div class="ml-auto">小节：</div>
+                <number-input
+                  v-model="m.newScore.scoreOpts.rowBars"
+                  :min="1"
+                  style="width: 64px; height: 28px; margin-right: 6px;">
+                </number-input>
+                <div style="margin-right: 75px;">/ 行</div>
+              </div>
+            </div>
+
+            <div class="relative rounded" style="padding: 16px 18px; border-bottom: 2px solid #F5F5F5;">
+              <div class="flex">
+                <div class="flex cursor-pointer" @click="m.newScore.scoreOpts.isWeak = !m.newScore.scoreOpts.isWeak">
+                  <div class="blue-title">
+                    不完全小节（弱起小节）
+                    <img :src="`./img/checkbox${m.newScore.scoreOpts.isWeak ? '2' : '1'}.png`">
+                  </div>
+                </div>
+              </div>
+              <div class="items-center flex duration-300 mt-4" :class="{ 'pointer-events-none opacity-50': !m.newScore.scoreOpts.isWeak }">
+                <div>时值：</div>
+                <number-input v-model="m.newScore.scoreOpts.weakBarTop" :min="1" style="width: 64px; height: 28px;"></number-input>
+                <div class="mx-1.5">/</div>
+                <select-input v-model="m.newScore.scoreOpts.weakBarBot" :list="m.newScore.beatNoteList2" style="width: 64px; height: 28px; z-index: 52;"></select-input>
+              </div>
+            </div>
+
+            <div class="relative rounded" style="padding: 16px 18px;">
+              <div class="blue-title" style="margin-bottom: 16px;">速度</div>
+              <div class="flex items-center ">
+                <div class="flex items-center h-full cursor-pointer" @click="m.newScore.scoreOpts.speedType = 'txt'">
+                  <img
+                    :src="`./img/radio${m.newScore.scoreOpts.speedType === 'txt' ? '1' : '2'}.png`"
+                    class="cursor-pointer mr-2"
+                    :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.speedType === 'sign' }"
+                    @click="m.newScore.scoreOpts.speedType = 'txt'"
+                  />
+                  <div>速度文本：</div>
+                </div>
+                <select-input v-model="m.newScore.scoreOpts.speedText" :list="m.newScore.speedTxtList" style="height: 28px;"></select-input>
+              </div>
+              <div class="flex items-center" style="margin-top: 10px;">
+                <div class="flex items-center h-full cursor-pointer" @click="m.newScore.scoreOpts.speedType = 'sign'">
+                  <img
+                    :src="`./img/radio${m.newScore.scoreOpts.speedType === 'sign' ? '1' : '2'}.png`"
+                    class="cursor-pointer mr-2"
+                    :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.speedType !== 'sign' }"
+                    @click="m.newScore.scoreOpts.speedType = 'sign'"
+                  />
+                  <div>节拍器标记：</div>
+                </div>
+                <div class="flex h-full items-center" :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.speedType !== 'sign' }">
+                  <select-input v-model="m.newScore.scoreOpts.speedNote" :list="m.newScore.speedNoteList" style="height: 28px;"></select-input>
+                  <div style="margin: 0 10px;">=</div>
+                  <number-input v-model="m.newScore.scoreOpts.speedNum" :min="1" style="width: 64px; height: 28px;"></number-input>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex" style="padding: 30px 17px 0 17px;">
+              <button class="_btn _border" @click="m.newScore.scoreOptsShow = m.newScore.musicType = false">取消</button>
+              <button class="_btn ml-auto mr-2 " @click="m.newScore.scoreOptsShow = false">上一步</button>
+              <button class="_btn" @click="createNewScore" style="background: #AFAFAF;">创建</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
       <div
         class="fixed flex top-0 left-0 duration-300 transform-gpu h-screen w-screen items-center justify-center"
@@ -598,249 +845,6 @@
           </div>
         </div>
       </div>     
-
-      <div
-        class="fixed flex top-0 left-0 duration-300 transform-gpu h-screen w-screen items-center justify-center"
-        style="z-index: 9998;"
-        :class="{ 'opacity-0 pointer-events-none' : !m.newScore.scoreOptsShow }"
-      >
-        <div class="rounded-md overflow-hidden" style="width: 1246px; box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);">
-          <b class="flex justify-between items-center text-xl py-3 px-5 bg-white">
-            <div>新建乐谱</div>
-            <img src="../abc/img/close.png" class="cursor-pointer" @click="m.newScore.scoreOptsShow = m.newScore.musicType.show = false"/>
-          </b>
-  
-          <div class="flex" style="height: 675px; background: #B5C5D3;">
-            <div class="p-5 flex-1">
-              <iframe
-                ref="previewIframeRef"
-                :src="m.newScore.previewUrl"
-                class="w-full h-full rounded-md border-none"
-              ></iframe>
-            </div>
-  
-            <div class="bg-#f5f5f6 p-10 overflow-y-auto h-full">
-              <div class="rounded py-2 px-4" style="border: 2px #B0B0B0 dashed;">
-                <label for="title">标题</label>
-                <div class="input-group mb-3">
-                  <input v-model="m.newScore.scoreOpts.title" class="form-control" id="title"/>
-                </div>
-
-                <label for="subTitle">副标题</label>
-                <div class="input-group mb-3">
-                  <input v-model="m.newScore.scoreOpts.subTitle" class="form-control" id="subTitle"/>
-                </div>
-
-                <label for="compose">曲作者</label>
-                <div class="input-group mb-3">
-                  <input v-model="m.newScore.scoreOpts.compose" class="form-control" id="compose"/>
-                </div>
-
-                <label for="lyricist">词作者</label>
-                <div class="input-group mb-3">
-                  <input v-model="m.newScore.scoreOpts.lyricist" class="form-control" id="lyricist"/>
-                </div>
-              </div>
-
-              <div class="mt-11 relative rounded py-2 px-4" style="width: 460px; border: 2px #B0B0B0 dashed;">
-                <b class="text-xl -top-4 absolute" style="background: #f7f7f7">调号</b>
-                <div class="flex justify-center space-x-5 text-#999 relative pb-1 mt-6" :class="`key-sign-${m.newScore.keySignType}`">
-                  <div class="cursor-pointer" @click="m.newScore.keySignType = 'up'">升记号大调</div>
-                  <div class="cursor-pointer" @click="m.newScore.keySignType = 'down'">降记号大调</div>
-                  <div class="absolute bg-deep-blue w-24 h-1 rounded-full bottom-0 duration-300"></div>
-                </div>
-                <div class="mt-4 w-full overflow-hidden">
-                  <div
-                    class="flex duration-300"
-                    :style="{
-                      width: '200%',
-                      transform: `translateX(-${m.newScore.keySignType === 'up' ? 0 : 50}%)`,
-                    }"
-                  >
-                    <div class="w-1/2 grid grid-cols-4 gap-1">
-                      <div
-                        v-for="item in m.newScore.keySignUpList"
-                        :key="item.title"
-                        class="select-key-sign w-24 h-24 px-2 rounded-md overflow-hidden pt-2 cursor-pointer justify-center items-center flex flex-col duration-300"
-                        :class="{ 'is-select': m.newScore.scoreOpts.keySign === item.val }"
-                        @click="m.newScore.scoreOpts.keySign = item.val"
-                      >
-                        <img :src="item.img" />
-                        <div>{{ item.title }}</div>
-                      </div>
-                    </div>
-
-                    <div class="w-1/2 grid grid-cols-4 gap-1">
-                      <div
-                        v-for="item in m.newScore.keySignDownList"
-                        :key="item.title"
-                        class="select-key-sign w-24 h-24 px-2 rounded-md overflow-hidden pt-2 cursor-pointer justify-center items-center flex flex-col duration-300" :class="{ 'is-select': m.newScore.scoreOpts.keySign === item.val }"
-                        @click="m.newScore.scoreOpts.keySign = item.val"
-                      >
-                        <img :src="item.img" />
-                        <div>{{ item.title }}</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="mt-11 relative rounded p-8 flex items-center" style="border: 2px #B0B0B0 dashed;">
-                <b class="text-xl -top-4 absolute" style="background: #f7f7f7">拍号</b>
-                <input
-                  type="radio"
-                  :checked="m.newScore.scoreOpts.beatType === 'custom'"
-                  @click="m.newScore.scoreOpts.beatType = 'custom'"
-                />
-
-                <div class="flex h-full items-center duration-300" :class="{ 'pointer-events-none opacity-70': m.newScore.scoreOpts.beatType !== 'custom' }">
-                  <div class="dropdown mx-0" style="width: 100px;">
-                    <div class="input-group dropdown-toggle items-center" data-toggle="dropdown" aria-expanded="false">
-                      <input :value="m.newScore.scoreOpts.beatNote1" onfocus="this.blur()" class="cursor-pointer form-control form-control-sm"/>
-                    </div>
-                    <div class="dropdown-menu h-36 overflow-y-auto">
-                      <button
-                        v-for="item in m.newScore.beatNoteList"
-                        :key="item"
-                        class="dropdown-item"
-                        @click="m.newScore.scoreOpts.beatNote1 = item"
-                      >
-                        {{ item }}
-                      </button>
-                    </div>
-                  </div>
-                  <div class="mx-1.5">/</div>
-                  <div class="dropdown mx-0" style="width: 100px;">
-                    <div class="input-group dropdown-toggle items-center" data-toggle="dropdown" aria-expanded="false">
-                      <input :value="m.newScore.scoreOpts.beatNote2" onfocus="this.blur()" class="cursor-pointer form-control form-control-sm"/>
-                    </div>
-                    <div class="dropdown-menu">
-                      <button
-                        v-for="item in m.newScore.beatNoteList2"
-                        :key="item"
-                        class="dropdown-item"
-                        @click="m.newScore.scoreOpts.beatNote2 = item"
-                      >
-                        {{ item }}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                
-                <input
-                  type="radio"
-                  :checked="m.newScore.scoreOpts.beatType === 'C'"
-                  @click="m.newScore.scoreOpts.beatType = 'C'"
-                />
-                <img class="ml-1" src="../abc/img/beatSign-C.png" />
-                <input
-                  type="radio"
-                  :checked="m.newScore.scoreOpts.beatType === 'C|'"
-                  @click="m.newScore.scoreOpts.beatType = 'C|'"
-                />
-                <img class="ml-1" src="../abc/img/beatSign-C.png" />
-              </div>
-
-              <div class="mt-11 relative rounded p-8 items-center " style="border: 2px #B0B0B0 dashed;">
-                <b class="text-xl -top-4 absolute" style="background: #f7f7f7">排版</b>
-                <div class="flex items-center">
-                  <div>行数：</div>
-                  <input v-model="m.newScore.scoreOpts.rows" type="number" class="form-control input-sm w-20 text-sm">
-
-                  <div>小节：</div>
-                  <input v-model="m.newScore.scoreOpts.rowBars" type="number" class="form-control input-sm w-20 text-sm">
-                  <div>/行</div>
-                </div>
-                <div class="mt-2">提示：您也可以在创建乐谱后再添加或移除小节。</div>
-              </div>
-
-              <div class="mt-11 relative rounded p-8" style="border: 2px #B0B0B0 dashed;">
-                <b class="text-xl -top-4 absolute" style="background: #f7f7f7" @click="m.newScore.scoreOpts.isWeak = !m.newScore.scoreOpts.isWeak">
-                  <input type="checkbox" :checked="m.newScore.scoreOpts.isWeak"/>
-                  <span>不完全小节（弱起小节）</span>
-                </b>
-                <div class="items-center flex" :class="{ 'pointer-events-none opacity-70': !m.newScore.scoreOpts.isWeak }">
-                  <div>时值：</div>
-                  <input v-model="m.newScore.scoreOpts.weakBarTop" type="number" class="form-control input-sm w-20 text-sm">
-                  <div>/</div>
-                  <!-- <input v-model="m.newScore.scoreOpts.weakBarBot" type="number" class="form-control input-sm w-20 text-sm"> -->
-                  <div class="dropdown mx-0" style="width: 100px;">
-                    <div class="input-group dropdown-toggle items-center" data-toggle="dropdown" aria-expanded="false">
-                      <input :value="m.newScore.scoreOpts.weakBarBot" onfocus="this.blur()" class="cursor-pointer form-control form-control-sm"/>
-                    </div>
-                    <div class="dropdown-menu h-36 overflow-y-auto">
-                      <button
-                        v-for="item in ['2', '4', '8', '16']"
-                        :key="item"
-                        class="dropdown-item"
-                        @click="m.newScore.scoreOpts.weakBarBot = item"
-                      >
-                        {{ item }}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="mt-11 relative rounded p-8 items-center" style="border: 2px #B0B0B0 dashed;">
-                <b class="text-xl -top-4 absolute" style="background: #f7f7f7">速度</b>
-                <div class="flex items-center">
-                  <div class="flex items-center h-full" @click="m.newScore.scoreOpts.speedType = 'txt'">
-                    <input type="radio" :checked="m.newScore.scoreOpts.speedType === 'txt'"/>
-                    <div>速度文本：</div>
-                  </div>
-                  <div class="dropdown mx-0" style="width: 100px;" :class="{ 'opacity-70 pointer-events-none': m.newScore.scoreOpts.speedType !== 'txt' }">
-                    <div class="input-group dropdown-toggle items-center" data-toggle="dropdown" aria-expanded="false">
-                      <input :value="m.newScore.scoreOpts.speedText" onfocus="this.blur()" class="cursor-pointer form-control form-control-sm"/>
-                    </div>
-                    <div class="dropdown-menu h-36 overflow-y-auto">
-                      <button
-                        v-for="item in m.newScore.speedTxtList"
-                        :key="item.val"
-                        class="dropdown-item"
-                        @click="m.newScore.scoreOpts.speedText = item.txt"
-                      >
-                        {{ item.txt }}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div class="flex items-center">
-                  <div class="flex items-center h-full" @click="m.newScore.scoreOpts.speedType = 'sign'">
-                    <input type="radio" :checked="m.newScore.scoreOpts.speedType === 'sign'" />
-                    <div>节拍器标记：</div>
-                  </div>
-                  <div class="flex h-full items-center" :class="{ 'opacity-70 pointer-events-none': m.newScore.scoreOpts.speedType !== 'sign' }">
-                    <div class="dropdown mx-0" style="width: 100px;">
-                      <div class="input-group dropdown-toggle items-center" data-toggle="dropdown" aria-expanded="false">
-                        <input :value="m.newScore.scoreOpts.speedNote" onfocus="this.blur()" class="form-control form-control-sm"/>
-                      </div>
-                      <div class="dropdown-menu h-36 overflow-y-auto">
-                        <button
-                          v-for="item in m.newScore.speedNoteList"
-                          :key="item.val"
-                          class="dropdown-item"
-                          @click="m.newScore.scoreOpts.speedNote = item.val"
-                        >
-                          <img src="item.img" />
-                        </button>
-                      </div>
-                    </div>
-                    <div>=</div>
-                    <input v-model="m.newScore.scoreOpts.speedNum" type="number" min="0" class="w-24 form-control form-control-sm"/>
-                  </div>
-                </div>
-              </div>
-
-              <div class="mt-20 flex justify-end space-x-10">
-                <button class="btn" @click="m.newScore.scoreOptsShow = m.newScore.musicType = false">取消</button>
-                <button class="btn" @click="m.newScore.scoreOptsShow = false">上一步</button>
-                <button class="btn" @click="createNewScore">创建</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
     <div
       :class="m.shortcutsPanel.index !== -1 ? '_show' : '_hide'"

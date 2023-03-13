@@ -19,11 +19,12 @@ Vue.component('select-input', {
       :class="{ 'active': showList }"
       @click.stop="showList = !showList"
     >
-      <div class="flex-1">
+      <div v-if="list.find(item => item.val === value)?.txt" class="flex-1">
         {{ list.find(item => item.val === value)?.txt }}
       </div>
+      <img v-else-if="list.find(item => item.val === value)?.img" class="flex-1" :src="list.find(item => item.val === value)?.img"/>
 
-      <img src="/abc/img/arrow_down.png" style="width: 12px; height: 6px;" class="transform duration-300" :class="{
+      <img src="/abc/img/arrow_down.png" style="width: 12px; height: 6px;" class="ml-2 transform duration-300" :class="{
         'rotate-180': showList
       }" />
 
@@ -35,9 +36,11 @@ Vue.component('select-input', {
           v-for="item in list"
           :key="item.txt"
           class="rounded-sm px-2 py-1 hover:sky-blue-bg duration-300"
+          style="min-width: 50px;"
           @click="updateValue(item.val)"
         >
-          <div>{{ item.txt }}</div>
+          <div v-if="item.txt">{{ item.txt }}</div>
+          <img v-else-if="item.img" :src="item.img" />
         </div>
       </div>
     </div>

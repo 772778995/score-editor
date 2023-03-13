@@ -72,8 +72,8 @@ const speedTxtList = [
 const defaultScoreOpts = {
 	title: "标题",
 	subTitle: '副标题',
-	compose: "作曲",
-	lyricist: "作词",
+	compose: "曲作者",
+	lyricist: "词作者",
 	keySign: "C",
 
 	isWeak: false,
