@@ -1558,12 +1558,13 @@
           {{ item.txt }}
           <div
             v-if="m.menuIndex ===  i && item.children"
-            class="absolute top-10 left-1 z-50 w-24 bg-white border text-gray-600"
-            style="border-color: #000 !important"
+            class="absolute top-8 left-0 z-50 w-24 bg-white"
+            style="box-shadow: 4px 4px 10px 0px rgba(0,22,41,0.25); border-radius: 2px 2px 2px 2px; font-size: 12px; padding: 1px;"
           >
             <div
               v-for="child in item.children"
-              class="w-full flex items-center justify-center cursor-pointer"
+              class="w-full flex cursor-pointer hover:sky-blue-bg duration-300"
+              style="padding: 4px 0 4px 14px; min-width: 88px;border-radius: 2px 2px 2px 2px;"
               @click="child.fn"
             >
               {{ child.txt }}
@@ -3250,32 +3251,40 @@
         <!-- 右键菜单 -->
         <div
           v-show="m.ctxMenu.isShow"
-          class="fixed panzoom-exclude w-44 py-2 bg-white border"
+          class="fixed panzoom-exclude rounded-sm w-44 p-0.5 bg-white"
           @mouseup.stop
           @click.stop
           :style="{
             left: m.ctxMenu.x + 'px',
             top: m.ctxMenu.y + 'px',
-            zIndex: 9999
+            zIndex: 9999,
+            boxShadow: '0px 4px 30px 0px rgba(3,35,63,0.28)'
           }"
         >
-          <div
-            v-for="item in getCtxMenuList"
-            class="flex justify-between px-2 cursor-pointer hover:bg-gray-200 relative"
-            :class="[
-              { 'pointer-events-none text-gray-400 cursor-default': item.disabled }
-            ]"
-            @click="item.fn && item.fn() | (() => (m.ctxMenu.isShow = false))()"
+          <template
+            v-for="(item, i) in getCtxMenuList"
           >
-            <div>{{ item.title }}</div>
-            <div v-if="item.subTitle">{{ item.subTitle }}</div>
+            <div v-if="item.type === 'line' && getCtxMenuList.length > 3" style="width: 100%; height: 1px; background: #E9E9E9;"></div>
+            <div
+              v-else-if="item.title"
+              class="flex justify-between items-center rounded-sm cursor-pointer hover:sky-blue-bg duration-300 relative"
+              :class="[
+                { 'pointer-events-none text-gray-400 cursor-default': item.disabled }
+              ]"
+              style="padding: 4px 9px; font-size: 12px;"
+              @click="item.fn && item.fn() | (() => (m.ctxMenu.isShow = false))()"
+            >
+              <div>{{ item.title }}</div>
+              <div v-if="item.subTitle" style="color: #767676;">{{ item.subTitle }}</div>
+              <img v-if="item.title === '添加小节'" src="./img/arrow_down.png" class="transform -rotate-90 w-2 h-1" >
 
-            <div v-if="item.childList" class="absolute right-0 translate-x-full transform-gpu bg-white">
-              <div v-for="item in item.childList" @click="item.fn && item.fn() | (() => (m.ctxMenu.isShow = false))()">
-                {{ item.title }}
+              <div v-if="item.childList" class="absolute right-0 translate-x-full transform-gpu bg-white">
+                <div v-for="item in item.childList" @click="item.fn && item.fn() | (() => (m.ctxMenu.isShow = false))()">
+                  {{ item.title }}
+                </div>
               </div>
             </div>
-          </div>
+          </template>
         </div>
 
 

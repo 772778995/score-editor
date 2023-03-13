@@ -4867,49 +4867,48 @@ var content_vue = new Vue({
     getCtxMenuList() {
       const { isSelectNote, isSelectBar, copyNodeInfo, copyBarInfo } =
         this.m.ctxMenu;
-      const menuList = [];
       // TODO 曲式标记
       // if (this.abcSel.isOpen) return [
       // 	{ title: '删除全部曲式', fn: delAllMF },
       // 	{ title: '退出曲式标记', fn: this.startDrawMF }
       // ]
-      if (isSelectNote || isSelectBar) {
-        menuList.push(
-          { title: `复制`, subTitle: "Ctrl + C", fn: copy },
-          {
-            title: `粘贴`,
-            subTitle: "Ctrl + V",
-            disabled:
-              !(isSelectBar && copyBarInfo.size) &&
-              !(isSelectNote && copyNodeInfo.s),
-            fn: paste,
-          },
-          {
-            title: `剪切`,
-            subTitle: "Ctrl + X",
-            fn: () => (copy() | isSelectBar ? delSelectedNode() : delSelNote()),
-          },
-          {
-            title: "删除",
-            subTitle: "Backspace",
-            fn: () => (isSelectBar ? delSelectedNode() : delSelNote()),
-          }
-        );
-      }
-      menuList.push({ title: "撤回", subTitle: "Ctrl + Z", fn: goback });
-      if (isSelectBar) menuList.push({ title: "添加小节", childList: [] });
-      if (isSelectNote)
-        menuList.push({
+      const menuList = [
+        { title: `复制`, subTitle: "Ctrl + C", fn: copy },
+        {
+          title: `粘贴`,
+          subTitle: "Ctrl + V",
+          disabled:
+            !(isSelectBar && copyBarInfo.size) &&
+            !(isSelectNote && copyNodeInfo.s),
+          fn: paste,
+        },
+        {
+          title: `剪切`,
+          subTitle: "Ctrl + X",
+          fn: () => (copy() | isSelectBar ? delSelectedNode() : delSelNote()),
+          disabled: !(isSelectNote || isSelectBar)
+        },
+        {
+          title: "删除",
+          subTitle: "Backspace",
+          fn: () => (isSelectBar ? delSelectedNode() : delSelNote()),
+          disabled: !(isSelectNote || isSelectBar)
+        },
+        { title: "撤回", subTitle: "Ctrl + Z", fn: goback },
+        { type: 'line' },
+        { title: "添加小节", childList: [], disabled: !isSelectBar },
+        {
           title: "添加歌词",
-          childList: [{ title: "添加歌词", fn: () => createLyricEditor() }],
-        });
-      // TODO 曲式标记
-      // menuList.push({ title: '曲式标记', fn: this.startDrawMF })
-      if (isSelectBar || isSelectNote)
-        menuList.push(
-          { title: "移高八度", fn: up8 },
-          { title: "移低八度", fn: down8 }
-        );
+          subTitle: 'L',
+          disabled: !isSelectNote,
+          fn: () => createLyricEditor()
+        },
+        { type: 'line' },
+        { title: "移高八度", fn: up8, disabled: isSelectBar || isSelectNote },
+        { title: "移低八度", fn: down8, disabled: isSelectBar || isSelectNote },
+        // TODO 曲式标记
+        // { title: '曲式标记', fn: this.startDrawMF }
+      ]
       return menuList;
     },
   },
@@ -5127,6 +5126,7 @@ var content_vue = new Vue({
       this.initCtxMenu();
       this.changeSelectNote();
       this.changeSelectBar();
+      setLyricStyle()
     };
     document.addEventListener("keyup", event);
     document.addEventListener("click", event);

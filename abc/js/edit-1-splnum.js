@@ -16,7 +16,7 @@ const selectNewNote = () => {
 }
 
 const setLyricStyle = () => {
-  $('text[type="lyric"],text[type="lyric"]>tspan').css(content_vue.m.lyric.style)
+  $('text:not([selected="selected"])[type="lyric"],text[type="lyric"]>tspan').css(content_vue.m.lyric.style)
 }
 
 /***************************************************************************/
