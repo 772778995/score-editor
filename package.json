@@ -10,9 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@panzoom/panzoom": "^4.5.1"
+    "@panzoom/panzoom": "^4.5.1",
+    "file-saver": "^2.0.5"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.5",
     "@types/jquery": "^3.5.16",
     "@types/vue": "^1.0.30",
     "clean-css": "^5.3.2",

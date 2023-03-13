@@ -98,6 +98,7 @@
     <script src="js/drag.js?v=20221027"></script>
     <script src="js/main.js?v=20221027"></script>
     <script src="js/xml2abcutil.js?v=20221027"></script>
+    <script src="../node_modules/file-saver/dist/FileSaver.js"></script>
     <style type="text/css">
       ._border{
         border: 1px solid #D4D4D4;
@@ -554,7 +555,49 @@
             </div>
           </div>
         </div>
-      </div>      
+      </div>
+
+      <div
+        class="fixed flex top-0 left-0 duration-300 transform-gpu h-screen w-screen items-center justify-center"
+        style="z-index: 9997;"
+        :class="{ 'opacity-0 pointer-events-none' : !m.export.show }"
+      >
+        <div class="rounded-md bg-white" style="box-shadow: 0px 4px 30px 0px rgba(3,35,63,0.28);">
+          <div class="flex justify-between items-center rounded-t-md font-bold" style="font-size: 20px; padding: 13px 20px 11px 20px; background: #F5F5F5">
+            导出
+            <img src="../abc/img/close.png" class="cursor-pointer" @click="m.export.show = false"/>
+          </div>
+
+          <div style="margin: 20px 30px 30px 35px; color: #606060">
+            <div style="font-size: 18px;">请选择文件格式</div>
+            <div class="pl-3 grid grid-cols-3 mt-6 gap-y-8" style="width: 340px;">
+              <div
+                v-for="item in m.export.list"
+                :key="item.txt"
+                class="flex items-center space-x-1 cursor-pointer"
+                :class="{ 'opacity-50 pointer-events-none': item.disabled }"
+                @click="item.checked = !item.checked"
+              >
+                <img :src="`/abc/img/checkbox${item.checked ? '2' : '1'}.png`" />
+                <div>{{ item.txt }}</div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="mt-7 mb-8 flex justify-center">
+            <div
+              class="_btn"
+              :class="{
+                'opacity-50 pointer-events-none': m.export.list.every(item => !item.checked)
+              }"
+              @click="exportScore"
+            >
+              一键导出
+            </div>
+          </div>
+        </div>
+      </div>     
 
       <div
         class="fixed flex top-0 left-0 duration-300 transform-gpu h-screen w-screen items-center justify-center"
@@ -876,7 +919,7 @@
 
       <!-- 导出pdf -->
       <div
-        class="modal fade"
+        class="modal fade opacity-0 pointer-events-none"
         id="PDF_div"
         tabindex="-1"
         role="dialog"
@@ -1206,7 +1249,6 @@
                 <input
                   type="checkbox"
                   name="standstaff"
-                  checked="checked"
                 /><span
                   style="cursor: pointer"
                   onclick="$('input[name=standstaff]').prop('checked',!$('input[name=standstaff]').prop('checked'))"
@@ -1215,7 +1257,6 @@
                 <input
                   type="checkbox"
                   name="simpletaff"
-                  checked="checked"
                 /><span
                   style="cursor: pointer"
                   onclick="$('input[name=simpletaff]').prop('checked',!$('input[name=simpletaff]').prop('checked'))"

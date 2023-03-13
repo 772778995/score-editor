@@ -27769,8 +27769,10 @@ abc2svg.modules = {
           if (--abc2svg.modules.nreq == 0) abc2svg.modules.cbf();
         },
         function () {
-          abc2svg.modules.errmsg("error loading " + m.fn);
-          if (--abc2svg.modules.nreq == 0) abc2svg.modules.cbf();
+          try {
+            abc2svg.modules.errmsg("error loading " + m.fn);
+            if (--abc2svg.modules.nreq == 0) abc2svg.modules.cbf();
+          } catch (err) {}
         }
       );
     }

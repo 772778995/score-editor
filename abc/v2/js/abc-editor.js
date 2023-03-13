@@ -1,3 +1,9 @@
+async function getScorePngBase64() {
+  return new Promise(resolve => {
+    const canvas = mergeSvg2Png()
+    svgAsPngUri(canvas, null, url => resolve(url))
+  })
+}
 function liaison(val) {
   var selectEl = $('.selected_text')[0]
   if (!selectEl) return alert('请先选中音符')
@@ -2239,6 +2245,16 @@ var content_vue = new Vue({
     // ———————————————————————————————————————— 分割线 __data ————————————————————————————————————————
     // 在远古项目基础上二次开发，新数据在 m 对象之中避免命名冲突
     m: {
+      export: {
+        show: false,
+        list: [
+          { txt: "音频", checked: false, disabled: true },
+          { txt: "图片", checked: true },
+          { txt: "PDF", checked: false },
+          { txt: "MID", checked: false, disabled: true },
+          { txt: "XML", checked: false, disabled: true }
+        ]
+      },
       key: {
         show: false,
         val: 'C',
@@ -3829,7 +3845,7 @@ var content_vue = new Vue({
                 fn: () => (content_vue.newScore.musicType.show = true),
               },
               { title: "打开", shortList: ["Ctrl", "O"] },
-              { title: "导出", shortList: ["Ctrl", "D"] },
+              { title: "导出", shortList: ["Ctrl", "D"], valueList: ["d"], fn: () => content_vue.m.export.show = !content_vue.m.export.show },
               { title: "保存", shortList: ["Ctrl", "S"] },
               { title: "另存为", shortList: ["Shift", "S"] },
               { title: "音符输入/点击模式", shortList: ["N"] },
@@ -4635,6 +4651,16 @@ var content_vue = new Vue({
     },
 
     // ———————————————————————————————————————— 分割线 __method ————————————————————————————————————————
+    async exportScore() {
+      this.m.export.show = false
+      const isNoChecked = this.m.export.list.every((item) => !item.checked)
+      if (isNoChecked) return
+
+      const [mp3, pic, pdf] = this.m.export.list
+
+      if (pic.checked) saveAs(await getScorePngBase64(), `${$('#source').val().match(/(?<=T:\s+).+/)[0]}.png`)
+      if (pdf.checked) exportAbc2Pdf('source')
+    },
     changeSelectNote() {
       this.selectNote = $(".selected_text")[0] || null;
     },

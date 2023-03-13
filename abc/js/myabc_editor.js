@@ -5523,11 +5523,11 @@ function exportAbc2Pdf(sourceid){
 	var addPageHeight = false;
 	var addPageWidth = false;
 	var pageWidthPattern = /%%pagewidth\s*([0-9]*)\n/;
-	var A4PageWidth = "%%pagewidth 1500\n";
+	var A4PageWidth = "%%pagewidth 690\n";
 	var pageWidthMatchs = content.match(pageWidthPattern);
 	var pageWidthStr = "";
 	var pageWidth = 0;
-	var pageHeight = 1500*29.7/21;
+	var pageHeight = 690*29.7/21;
 	if(pageWidthMatchs!=null){
 		pageWidthStr = pageWidthMatchs[0];
 		pageWidth = pageWidthMatchs[1];
