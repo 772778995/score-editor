@@ -2328,12 +2328,7 @@ var content_vue = new Vue({
             },
             {
               txt: "导出",
-              fn: (event) => {
-                hiddenMenuItem();
-                $("#VOICEPART_div").modal("toggle");
-                openVoicepartExport();
-                event.stopPropagation();
-              },
+              fn: () => { content_vue.m.export.show = true },
             },
           ],
         },
