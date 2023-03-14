@@ -1,55 +1,170 @@
-.i-addBar {
+.active .i-rhythm, ._tool-box:hover .i-rhythm {
   background: url(./icons.png) -0px -0px no-repeat;
+  width: 18px;
+  height: 22px;
+}
+.i-save {
+  background: url(./icons.png) -18px -0px no-repeat;
+  width: 18px;
+  height: 21px;
+}
+.active .i-save, ._tool-box:hover .i-save {
+  background: url(./icons.png) -36px -0px no-repeat;
+  width: 18px;
+  height: 20px;
+}
+.i-withdraw {
+  background: url(./icons.png) -54px -0px no-repeat;
+  width: 25px;
+  height: 18px;
+}
+.active .i-withdraw, ._tool-box:hover .i-withdraw {
+  background: url(./icons.png) -79px -0px no-repeat;
+  width: 25px;
+  height: 18px;
+}
+.i-xie {
+  background: url(./icons.png) -104px -0px no-repeat;
+  width: 8px;
+  height: 19px;
+}
+.active .i-xie, ._tool-box:hover .i-xie {
+  background: url(./icons.png) -112px -0px no-repeat;
+  width: 8px;
+  height: 19px;
+}
+.i-yi {
+  background: url(./icons.png) -120px -0px no-repeat;
+  width: 29px;
+  height: 25px;
+}
+.active .i-yi, ._tool-box:hover .i-yi {
+  background: url(./icons.png) -149px -0px no-repeat;
+  width: 29px;
+  height: 25px;
+}
+.i-addBar {
+  background: url(./icons.png) -178px -0px no-repeat;
   width: 30px;
+  height: 22px;
+}
+.active .i-addBar, ._tool-box:hover .i-addBar {
+  background: url(./icons.png) -208px -0px no-repeat;
+  width: 30px;
+  height: 22px;
+}
+.i-br {
+  background: url(./icons.png) -238px -0px no-repeat;
+  width: 27px;
+  height: 20px;
+}
+.active .i-br, ._tool-box:hover .i-br {
+  background: url(./icons.png) -265px -0px no-repeat;
+  width: 27px;
+  height: 19px;
+}
+.i-color {
+  background: url(./icons.png) -292px -0px no-repeat;
+  width: 18px;
+  height: 22px;
+}
+.active .i-color, ._tool-box:hover .i-color {
+  background: url(./icons.png) -310px -0px no-repeat;
+  width: 18px;
   height: 22px;
 }
 .i-delBar {
-  background: url(./icons.png) -30px -0px no-repeat;
+  background: url(./icons.png) -328px -0px no-repeat;
   width: 30px;
   height: 22px;
 }
+.active .i-delBar, ._tool-box:hover .i-delBar {
+  background: url(./icons.png) -358px -0px no-repeat;
+  width: 30px;
+  height: 22px;
+}
+.i-fontBold {
+  background: url(./icons.png) -388px -0px no-repeat;
+  width: 14px;
+  height: 18px;
+}
+.active .i-fontBold, ._tool-box:hover .i-fontBold {
+  background: url(./icons.png) -402px -0px no-repeat;
+  width: 15px;
+  height: 18px;
+}
+.i-gi {
+  background: url(./icons.png) -417px -0px no-repeat;
+  width: 22px;
+  height: 22px;
+}
 .i-insert {
-  background: url(./icons.png) -60px -0px no-repeat;
+  background: url(./icons.png) -439px -0px no-repeat;
   width: 20px;
   height: 20px;
 }
+.active .i-gi, ._tool-box:hover .i-gi {
+  background: url(./icons.png) -459px -0px no-repeat;
+  width: 22px;
+  height: 22px;
+}
+.active .i-insert, ._tool-box:hover .i-insert {
+  background: url(./icons.png) -481px -0px no-repeat;
+  width: 20px;
+  height: 20px;
+}
+.active .i-note-down, ._tool-box:hover .i-note-down {
+  background: url(./icons.png) -501px -0px no-repeat;
+  width: 8px;
+  height: 23px;
+}
 .i-note-down {
-  background: url(./icons.png) -80px -0px no-repeat;
+  background: url(./icons.png) -509px -0px no-repeat;
   width: 8px;
   height: 23px;
 }
 .i-note-up {
-  background: url(./icons.png) -88px -0px no-repeat;
+  background: url(./icons.png) -517px -0px no-repeat;
   width: 8px;
   height: 23px;
 }
-.i-recover {
-  background: url(./icons.png) -96px -0px no-repeat;
-  width: 25px;
-  height: 18px;
+.active .i-note-up, ._tool-box:hover .i-note-up {
+  background: url(./icons.png) -525px -0px no-repeat;
+  width: 8px;
+  height: 23px;
 }
-.i-save {
-  background: url(./icons.png) -121px -0px no-repeat;
-  width: 18px;
+.active .i-play, ._tool-box:hover .i-play {
+  background: url(./icons.png) -533px -0px no-repeat;
+  width: 21px;
   height: 21px;
 }
-.i-withdraw {
-  background: url(./icons.png) -139px -0px no-repeat;
-  width: 25px;
-  height: 18px;
-}
-.i-rhythm {
-  background: url(./icons.png) -164px -0px no-repeat;
-  width: 18px;
-  height: 22px;
-}
 .i-play {
-  background: url(./icons.png) -182px -0px no-repeat;
+  background: url(./icons.png) -554px -0px no-repeat;
   width: 21px;
   height: 21px;
 }
 .i-play-restar {
-  background: url(./icons.png) -203px -0px no-repeat;
+  background: url(./icons.png) -575px -0px no-repeat;
   width: 19px;
   height: 21px;
+}
+.active .i-play-restar, ._tool-box:hover .i-play-restar {
+  background: url(./icons.png) -594px -0px no-repeat;
+  width: 18px;
+  height: 20px;
+}
+.i-recover {
+  background: url(./icons.png) -612px -0px no-repeat;
+  width: 25px;
+  height: 18px;
+}
+.active .i-recover, ._tool-box:hover .i-recover {
+  background: url(./icons.png) -637px -0px no-repeat;
+  width: 25px;
+  height: 18px;
+}
+.i-rhythm {
+  background: url(./icons.png) -662px -0px no-repeat;
+  width: 18px;
+  height: 22px;
 }

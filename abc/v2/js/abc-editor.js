@@ -3842,9 +3842,13 @@ var content_vue = new Vue({
         },
       ],
       foldLine: {
+        toolShow: false,
         show: false,
         line: 4,
         previewV: 4,
+      },
+      timbre: {
+        show: false,
       },
       shortcutsPanel: {
         index: -1,
@@ -4078,7 +4082,7 @@ var content_vue = new Vue({
                 fn: () => {
                   content_vue.m.menuIndex = 2;
                   content_vue.$nextTick(() => {
-                    $("#instrumentSelectByType").click();
+                    $("#timbre").click();
                   });
                 },
               },

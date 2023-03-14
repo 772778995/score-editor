@@ -513,6 +513,7 @@
       @click="() => {
       if (!m.menuIndex) m.menuIndex = -1
       m.addBar = { show: false, before: 1, after: 1 }
+      m.timbre.show = m.foldLine.toolShow = false
     }"
     >
       <div
@@ -754,12 +755,11 @@
                   <img
                     :src="`./img/radio${m.newScore.scoreOpts.speedType === 'txt' ? '1' : '2'}.png`"
                     class="cursor-pointer mr-2"
-                    :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.speedType === 'sign' }"
                     @click="m.newScore.scoreOpts.speedType = 'txt'"
                   />
                   <div>速度文本：</div>
                 </div>
-                <select-input v-model="m.newScore.scoreOpts.speedText" :list="m.newScore.speedTxtList" style="height: 28px;"></select-input>
+                <select-input v-model="m.newScore.scoreOpts.speedText" :list="m.newScore.speedTxtList" style="height: 28px;" :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.speedType === 'sign' }"></select-input>
               </div>
               <div class="flex items-center" style="margin-top: 10px;">
                 <div class="flex items-center h-full cursor-pointer" @click="m.newScore.scoreOpts.speedType = 'sign'">
@@ -806,7 +806,7 @@
 
           <div class="mt-10 flex items-center justify-center" style="color: #606060;">
             <div>每行</div>
-            <number-input v-model="m.foldLine.previewV" class="mx-4" min="1"></number-input>
+            <number-input v-model="m.foldLine.previewV" class="mx-4" min="1" style="width: 76px; height: 24px;"></number-input>
             <div>小节</div>
           </div>
 
@@ -1728,30 +1728,30 @@
           <select-input v-model="m.lyric.style.fontFamily" :list="m.lyric.fontFamilyList" style="width: 94px; height: 26px; font-size: 12px;"></select-input>
           <select-input v-model="m.lyric.style.fontSize" :list="m.lyric.fontSizeList" style="width: 94px; height: 26px; font-size: 12px;"></select-input>
 
-          <button
-            class="btn relative w-5 h-5 p-0"
+          <div
+            class="_tool-box relative"
             :style="{ color: m.lyric.style.color }"
             @click="$refs.lyricColorRef.click()"
           >
-            A
-            <input v-model="m.lyric.style.color" ref="lyricColorRef" type="color" class="top-0 left-0 absolute opacity-0 pointer-events-none"/>
-          </button>
-          <button
-            class="btn w-5 h-5 p-0"
-            :class="{ 'focus': m.lyric.style.fontWeight === 'bold' }"
+            <div class="i-color"></div>
+            <input v-model="m.lyric.style.color" ref="lyricColorRef" type="color" class="top-2 left-0 absolute opacity-0 pointer-events-none"/>
+          </div>
+          <div
+            class="_tool-box"
+            :class="{ 'active': m.lyric.style.fontWeight === 'bold' }"
             :style="{ 'box-shadow': m.lyric.style.fontWeight === 'bold' ? '' : 'none' }"
             @click="() => m.lyric.style.fontWeight = m.lyric.style.fontWeight === 'bold' ? 'normal' : 'bold'"
           >
-            B
-          </button>
-          <button
-            class="btn w-5 h-5 p-0"
-            :class="{ 'focus': m.lyric.style.fontStyle !== 'normal' }"
+            <div class="i-fontBold"></div>
+          </div>
+          <div
+            class="_tool-box"
+            :class="{ 'active': m.lyric.style.fontStyle !== 'normal' }"
             :style="{ 'box-shadow': m.lyric.style.fontStyle === 'normal' ? 'none' : '' }"
             @click="() => m.lyric.style.fontStyle = m.lyric.style.fontStyle === 'italic' ? 'normal' : 'italic'"
           >
-            /
-          </button>
+            <div class="i-xie"></div>
+          </div>
         </template>
 
         <template v-else-if="getMenuTxt === '视图'">
@@ -1775,33 +1775,52 @@
 
         <template v-else-if="getMenuTxt === '工具'">
           <div
-            class="flex flex-col items-center space-y-1.5 cursor-pointer shift-key"
+            class="_tool-box _tips"
+            style="--tips: '移调（Y）'"
             @click="m.key.show = true"
           >
-            <img src="" class="bg-black w-4 h-3" />
-            <span>移调</span>
+            <div class="i-yi"></div>
           </div>
 
           <div
-            id="instrumentSelectByType"
-            class="flex flex-col items-center space-y-1.5 cursor-pointer"
+            id="timbre"
+            class="_tool-box _tips relative"
+            style="--tips: '音色（S）'"
+            @click.stop="m.timbre.show = true"
           >
-            <img src="" class="bg-black w-4 h-3" />
-            <span>音色</span>
+            <div class="i-gi"></div>
+            <ul v-if="m.timbre.show" class="absolute top-10 left-2 z-40 bg-white p-0.5 rounded-sm overflow-y-auto text-xs" style="height: 500px; box-shadow: 4px 4px 24px 0px rgba(0,22,41,0.14);">
+              <li
+                v-for="(model, index) in instrumentList"
+                @click.stop="instrumentChoose(model.code) | (m.timbre.show = false)"
+                class="hover:sky-blue-bg duration-300 rounded-sm whitespace-nowrap block"
+                style="padding: 4px 14px; min-width: 77px;"
+              >
+                {{model.name}}
+              </li>
+            </ul>
           </div>
 
           <div
-            class="flex flex-col items-center space-y-1.5 cursor-pointer"
+            class="_tool-box relative"
+            @click.stop="m.foldLine.toolShow = true"
           >
-            <img src="" class="bg-black w-4 h-3" />
-            <span>折行</span>
-          </div>
-
-          <div
-            class="flex flex-col items-center space-y-1.5 cursor-pointer"
-          >
-            <img src="" class="bg-black w-4 h-3" />
-            <span>声部</span>
+            <div class="i-br"></div>
+            <div
+              v-if="m.foldLine.toolShow"
+              class="absolute top-12 left-6 bg-white  z-50 box-border rounded-sm"
+              style="box-shadow: 0px 4px 30px 0px rgba(3,35,63,0.28); right: -3px; padding: 2px; font-size: 12px; width: 92px;"
+            >
+              <div class="w-full rounded-sm hover:sky-blue-bg duration-300" style="padding: 4px 14px;" @click="() => {
+                checkIsSelectBar() && addBr()
+                m.foldLine.toolShow = false
+              }">
+                折行
+              </div>
+              <div class="rounded-sm hover:sky-blue-bg duration-300" style="padding: 4px 14px;" @click="(m.foldLine.show = true) | (m.foldLine.toolShow = false)">
+                自定义折行
+              </div>
+            </div>
           </div>
         </template>
 
