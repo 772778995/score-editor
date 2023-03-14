@@ -1634,43 +1634,24 @@
           <div>添加小节</div>
           <div
             v-if="m.addBar.show"
-            class="absolute top-9 left-6 shadow bg-white w-56 z-50 box-border"
+            class="absolute top-9 left-6 bg-white w-56 z-50 box-border rounded-sm"
+            style="box-shadow: 0px 4px 30px 0px rgba(3,35,63,0.28); right: -3px; padding: 8px 10px"
             @click.stop
           >
-            <div class="flex items-center whitespace-nowrap py-2 px-4">
+            <div class="flex items-center">
               <div>小节前</div>
-              <div>插入</div>
-              <input
-                v-model="m.addBar.before"
-                type="number"
-                class="w-10 text-right"
-                min="1"
-              />
-              <div>小节</div>
-              <div
-                class="ml-auto cursor-pointer"
-                @click="insertNodes(m.addBar.before)"
-              >
-                确定
-              </div>
+              <div class="mx-2">插入</div>
+              <number-input v-model="m.addBar.before" :min="1" style="width: 64px; height: 20px;"></number-input>
+              <div class="mx-2">小节</div>
+              <img src="./img/gou.png" class="ml-auto cursor-pointer" @click="insertNodes(m.addBar.before) | (m.addBar.show = false)">
             </div>
 
-            <div class="flex items-center whitespace-nowrap py-2 px-4">
+            <div class="mt-2 flex items-center">
               <div>小节后</div>
-              <div>插入</div>
-              <input
-                v-model="m.addBar.after"
-                type="number"
-                class="w-10 text-right"
-                min="1"
-              />
-              <div>小节</div>
-              <div
-                class="ml-auto cursor-pointer"
-                @click="insertNodes(m.addBar.after, true)"
-              >
-                确定
-              </div>
+              <div class="ml-2">插入</div>
+              <number-input v-model="m.addBar.after" :min="1" class="ml-2" style="width: 64px"></number-input>
+              <div class="mx-2">小节</div>
+              <img src="./img/gou.png" class="ml-auto cursor-pointer" @click="insertNodes(m.addBar.after, true) | (m.addBar.show = false)">
             </div>
           </div>
         </div>
@@ -3251,13 +3232,13 @@
         <!-- 右键菜单 -->
         <div
           v-show="m.ctxMenu.isShow"
-          class="fixed panzoom-exclude rounded-sm w-44 p-0.5 bg-white"
+          class="fixed panzoom-exclude rounded-sm duration-300 w-44 p-0.5 bg-white"
           @mouseup.stop
           @click.stop
           :style="{
             left: m.ctxMenu.x + 'px',
             top: m.ctxMenu.y + 'px',
-            zIndex: 9999,
+            zIndex: 999,
             boxShadow: '0px 4px 30px 0px rgba(3,35,63,0.28)'
           }"
         >
@@ -3272,11 +3253,36 @@
                 { 'pointer-events-none text-gray-400 cursor-default': item.disabled }
               ]"
               style="padding: 4px 9px; font-size: 12px;"
-              @click="item.fn && item.fn() | (() => (m.ctxMenu.isShow = false))()"
+              @click="item.fn && item.fn() | item.title === '添加小节' || (m.ctxMenu.isShow = false)"
             >
               <div>{{ item.title }}</div>
               <div v-if="item.subTitle" style="color: #767676;">{{ item.subTitle }}</div>
-              <img v-if="item.title === '添加小节'" src="./img/arrow_down.png" class="transform -rotate-90 w-2 h-1" >
+              <template v-if="item.title === '添加小节'">
+                <img src="./img/arrow_down.png" class="transform -rotate-90 w-2 h-1" >
+                <div
+                  :class="[
+                    { 'pointer-events-none opacity-0': !m.ctxMenu.addBarShow }
+                  ]"
+                  class="absolute duration-300 right-0 top-0 transform cursor-default translate-x-full bg-white rounded-sm"
+                  style="box-shadow: 0px 4px 30px 0px rgba(3,35,63,0.28); width: 215px; right: -3px; padding: 6px 10px"
+                  @click.stop
+                >
+                  <div class="flex items-center">
+                    <div>小节前</div>
+                    <div class="ml-2">插入</div>
+                    <number-input v-model="m.addBar.before" :min="1" class="ml-2" style="width: 64px"></number-input>
+                    <div class="mx-2">小节</div>
+                    <img src="./img/gou.png" class="cursor-pointer" @click="insertNodes(m.addBar.before) | (m.ctxMenu.isShow = false)">
+                  </div>
+                  <div class="mt-2 flex items-center">
+                    <div>小节后</div>
+                    <div class="ml-2">插入</div>
+                    <number-input v-model="m.addBar.after" :min="1" class="ml-2" style="width: 64px"></number-input>
+                    <div class="mx-2">小节</div>
+                    <img src="./img/gou.png" class="cursor-pointer" @click="insertNodes(m.addBar.after, true) | (m.ctxMenu.isShow = false)">
+                  </div>
+                </div>
+              </template>
 
               <div v-if="item.childList" class="absolute right-0 translate-x-full transform-gpu bg-white">
                 <div v-for="item in item.childList" @click="item.fn && item.fn() | (() => (m.ctxMenu.isShow = false))()">

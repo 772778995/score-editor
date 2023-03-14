@@ -2857,6 +2857,7 @@ var content_vue = new Vue({
         scale: 1,
       },
       ctxMenu: {
+        addBarShow: false,
         isShow: false,
         x: 0,
         y: 0,
@@ -4896,7 +4897,7 @@ var content_vue = new Vue({
         },
         { title: "撤回", subTitle: "Ctrl + Z", fn: goback },
         { type: 'line' },
-        { title: "添加小节", childList: [], disabled: !isSelectBar },
+        { title: "添加小节", disabled: !isSelectBar, fn: () => content_vue.m.ctxMenu.addBarShow = !content_vue.m.ctxMenu.addBarShow },
         {
           title: "添加歌词",
           subTitle: 'L',
@@ -4904,8 +4905,8 @@ var content_vue = new Vue({
           fn: () => createLyricEditor()
         },
         { type: 'line' },
-        { title: "移高八度", fn: up8, disabled: isSelectBar || isSelectNote },
-        { title: "移低八度", fn: down8, disabled: isSelectBar || isSelectNote },
+        { title: "移高八度", fn: up8, disabled: !(isSelectBar || isSelectNote) },
+        { title: "移低八度", fn: down8, disabled: !(isSelectBar || isSelectNote) },
         // TODO 曲式标记
         // { title: '曲式标记', fn: this.startDrawMF }
       ]
@@ -4976,6 +4977,10 @@ var content_vue = new Vue({
       $(`.keyChoice[value="${valueSelector}"]`).click()
       changeYG(val,"doPos2");
       changeZKey()
+    },
+    'm.ctxMenu.isShow'(isShow) {
+      if (isShow) return
+      this.m.ctxMenu.addBarShow = false
     },
     'm.key.previewV'(val) {
       const valueSelector = this.m.key.list.find(item => item.val === val)?.valueSelector
