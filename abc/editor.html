@@ -121,6 +121,7 @@
       }
       ._tips {
         position: relative;
+        z-index: 21;
       }
       ._tips::before {
         content: '';
@@ -1669,11 +1670,11 @@
 
         <div class="h-full bg-#dededf w-0.5"></div>
 
-        <div class="_tool-box _tips" style="--tips: '符杆向上'">
+        <div class="_tool-box _tips" style="--tips: '符杆向上'" @click="checkIsSelectNote() && setNoteStemDirect('up')">
           <div class="i-note-up"></div>
         </div>
 
-        <div class="_tool-box _tips" style="--tips: '符杆向下'">
+        <div class="_tool-box _tips" style="--tips: '符杆向下'" @click="checkIsSelectNote() && setNoteStemDirect('down')">
           <div class="i-note-down"></div>
         </div>
 
@@ -1754,8 +1755,23 @@
           </div>
         </template>
 
-        <template v-else-if="getMenuTxt === '视图'">
-          <button
+        <div v-else-if="getMenuTxt === '视图'" class="h-full flex items-center space-x-9" style="color: #696969;">
+          <div class="flex items-center space-x-2.5 cursor-pointer">
+            <img src="./img/checkbox1.png" />
+            <div>全部隐藏</div>
+          </div>
+
+          <div class="flex items-center space-x-2.5 cursor-pointer" @click="m.isMusicNoteShow = !m.isMusicNoteShow">
+            <img :src="`./img/checkbox${m.isMusicNoteShow ? '2' : '1'}.png`" />
+            <div>音符面板</div>
+          </div>
+
+
+          <div class="flex items-center space-x-2.5 cursor-pointer">
+            <img src="./img/checkbox1.png" />
+            <div>全部隐藏</div>
+          </div>
+          <!-- <button
             class="cursor-pointer"
             @click="m.isMusicNoteShow = !m.isMusicNoteShow"
           >
@@ -1770,8 +1786,8 @@
 
           <button @click="(menuActive = '') | keyboardClick()">
             虚拟键盘
-          </button>
-        </template>
+          </button> -->
+        </div>
 
         <template v-else-if="getMenuTxt === '工具'">
           <div
@@ -3057,7 +3073,7 @@
       <!-- 中间主要内容 -->
       <div class="body-box relative" style="overflow: auto; background: #B5C5D3;">
         <!-- 左边列表 -->
-        <div class="body-left z-40" style="position: fixed; top: 84px; left: 0px;">
+        <div class="body-left" style="z-index: 20; position: fixed; top: 84px; left: 0px;">
           <div class="body-left-content scroll" style="background: #F5F5F6">
             <!--abcString 相关  -->
             <input
