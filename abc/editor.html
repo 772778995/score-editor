@@ -78,7 +78,7 @@
       href="css/tailwindcss.min.css"
       rel="stylesheet"
     />
-
+    <link rel="stylesheet" href="./css/icons/icons.css">
     <link rel="stylesheet" type="text/css" href="nf/css/piano.css?v=20221027" />
     <link
       rel="stylesheet"
@@ -106,6 +106,66 @@
         font-weight: bold;
         font-size: 18px;
         color: #000;
+      }
+      ._tool-box {
+        width: 50px; height: 44px;
+        margin-top: 3px;
+        margin-bottom: 3px;
+        display: flex; justify-content: center; align-items: center;
+        border-radius: 2px;
+        transition: color 0.3s;
+        cursor: pointer;
+      }
+      ._tool-box:hover, ._tool-box.active {
+        background: #E7EFFF;
+      }
+      ._tips {
+        position: relative;
+      }
+      ._tips::before {
+        content: '';
+        position: absolute;
+        z-index: 2;
+        top: 100%;
+        left: 30%;
+        transform: translate(11px, calc(-100% + 10px));
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent transparent #fff transparent;
+        border-top-width: 7px;
+        border-bottom-width: 7px;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s;
+        width: 0; height: 0;
+      }
+      ._tips::after {
+        content: var(--tips);
+        position: absolute;
+        z-index: 2;
+        top: calc(100% + 10px);
+        left: 30%;
+        color: #747474;
+        font-size: 14px;
+        padding: 8px;
+        border-radius: 4px;
+        background-color: #fff;
+        opacity: 0;
+        pointer-events: none;
+        box-shadow: 4px 4px 2px 0px rgba(0,22,41,0.25);
+        white-space: nowrap;
+        transition: all 0.3s;
+      }
+      ._tips._right::after {
+        left: -100%;
+        transform: translateX(-40%);
+      }
+      ._tips._right::before {
+        left: 0;
+        transform: translate(11px, calc(-100% + 10px));
+      }
+      ._tips:hover::after, ._tips:hover::before {
+        opacity: 1;
       }
       .form-control:focus {
         border-color: #25649E !important;
@@ -1577,65 +1637,55 @@
       </div>
 
       <div
-        class="flex items-center py-2 px-3 space-x-5 text-sm border-t border-b bg-#f5f5f6"
+        class="flex items-center space-x-2 border-t border-b bg-#f5f5f6"
         style="border-color: #DEDEDF;"
       >
-        <div class="flex flex-col items-center">
-          <img src="" class="bg-black w-6 h-6" />
-          <div>保存</div>
+        <div class="_tool-box ml-3.5 _tips" style="--tips: '保存（Ctrl+S）'">
+          <div class="i-save"></div>
+        </div>
+
+        <div class="_tool-box _tips" style="--tips: '箭头/输入'" @click="switchPrachEditor">
+          <div class="i-insert"></div>
         </div>
 
         <div
-          class="flex flex-col items-center cursor-pointer"
-          @click="switchPrachEditor"
+          class="_tool-box _tips"
+          style="--tips: '撤销（Ctrl+Z）'"
+          @click="() => {
+            if($('body').attr('class')=='editor-div'){
+              return;
+            }
+              setTimeout(function(){
+              goback();
+            },100)
+          }"
         >
-          <img src="images/bianji.png" class="w-8 h-8" />
-          <div>箭头/输入</div>
+          <div class="i-withdraw"></div>
         </div>
 
-        <div
-          class="flex flex-col items-center justify-between text-xs space-y-0.5"
-        >
-          <div
-            class="flex items-center space-x-2 cursor-pointer"
-            @click="() => {
-              if($('body').attr('class')=='editor-div'){
-                return;
-              }
-                setTimeout(function(){
-                goback();
-              },100)
-            }"
-          >
-            <img src="" class="bg-black w-4 h-3" />
-            <div>撤回</div>
-          </div>
-
-          <div class="forward flex items-center space-x-2">
-            <img src="" class="bg-black w-4 h-3" />
-            <div>恢复</div>
-          </div>
+        <div class="forward _tool-box _tips" style="--tips: '恢复（Ctrl+Shift+Z）'">
+          <div class="i-recover"></div>
         </div>
 
         <div class="h-full bg-#dededf w-0.5"></div>
 
-        <div class="flex flex-col items-center space-y-1.5 text-xs">
-          <img src="" class="bg-black w-4 h-3" />
-          <div>符干</div>
+        <div class="_tool-box _tips" style="--tips: '符杆向上'">
+          <div class="i-note-up"></div>
         </div>
 
-        <div class="h-full bg-#dededf w-0.5"></div>
+        <div class="_tool-box _tips" style="--tips: '符杆向下'">
+          <div class="i-note-down"></div>
+        </div>
 
         <div
-          class="flex flex-col items-center space-y-1.5 text-xs relative cursor-pointer"
+          class="relative _tool-box"
           @click.stop="checkIsSelectBar() && (m.addBar.show = true)"
         >
-          <img src="" class="bg-black w-4 h-3" />
-          <div>添加小节</div>
+          <div class="i-addBar"></div>
           <div
             v-if="m.addBar.show"
-            class="absolute top-9 left-6 bg-white w-56 z-50 box-border rounded-sm"
-            style="box-shadow: 0px 4px 30px 0px rgba(3,35,63,0.28); right: -3px; padding: 8px 10px"
+            class="absolute top-12 left-6 bg-white  z-50 box-border rounded-sm"
+            style="box-shadow: 0px 4px 30px 0px rgba(3,35,63,0.28); right: -3px; padding: 8px 10px; font-size: 12px; width: 216px;"
             @click.stop
           >
             <div class="flex items-center">
@@ -1649,7 +1699,7 @@
             <div class="mt-2 flex items-center">
               <div>小节后</div>
               <div class="ml-2">插入</div>
-              <number-input v-model="m.addBar.after" :min="1" class="ml-2" style="width: 64px"></number-input>
+              <number-input v-model="m.addBar.after" :min="1" class="ml-2" style="width: 64px;height: 20px;"></number-input>
               <div class="mx-2">小节</div>
               <img src="./img/gou.png" class="ml-auto cursor-pointer" @click="insertNodes(m.addBar.after, true) | (m.addBar.show = false)">
             </div>
@@ -1657,87 +1707,51 @@
         </div>
 
         <div
-          class="flex flex-col items-center space-y-1.5 text-xs cursor-pointer"
+          class="_tool-box items-center _tips text-xs cursor-pointer"
+          style="--tips: '删除小节'"
           @click="checkIsSelectBar() && delSelectedNode()"
         >
-          <img src="" class="bg-black w-4 h-3" />
-          <div>删除小节</div>
+          <div class="i-delBar"></div>
         </div>
 
         <div class="h-full bg-#dededf w-0.5"></div>
 
         <template v-if="getMenuTxt === '文本'">
           <div
-            class="flex flex-col items-center space-y-1.5 cursor-pointer"
+            class="_tool-box _tips text-xl"
+            style="--tips: '歌词（L）'"
             @click="checkIsSelectNote() && createLyricEditor()"
           >
-            <img src="" class="bg-black w-4 h-3" />
-            <span>歌词</span>
+            <b>词</b>
           </div>
 
-          <div>
-            <div>
-              <div class="dropdown mx-0" style="width: auto;">
-                <button class="btn btn-sm dropdown-toggle flex items-center px-1 py-0.5" role="button" data-toggle="dropdown" aria-expanded="false">
-                  {{ m.lyric.fontFamilyList.find(item => item.val === m.lyric.style.fontFamily).label }}
-                </button>
-                <div class="dropdown-menu">
-                  <button
-                    v-for="item in m.lyric.fontFamilyList"
-                    :key="item.val"
-                    class="dropdown-item"
-                    :style="{ fontFamily: item.val }"
-                    @click="m.lyric.style.fontFamily = item.val"
-                  >
-                    {{ item.label }}
-                </button>
-                </div>
-              </div>
+          <select-input v-model="m.lyric.style.fontFamily" :list="m.lyric.fontFamilyList" style="width: 94px; height: 26px; font-size: 12px;"></select-input>
+          <select-input v-model="m.lyric.style.fontSize" :list="m.lyric.fontSizeList" style="width: 94px; height: 26px; font-size: 12px;"></select-input>
 
-              <div class="dropdown mx-0" style="width: auto;">
-                <a class="btn btn-sm dropdown-toggle flex items-center" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-                  {{ m.lyric.style.fontSize }}
-                </a>
-                <div class="dropdown-menu">
-                  <button
-                    v-for="item in m.lyric.fontSizeList"
-                    :key="item"
-                    class="dropdown-item"
-                    @click="m.lyric.style.fontSize = item"
-                  >
-                    {{ item }}
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div class="space-x-2">
-              <button
-                class="btn relative w-5 h-5 p-0"
-                :style="{ color: m.lyric.style.color }"
-                @click="$refs.lyricColorRef.click()"
-              >
-                A
-                <input v-model="m.lyric.style.color" ref="lyricColorRef" type="color" class="top-0 left-0 absolute opacity-0 pointer-events-none"/>
-              </button>
-              <button
-                class="btn w-5 h-5 p-0"
-                :class="{ 'focus': m.lyric.style.fontWeight === 'bold' }"
-                :style="{ 'box-shadow': m.lyric.style.fontWeight === 'bold' ? '' : 'none' }"
-                @click="() => m.lyric.style.fontWeight = m.lyric.style.fontWeight === 'bold' ? 'normal' : 'bold'"
-              >
-                B
-              </button>
-              <button
-                class="btn w-5 h-5 p-0"
-                :class="{ 'focus': m.lyric.style.fontStyle !== 'normal' }"
-                :style="{ 'box-shadow': m.lyric.style.fontStyle === 'normal' ? 'none' : '' }"
-                @click="() => m.lyric.style.fontStyle = m.lyric.style.fontStyle === 'italic' ? 'normal' : 'italic'"
-              >
-                /
-              </button>
-            </div>
-          </div>
+          <button
+            class="btn relative w-5 h-5 p-0"
+            :style="{ color: m.lyric.style.color }"
+            @click="$refs.lyricColorRef.click()"
+          >
+            A
+            <input v-model="m.lyric.style.color" ref="lyricColorRef" type="color" class="top-0 left-0 absolute opacity-0 pointer-events-none"/>
+          </button>
+          <button
+            class="btn w-5 h-5 p-0"
+            :class="{ 'focus': m.lyric.style.fontWeight === 'bold' }"
+            :style="{ 'box-shadow': m.lyric.style.fontWeight === 'bold' ? '' : 'none' }"
+            @click="() => m.lyric.style.fontWeight = m.lyric.style.fontWeight === 'bold' ? 'normal' : 'bold'"
+          >
+            B
+          </button>
+          <button
+            class="btn w-5 h-5 p-0"
+            :class="{ 'focus': m.lyric.style.fontStyle !== 'normal' }"
+            :style="{ 'box-shadow': m.lyric.style.fontStyle === 'normal' ? 'none' : '' }"
+            @click="() => m.lyric.style.fontStyle = m.lyric.style.fontStyle === 'italic' ? 'normal' : 'italic'"
+          >
+            /
+          </button>
         </template>
 
         <template v-else-if="getMenuTxt === '视图'">
@@ -1796,22 +1810,17 @@
         <div
           id="metronomesetting"
           @click="switchMetro()"
-          class="flex flex-col space-y-1.5 items-center cursor-pointer"
+          class="_tool-box _tips"
+          style="--tips: '节拍器（J）'"
         >
-          <img src="images/jpq.png" />
-          <div>节拍器</div>
+          <div class="i-rhythm"></div>
         </div>
 
-        <div class="space-y-1.5">
-          <div class="flex items-center space-x-3 cursor-pointer" @click="myplay()">
-            <img class="bg-black w-5 h-5" alt="">
-            <div id="playspan">播放</div>
-          </div>
-
-          <div class="flex items-center space-x-3 cursor-pointer" @click="mystop() | myplay()">
-            <img class="bg-black w-5 h-5" alt="">
-            <div>从头</div>
-          </div>
+        <div id="player" class="_tool-box _tips _right" style="--tips: '播放/展厅（空格键）'" @click="myplay">
+          <div class="i-play"></div>
+        </div>
+        <div id="player-2" class="_tool-box _tips _right" style="--tips: '回到开始处（Home）'" @click="mystop() | setTimeout(myplay, 100)">
+          <div class="i-play-restar"></div>
         </div>
       </div>
 

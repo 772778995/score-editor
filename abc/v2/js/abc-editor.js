@@ -1,59 +1,59 @@
 async function getScorePngBase64() {
-  return new Promise(resolve => {
-    const canvas = mergeSvg2Png()
-    svgAsPngUri(canvas, null, url => resolve(url))
-  })
+  return new Promise((resolve) => {
+    const canvas = mergeSvg2Png();
+    svgAsPngUri(canvas, null, (url) => resolve(url));
+  });
 }
 function liaison(val) {
-  var selectEl = $('.selected_text')[0]
-  if (!selectEl) return alert('请先选中音符')
-  var _0x15C57 = $('#source').val()
+  var selectEl = $(".selected_text")[0];
+  if (!selectEl) return alert("请先选中音符");
+  var _0x15C57 = $("#source").val();
   var matchArr = val.match(/\((\d)/);
-    var num = matchArr[1];
-    var cen = syms[selectEl.getAttribute('istart')]
-    console[_$_4d63[75]](cen);
-    var _0x1927B = cen[_$_4d63[104]];
-    var _0x17115 = _0x15C57[_$_4d63[177]](cen[_$_4d63[69]], cen[_$_4d63[155]]);
-    var _0x1946A = _0x1927B / 2;
-    var _0x19497 = _$_4d63[3];
-    var _0x18BA0 = cen[_$_4d63[592]];
-    if (_0x1946A > _0x18BA0) {
-      var _0x1738B = parseInt(_0x1946A / _0x18BA0);
-      if (_0x1738B != 1) {
-        _0x19497 = _0x1738B + _$_4d63[3];
-      }
-    } else {
-      if (_0x1946A < _0x18BA0) {
-        var _0x1738B = parseInt(_0x18BA0 / _0x1946A);
-        if (_0x1738B > 1) {
-          for (var _0x15CDE = 1; _0x15CDE < _0x1738B; _0x15CDE = _0x15CDE * 2) {
-            _0x19497 += _$_4d63[630];
-          }
+  var num = matchArr[1];
+  var cen = syms[selectEl.getAttribute("istart")];
+  console[_$_4d63[75]](cen);
+  var _0x1927B = cen[_$_4d63[104]];
+  var _0x17115 = _0x15C57[_$_4d63[177]](cen[_$_4d63[69]], cen[_$_4d63[155]]);
+  var _0x1946A = _0x1927B / 2;
+  var _0x19497 = _$_4d63[3];
+  var _0x18BA0 = cen[_$_4d63[592]];
+  if (_0x1946A > _0x18BA0) {
+    var _0x1738B = parseInt(_0x1946A / _0x18BA0);
+    if (_0x1738B != 1) {
+      _0x19497 = _0x1738B + _$_4d63[3];
+    }
+  } else {
+    if (_0x1946A < _0x18BA0) {
+      var _0x1738B = parseInt(_0x18BA0 / _0x1946A);
+      if (_0x1738B > 1) {
+        for (var _0x15CDE = 1; _0x15CDE < _0x1738B; _0x15CDE = _0x15CDE * 2) {
+          _0x19497 += _$_4d63[630];
         }
       }
     }
-    if (/\d{1,}|\/{1,}/[_$_4d63[623]](_0x17115)) {
-      _0x17115 = _0x17115[_$_4d63[122]](/\d{1,}|\/{1,}/, _0x19497);
-    } else {
-      _0x17115 = _0x17115 + _0x19497;
-    }
-    for (var _0x15CDE = 0; _0x15CDE < num - 1; _0x15CDE++) {
-      _0x17115 += _$_4d63[124] + _0x19497;
-    }
-    var _0x1638C =
-      _0x15C57[_$_4d63[177]](0, cen[_$_4d63[69]]) +
-      val +
-      _0x17115 +
-      _$_4d63[159] +
-      _0x15C57[_$_4d63[177]](cen[_$_4d63[155]]);
-    $(_$_4d63[120])[_$_4d63[119]](_0x1638C);
-    if (musicType == 2) {
-      src_change();
-    } else {
-      render();
-    }
-    doLog();
-    return;
+  }
+  if (/\d{1,}|\/{1,}/[_$_4d63[623]](_0x17115)) {
+    _0x17115 = _0x17115[_$_4d63[122]](/\d{1,}|\/{1,}/, _0x19497);
+  } else {
+    _0x17115 = _0x17115 + _0x19497;
+  }
+  for (var _0x15CDE = 0; _0x15CDE < num - 1; _0x15CDE++) {
+    _0x17115 += _$_4d63[124] + _0x19497;
+  }
+  var _0x1638C =
+    _0x15C57[_$_4d63[177]](0, cen[_$_4d63[69]]) +
+    val +
+    _0x17115 +
+    _$_4d63[159] +
+    _0x15C57[_$_4d63[177]](cen[_$_4d63[155]]);
+  $(_$_4d63[120])[_$_4d63[119]](_0x1638C);
+  if (musicType == 2) {
+    src_change();
+  } else {
+    render();
+  }
+  doLog();
+  return;
 }
 let isNewTab = false;
 function copy() {
@@ -2252,30 +2252,30 @@ var content_vue = new Vue({
           { txt: "图片", checked: true },
           { txt: "PDF", checked: false },
           { txt: "MID", checked: false, disabled: true },
-          { txt: "XML", checked: false, disabled: true }
-        ]
+          { txt: "XML", checked: false, disabled: true },
+        ],
       },
       key: {
         show: false,
-        val: 'C',
-        previewV: 'C',
+        val: "C",
+        previewV: "C",
         list: [
-          { txt: 'C大调', val: 'C', valueSelector: 'c' },
-          { txt: 'G大调', val: 'G', valueSelector: 'g' },
-          { txt: 'D大调', val: 'D', valueSelector: 'd' },
-          { txt: 'A大调', val: 'A', valueSelector: 'a' },
-          { txt: 'E大调', val: 'E', valueSelector: 'e' },
-          { txt: '升B大调', val: 'B', valueSelector: 'b,' },
-          { txt: '升F大调', val: '#F', valueSelector: '^f' },
-          { txt: '升C大调', val: '#C', valueSelector: '^c' },
-          { txt: 'F大调', val: 'F', valueSelector: 'f' },
-          { txt: '降B大调', val: 'Bb', valueSelector: '_b' },
-          { txt: '降E大调', val: 'Eb', valueSelector: '_e' },
-          { txt: '降A大调', val: 'Ab', valueSelector: '_a' },
-          { txt: '降D大调', val: 'Db', valueSelector: '_d' },
-          { txt: '降G大调', val: 'Gb', valueSelector: '_g' },
-          { txt: '降C大调', val: 'Cb', valueSelector: '_c' },
-        ]
+          { txt: "C大调", val: "C", valueSelector: "c" },
+          { txt: "G大调", val: "G", valueSelector: "g" },
+          { txt: "D大调", val: "D", valueSelector: "d" },
+          { txt: "A大调", val: "A", valueSelector: "a" },
+          { txt: "E大调", val: "E", valueSelector: "e" },
+          { txt: "升B大调", val: "B", valueSelector: "b," },
+          { txt: "升F大调", val: "#F", valueSelector: "^f" },
+          { txt: "升C大调", val: "#C", valueSelector: "^c" },
+          { txt: "F大调", val: "F", valueSelector: "f" },
+          { txt: "降B大调", val: "Bb", valueSelector: "_b" },
+          { txt: "降E大调", val: "Eb", valueSelector: "_e" },
+          { txt: "降A大调", val: "Ab", valueSelector: "_a" },
+          { txt: "降D大调", val: "Db", valueSelector: "_d" },
+          { txt: "降G大调", val: "Gb", valueSelector: "_g" },
+          { txt: "降C大调", val: "Cb", valueSelector: "_c" },
+        ],
       },
       // scoreOpts,
       lyric: {
@@ -2286,14 +2286,22 @@ var content_vue = new Vue({
           fontSize: "14px",
           fontFamily: "inherit",
         },
-        fontSizeList: ["10px", "12px", "14px", "16px", "18px", "20px", "24px"],
+        fontSizeList: [
+          "10px",
+          "12px",
+          "14px",
+          "16px",
+          "18px",
+          "20px",
+          "24px",
+        ].map((v) => ({ txt: v, val: v })),
         fontFamilyList: [
-          { label: "默认", val: "inherit" },
-          { label: "黑体", val: "SimHei" },
-          { label: "宋体", val: "SimSun" },
-          { label: "仿宋", val: "FangSong" },
-          { label: "楷体", val: "KaiTi" },
-          { label: "微软雅黑", val: "Microsoft YaHei" },
+          { txt: "默认", val: "inherit" },
+          { txt: "黑体", val: "SimHei" },
+          { txt: "宋体", val: "SimSun" },
+          { txt: "仿宋", val: "FangSong" },
+          { txt: "楷体", val: "KaiTi" },
+          { txt: "微软雅黑", val: "Microsoft YaHei" },
         ],
       },
       selectNote: null,
@@ -2328,7 +2336,9 @@ var content_vue = new Vue({
             },
             {
               txt: "导出",
-              fn: () => { content_vue.m.export.show = true },
+              fn: () => {
+                content_vue.m.export.show = true;
+              },
             },
           ],
         },
@@ -2904,24 +2914,26 @@ var content_vue = new Vue({
           { title: "C大调", img: "./img/bC.png", val: "Cb", isDown: true },
         ],
         keySignEasyList: [
-          { txt: 'C', val: 'C' },
-          { txt: 'G', val: 'G' },
-          { txt: 'D', val: 'D' },
-          { txt: 'A', val: 'A' },
-          { txt: 'E', val: 'E' },
-          { txt: 'B', val: 'B' },
-          { txt: '#F', val: 'C#' },
-          { txt: '#C', val: 'C#' },
-          { txt: 'F', val: 'F' },
-          { txt: 'bB', val: 'Bb' },
-          { txt: 'bE', val: 'Eb' },
-          { txt: 'bA', val: 'Ab' },
-          { txt: 'bD', val: 'Db' },
-          { txt: 'bG', val: 'Gb' },
-          { txt: 'bC', val: 'Cb' },
+          { txt: "C", val: "C" },
+          { txt: "G", val: "G" },
+          { txt: "D", val: "D" },
+          { txt: "A", val: "A" },
+          { txt: "E", val: "E" },
+          { txt: "B", val: "B" },
+          { txt: "#F", val: "C#" },
+          { txt: "#C", val: "C#" },
+          { txt: "F", val: "F" },
+          { txt: "bB", val: "Bb" },
+          { txt: "bE", val: "Eb" },
+          { txt: "bA", val: "Ab" },
+          { txt: "bD", val: "Db" },
+          { txt: "bG", val: "Gb" },
+          { txt: "bC", val: "Cb" },
         ],
         isBeatNoteListShow: false,
-        beatNoteList: new Array(12).fill(0).map((v, i) => ({ txt: i + 1 + "", val: i + 1 + "" })),
+        beatNoteList: new Array(12)
+          .fill(0)
+          .map((v, i) => ({ txt: i + 1 + "", val: i + 1 + "" })),
         isBeatNoteList2Show: false,
         beatNoteList2: ["2", "4", "8", "16"].map((i) => ({ txt: i, val: i })),
         speedNoteList: [
@@ -2930,7 +2942,10 @@ var content_vue = new Vue({
           { val: "1/4", img: "./img/note4.png" },
           { val: "1/8", img: "./img/note8.png" },
         ],
-        speedTxtList: speedTxtList.map(item => ({ val: item.txt, txt: item.txt })),
+        speedTxtList: speedTxtList.map((item) => ({
+          val: item.txt,
+          txt: item.txt,
+        })),
         scoreOpts: {
           title: "",
           subTitle: "",
@@ -3260,7 +3275,7 @@ var content_vue = new Vue({
               title: "2连音",
               class: "cmenu",
               position: "before",
-              fn: () => liaison('(2')
+              fn: () => liaison("(2"),
             },
             {
               url: "images/con3.png",
@@ -3268,7 +3283,7 @@ var content_vue = new Vue({
               title: "3连音",
               class: "cmenu",
               position: "before",
-              fn: () => liaison('(3')
+              fn: () => liaison("(3"),
             },
             {
               url: "images/con4.png",
@@ -3276,7 +3291,7 @@ var content_vue = new Vue({
               title: "4连音",
               class: "cmenu",
               position: "before",
-              fn: () => liaison('(4')
+              fn: () => liaison("(4"),
             },
             {
               url: "images/con5.png",
@@ -3284,7 +3299,7 @@ var content_vue = new Vue({
               title: "5连音",
               class: "cmenu",
               position: "before",
-              fn: () => liaison('(5')
+              fn: () => liaison("(5"),
             },
             {
               url: "images/con6.png",
@@ -3292,7 +3307,7 @@ var content_vue = new Vue({
               title: "6连音",
               class: "cmenu",
               position: "before",
-              fn: () => liaison('(6')
+              fn: () => liaison("(6"),
             },
             {
               url: "images/con7.png",
@@ -3300,7 +3315,7 @@ var content_vue = new Vue({
               title: "7连音",
               class: "cmenu",
               position: "before",
-              fn: () => liaison('(7')
+              fn: () => liaison("(7"),
             },
           ],
           isExpand: !1,
@@ -3829,7 +3844,7 @@ var content_vue = new Vue({
       foldLine: {
         show: false,
         line: 4,
-        previewV: 4
+        previewV: 4,
       },
       shortcutsPanel: {
         index: -1,
@@ -3844,7 +3859,13 @@ var content_vue = new Vue({
                 fn: () => (content_vue.newScore.musicType.show = true),
               },
               { title: "打开", shortList: ["Ctrl", "O"] },
-              { title: "导出", shortList: ["Ctrl", "D"], valueList: ["d"], fn: () => content_vue.m.export.show = !content_vue.m.export.show },
+              {
+                title: "导出",
+                shortList: ["Ctrl", "D"],
+                valueList: ["d"],
+                fn: () =>
+                  (content_vue.m.export.show = !content_vue.m.export.show),
+              },
               { title: "保存", shortList: ["Ctrl", "S"] },
               { title: "另存为", shortList: ["Shift", "S"] },
               { title: "音符输入/点击模式", shortList: ["N"] },
@@ -3853,27 +3874,65 @@ var content_vue = new Vue({
               { title: "谱面拖动", shortList: ["鼠标左击"] },
             ],
             rightList: [
-              { title: "删除", shortList: ["Backspace", "/", "Del"], valueList: ["Backspace", "Delete"], fn: () => delSelNote() },
-              { title: "撤回", shortList: ["Ctrl", "Z"], valueList: ["z"], fn: (e) => {
-                if($(e.target).attr("class")=="editor-div"){
-                  return;
-                }
-                  setTimeout(function(){
-                  goback();
-                  e.preventDefault();
-                },100)
-              } },
-              { title: "恢复", shortList: ["Ctrl", "Shift", "Z"], valueList: ["z"], fn: () => $(".forward").click() },
-              { title: "复制", shortList: ["Ctrl", "C"], valueList: ["c"], fn: () => copy() },
-              { title: "粘贴", shortList: ["Ctrl", "V"], valueList: ["v"], fn: () => paste() },
+              {
+                title: "删除",
+                shortList: ["Backspace", "/", "Del"],
+                valueList: ["Backspace", "Delete"],
+                fn: () => delSelNote(),
+              },
+              {
+                title: "撤回",
+                shortList: ["Ctrl", "Z"],
+                valueList: ["z"],
+                fn: (e) => {
+                  if ($(e.target).attr("class") == "editor-div") {
+                    return;
+                  }
+                  setTimeout(function () {
+                    goback();
+                    e.preventDefault();
+                  }, 100);
+                },
+              },
+              {
+                title: "恢复",
+                shortList: ["Ctrl", "Shift", "Z"],
+                valueList: ["z"],
+                fn: () => $(".forward").click(),
+              },
+              {
+                title: "复制",
+                shortList: ["Ctrl", "C"],
+                valueList: ["c"],
+                fn: () => copy(),
+              },
+              {
+                title: "粘贴",
+                shortList: ["Ctrl", "V"],
+                valueList: ["v"],
+                fn: () => paste(),
+              },
               {
                 title: "全选",
                 shortList: ["Ctrl", "A"],
                 valueList: ["a"],
                 fn: () => $('text[type="hd"]').addClass("selected_text"),
               },
-              { title: "剪切", shortList: ["Ctrl", "X"], valueList: ["x"], fn: () => (copy() | content_vue.getSelectedBar() ? delSelectedNode() : delSelNote()) },
-              { title: "删除小节", shortList: ["Ctrl", "Backspace"], valueList: ["Backspace"], fn: () => delSelectedNode() },
+              {
+                title: "剪切",
+                shortList: ["Ctrl", "X"],
+                valueList: ["x"],
+                fn: () =>
+                  copy() | content_vue.getSelectedBar()
+                    ? delSelectedNode()
+                    : delSelNote(),
+              },
+              {
+                title: "删除小节",
+                shortList: ["Ctrl", "Backspace"],
+                valueList: ["Backspace"],
+                fn: () => delSelectedNode(),
+              },
             ],
           },
           {
@@ -3894,45 +3953,160 @@ var content_vue = new Vue({
           {
             title: "连音",
             leftList: [
-              { title: "三连音", shortList: ["Ctrl", "3"], valueList: ['3'], fn: () => liaison('(3') },
-              { title: "四连音", shortList: ["Ctrl", "4"], valueList: ['4'], fn: () => liaison('(4') },
-              { title: "五连音", shortList: ["Ctrl", "5"], valueList: ['5'], fn: () => liaison('(5') },
-              { title: "六连音", shortList: ["Ctrl", "6"], valueList: ['6'], fn: () => liaison('(6') },
-              { title: "七连音", shortList: ["Ctrl", "7"], valueList: ['7'], fn: () => liaison('(7') },
-              { title: "八连音", shortList: ["Ctrl", "8"], valueList: ['8'], fn: () => liaison('(8') },
-              { title: "九连音", shortList: ["Ctrl", "9"], valueList: ['9'], fn: () => liaison('(9') },
+              {
+                title: "三连音",
+                shortList: ["Ctrl", "3"],
+                valueList: ["3"],
+                fn: () => liaison("(3"),
+              },
+              {
+                title: "四连音",
+                shortList: ["Ctrl", "4"],
+                valueList: ["4"],
+                fn: () => liaison("(4"),
+              },
+              {
+                title: "五连音",
+                shortList: ["Ctrl", "5"],
+                valueList: ["5"],
+                fn: () => liaison("(5"),
+              },
+              {
+                title: "六连音",
+                shortList: ["Ctrl", "6"],
+                valueList: ["6"],
+                fn: () => liaison("(6"),
+              },
+              {
+                title: "七连音",
+                shortList: ["Ctrl", "7"],
+                valueList: ["7"],
+                fn: () => liaison("(7"),
+              },
+              {
+                title: "八连音",
+                shortList: ["Ctrl", "8"],
+                valueList: ["8"],
+                fn: () => liaison("(8"),
+              },
+              {
+                title: "九连音",
+                shortList: ["Ctrl", "9"],
+                valueList: ["9"],
+                fn: () => liaison("(9"),
+              },
             ],
             rightList: [],
           },
           {
             title: "工具",
             leftList: [
-              { title: "元素前插入小节", shortList: ["Ctrl", "B"], valueList: ["b"], fn: () => insertNodes(1) },
-              { title: "元素后插入小节", shortList: ["Ctrl", "Shift", "B"], valueList: ["b"], fn: () => insertNodes(1, true) },
-              { title: "乐谱开始处插入小节", shortList: ["Alt", "B"], valueList: ["b"], fn: () => insertNodes(1, false, true) },
-              { title: "乐谱结尾处插入小节", shortList: ["Alt", "Ctrl", "B"], valueList: ["b"], fn: () => appendNodes(1) },
-              { title: "折行", shortList: ["Enter"], valueList: ['Enter'], fn: () => content_vue.checkIsSelectBar() && addBr() },
-              { title: "自定义折行", shortList: ["Ctrl", "Enter"], valueList: ['Enter'], fn: () => content_vue.m.foldLine.show = true },
-              { title: "播放/暂停", shortList: ["空格键"], valueList: [" "], fn: () => myplay()},
-              { title: "回到开始处", shortList: ["Home"] },
+              {
+                title: "元素前插入小节",
+                shortList: ["Ctrl", "B"],
+                valueList: ["b"],
+                fn: () => insertNodes(1),
+              },
+              {
+                title: "元素后插入小节",
+                shortList: ["Ctrl", "Shift", "B"],
+                valueList: ["b"],
+                fn: () => insertNodes(1, true),
+              },
+              {
+                title: "乐谱开始处插入小节",
+                shortList: ["Alt", "B"],
+                valueList: ["b"],
+                fn: () => insertNodes(1, false, true),
+              },
+              {
+                title: "乐谱结尾处插入小节",
+                shortList: ["Alt", "Shift", "B"],
+                valueList: ["b"],
+                fn: () => appendNodes(1),
+              },
+              {
+                title: "折行",
+                shortList: ["Enter"],
+                valueList: ["Enter"],
+                fn: () => content_vue.checkIsSelectBar() && addBr(),
+              },
+              {
+                title: "自定义折行",
+                shortList: ["Ctrl", "Enter"],
+                valueList: ["Enter"],
+                fn: () => (content_vue.m.foldLine.show = true),
+              },
+              {
+                title: "播放/暂停",
+                shortList: ["空格键"],
+                valueList: [" "],
+                fn: () => myplay(),
+              },
+              {
+                title: "回到开始处",
+                shortList: ["Home"],
+                valueList: ["Home"],
+                fn: () => $("#player-2").click(),
+              },
             ],
             rightList: [
-              { title: "歌词", shortList: ["L"], valueList: ["l"], fn: () => content_vue.checkIsSelectNote() && createLyricEditor() },
-              { title: "节拍器", shortList: ["J"], valueList: ["j"], fn: () => $('#metronomesetting').click() },
-              { title: "移调", shortList: ["Y"], valueList: ["y"], fn: () => content_vue.m.key.show = !content_vue.m.key.show },
+              {
+                title: "歌词",
+                shortList: ["L"],
+                valueList: ["l"],
+                fn: () =>
+                  content_vue.checkIsSelectNote() && createLyricEditor(),
+              },
+              {
+                title: "节拍器",
+                shortList: ["J"],
+                valueList: ["j"],
+                fn: () => $("#metronomesetting").click(),
+              },
+              {
+                title: "移调",
+                shortList: ["Y"],
+                valueList: ["y"],
+                fn: () => (content_vue.m.key.show = !content_vue.m.key.show),
+              },
               { title: "符干", shortList: ["L"] },
-              { title: "音色", shortList: ["S"], valueList: ['s'], fn: () => {
-                content_vue.m.menuIndex = 2
-                content_vue.$nextTick(() => {
-                  $('#instrumentSelectByType').click()
-                })
-              } },
-              { title: "小键盘", shortList: ["P"], valueList: ['p'], fn: () => content_vue.m.numberKeypad.isShow = !content_vue.m.numberKeypad.isShow },
-              { title: "音符面板", shortList: ["U"], valueList: ['u'], fn: () => content_vue.m.isMusicNoteShow = !content_vue.m.isMusicNoteShow },
-              { title: "MID键盘", shortList: ["M"], valueList: ['m'], fn: () => {
-                content_vue.menuActive = '';
-                 content_vue.keyboardClick()
-              } },
+              {
+                title: "音色",
+                shortList: ["S"],
+                valueList: ["s"],
+                fn: () => {
+                  content_vue.m.menuIndex = 2;
+                  content_vue.$nextTick(() => {
+                    $("#instrumentSelectByType").click();
+                  });
+                },
+              },
+              {
+                title: "小键盘",
+                shortList: ["P"],
+                valueList: ["p"],
+                fn: () =>
+                  (content_vue.m.numberKeypad.isShow =
+                    !content_vue.m.numberKeypad.isShow),
+              },
+              {
+                title: "音符面板",
+                shortList: ["U"],
+                valueList: ["u"],
+                fn: () =>
+                  (content_vue.m.isMusicNoteShow =
+                    !content_vue.m.isMusicNoteShow),
+              },
+              {
+                title: "MID键盘",
+                shortList: ["M"],
+                valueList: ["m"],
+                fn: () => {
+                  content_vue.menuActive = "";
+                  content_vue.keyboardClick();
+                },
+              },
             ],
           },
           {
@@ -4651,14 +4825,22 @@ var content_vue = new Vue({
 
     // ———————————————————————————————————————— 分割线 __method ————————————————————————————————————————
     async exportScore() {
-      this.m.export.show = false
-      const isNoChecked = this.m.export.list.every((item) => !item.checked)
-      if (isNoChecked) return
+      this.m.export.show = false;
+      const isNoChecked = this.m.export.list.every((item) => !item.checked);
+      if (isNoChecked) return;
 
-      const [mp3, pic, pdf] = this.m.export.list
+      const [mp3, pic, pdf] = this.m.export.list;
 
-      if (pic.checked) saveAs(await getScorePngBase64(), `${$('#source').val().match(/(?<=T:\s+).+/)[0]}.png`)
-      if (pdf.checked) exportAbc2Pdf('source')
+      if (pic.checked)
+        saveAs(
+          await getScorePngBase64(),
+          `${
+            $("#source")
+              .val()
+              .match(/(?<=T:\s+).+/)[0]
+          }.png`
+        );
+      if (pdf.checked) exportAbc2Pdf("source");
     },
     changeSelectNote() {
       this.selectNote = $(".selected_text")[0] || null;
@@ -4819,10 +5001,12 @@ var content_vue = new Vue({
     createNewScore() {
       if (isNewTab) {
         window.open(
-          location.href + `?scoreOpts=${encodeURIComponent(JSON.stringify(this.m.newScore.scoreOpts))}`
+          location.href +
+            `?scoreOpts=${encodeURIComponent(
+              JSON.stringify(this.m.newScore.scoreOpts)
+            )}`
         );
-      }
-      else {
+      } else {
         initScore(this.m.newScore.scoreOpts);
         this.m.newScore.musicType.show = false;
         this.m.newScore.scoreOptsShow = false;
@@ -4833,14 +5017,14 @@ var content_vue = new Vue({
      */
     listenKeydown(e) {
       const { ctrlKey, shiftKey, altKey, key, target, code } = e;
-      if (code === 'NumpadEnter') return
-      if ([...target.classList].includes('editor-div')) return
+      if (code === "NumpadEnter") return;
+      if ([...target.classList].includes("editor-div")) return;
       const shortcutList = this.m.shortcutsPanel.typeList
         .map((item) => item.leftList.concat(item.rightList))
         .flat()
-        .map(item => ({
+        .map((item) => ({
           ...item,
-          valueList: item.valueList?.map(item => item.toLowerCase()) || []
+          valueList: item.valueList?.map((item) => item.toLowerCase()) || [],
         }))
         .sort((pre, nxt) => pre.shortList.length - nxt.shortList.length);
       for (const item of shortcutList) {
@@ -4850,9 +5034,9 @@ var content_vue = new Vue({
         if (altKey !== item.shortList.includes("Alt")) continue;
         if (item.valueList.includes(key.toLowerCase())) {
           item.fn(e);
-          e.preventDefault()
-          e.returnValue = false
-          return false
+          e.preventDefault();
+          e.returnValue = false;
+          return false;
         }
       }
     },
@@ -4887,29 +5071,43 @@ var content_vue = new Vue({
           title: `剪切`,
           subTitle: "Ctrl + X",
           fn: () => (copy() | isSelectBar ? delSelectedNode() : delSelNote()),
-          disabled: !(isSelectNote || isSelectBar)
+          disabled: !(isSelectNote || isSelectBar),
         },
         {
           title: "删除",
           subTitle: "Backspace",
           fn: () => (isSelectBar ? delSelectedNode() : delSelNote()),
-          disabled: !(isSelectNote || isSelectBar)
+          disabled: !(isSelectNote || isSelectBar),
         },
         { title: "撤回", subTitle: "Ctrl + Z", fn: goback },
-        { type: 'line' },
-        { title: "添加小节", disabled: !isSelectBar, fn: () => content_vue.m.ctxMenu.addBarShow = !content_vue.m.ctxMenu.addBarShow },
+        { type: "line" },
+        {
+          title: "添加小节",
+          disabled: !isSelectBar,
+          fn: () =>
+            (content_vue.m.ctxMenu.addBarShow =
+              !content_vue.m.ctxMenu.addBarShow),
+        },
         {
           title: "添加歌词",
-          subTitle: 'L',
+          subTitle: "L",
           disabled: !isSelectNote,
-          fn: () => createLyricEditor()
+          fn: () => createLyricEditor(),
         },
-        { type: 'line' },
-        { title: "移高八度", fn: up8, disabled: !(isSelectBar || isSelectNote) },
-        { title: "移低八度", fn: down8, disabled: !(isSelectBar || isSelectNote) },
+        { type: "line" },
+        {
+          title: "移高八度",
+          fn: up8,
+          disabled: !(isSelectBar || isSelectNote),
+        },
+        {
+          title: "移低八度",
+          fn: down8,
+          disabled: !(isSelectBar || isSelectNote),
+        },
         // TODO 曲式标记
         // { title: '曲式标记', fn: this.startDrawMF }
-      ]
+      ];
       return menuList;
     },
   },
@@ -4972,21 +5170,25 @@ var content_vue = new Vue({
     },
 
     // ———————————————————————————————————————— 分割线 __watch ————————————————————————————————————————
-    'm.key.val'(val) {
-      const valueSelector = this.m.key.list.find(item => item.val === val)?.valueSelector
-      $(`.keyChoice[value="${valueSelector}"]`).click()
-      changeYG(val,"doPos2");
-      changeZKey()
+    "m.key.val"(val) {
+      const valueSelector = this.m.key.list.find(
+        (item) => item.val === val
+      )?.valueSelector;
+      $(`.keyChoice[value="${valueSelector}"]`).click();
+      changeYG(val, "doPos2");
+      changeZKey();
     },
-    'm.ctxMenu.isShow'(isShow) {
-      if (isShow) return
-      this.m.ctxMenu.addBarShow = false
+    "m.ctxMenu.isShow"(isShow) {
+      if (isShow) return;
+      this.m.ctxMenu.addBarShow = false;
     },
-    'm.key.previewV'(val) {
-      const valueSelector = this.m.key.list.find(item => item.val === val)?.valueSelector
-      $(`.keyChoice[value="${valueSelector}"]`).click()
-      changeYG(val,"doPos2");
-      changeZKey()
+    "m.key.previewV"(val) {
+      const valueSelector = this.m.key.list.find(
+        (item) => item.val === val
+      )?.valueSelector;
+      $(`.keyChoice[value="${valueSelector}"]`).click();
+      changeYG(val, "doPos2");
+      changeZKey();
     },
     "m.isMusicNoteShow": (function () {
       let timer = null;
@@ -5011,16 +5213,16 @@ var content_vue = new Vue({
       handler(val) {
         this.$refs.previewIframeRef?.contentWindow.postMessage(val, "*");
       },
-      deep: true
+      deep: true,
     },
-    'm.newScore.scoreOpts.rowBars'(num) {
-      this.m.foldLine.line = num
+    "m.newScore.scoreOpts.rowBars"(num) {
+      this.m.foldLine.line = num;
     },
-    'm.foldLine.previewV'(num) {
-      $('#barsperstaff').val(num)
-      var newContent = handleBreakLine($('#source').val(), num);
-      $($('#source')).val(newContent);
-      abc_change()
+    "m.foldLine.previewV"(num) {
+      $("#barsperstaff").val(num);
+      var newContent = handleBreakLine($("#source").val(), num);
+      $($("#source")).val(newContent);
+      abc_change();
     },
     // 'm.foldLine.line'(num) {
     //     $('#barsperstaff').val(num)
@@ -5113,15 +5315,15 @@ var content_vue = new Vue({
     }
     if (Object.keys(scoreOpts).length) {
       $("#source").val(getAbcTemplateCode(scoreOpts));
-      let keySign = scoreOpts.keySign
-      if (keySign.includes('#')) keySign = [...keySign].reverse().join('')
+      let keySign = scoreOpts.keySign;
+      if (keySign.includes("#")) keySign = [...keySign].reverse().join("");
       this.m.key.val = keySign;
       this.m.key.previewV = keySign;
-      this.m.foldLine.line = scoreOpts.rowBars
-      this.m.foldLine.previewV = scoreOpts.rowBars
+      this.m.foldLine.line = scoreOpts.rowBars;
+      this.m.foldLine.previewV = scoreOpts.rowBars;
     }
     document.addEventListener("keydown", (e) => {
-      if (['TEXTAREA', 'INPUT'].includes(e.target.tagName)) return
+      if (["TEXTAREA", "INPUT"].includes(e.target.tagName)) return;
       this.emitNumKeybordFn(e.code);
       this.listenKeydown(e);
     });
@@ -5131,7 +5333,7 @@ var content_vue = new Vue({
       this.initCtxMenu();
       this.changeSelectNote();
       this.changeSelectBar();
-      setLyricStyle()
+      setLyricStyle();
     };
     document.addEventListener("keyup", event);
     document.addEventListener("click", event);
