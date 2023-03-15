@@ -4109,8 +4109,8 @@ var content_vue = new Vue({
               },
               {
                 title: "音符面板",
-                shortList: ["U"],
-                valueList: ["u"],
+                shortList: ["Q"],
+                valueList: ["q"],
                 fn: () =>
                   (content_vue.m.isMusicNoteShow =
                     !content_vue.m.isMusicNoteShow),
