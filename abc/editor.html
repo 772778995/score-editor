@@ -107,6 +107,21 @@
         font-size: 18px;
         color: #000;
       }
+      .addBar-box:hover .addBar {
+        pointer-events: auto;
+        opacity: 1;
+      }
+      .num-key {
+        background: #B5C5D3;
+        min-width: 36px;
+        min-height: 36px;
+        box-shadow: 1px 1px 2px 0px rgba(14,62,107,0.48);
+        border-radius: 12px 2px 2px 2px;
+      }
+      .is-select-key {
+        background-color: #0E518F;
+        box-shadow: inset 1px 1px 4px 0px #1A232C;
+      }
       ._tool-box {
         width: 50px; height: 44px;
         margin-top: 3px;
@@ -526,12 +541,12 @@
           class="bg-white rounded-xl overflow-hidden"
           style="box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);"
         >
-          <b class="flex justify-between items-center text-xl py-3 px-5">
+          <b class="flex justify-between items-center text-xl" style="padding: 10px 20px; background-color: #F5F5F5;">
             <div>新建乐谱</div>
             <img src="../abc/img/close.png" class="cursor-pointer" @click="m.newScore.musicType.show = false"/>
           </b>
   
-          <div class="" style="background: #F5F5F5; padding: 50px 80px 40px 70px;">
+          <div class="" style="background: #fff; padding: 50px 80px 40px 70px;">
             <div class="mb-12" style="color: #575757;">请选择模板文件：</div>
             <div class="flex justify-between space-x-12">
               <div v-for="(item, i) in m.newScore.musicType.list" :key="i" class="flex flex-col items-center">
@@ -554,12 +569,12 @@
             </div>
 
             <div class="flex justify-end mt-10">
-              <button
-                class="bg-deep-blue text-white px-8 py-1 rounded-md ml-auto"
+              <div
+                class="_btn ml-auto"
                 @click="m.newScore.scoreOptsShow = true"
               >
                 下一步
-              </button>
+              </div>
             </div>
           </div>
         </div>
@@ -571,12 +586,12 @@
       :class="{ 'opacity-0 pointer-events-none' : !m.newScore.scoreOptsShow }"
     >
       <div class="rounded-md overflow-hidden" style="box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);">
-        <b class="flex justify-between items-center text-xl py-3 px-5 bg-#f5f5f6">
+        <b class="flex justify-between items-center text-xl bg-#f5f5f6" style="padding: 10px 20px">
           <div>新建乐谱</div>
-          <img src="../abc/img/close.png" class="cursor-pointer" @click="m.newScore.scoreOptsShow = m.newScore.musicType.show = false"/>
+          <img src="./img/close.png" class="cursor-pointer" @click="m.newScore.scoreOptsShow = m.newScore.musicType.show = false"/>
         </b>
 
-        <div class="flex" style="height: 650px; background: #B5C5D3;">
+        <div class="flex relative" style="height: 650px; background: #B5C5D3;">
           <div class="p-5" style="width: 712px;">
             <iframe
               ref="previewIframeRef"
@@ -585,7 +600,7 @@
             ></iframe>
           </div>
 
-          <div class="bg-white overflow-y-auto"> 
+          <div class="bg-white overflow-y-auto" style="padding-bottom: 66px;"> 
             <div class="rounded" style="padding: 20px 17px; border-bottom: 2px solid #F5F5F5;">
               <div class="blue-title mb-7">基本信息</div>
               <div class="relative" style="margin-bottom: 16px;">
@@ -779,12 +794,12 @@
                 </div>
               </div>
             </div>
+          </div>
 
-            <div class="flex" style="padding: 30px 17px 0 17px;">
-              <button class="_btn _border" @click="m.newScore.scoreOptsShow = m.newScore.musicType = false">取消</button>
-              <button class="_btn ml-auto mr-2 " @click="m.newScore.scoreOptsShow = false">上一步</button>
-              <button class="_btn" @click="createNewScore" style="background: #AFAFAF;">创建</button>
-            </div>
+          <div class="flex absolute bottom-0 bg-white z-50" style="right: 10px; width: 491px; padding: 20px 17px 20px 17px;">
+            <button class="_btn _border" @click="m.newScore.scoreOptsShow = m.newScore.musicType.show = false">取消</button>
+            <button class="_btn ml-auto mr-2 " @click="m.newScore.scoreOptsShow = false">上一步</button>
+            <button class="_btn" @click="createNewScore" style="background: #AFAFAF;">创建</button>
           </div>
         </div>
       </div>
@@ -909,7 +924,7 @@
 
     <div
       :class="m.shortcutsPanel.index !== -1 ? '_show' : '_hide'"
-      class="fixed top-0 left-0 duration-300 h-screen w-screen flex items-center justify-center theme-blue-bg"
+      class="fixed top-0 left-0 duration-300 h-screen w-screen flex items-center justify-center"
       style="z-index: 9998;"
     >
       <div
@@ -1567,9 +1582,13 @@
       >
       </div>
       
-      <div v-show="m.numberKeypad.isShow" class="fixed z-30 bg-gray-500 bottom-12 right-24" :style="getNumberKeypadPosStyle">
+      <div
+        v-show="m.numberKeypad.isShow"
+        class="fixed z-30 bottom-12 right-24"
+        :style="getNumberKeypadPosStyle"
+        style="background-color: #F5F5F5; box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28); border-radius: 10px 10px 10px 10px;">
         <div
-          class="relative flex items-center justify-between px-2 py-3 text-white text-xl cursor-pointer"
+          class="relative flex items-center justify-between px-3.5 py-3 text-xl cursor-pointer"
           @mousedown.stop="(e) => {
             m.numberKeypad.isMove = true
             m.numberKeypad.moveStart = {
@@ -1578,19 +1597,18 @@
             }
           }"
         >
-          <div>小键盘</div>
-          <div @mousedown.stop @click="m.numberKeypad.isShow = false">X</div>
+          <div style="font-size: 20px; font-weight: 500;">小键盘</div>
+          <img src="./img/close.png" class="cursor-pointer" @click.stop="m.numberKeypad.isShow = false" @mousedown.stop/>
         </div>
 
-        <div class="p-2 bg-gray-300 grid grid-cols-4 gap-2 text-base">
+        <div class="p-2 bg-white grid grid-cols-4 gap-2 text-base">
           <div
             v-for="(item, idx) in m.numberKeypad[['staffList', 'all', 'easyList'][musicType]][m.numberKeypad.page]"
-            class="min-w-10 p-1.5 bg-gray-500 cursor-pointer flex justify-center items-center"
-            style="min-height: 40px"
+            class="min-w-10 p-1.5 num-key cursor-pointer duration-300 flex justify-center items-center"
             :class="[
               { 'row-span-2': [7, 14].includes(idx) },
               { 'col-span-2': idx === 15 },
-              { 'bg-blue-500': item.isSelect }
+              { 'is-select-key': item.isSelect }
             ]"
             :key="idx"
             @click.stop="() => {
@@ -1645,7 +1663,7 @@
           <div class="i-save"></div>
         </div>
 
-        <div class="_tool-box _tips" style="--tips: '箭头/输入'" @click="switchPrachEditor">
+        <div class="_tool-box _tips" style="--tips: '箭头 / 输入（N）'" @click="switchPrachEditor">
           <div class="i-insert"></div>
         </div>
 
@@ -3286,7 +3304,7 @@
             <div v-if="item.type === 'line' && getCtxMenuList.length > 3" style="width: 100%; height: 1px; background: #E9E9E9;"></div>
             <div
               v-else-if="item.title"
-              class="flex justify-between items-center rounded-sm cursor-pointer hover:sky-blue-bg duration-300 relative"
+              class="flex justify-between items-center rounded-sm cursor-pointer addBar-box hover:sky-blue-bg duration-300 relative"
               :class="[
                 { 'pointer-events-none text-gray-400 cursor-default': item.disabled }
               ]"
@@ -3298,10 +3316,7 @@
               <template v-if="item.title === '添加小节'">
                 <img src="./img/arrow_down.png" class="transform -rotate-90 w-2 h-1" >
                 <div
-                  :class="[
-                    { 'pointer-events-none opacity-0': !m.ctxMenu.addBarShow }
-                  ]"
-                  class="absolute duration-300 right-0 top-0 transform cursor-default translate-x-full bg-white rounded-sm"
+                  class="absolute addBar duration-300 right-0 top-0 transform cursor-default translate-x-full bg-white rounded-sm pointer-events-none opacity-0"
                   style="box-shadow: 0px 4px 30px 0px rgba(3,35,63,0.28); width: 215px; right: -3px; padding: 6px 10px"
                   @click.stop
                 >

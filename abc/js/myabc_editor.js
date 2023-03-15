@@ -9277,17 +9277,3 @@ function getMenuContent() {
   }
   return items;
 }
-
-window.addEventListener("keyup", (e) => {
-  switch (e.code) {
-    case "Backspace": {
-      let selectSvg = null;
-      $("svg").each((i, e) => {
-        if (!e?.id.includes("mysvgnode")) return;
-        selectSvg = e;
-      });
-      if (!selectSvg) return;
-      delSelectedNode();
-    }
-  }
-});

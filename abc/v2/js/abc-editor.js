@@ -2243,7 +2243,6 @@ var content_vue = new Vue({
     isShowHelp: false,
 
     // ———————————————————————————————————————— 分割线 __data ————————————————————————————————————————
-    // 在远古项目基础上二次开发，新数据在 m 对象之中避免命名冲突
     m: {
       export: {
         show: false,
@@ -5326,6 +5325,7 @@ var content_vue = new Vue({
     }
   },
   mounted() {
+    this.m.isMusicNoteShow = true;
     const params = new URLSearchParams(location.search);
     if (!params.get("scoreOpts")) {
       // this.m.newScore.musicType.show = true;
