@@ -306,7 +306,7 @@ var _$_4d63 = [
   "g[type='bar_datas']",
   "-----",
   "select_staff",
-  "red",
+  "#0E518F",
   "g[type='staff'][st='",
   "g[type='bar_datas'][st='",
   "findnearnote...",

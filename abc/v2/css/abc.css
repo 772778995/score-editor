@@ -475,6 +475,10 @@ ul, li{ padding:0; margin:0; list-style:none; display: inline-block; }
 	margin-left: 10px;
 }
 
+#use_black {
+	color: #0E518F;
+}
+
 .yinfu-ul:hover{
 	border-color: transparent !important;
 }
@@ -863,7 +867,7 @@ ul, li{ padding:0; margin:0; list-style:none; display: inline-block; }
     background-image: none;
     background-clip: padding-box;
     border: 1px solid rgba(0,0,0,.15) !important;
-	border-color: red;
+	border-color: #0E518F;
     border-radius: 5px;
 	width: 100%;
 	height: 40px;
@@ -1392,11 +1396,11 @@ ul, li{ padding:0; margin:0; list-style:none; display: inline-block; }
 }
 
 .dshx-ruler li:first-child, .xshx-ruler li:first-child{
-	border-left: 1px solid red;
+	border-left: 1px solid #0E518F;
 }
 
 .dshx-ruler span:last-child, .xshx-ruler span:last-child{
-	border-right-color: red !important;
+	border-right-color: #0E518F !important;
 }
 
 .hx-ruler-title{

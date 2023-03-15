@@ -334,7 +334,7 @@ function onRemove(e, treeId, treeNode) {
 }
 function beforeRename(treeId, treeNode, newName, isCancel) {
 	className = (className === "dark" ? "":"dark");
-	showLog((isCancel ? "<span style='color:red'>":"") + "[ "+getTime()+" beforeRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>":""));
+	showLog((isCancel ? "<span style='color:#0E518F'>":"") + "[ "+getTime()+" beforeRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>":""));
 	if (newName.length == 0) {
 		setTimeout(function() {
 			var zTree = $.fn.zTree.getZTreeObj("typeTree");
@@ -347,7 +347,7 @@ function beforeRename(treeId, treeNode, newName, isCancel) {
 }
 function onRename(e, treeId, treeNode, isCancel) {
 	
-	showLog((isCancel ? "<span style='color:red'>":"") + "[ "+getTime()+" onRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>":""));
+	showLog((isCancel ? "<span style='color:#0E518F'>":"") + "[ "+getTime()+" onRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>":""));
 	
 	var url = file_server_url + "/staffTypeServlet?time="+new Date();
 	$.ajax({

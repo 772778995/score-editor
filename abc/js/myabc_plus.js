@@ -265,7 +265,7 @@ var _$_1e54 = [
   ",",
   "y:",
   "color",
-  "red",
+  "#0E518F",
   "selected",
   "text[gch_istart=",
   "keyCode",

@@ -5357,6 +5357,11 @@ var content_vue = new Vue({
       this.changeSelectBar();
       setLyricStyle();
       this.m.isInsertMode = draw_editor;
+      $("._select-note").removeClass("_select-note");
+      const selectNote = $(".selected_text")[0];
+      if (!selectNote) return;
+      const istart = selectNote.getAttribute("istart");
+      $(`[istart=${istart}]`).addClass("_select-note");
     };
     document.addEventListener("keyup", event);
     document.addEventListener("click", event);

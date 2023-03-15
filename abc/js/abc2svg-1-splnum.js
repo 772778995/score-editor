@@ -4465,7 +4465,7 @@ abc2svg = {
           m == update_note_index &&
           musicType != 2
         ) {
-          old_color = set_color("red", update_note_istart);
+          old_color = set_color("#0E518F", update_note_istart);
           update_note_index = -1;
           update_note_istart = -1;
         }
@@ -4480,7 +4480,7 @@ abc2svg = {
                 musicType != 2
               ) {
                 old_color = set_color(
-                  "red",
+                  "#0E518F",
                   update_note_istart_arr[i],
                   update_note_index_arr[j]
                 );
@@ -4493,7 +4493,7 @@ abc2svg = {
               m == update_note_index &&
               musicType != 2
             ) {
-              old_color = set_color("red", update_note_istart_arr[i]);
+              old_color = set_color("#0E518F", update_note_istart_arr[i]);
               update_note_istart_arr.splice(i, 1);
             }
           }
@@ -16328,7 +16328,7 @@ abc2svg = {
         for (var i = 0; i < s.a_gch.length; i++) {
           var text = s.a_gch[i].text;
           if (/url\(.*\)/.test(text)) {
-            s.color = "red";
+            s.color = "#0E518F";
           }
         }
       }
@@ -17426,7 +17426,8 @@ abc2svg = {
 
         style += "pointer-events: auto;";
         if (!color) {
-          style += "font-family: Perpetua-Bold, cursive, fangsong, monospace, serif; font-weight: normal;"
+          style +=
+            "font-family: Perpetua-Bold, cursive, fangsong, monospace, serif; font-weight: normal;";
           // style += "fill:url(#g34);";
         }
         if (T_url != "") {
@@ -17496,7 +17497,7 @@ abc2svg = {
       } else if (str == "circle") {
         //声部名称显示图形,圆
         output +=
-          '<circle r="8" stroke="red" stroke-width="1" fill="red" style="fill-opacity:0.5" cx="';
+          '<circle r="8" stroke="#0E518F" stroke-width="1" fill="#0E518F" style="fill-opacity:0.5" cx="';
         out_sxsy(x, '" cy="', y + 6);
         output += '"></circle>';
         return;
@@ -20364,7 +20365,7 @@ abc2svg = {
             g
               .replace(/img_myimgid/g, imgpath.replace(/[:/.]/g, ""))
               .replace(/\"[^\"]*\.png\"/, '"' + imgpath + '"'); ///
-          defs += ' style="border:1px solid red;"';
+          defs += ' style="border:1px solid #0E518F;"';
         } else {
           defs += "\n" + g.replace(/myimgid/g, imgpath); ///
         }
@@ -22320,8 +22321,8 @@ abc2svg = {
         w += strwh(s.tempo_str2)[0];
       }
       s.tempo_str = str.join(" ");
-      if (scoreOpts.speedType === 'txt') {
-        s.tempo_str = `<tspan>${scoreOpts.speedText}</tspan>`
+      if (scoreOpts.speedType === "txt") {
+        s.tempo_str = `<tspan>${scoreOpts.speedText}</tspan>`;
       }
       w += cwidf(" ") * (str.length - 1);
       s.tempo_wh = [w, 13.0];
@@ -22557,7 +22558,7 @@ abc2svg = {
       head += "<defs>\n";
       // TODO 加一线样式
       head +=
-        '<path id="my_hl" class="stroke" stroke-width="1" d="m-6 0h12"></path>';
+        '<path id="my_hl" class="stroke" style="color: #0E518F;" stroke-width="1" d="m-6 0h12"></path>';
       head += "</defs>";
       // add by linhq
       head += "<defs>\n";
@@ -27825,7 +27826,7 @@ function svgclickhandler(e) {
     $("rect[type='control2']").remove();
   }
 
-  setSelectBarStyle()
+  setSelectBarStyle();
 
   console.log("---svgclickhandler");
   if ($(".lyric").length > 0 && $(".lyric").hasClass("menu-pressed")) {
@@ -29219,7 +29220,7 @@ function mousedownSvgText(event) {
   var target = $(event.target);
   if (!$(target).attr("ori_x")) {
     $(target).attr("selected", "selected");
-    $(target).css("color", "red");
+    $(target).css("color", "#0E518F");
     $(target).attr("ori_x", $(target).attr("x"));
     $(target).attr("ori_y", $(target).attr("y"));
   }
@@ -29653,15 +29654,14 @@ function getTextWidth(text, font) {
 abc2svg.version = "1.17.7";
 abc2svg.vdate = "2018-07-04";
 
-
 function setSelectBarStyle() {
-  const selectBarRect = $('[type="rectnode"]')[0]?.children[0]
-  if (!selectBarRect) return
-  $(selectBarRect).attr('stroke', 'none')
+  const selectBarRect = $('[type="rectnode"]')[0]?.children[0];
+  if (!selectBarRect) return;
+  $(selectBarRect).attr("stroke", "none");
   $(selectBarRect).css({
-    display: 'block',
-    fillOpacity: '1',
-    fill: 'rgba(0, 0, 0, .5)',
-    transform: 'translateX(-2px)'
-  })
+    display: "block",
+    fillOpacity: "1",
+    fill: "rgba(0, 0, 0, .5)",
+    transform: "translateX(-2px)",
+  });
 }

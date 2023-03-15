@@ -2465,7 +2465,7 @@ function addCursor(evt, rect, rectArr) {
     (rect.staffTop - y) +
     "px;width:20px;height:" +
     rect.staffHeight +
-    'px;background-color: red;opacity:0.4;"></div>';
+    'px;background-color: #0E518F;opacity:0.4;"></div>';
   $(".nobrk").append($(divStr));
   $("#mycursor").click(function () {
     $("#mycursor").remove();
@@ -3746,7 +3746,7 @@ function replaceByIndex(content, start, end) {
   var newContent = content.substring(0, start) + tmp + content.substring(end);
   return newContent;
 }
-// %%titlecolor red 标题颜色
+// %%titlecolor #0E518F 标题颜色
 // %%titlefont serif 24 标题字体大小
 function setTitleSize(sourceid, fontSize) {
   var content = $("#" + sourceid).val();
@@ -5834,7 +5834,7 @@ function renderByBarIndex(indexArr, type) {
           w +
           '" height="' +
           h +
-          '" stroke="red" stroke-width="3" fill="' +
+          '" stroke="#0E518F" stroke-width="3" fill="' +
           color +
           '" fill-opacity="0"></rect></svg>'
       );
@@ -7586,7 +7586,7 @@ function renderStaffNodeBySt(indexArr, typestr) {
               w +
               '" height="' +
               h +
-              '" stroke="red" stroke-width="3" fill="' +
+              '" stroke="#0E518F" stroke-width="3" fill="' +
               color +
               '" fill-opacity="0"></rect></svg>'
           );
@@ -8630,7 +8630,7 @@ function showProperties(type, e, clickObj) {
       setTimeout(function () {
         $("text[gch_istart=" + gch_istart + "]")
           .attr("selected", "selected")
-          .css("color", "red");
+          .css("color", "#0E518F");
         selectGchInfo = $("text[gch_istart=" + gch_istart + "]");
       }, 500);
     }
