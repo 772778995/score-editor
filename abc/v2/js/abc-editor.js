@@ -2245,14 +2245,15 @@ var content_vue = new Vue({
     // ———————————————————————————————————————— 分割线 __data ————————————————————————————————————————
     m: {
       alertMsg: "",
+      isInsertMode: false,
       export: {
         show: false,
         list: [
-          { txt: "音频", checked: false, disabled: true },
+          // { txt: "音频", checked: false, disabled: true },
           { txt: "图片", checked: true },
           { txt: "PDF", checked: false },
-          { txt: "MID", checked: false, disabled: true },
-          { txt: "XML", checked: false, disabled: true },
+          // { txt: "MID", checked: false, disabled: true },
+          // { txt: "XML", checked: false, disabled: true },
         ],
       },
       key: {
@@ -5330,7 +5331,6 @@ var content_vue = new Vue({
     window.alert = (msg) => {
       this.m.alertMsg = msg;
     };
-    window.top.alert = window.alert;
     const params = new URLSearchParams(location.search);
     if (!params.get("scoreOpts")) {
       // this.m.newScore.musicType.show = true;
@@ -5356,6 +5356,7 @@ var content_vue = new Vue({
       this.changeSelectNote();
       this.changeSelectBar();
       setLyricStyle();
+      this.m.isInsertMode = draw_editor;
     };
     document.addEventListener("keyup", event);
     document.addEventListener("click", event);

@@ -1663,7 +1663,7 @@
           <div class="i-save"></div>
         </div>
 
-        <div class="_tool-box _tips" style="--tips: '箭头 / 输入（N）'" @click="switchPrachEditor">
+        <div class="_tool-box _tips" :class="{ 'active': !m.isInsertMode }" style="--tips: '箭头 / 输入（N）'" @click="switchPrachEditor">
           <div class="i-insert"></div>
         </div>
 
