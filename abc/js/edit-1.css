@@ -12,7 +12,7 @@ svg {display:block}
     -webkit-background-clip:text; 
     -webkit-text-fill-color:transparent; 
 }
-._select-note {
+._select-note:not([type="beam"]) {
 	fill: #0E518F;
 	color: #0E518F;
 	stroke: #0E518F;
