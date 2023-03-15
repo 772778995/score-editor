@@ -4074,7 +4074,20 @@ var content_vue = new Vue({
                 valueList: ["y"],
                 fn: () => (content_vue.m.key.show = !content_vue.m.key.show),
               },
-              { title: "符干", shortList: ["L"] },
+              {
+                title: "符干向上",
+                shortList: ["U"],
+                valueList: ["u"],
+                fn: () =>
+                  content_vue.checkIsSelectNote() && setNoteStemDirect("up"),
+              },
+              {
+                title: "符干向下",
+                shortList: ["I"],
+                valueList: ["i"],
+                fn: () =>
+                  content_vue.checkIsSelectNote() && setNoteStemDirect("down"),
+              },
               {
                 title: "音色",
                 shortList: ["S"],
