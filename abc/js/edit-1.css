@@ -12,6 +12,9 @@ svg {display:block}
     -webkit-background-clip:text; 
     -webkit-text-fill-color:transparent; 
 }
+rect.abcr.selected_text[type="bar"] {
+	fill: none;
+}
 ._select-note:not([type="beam"]) {
 	fill: #0E518F;
 	color: #0E518F;
