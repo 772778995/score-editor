@@ -1429,10 +1429,12 @@ var toolTemp = {
 
 function changeNumberKeypadIndex(i) {
   let index = content_vue.m.numberKeypad.page;
+  let key = "staffList";
+  if (scoreOpts.musicType === "easy") key = "easyList";
   index += i;
   if (index < 0) {
-    index = content_vue.m.numberKeypad.staffList.length - 1;
-  } else if (index > content_vue.m.numberKeypad.staffList.length - 1) {
+    index = content_vue.m.numberKeypad[key].length - 1;
+  } else if (index > content_vue.m.numberKeypad[key].length - 1) {
     index = 0;
   }
   content_vue.m.numberKeypad.page = index;
@@ -4932,7 +4934,9 @@ var content_vue = new Vue({
       }[code];
       if (i === undefined) return;
       const { page } = this.m.numberKeypad;
-      const type = ["staffList", "all", "easyList"][musicType];
+      let key = "staffList";
+      if (scoreOpts.musicType === "easy") key = "easyList";
+      const type = ["staffList", "all", "easyList"][key];
       const { selector, fn, isKeepSelect } = this.m.numberKeypad[type][page][i];
       if (fn) {
         if (isKeepSelect) keepSelectNote(fn);
@@ -4945,8 +4949,9 @@ var content_vue = new Vue({
     },
     changeNumKeypadSelect() {
       const { page } = this.m.numberKeypad;
-      const type = ["staffList", "all", "easyList"][musicType];
-      const list = this.m.numberKeypad[type][page];
+      let key = "staffList";
+      if (scoreOpts.musicType === "easy") key = "easyList";
+      const list = this.m.numberKeypad[key][page];
       setTimeout(() => {
         list.forEach((item, i) => {
           if (item.updateIsSelect) return item.updateIsSelect();
