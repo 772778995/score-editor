@@ -1,6 +1,6 @@
-svg[ondblclick][onclick] > svg[barindex][type="rectnode"] > rect {
+/* svg[ondblclick][onclick] > svg[barindex][type="rectnode"] > rect {
 	display: none;
-}
+} */
 
 html, body{ height: 100%; margin: 0; padding: 0; overflow: auto;}
 svg{ -moz-user-select: none; -webkit-user-select: none; -ms-user-select: none; -khtml-user-select: none; user-select: none; }

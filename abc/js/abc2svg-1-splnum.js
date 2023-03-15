@@ -29655,13 +29655,13 @@ abc2svg.version = "1.17.7";
 abc2svg.vdate = "2018-07-04";
 
 function setSelectBarStyle() {
-  const selectBarRect = $('[type="rectnode"]')[0]?.children[0];
-  if (!selectBarRect) return;
-  $(selectBarRect).attr("stroke", "none");
-  $(selectBarRect).css({
-    display: "block",
-    fillOpacity: "1",
-    fill: "rgba(0, 0, 0, .5)",
-    transform: "translateX(-2px)",
-  });
+  // const selectBarRect = $('[type="rectnode"]')[0]?.children[0];
+  // if (!selectBarRect) return;
+  // $(selectBarRect).attr("stroke", "none");
+  // $(selectBarRect).css({
+  //   display: "block",
+  //   fillOpacity: "1",
+  //   fill: "rgba(0, 0, 0, .5)",
+  //   transform: "translateX(-2px)",
+  // });
 }
