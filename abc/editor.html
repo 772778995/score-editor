@@ -1756,37 +1756,31 @@
         </template>
 
         <div v-else-if="getMenuTxt === '视图'" class="h-full flex items-center space-x-9" style="color: #696969;">
-          <div class="flex items-center space-x-2.5 cursor-pointer">
-            <img src="./img/checkbox1.png" />
-            <div>全部隐藏</div>
+          <div class="flex items-center space-x-2.5 ml-8 cursor-pointer" @click="() => {
+            if (keyboardShow && m.numberKeypad.isShow && m.isMusicNoteShow) {
+              keyboardShow = m.numberKeypad.isShow = m.isMusicNoteShow = false
+            } else {
+              keyboardShow = m.numberKeypad.isShow = m.isMusicNoteShow = true
+            }
+          }">
+            <img :src="`./img/checkbox${keyboardShow && m.numberKeypad.isShow && m.isMusicNoteShow ? '2' : '1'}.png`" />
+            <div>全部{{ keyboardShow && m.numberKeypad.isShow && m.isMusicNoteShow ? '隐藏' : '显示' }}</div>
+          </div>
+
+          <div class="flex items-center space-x-2.5 cursor-pointer" @click="(menuActive = '') | keyboardClick()">
+            <img :src="`./img/checkbox${keyboardShow ? '2' : '1'}.png`" />
+            <div>MIDI键盘</div>
+          </div>
+          
+          <div class="flex items-center space-x-2.5 cursor-pointer" @click="m.numberKeypad.isShow = !m.numberKeypad.isShow">
+            <img :src="`./img/checkbox${m.numberKeypad.isShow ? '2' : '1'}.png`" />
+            <div>小键盘</div>
           </div>
 
           <div class="flex items-center space-x-2.5 cursor-pointer" @click="m.isMusicNoteShow = !m.isMusicNoteShow">
             <img :src="`./img/checkbox${m.isMusicNoteShow ? '2' : '1'}.png`" />
             <div>音符面板</div>
           </div>
-
-
-          <div class="flex items-center space-x-2.5 cursor-pointer">
-            <img src="./img/checkbox1.png" />
-            <div>全部隐藏</div>
-          </div>
-          <!-- <button
-            class="cursor-pointer"
-            @click="m.isMusicNoteShow = !m.isMusicNoteShow"
-          >
-            音符符号
-          </button>
-
-          <button class="cursor-pointer" @click="attrPanelShow = !attrPanelShow">
-            属性面板
-          </button>
-
-          <button @click="m.numberKeypad.isShow = !m.numberKeypad.isShow">小键盘</button>
-
-          <button @click="(menuActive = '') | keyboardClick()">
-            虚拟键盘
-          </button> -->
         </div>
 
         <template v-else-if="getMenuTxt === '工具'">
