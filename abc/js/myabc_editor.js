@@ -971,7 +971,7 @@ $(document).ready(function () {
         doLog();
       }
     } else {
-      window.alert("未选中音符");
+      window.alert("未选中音符：请选取一个音符，然后重试");
     }
   });
   $("#K_div .keyChoice").click(function () {
@@ -2416,7 +2416,7 @@ function insertDesc(flag) {
   setTimeout(function () {
     var selEle = $("rect[type='note'][style='fill-opacity: 0.4;']");
     if (selEle.length == 0) {
-      alert("未选中音符");
+      alert("未选中音符：请选取一个音符，然后重试");
       return;
     }
     var istart = $(selEle).attr("istart");

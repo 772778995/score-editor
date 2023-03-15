@@ -2244,6 +2244,7 @@ var content_vue = new Vue({
 
     // ———————————————————————————————————————— 分割线 __data ————————————————————————————————————————
     m: {
+      alertMsg: "",
       export: {
         show: false,
         list: [
@@ -5326,6 +5327,10 @@ var content_vue = new Vue({
   },
   mounted() {
     this.m.isMusicNoteShow = true;
+    window.alert = (msg) => {
+      this.m.alertMsg = msg;
+    };
+    window.top.alert = window.alert;
     const params = new URLSearchParams(location.search);
     if (!params.get("scoreOpts")) {
       // this.m.newScore.musicType.show = true;
