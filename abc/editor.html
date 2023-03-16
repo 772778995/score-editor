@@ -3153,7 +3153,7 @@
         </div>
       </div>
       <!-- 中间主要内容 -->
-      <div class="body-box relative" style="overflow: auto; background: #B5C5D3;">
+      <div class="body-box relative overflow-y-visible" style="background: #B5C5D3;">
         <!-- 左边列表 -->
         <div class="body-left" style="z-index: 20; position: fixed; top: 84px; left: 0px;">
           <div class="body-left-content scroll" style="background: #F5F5F6">
@@ -3420,7 +3420,8 @@
         <!-- 右边琴谱 -->
         <div
           id="panZoom"
-          class="body-right flex w-screen  h-full justify-center top-0 left-0 overflow-auto"
+          class="body-right flex w-screen overflow-y-visible h-full justify-center top-0 left-0"
+          style="padding-bottom: 600px;"
         >
           <!--左侧符号面板区域  -->
           <!-- <img
@@ -3429,15 +3430,15 @@
             src="v2/images/left.png"
           /> -->
           <!-- 谱子区域 -->
-          <div class="right-top" style="width: 768px">
+          <div class="right-top pb-52" style="width: 768px">
             <div
-              class="right-top-content scroll overflow-y-auto flex justify-end m-4"
+              class="right-top-content scroll flex justify-end m-4 overflow-visible"
               onmousedown.stop="rightTopContentMouseDown(event)"
               onmousemove.stop="rightTopContentmoving(event)"
               onmouseup.stop="rightTopContentMouseUp(event)"
               onmouseleave.stop="rightTopContentMouseLeave(event)"
             >
-              <div class="abc-content rounded-md overflow-x-hidden" style="background: #F5F5F5; box-shadow: 4px 4px 24px 0px rgba(0,22,41,0.14);">
+              <div class="abc-content rounded-md" style="overflow: visible; background: #F5F5F5; box-shadow: 4px 4px 24px 0px rgba(0,22,41,0.14);">
                 <div style="display: none;">
                   <div id="nodeMenu" style="display: none">
                     <button
@@ -3495,7 +3496,7 @@
 							</div>
 							<span>同步钢琴键盘时值</span>
 						</div> -->
-                <div id="target" class="panzoom-exclude" @click.right="draw_editor || openCtxMenu($event)" style="background: rgb(245, 245, 245)">
+                <div id="target" class="rounded overflow-hidden panzoom-exclude" @click.right="draw_editor || openCtxMenu($event)" style="background: rgb(245, 245, 245)">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink"

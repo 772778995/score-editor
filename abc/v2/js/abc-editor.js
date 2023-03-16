@@ -5421,6 +5421,11 @@ var content_vue = new Vue({
     }
   },
   mounted() {
+    setTimeout(() => {
+      $("#panZoom").css({
+        height: $("#target").height() + "px",
+      });
+    }, 1000);
     this.m.isMusicNoteShow = true;
     window.alert = (msg) => {
       this.m.alertMsg = msg;
@@ -5456,6 +5461,9 @@ var content_vue = new Vue({
       if (!selectNote) return;
       const istart = selectNote.getAttribute("istart");
       $(`[istart=${istart}]`).addClass("_select-note");
+      $("#panZoom").css({
+        height: $("#target").height() + "px",
+      });
     };
     document.addEventListener("keyup", event);
     document.addEventListener("click", event);
