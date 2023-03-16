@@ -1,21 +1,21 @@
-Vue.component('select-input', {
+Vue.component("select-input", {
   props: {
     value: {
-      type: String
+      type: String,
     },
     list: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      showList: false
-    }
+      showList: false,
+    };
   },
   template: `
     <div
-      class="rounded z-50 flex items-center relative cursor-pointer pl-3 w-auto pr-2 _border duration-300"
+      class="rounded flex items-center relative cursor-pointer pl-3 w-auto pr-2 _border duration-300"
       :class="{ 'active': showList }"
       @click.stop="showList = !showList"
     >
@@ -29,7 +29,7 @@ Vue.component('select-input', {
       }" />
 
       <div
-        class="h-32 left-0 overflow-y-auto transform top-full absolute duration-300 bg-white rounded" :class="showList ? '_show' : '_hide'"
+        class="h-32 left-0 overflow-y-auto transform top-full absolute duration-300 bg-white rounded z-50" :class="showList ? '_show' : '_hide'"
         style="padding: 1px; box-shadow: 4px 4px 24px 0px rgba(0,22,41,0.14); transform: translateY(1px);"
       >
         <div
@@ -46,13 +46,13 @@ Vue.component('select-input', {
     </div>
   `,
   mounted() {
-    document.addEventListener('click', () => {
+    document.addEventListener("click", () => {
       this.showList = false;
     });
   },
   methods: {
     updateValue(newValue) {
-      this.$emit('input', newValue);
-    }
-  }
+      this.$emit("input", newValue);
+    },
+  },
 });
