@@ -2351,12 +2351,25 @@ var content_vue = new Vue({
                   obj[key] = form.get(key);
                 }
                 console.log(obj);
-                // alert(JSON.stringify(obj))
               },
             },
-            { txt: "另存为", fn: () => alert("暂未开发") },
             {
-              txt: "打开",
+              txt: "另存为",
+              fn: () => {
+                const form = new FormData(document.getElementById("abcform"));
+                const obj = {};
+                for (const key of form.keys()) {
+                  obj[key] = form.get(key);
+                }
+                console.log(obj);
+              },
+            },
+            {
+              txt: "打开谱例",
+              fn: () => (content_vue.m.myScore.isShow = true),
+            },
+            {
+              txt: "导入",
               fn: () => $("#input-file").val("") && $("#input-file").click(),
             },
             {
@@ -2369,8 +2382,17 @@ var content_vue = new Vue({
         },
         { txt: "文本" },
         { txt: "工具" },
-        { txt: "视图", checkedList: [] },
+        { txt: "视图" },
       ],
+      myScore: {
+        list: [],
+        index: -1,
+        isShow: false,
+        query: {
+          title: "",
+          musicType: "",
+        },
+      },
       isMusicNoteShow: false,
       addBar: {
         show: false,
@@ -3887,7 +3909,14 @@ var content_vue = new Vue({
                 valueList: ["w"],
                 fn: () => (content_vue.newScore.musicType.show = true),
               },
-              { title: "打开", shortList: ["Ctrl", "O"] },
+              {
+                title: "打开",
+                shortList: ["Ctrl", "O"],
+                valueList: ["o"],
+                fn: () =>
+                  (content_vue.m.myScore.isShow =
+                    !content_vue.m.myScore.isShow),
+              },
               {
                 title: "导出",
                 shortList: ["Ctrl", "D"],
@@ -4871,7 +4900,7 @@ var content_vue = new Vue({
       const isNoChecked = this.m.export.list.every((item) => !item.checked);
       if (isNoChecked) return;
 
-      const [mp3, pic, pdf] = this.m.export.list;
+      const [pic, pdf] = this.m.export.list;
 
       if (pic.checked)
         saveAs(
