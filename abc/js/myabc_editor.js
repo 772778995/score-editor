@@ -107,9 +107,10 @@ scoreOpts = Object.assign({}, defaultScoreOpts, scoreOpts);
 function initScore(scoreOpts) {
   changeStaffType(null, scoreOpts?.musicType === "easy" ? 2 : 0) |
     restoreEditor();
+  for (const k in scoreOpts)
+    if ([undefined, ""].includes(scoreOpts[k])) delete scoreOpts[k];
   const code = getAbcTemplateCode(Object.assign(defaultScoreOpts, scoreOpts));
   $("#source").val(code);
-  console.log($("#source").val(), scoreOpts.isWeak);
   abc_change();
 }
 
