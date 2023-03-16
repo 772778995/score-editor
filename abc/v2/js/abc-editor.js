@@ -3861,8 +3861,8 @@ var content_vue = new Vue({
             leftList: [
               {
                 title: "新建",
-                shortList: ["Ctrl", "N"],
-                valueList: [],
+                shortList: ["Ctrl", "W"],
+                valueList: ["w"],
                 fn: () => (content_vue.newScore.musicType.show = true),
               },
               { title: "打开", shortList: ["Ctrl", "O"] },
@@ -5024,7 +5024,7 @@ var content_vue = new Vue({
     createNewScore() {
       if (isNewTab) {
         window.open(
-          location.href +
+          location.href.replace(/\?.+/, "") +
             `?scoreOpts=${encodeURIComponent(
               JSON.stringify(this.m.newScore.scoreOpts)
             )}`

@@ -93,20 +93,18 @@ const defaultScoreOpts = {
 
   musicType: "treble",
 };
-const scoreOpts = Object.assign(
-  defaultScoreOpts,
-  JSON.parse(
-    new URLSearchParams(window.location.search).get("scoreOpts") || "{}"
-  )
+let scoreOpts = JSON.parse(
+  new URLSearchParams(window.location.search).get("scoreOpts") || "{}"
 );
+for (const k in scoreOpts)
+  if ([undefined, ""].includes(scoreOpts[k])) delete scoreOpts[k];
+scoreOpts = Object.assign(defaultScoreOpts, scoreOpts);
 
 /**
  * 初始化乐谱
  * @param {ScoreOpts} scoreOpts
  */
 function initScore(scoreOpts) {
-  for (const k in scoreOpts)
-    if (scoreOpts[k] === undefined) delete scoreOpts[k];
   changeStaffType(null, scoreOpts?.musicType === "easy" ? 2 : 0) |
     restoreEditor();
   const code = getAbcTemplateCode(Object.assign(defaultScoreOpts, scoreOpts));
