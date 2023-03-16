@@ -3918,16 +3918,26 @@ var content_vue = new Vue({
                     !content_vue.m.myScore.isShow),
               },
               {
+                title: "导入",
+                shortList: ["Ctrl", "R"],
+                valueList: ["r"],
+                fn: () => $("#input-file").val("") && $("#input-file").click(),
+              },
+              {
                 title: "导出",
                 shortList: ["Ctrl", "D"],
                 valueList: ["d"],
                 fn: () =>
                   (content_vue.m.export.show = !content_vue.m.export.show),
               },
-              { title: "保存", shortList: ["Ctrl", "S"] },
+              {
+                title: "保存",
+                shortList: ["Ctrl", "S"],
+                valueList: ["s"],
+                fn: () => {},
+              },
               { title: "另存为", shortList: ["Shift", "S"] },
-              { title: "音符输入/点击模式", shortList: ["N"] },
-              { title: "选取", shortList: ["鼠标单击"] },
+              { title: "音符输入", shortList: ["N"] },
               { title: "缩放", shortList: ["Ctrl", "鼠标滚动"] },
               { title: "谱面拖动", shortList: ["鼠标左击"] },
             ],
@@ -5414,7 +5424,7 @@ var content_vue = new Vue({
     };
     const params = new URLSearchParams(location.search);
     if (!params.get("scoreOpts")) {
-      // this.m.newScore.musicType.show = true;
+      this.m.newScore.musicType.show = true;
     }
     if (Object.keys(scoreOpts).length) {
       $("#source").val(getAbcTemplateCode(scoreOpts));
