@@ -4921,7 +4921,10 @@ var content_vue = new Vue({
               .match(/(?<=T:\s+).+/)[0]
           }.png`
         );
-      if (pdf.checked) exportAbc2Pdf("source");
+      if (pdf.checked) {
+        window.code = $("#source").val();
+        exportAbc2Pdf("source");
+      }
     },
     changeSelectNote() {
       this.selectNote = $(".selected_text")[0] || null;

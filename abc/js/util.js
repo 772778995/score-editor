@@ -3967,6 +3967,8 @@ function exportPdf(doms, callback) {
       if (typeof callback == "function") {
         callback();
       }
+      $("#source").val(window.code);
+      abc_change();
     }
   }, 500);
 }
