@@ -98,7 +98,7 @@ let scoreOpts = JSON.parse(
 );
 for (const k in scoreOpts)
   if ([undefined, ""].includes(scoreOpts[k])) delete scoreOpts[k];
-scoreOpts = Object.assign(defaultScoreOpts, scoreOpts);
+scoreOpts = Object.assign({}, defaultScoreOpts, scoreOpts);
 
 /**
  * 初始化乐谱

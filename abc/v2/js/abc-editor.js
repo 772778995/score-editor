@@ -4,6 +4,28 @@ async function getScorePngBase64() {
     svgAsPngUri(canvas, null, (url) => resolve(url));
   });
 }
+
+const initNewScoreOpts = {
+  title: "",
+  subTitle: "",
+  compose: "",
+  lyricist: "",
+  isWeak: false,
+  weakBarTop: "1",
+  weakBarBot: "4",
+  keySign: "C",
+  beatNote1: "4",
+  beatNote2: "4",
+  beatType: "custom",
+  musicType: "easy",
+  speedType: "txt",
+  speedText: "Moderato",
+  speedNote: "1/4",
+  speedNum: "88",
+  rows: "2",
+  rowBars: "4",
+};
+
 function liaison(val) {
   var selectEl = $(".selected_text")[0];
   if (!selectEl) return alert("请先选中音符");
@@ -5226,11 +5248,36 @@ var content_vue = new Vue({
       deep: true,
     },
     "m.newScore.scoreOptsShow"(isShow) {
-      if (isShow)
-        this.$refs.previewIframeRef?.contentWindow.postMessage(
-          this.m.newScore.scoreOpts,
-          "*"
-        );
+      if (!isShow) {
+        const scoreOpts = {
+          title: "",
+          subTitle: "",
+          compose: "",
+          lyricist: "",
+          isWeak: false,
+          weakBarTop: "1",
+          weakBarBot: "4",
+          keySign: "C",
+          beatNote1: "4",
+          beatNote2: "4",
+          beatType: "custom",
+          musicType: "easy",
+          speedType: "txt",
+          speedText: "Moderato",
+          speedNote: "1/4",
+          speedNum: "88",
+          rows: "2",
+          rowBars: "4",
+        };
+        for (const key in scoreOpts) {
+          this.m.newScore.scoreOpts[key] = scoreOpts[key];
+        }
+      }
+
+      this.$refs.previewIframeRef?.contentWindow.postMessage(
+        this.m.newScore.scoreOpts,
+        "*"
+      );
     },
     "m.newScore.scoreOpts": {
       handler(val) {
