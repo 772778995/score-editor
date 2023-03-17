@@ -101,6 +101,10 @@
     <script src="js/xml2abcutil.js?v=20221027"></script>
     <script src="../node_modules/file-saver/dist/FileSaver.js"></script>
     <style type="text/css">
+      [_disabled]:not([_disabled="false"]) {
+        pointer-events: none;
+        opacity: 0.5;
+      }
       .blue-title {
         position: relative;
         padding-left: 10px;
@@ -591,33 +595,52 @@
           <div>打开谱例</div>
           <img src="./img/close.png" class="cursor-pointer" @click="() => {
             m.myScore.isShow = false
-            m.myScore.query = { music_type: '', fu_name: '' }
+            m.myScore.query.fu_music_type = ''
+            m.myScore.query.fu_name = ''
+            m.myScore.query.page = 1
+            m.myScore.query.page_size = 12
             m.myScore.index = -1
           }"/>
         </b>
 
         <div style="padding: 37px 0 23px 0; background: #fff;">
-          <div style="margin: 0 27px 40px 27px; position: relative;">
-            <input v-model="m.myScore.query.fu_name" class="form-control pr-24" placeholder="大雨"/>
+          <div style="margin: 0 27px 40px 27px;">
+            <div class="relative">
+              <input v-model="m.myScore.query.fu_name" class="form-control pr-24" placeholder="大雨"/>
+              <div class="absolute right-3 h-full items-center flex top-0 cursor-pointer" @click="updateMyScoreList">
+                <img src="./img/search.png"/>
+                <div class="text-sm" style="color: #0E518F;">搜索</div>
+              </div>
+            </div>
             <div class="flex mt-2.5">
               <div
                 v-for="[txt, val] in [['全部', ''], ['简谱', 'easy'], ['高音谱表', 'treble'], ['低音谱表', 'bass'], ['大谱表', 'big'], ['合唱四声部', 'four']]"
                 class="space-x-1 cursor-pointer flex items-center mr-6"
-                @click="m.myScore.query.music_type = val"
+                @click="(m.myScore.query.fu_music_type = val) | updateMyScoreList()"
               >
-                <img :src="val === m.myScore.query.music_type ? './img/checkbox2.png' : './img/checkbox1.png'"/>
-                <span :style="`color: ${val === m.myScore.query.music_type ? '#0E518F' : '#787878'}`">{{ txt }}</span>
+                <img :src="val === m.myScore.query.fu_music_type ? './img/checkbox2.png' : './img/checkbox1.png'"/>
+                <span :style="`color: ${val === m.myScore.query.fu_music_type ? '#0E518F' : '#787878'}`">{{ txt }}</span>
               </div>
             </div>
           </div>
 
-          <div class="grid grid-cols-6 gap-y-8 gap-x-8 overflow-y-auto" style="padding: 0 27px; height: 390px;">
+          <div
+            v-if="!!!m.myScore.list.length"
+            class="flex justify-center items-center text-3xl text-gray-400"
+            style="height: 390px"
+          >
+            {{ m.myScore.isLoading ? '加载中…' : '暂无谱例' }}
+          </div>
+          <div v-else class="grid grid-cols-6 gap-y-8 gap-x-8 overflow-y-auto" style="padding: 0 27px; height: 390px;">
             <div v-for="(item, i) in m.myScore.list" key="item" style="width: 102px;" @click="m.myScore.index = i">
               <div
                 class="duration-300 cursor-pointer flex"
                 :style="`padding: 8px 10px; width: 102px; height: 129px; border-radius: 17px 6px 6px 6px; border: 2px solid ${m.myScore.index === i ? '#25649E' : '#B6B6B6'}; background: #fff`"
               >
-                <img src="./img/da_pu_piao.png" class="m-auto w-full h-full object-contain" />
+                <img
+                  :src="`./img/${{ easy: 'jianpu', bass: 'di_yin', big: 'da_pu_biao', four: 'he_chang', treble: 'gao_yin' }[item.music_type]}.png`"
+                  class="m-auto w-full h-full object-contain"
+                />
               </div>
               <div
                 class="_btn mt-3 text-center w-full"
@@ -629,8 +652,32 @@
             </div>
           </div>
 
-          <div class="mt-8 flex justify-end pr-7">
-            <div class="_btn text-center" style="width: 110px;">确认</div>
+          <div class="mt-8 flex justify-end items-center space-x-3 pr-7">
+            <div
+              class="_btn"
+              :_disabled="m.myScore.query.page <= 1 || m.myScore.isLoading"
+              @click="(m.myScore.query.page -= 1) | updateMyScoreList()"
+            >
+              上一页
+            </div>
+            <div>
+              {{ m.myScore.query.page }} / {{ m.myScore.totalPage }}
+            </div>
+            <div
+              class="_btn"
+              :_disabled="m.myScore.query.page >= m.myScore.totalPage || m.myScore.isLoading"
+              @click="(m.myScore.query.page += 1) | updateMyScoreList()"
+            >
+              下一页
+            </div>
+            <div
+              class="_btn text-center"
+              style="width: 110px;"
+              :_disabled="m.myScore.index === -1"
+              @click="openMyNewScore"
+            >
+              确认
+            </div>
           </div>
         </div>
       </div>
@@ -1801,7 +1848,7 @@
             style="--tips: '歌词（L）'"
             @click="checkIsSelectNote() && createLyricEditor()"
           >
-            <b>词</b>
+            <div class="i-l"></div>
           </div>
 
           <select-input v-model="m.lyric.style.fontFamily" :list="m.lyric.fontFamilyList" style="width: 94px; height: 26px; font-size: 12px;"></select-input>

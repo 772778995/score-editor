@@ -2471,7 +2471,6 @@ var content_vue = new Vue({
       ],
       myScore: {
         list: [],
-        crtPage: 1,
         totalPage: 0,
         isLoading: false,
         index: -1,
@@ -5067,6 +5066,7 @@ var content_vue = new Vue({
 
     // ———————————————————————————————————————— 分割线 __method ————————————————————————————————————————
     async updateMyScoreList() {
+      this.m.myScore.index = -1;
       this.m.myScore.isLoading = true;
       const { data, meta } = await request({
         url: "/musicals",
@@ -5076,6 +5076,13 @@ var content_vue = new Vue({
       const totalPage = Math.ceil(meta.total / this.m.myScore.query.page_size);
       this.m.myScore.totalPage = totalPage;
       this.m.myScore.isLoading = false;
+    },
+    async openMyNewScore() {
+      const selectScore = this.m.myScore.list[this.m.myScore.index];
+      const abcVal = selectScore.abc_json_val;
+      $("#source").val(abcVal);
+      abc_change();
+      this.m.myScore.isShow = false;
     },
     async exportScore() {
       this.m.export.show = false;
@@ -5438,6 +5445,9 @@ var content_vue = new Vue({
     },
     async "m.myScore.isShow"(isShow) {
       if (isShow) return this.updateMyScoreList();
+    },
+    "m.myScore.query.fu_music_type"() {
+      this.m.myScore.query.page = 1;
     },
     "m.ctxMenu.isShow"(isShow) {
       if (isShow) return;
