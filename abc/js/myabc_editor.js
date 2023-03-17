@@ -8226,9 +8226,13 @@ function delSelectedNode() {
 }
 //插入小节
 function insertNodes(num, isAfter, isFirst) {
+  const barIndex = $("svg[type='rectnode'],svg[type='rectbar']").attr(
+    "barindex"
+  );
+  if (barIndex <= bar_count) return appendNodes(num);
   if (!isFirst && !content_vue.checkIsSelectBar()) return;
   for (let i = 1; i <= num; i++) {
-    var barIndex = $("svg[type='rectnode'],svg[type='rectbar']").attr(
+    let barIndex = $("svg[type='rectnode'],svg[type='rectbar']").attr(
       "barindex"
     );
     if (barIndex == undefined) {
