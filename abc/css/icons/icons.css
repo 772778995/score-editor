@@ -1,170 +1,190 @@
-.active .i-rhythm, ._tool-box:hover .i-rhythm {
-  background: url(./icons.png) -0px -0px no-repeat;
-  width: 18px;
-  height: 22px;
-}
-.i-save {
-  background: url(./icons.png) -18px -0px no-repeat;
-  width: 18px;
-  height: 21px;
-}
-.active .i-save, ._tool-box:hover .i-save {
-  background: url(./icons.png) -36px -0px no-repeat;
-  width: 18px;
-  height: 20px;
-}
-.i-withdraw {
-  background: url(./icons.png) -54px -0px no-repeat;
-  width: 25px;
-  height: 18px;
-}
-.active .i-withdraw, ._tool-box:hover .i-withdraw {
-  background: url(./icons.png) -79px -0px no-repeat;
-  width: 25px;
-  height: 18px;
-}
-.i-xie {
-  background: url(./icons.png) -104px -0px no-repeat;
-  width: 8px;
-  height: 19px;
-}
-.active .i-xie, ._tool-box:hover .i-xie {
-  background: url(./icons.png) -112px -0px no-repeat;
-  width: 8px;
-  height: 19px;
-}
-.i-yi {
-  background: url(./icons.png) -120px -0px no-repeat;
-  width: 29px;
-  height: 25px;
-}
-.active .i-yi, ._tool-box:hover .i-yi {
-  background: url(./icons.png) -149px -0px no-repeat;
-  width: 29px;
-  height: 25px;
-}
-.i-addBar {
-  background: url(./icons.png) -178px -0px no-repeat;
-  width: 30px;
-  height: 22px;
-}
-.active .i-addBar, ._tool-box:hover .i-addBar {
-  background: url(./icons.png) -208px -0px no-repeat;
-  width: 30px;
-  height: 22px;
-}
-.i-br {
-  background: url(./icons.png) -238px -0px no-repeat;
-  width: 27px;
-  height: 20px;
-}
-.active .i-br, ._tool-box:hover .i-br {
-  background: url(./icons.png) -265px -0px no-repeat;
-  width: 27px;
-  height: 19px;
-}
-.i-color {
-  background: url(./icons.png) -292px -0px no-repeat;
-  width: 18px;
-  height: 22px;
-}
-.active .i-color, ._tool-box:hover .i-color {
-  background: url(./icons.png) -310px -0px no-repeat;
-  width: 18px;
-  height: 22px;
-}
 .i-delBar {
-  background: url(./icons.png) -328px -0px no-repeat;
+  background: url(./icons.png) -0px -0px no-repeat;
   width: 30px;
   height: 22px;
 }
 .active .i-delBar, ._tool-box:hover .i-delBar {
-  background: url(./icons.png) -358px -0px no-repeat;
+  background: url(./icons.png) -30px -0px no-repeat;
   width: 30px;
   height: 22px;
 }
 .i-fontBold {
-  background: url(./icons.png) -388px -0px no-repeat;
+  background: url(./icons.png) -60px -0px no-repeat;
   width: 14px;
   height: 18px;
 }
 .active .i-fontBold, ._tool-box:hover .i-fontBold {
-  background: url(./icons.png) -402px -0px no-repeat;
-  width: 15px;
+  background: url(./icons.png) -74px -0px no-repeat;
+  width: 14px;
   height: 18px;
 }
 .i-gi {
-  background: url(./icons.png) -417px -0px no-repeat;
-  width: 22px;
-  height: 22px;
-}
-.i-insert {
-  background: url(./icons.png) -439px -0px no-repeat;
-  width: 20px;
-  height: 20px;
+  background: url(./icons.png) -88px -0px no-repeat;
+  width: 21px;
+  height: 21px;
 }
 .active .i-gi, ._tool-box:hover .i-gi {
-  background: url(./icons.png) -459px -0px no-repeat;
-  width: 22px;
-  height: 22px;
+  background: url(./icons.png) -109px -0px no-repeat;
+  width: 21px;
+  height: 21px;
 }
-.active .i-insert, ._tool-box:hover .i-insert {
-  background: url(./icons.png) -481px -0px no-repeat;
-  width: 20px;
-  height: 20px;
+.i-l {
+  background: url(./icons.png) -130px -0px no-repeat;
+  width: 18px;
+  height: 18px;
 }
-.active .i-note-down, ._tool-box:hover .i-note-down {
-  background: url(./icons.png) -501px -0px no-repeat;
+.active .i-l, ._tool-box:hover .i-l {
+  background: url(./icons.png) -148px -0px no-repeat;
+  width: 18px;
+  height: 18px;
+}
+.active .i-note-up, ._tool-box:hover .i-note-up {
+  background: url(./icons.png) -166px -0px no-repeat;
   width: 8px;
   height: 23px;
 }
+.i-play {
+  background: url(./icons.png) -174px -0px no-repeat;
+  width: 20px;
+  height: 20px;
+}
+.active .i-play, ._tool-box:hover .i-play {
+  background: url(./icons.png) -194px -0px no-repeat;
+  width: 20px;
+  height: 20px;
+}
+.i-save {
+  background: url(./icons.png) -214px -0px no-repeat;
+  width: 18px;
+  height: 20px;
+}
+.active .i-save, ._tool-box:hover .i-save {
+  background: url(./icons.png) -232px -0px no-repeat;
+  width: 18px;
+  height: 20px;
+}
+.i-xie {
+  background: url(./icons.png) -250px -0px no-repeat;
+  width: 8px;
+  height: 19px;
+}
+.active .i-xie, ._tool-box:hover .i-xie {
+  background: url(./icons.png) -258px -0px no-repeat;
+  width: 8px;
+  height: 19px;
+}
+.i-addBar {
+  background: url(./icons.png) -266px -0px no-repeat;
+  width: 37px;
+  height: 22px;
+}
+.active .i-addBar, ._tool-box:hover .i-addBar {
+  background: url(./icons.png) -303px -0px no-repeat;
+  width: 37px;
+  height: 22px;
+}
+.i-insert {
+  background: url(./icons.png) -340px -0px no-repeat;
+  width: 20px;
+  height: 20px;
+}
+.active .i-insert, ._tool-box:hover .i-insert {
+  background: url(./icons.png) -360px -0px no-repeat;
+  width: 20px;
+  height: 20px;
+}
+.i-br {
+  background: url(./icons.png) -380px -0px no-repeat;
+  width: 27px;
+  height: 19px;
+}
 .i-note-down {
-  background: url(./icons.png) -509px -0px no-repeat;
+  background: url(./icons.png) -407px -0px no-repeat;
   width: 8px;
   height: 23px;
 }
 .i-note-up {
-  background: url(./icons.png) -517px -0px no-repeat;
+  background: url(./icons.png) -415px -0px no-repeat;
   width: 8px;
   height: 23px;
 }
-.active .i-note-up, ._tool-box:hover .i-note-up {
-  background: url(./icons.png) -525px -0px no-repeat;
+.active .i-note-down, ._tool-box:hover .i-note-down {
+  background: url(./icons.png) -423px -0px no-repeat;
   width: 8px;
   height: 23px;
-}
-.active .i-play, ._tool-box:hover .i-play {
-  background: url(./icons.png) -533px -0px no-repeat;
-  width: 21px;
-  height: 21px;
-}
-.i-play {
-  background: url(./icons.png) -554px -0px no-repeat;
-  width: 21px;
-  height: 21px;
 }
 .i-play-restar {
-  background: url(./icons.png) -575px -0px no-repeat;
+  background: url(./icons.png) -431px -0px no-repeat;
   width: 19px;
   height: 21px;
 }
 .active .i-play-restar, ._tool-box:hover .i-play-restar {
-  background: url(./icons.png) -594px -0px no-repeat;
+  background: url(./icons.png) -450px -0px no-repeat;
   width: 18px;
   height: 20px;
 }
 .i-recover {
-  background: url(./icons.png) -612px -0px no-repeat;
-  width: 25px;
-  height: 18px;
-}
-.active .i-recover, ._tool-box:hover .i-recover {
-  background: url(./icons.png) -637px -0px no-repeat;
+  background: url(./icons.png) -468px -0px no-repeat;
   width: 25px;
   height: 18px;
 }
 .i-rhythm {
-  background: url(./icons.png) -662px -0px no-repeat;
+  background: url(./icons.png) -493px -0px no-repeat;
   width: 18px;
   height: 22px;
+}
+.active .i-rhythm, ._tool-box:hover .i-rhythm {
+  background: url(./icons.png) -511px -0px no-repeat;
+  width: 18px;
+  height: 22px;
+}
+.active .i-yi, ._tool-box:hover .i-yi {
+  background: url(./icons.png) -529px -0px no-repeat;
+  width: 29px;
+  height: 25px;
+}
+.active .i-recover, ._tool-box:hover .i-recover {
+  background: url(./icons.png) -558px -0px no-repeat;
+  width: 25px;
+  height: 18px;
+}
+.active .i-withdraw, ._tool-box:hover .i-withdraw {
+  background: url(./icons.png) -583px -0px no-repeat;
+  width: 25px;
+  height: 18px;
+}
+.i-yi {
+  background: url(./icons.png) -608px -0px no-repeat;
+  width: 29px;
+  height: 25px;
+}
+.i-withdraw {
+  background: url(./icons.png) -637px -0px no-repeat;
+  width: 25px;
+  height: 18px;
+}
+.active .i-br, ._tool-box:hover .i-br {
+  background: url(./icons.png) -662px -0px no-repeat;
+  width: 27px;
+  height: 19px;
+}
+.i-color {
+  background: url(./icons.png) -689px -0px no-repeat;
+  width: 18px;
+  height: 22px;
+}
+.active .i-color, ._tool-box:hover .i-color {
+  background: url(./icons.png) -707px -0px no-repeat;
+  width: 18px;
+  height: 22px;
+}
+.i-cursor {
+  background: url(./icons.png) -725px -0px no-repeat;
+  width: 28px;
+  height: 29px;
+}
+.active .i-cursor, ._tool-box:hover .i-cursor {
+  background: url(./icons.png) -753px -0px no-repeat;
+  width: 28px;
+  height: 29px;
 }
