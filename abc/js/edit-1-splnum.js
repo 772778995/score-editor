@@ -4,6 +4,16 @@ const getNotIstartList = () => [
 ];
 let oldNoteList = [];
 
+const _init = (() => {
+  let isFirst = true;
+  return () => {
+    if (!isFirst) return;
+    isFirst = false;
+    changeStaffType(null, scoreOpts?.musicType === "easy" ? 2 : 0) |
+      restoreEditor();
+  };
+})();
+
 const selectNewNote = () => {
   const newNoteIstartList = getNotIstartList();
   const lengthDiff = newNoteIstartList.length - oldNoteList.length;
@@ -1120,6 +1130,7 @@ function render2(_0xC154) {
     var _0xC185 = new Date()[_$_6a78[128]]();
     console[_$_6a78[147]](_$_6a78[148], _0xC185 - _0xC249);
 
+    _init();
     selectNewNote();
     setLyricStyle();
 
