@@ -215,7 +215,7 @@ const getAbcContCode = (opts) => {
 V:1 treble
 %%MIDI program 0
 V:1
-${getAbcNoteCode(opts)}`,
+${getAbcNoteCode(opts)}|`,
     big: `
 %%vsetting_start
 %%score {1 | 2}
@@ -227,20 +227,19 @@ V:2 bass
 V:1
 ${getAbcNoteCode(opts)}
 V:2
-${getAbcNoteCode(opts)}
-`,
+${getAbcNoteCode(opts)}|`,
     treble: `
 %%score 1
 V:1 treble
 %%MIDI program 0
 V:1
-${getAbcNoteCode(opts)}`,
+${getAbcNoteCode(opts)}|`,
     bass: `
 %%score 1
 V:1 bass
 %%MIDI program 0
 V:1
-${getAbcNoteCode(opts)}`,
+${getAbcNoteCode(opts)}|`,
     four: `
 %%vsetting_start
 %%score [1 2 3 4]
@@ -260,7 +259,7 @@ ${getAbcNoteCode(opts)}
 V:3 
 ${getAbcNoteCode(opts)}
 V:4 
-${getAbcNoteCode(opts)}`,
+${getAbcNoteCode(opts)}|`,
   }[opts.musicType];
 };
 
