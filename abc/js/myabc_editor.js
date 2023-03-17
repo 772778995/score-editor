@@ -6170,7 +6170,7 @@ function changeStaffType(obj, type) {
 function setEditorHeight() {
   var hei = $(".tools-box:visible").length;
   $(".body-box").css({
-    height: $(window).height() - hei * 64 - 38 + "px",
+    minHeight: $(window).height() - hei * 64 - 38 + "px",
   });
 }
 //更改pdf导出的清析度
