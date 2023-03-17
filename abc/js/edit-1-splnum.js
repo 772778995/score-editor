@@ -1133,6 +1133,7 @@ function render2(_0xC154) {
     _init();
     selectNewNote();
     setLyricStyle();
+    changeSelectNoteStyle();
 
     if (user[_$_6a78[149]]) {
       user[_$_6a78[149]]();

@@ -1,3 +1,12 @@
+function changeSelectNoteStyle() {
+  $("._select-note").removeClass("_select-note");
+  const selectNote = $(".selected_text")[0];
+  if (selectNote) {
+    const istart = selectNote.getAttribute("istart");
+    $(`[istart=${istart}]`).addClass("_select-note");
+  }
+}
+
 // 防抖
 function debounce(fn, delay) {
   let timer = null;
@@ -2462,13 +2471,16 @@ var content_vue = new Vue({
       ],
       myScore: {
         list: [],
+        crtPage: 1,
+        totalPage: 0,
+        isLoading: false,
         index: -1,
         isShow: false,
         query: {
           page: 1,
           page_size: 12,
           fu_name: "",
-          music_type: "",
+          fu_music_type: "",
         },
       },
       isMusicNoteShow: false,
@@ -5054,6 +5066,17 @@ var content_vue = new Vue({
     },
 
     // ———————————————————————————————————————— 分割线 __method ————————————————————————————————————————
+    async updateMyScoreList() {
+      this.m.myScore.isLoading = true;
+      const { data, meta } = await request({
+        url: "/musicals",
+        params: this.m.myScore.query,
+      });
+      this.m.myScore.list = data;
+      const totalPage = Math.ceil(meta.total / this.m.myScore.query.page_size);
+      this.m.myScore.totalPage = totalPage;
+      this.m.myScore.isLoading = false;
+    },
     async exportScore() {
       this.m.export.show = false;
       const isNoChecked = this.m.export.list.every((item) => !item.checked);
@@ -5413,29 +5436,8 @@ var content_vue = new Vue({
       changeYG(val, "doPos2");
       changeZKey();
     },
-    "m.myScore.query": {
-      handler: debounce(async function (params) {
-        this.m.myScore.list =
-          (await request({ url: "/musicals", params }))?.data || [];
-      }, 500),
-      deep: true,
-    },
     async "m.myScore.isShow"(isShow) {
-      if (isShow) {
-        this.m.myScore.list =
-          (
-            await request({
-              url: "/musicals",
-              params: this.m.myScore.query,
-            })
-          )?.data || [];
-      } else {
-        this.m.myScore.index = -1;
-        this.m.myScore.query = {
-          title: "",
-          musicType: "",
-        };
-      }
+      if (isShow) return this.updateMyScoreList();
     },
     "m.ctxMenu.isShow"(isShow) {
       if (isShow) return;
@@ -5628,13 +5630,8 @@ var content_vue = new Vue({
       setTimeout(() => {
         this.m.isInsertMode = draw_editor;
       });
-      $("._select-note").removeClass("_select-note");
       $("#panZoom").css({ height: $("#target").height() + "px" });
-      const selectNote = $(".selected_text")[0];
-      if (selectNote) {
-        const istart = selectNote.getAttribute("istart");
-        $(`[istart=${istart}]`).addClass("_select-note");
-      }
+      changeSelectNoteStyle();
     };
     document.addEventListener("keyup", event);
     document.addEventListener("click", event);

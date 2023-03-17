@@ -15,14 +15,15 @@ svg {display:block}
 rect.abcr.selected_text[type="bar"] {
 	fill: none;
 }
-._select-note:not([type="beam"]) {
+/* TODO 选中音符样式 */
+/* ._select-note:not([type="beam"]) {
 	fill: #0E518F;
 	color: #0E518F;
 	stroke: #0E518F;
 }
 ._select-note[type="note"] {
 	stroke: none;
-}
+} */
 .editor_rect{
 	fill: #0E518F;
 	fill-opacity: 0.4 !important;
