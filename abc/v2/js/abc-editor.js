@@ -2832,13 +2832,13 @@ var content_vue = new Vue({
         easyList: [
           [
             {
-              className: "k-e-1",
-              title: "箭头",
-              fn: switchPrachEditor,
-              isSelect: false,
-              updateIsSelect() {
-                this.isSelect = draw_editor;
-              },
+              // className: "k-e-1",
+              // title: "箭头",
+              // fn: switchPrachEditor,
+              // isSelect: false,
+              // updateIsSelect() {
+              //   this.isSelect = draw_editor;
+              // },
             },
             {
               className: "k-e-2",
@@ -2947,13 +2947,13 @@ var content_vue = new Vue({
           ],
           [
             {
-              className: "k-e-18",
-              title: "箭头",
-              fn: switchPrachEditor,
-              isSelect: false,
-              updateIsSelect() {
-                this.isSelect = draw_editor;
-              },
+              // className: "k-e-18",
+              // title: "箭头",
+              // fn: switchPrachEditor,
+              // isSelect: false,
+              // updateIsSelect() {
+              //   this.isSelect = draw_editor;
+              // },
             },
             {
               className: "k-e-19",
@@ -6160,4 +6160,55 @@ var getAbcContentObj = function () {
     abcContent: $("#source").val(),
     musicType: musicType,
   };
+};
+
+function splitString(str, delimiters) {
+  const regex = new RegExp(
+    `[${delimiters
+      .map((d) => d.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"))
+      .join("|")}]`,
+    "g"
+  );
+  const result = [];
+  let lastIndex = 0;
+  let match;
+  while ((match = regex.exec(str)) !== null) {
+    const value = str.substring(lastIndex, match.index);
+    if (value) {
+      result.push({
+        value,
+        start: lastIndex,
+        end: match.index,
+      });
+    }
+    lastIndex = regex.lastIndex;
+  }
+  const value = str.substring(lastIndex);
+  if (value) {
+    result.push({
+      value,
+      start: lastIndex,
+      end: str.length,
+    });
+  }
+  return result;
+}
+
+const getBarList = () => {
+  const splitStrList = ["||", "|]", ":||:", ":|", "|"];
+  let sourceStr = $("#source").val();
+  const barList = sourceStr
+    .match(/.*\|.*/g)
+    .map((match, index) => {
+      const subList = splitString(match, splitStrList);
+      const offset = sourceStr.indexOf(match);
+      sourceStr = sourceStr.replace(match, "操".repeat(match.length));
+      return subList.map(({ value, start, end }) => ({
+        value,
+        start: offset + start,
+        end: offset + end,
+      }));
+    })
+    .flat();
+  return barList;
 };
