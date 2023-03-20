@@ -3026,7 +3026,27 @@ function getK() {
   }
   // $("#K").change();
 }
+
+const changeLineBars = (() => {
+  let lastBars = 0;
+  return () => {
+    try {
+      const bars = getBarList().length;
+      if (lastBars === bars) return;
+      lastBars = bars;
+      const num = content_vue.m.foldLine.show
+        ? content_vue.m.foldLine.previewV
+        : content_vue.m.foldLine.line;
+      $("#barsperstaff").val(num);
+      var newContent = handleBreakLine($("#source").val(), num);
+      $($("#source")).val(newContent);
+      // abc_change();
+    } catch (err) {}
+  };
+})();
+
 function abc_change() {
+  changeLineBars();
   src_change();
   getX();
   getT();
@@ -8242,6 +8262,7 @@ function insertNodes(num, isAfter, isFirst) {
     if (isFirst) barIndex = 0;
     insertNodeByIndex(barIndex);
   }
+  changeLineBars();
 }
 /**
  * 改变连音线弧度

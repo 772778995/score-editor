@@ -1038,6 +1038,7 @@ function appendNodes(_0x12293) {
   var _0x12A9D = $(_$_1e54[58])[_$_1e54[27]]();
   _0x11C11 = replaceBlankLine(_0x11C11);
   $(_$_1e54[56])[_$_1e54[27]](_0x11C11);
+  changeLineBars();
   src_change();
   doLog();
 }
