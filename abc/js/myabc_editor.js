@@ -162,8 +162,25 @@ Q: ${opts.speedNote}=${opts.speedNum}`;
  * @param {ScoreOpts} opts
  */
 const getAbcNoteCode = (opts) => {
+  let num = opts.beatNote1 / opts.beatNote2;
+  const d1 = ~~(num / 1);
+  num = num % 1;
+  const d2 = ~~(num / 0.5);
+  num = num % 0.5;
+  const d4 = ~~(num / 0.25);
+  num = num % 0.25;
+  const d8 = ~~(num / 0.125);
+  num = num % 0.125;
+  const d16 = ~~(num / 0.0625);
+  let restStr = "z8".repeat(d1);
+  restStr += "z4".repeat(d2);
+  restStr += "z2".repeat(d4);
+  restStr += "z".repeat(d8);
+  restStr += "z/".repeat(d16);
+  restStr += "|";
+
   let noteCode = new Array(+opts.rows)
-    .fill("z,8|".repeat(+opts.rowBars))
+    .fill(restStr.repeat(+opts.rowBars))
     .join("$");
   if (opts.isWeak) {
     let num = opts.weakBarTop / opts.weakBarBot;
