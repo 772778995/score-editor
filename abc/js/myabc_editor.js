@@ -8364,30 +8364,49 @@ function setSlurInfo() {
 }
 //设置符杆方向
 function setNoteStemDirect(dir) {
-  var selectedNote = $(".selected_text");
-  var istart = $(selectedNote).attr("istart");
-  if (istart && istart != -1) {
-    var content = $("#source").val();
-    var s = syms[istart];
-    var pIend = s.istart;
-    var midStr = "";
-    if (s.prev) {
-      sp = s.prev;
-      pIend = sp.iend;
-      midStr = content.substring(pIend, s.istart);
-      midStr = midStr.replace(/\[I:pos stem.[^\[]*\]/g, "");
-    }
-    var newContent =
-      content.substring(0, pIend) +
-      midStr +
-      "[I:pos stem " +
-      dir +
-      "]" +
-      content.substring(istart);
-    $("#source").val(newContent);
-    src_change();
-    doLog();
-  }
+  let start = $(".selected_text").attr("istart");
+  const end = syms[start].iend
+  const abcCode = $("#source").val();
+  const str = `[I:pos stem ${dir}]${abcCode.slice(start, end)}`
+  const newAbcCode = replaceCharsInRange(abcCode, start, end, str)
+  $('#source').val(newAbcCode)
+  src_change()
+  doLog()
+
+  // let str = $('#source').val().slice(start, end)
+  // const regexp = eval(`/(?<=\\[I:pos\sstem\s).+(?=\\])/`)
+  // if (str.match(regexp)) {
+  //   str = str.replace(regexp, dir)
+  // } else {
+  //   str = `[I:pos stem ${dir}]${str}`
+  // }
+  // const newAbcCode = replaceCharsInRange(abcCode, start, end, str)
+  // $("#source").val(newAbcCode);
+  // src_change();
+  // doLog();
+  // if (istart && istart != -1) {
+    
+  //   var content = $("#source").val();
+  //   var s = syms[istart];
+  //   var pIend = s.istart;
+  //   var midStr = "";
+  //   if (s.prev) {
+  //     sp = s.prev;
+  //     pIend = sp.iend;
+  //     midStr = content.substring(pIend, s.istart);
+  //     midStr = midStr.replace(/\[I:pos stem.[^\[]*\]/g, "");
+  //   }
+  //   var newContent =
+  //     content.substring(0, pIend) +
+  //     midStr +
+  //     "[I:pos stem " +
+  //     dir +
+  //     "]" +
+  //     content.substring(istart);
+  //   $("#source").val(newContent);
+  //   src_change();
+  //   doLog();
+  // }
 }
 
 //定位到语法框
