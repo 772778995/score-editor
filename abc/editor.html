@@ -3363,9 +3363,29 @@
                         z
                       </li>
                     </ul>
+                    <div v-if="model.code === 'speedTerm'" style="border: 1px solid #E6E6E6; position: relative; transform: translate(1px, 1px);z-index: 50;">
+                      <div
+                        class="flex items-center h-full cursor-pointer"
+                        @click="m.scoreOpts.speedType = 'sign'"
+                      >
+                        <img
+                          :src="`./img/radio${m.scoreOpts.speedType === 'sign' ? '1' : '2'}.png`"
+                          class="cursor-pointer mr-2"
+                          :class="{ 'opacity-50 pointer-events-none': m.scoreOpts.speedType !== 'sign' }"
+                          @click="m.scoreOpts.speedType = 'sign'"
+                        />
+                        <div style="font-size: 14px;">节拍器标记：</div>
+                      </div>
+                      <div class="flex h-full items-center relative z-50" :class="{ 'opacity-50 pointer-events-none': m.scoreOpts.speedType !== 'sign' }">
+                        <select-input v-model="m.scoreOpts.speedNote" :list="m.newScore.speedNoteList" style="height: 28px;"></select-input>
+                        <div style="margin: 0 10px;">=</div>
+                        <number-input v-model="m.scoreOpts.speedNum" :min="1" style="width: 64px; height: 28px;"></number-input>
+                      </div>
+                    </div>
                     <div
                       class="grid items-center justify-center bg-white border-l border-t"
-                      :class="[`grid-cols-${model.cols || 1}`]"
+                      :class="[`grid-cols-${(model.code === 'speedTerm' && index === 0) ? 1 : model.cols || 1}`]"
+                      :style="model.code === 'speedTerm' ? 'margin-top: 0px' : ''"
                     >
                       <template v-if="model.code === 'speedTerm'">
                         <div

@@ -22321,8 +22321,8 @@ abc2svg = {
         w += strwh(s.tempo_str2)[0];
       }
       s.tempo_str = str.join(" ");
-      if (scoreOpts.speedType === "txt") {
-        s.tempo_str = `<tspan>${scoreOpts.speedText}</tspan>`;
+      if (content_vue.m.scoreOpts.speedType === "txt") {
+        s.tempo_str = `<tspan>${content_vue.m.scoreOpts.speedText}</tspan>`;
       }
       w += cwidf(" ") * (str.length - 1);
       s.tempo_wh = [w, 13.0];

@@ -2360,6 +2360,7 @@ var content_vue = new Vue({
 
     // ———————————————————————————————————————— 分割线 __data ————————————————————————————————————————
     m: {
+      scoreOpts,
       alertMsg: "",
       isInsertMode: false,
       export: {
@@ -5069,6 +5070,20 @@ var content_vue = new Vue({
     },
 
     // ———————————————————————————————————————— 分割线 __method ————————————————————————————————————————
+    changeSpeed() {
+      if (this.m.scoreOpts.speedType !== 'sign') return
+      let abcCode = $('#source').val()
+      abcCode = abcCode.replace(/(?<=Q:\s+).+/, `${this.m.scoreOpts.speedNote}=${this.m.scoreOpts.speedNum}`)
+      $('#source').val(abcCode)
+      abc_change()
+    },
+    getSpeed() {
+      const [sppedTxt] = $('#source').val().match(/(?<=Q:\s+).+/)
+      const [speedNote, speedNum] = sppedTxt.split('=')
+      this.m.scoreOpts.speedNote = speedNote
+      this.m.scoreOpts.speedNum = speedNum
+      console.log([speedNote, speedNum])
+    },
     async updateMyScoreList() {
       this.m.myScore.index = -1;
       this.m.myScore.isLoading = true;
@@ -5276,6 +5291,7 @@ var content_vue = new Vue({
             )}`
         );
       } else {
+        this.m.scoreOpts = this.m.newScore.scoreOpts
         scoreOpts = this.m.newScore.scoreOpts
         initScore(scoreOpts);
       }
@@ -5440,6 +5456,15 @@ var content_vue = new Vue({
     },
 
     // ———————————————————————————————————————— 分割线 __watch ————————————————————————————————————————
+    'm.scoreOpts.speedType'(val) {
+      this.changeSpeed()
+    },
+    'm.scoreOpts.speedNote'() {
+      this.changeSpeed()
+    },
+    'm.scoreOpts.speedNum'() {
+      this.changeSpeed()
+    },
     "m.key.val"(val) {
       const valueSelector = this.m.key.list.find(
         (item) => item.val === val
@@ -5638,6 +5663,7 @@ var content_vue = new Vue({
       this.initCtxMenu();
       this.changeSelectNote();
       this.changeSelectBar();
+      this.getSpeed()
       setLyricStyle();
       setTimeout(() => {
         this.m.isInsertMode = draw_editor;
