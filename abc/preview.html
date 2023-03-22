@@ -9,13 +9,14 @@
     });
     // let flashTimer = null
     window.addEventListener('message', function(event) {
-      const scoreOpts = event.data
-      changeStaffType(null, scoreOpts?.musicType === 'easy' ? 2 : 0) | restoreEditor()
-      if (typeof scoreOpts === 'object') {
+      const newScoreOpts = event.data
+      changeStaffType(null, newScoreOpts?.musicType === 'easy' ? 2 : 0) | restoreEditor()
+      if (typeof newScoreOpts === 'object') {
         // if (flashTimer) clearTimeout(flashTimer)
         // flashTimer = setTimeout(() => {
-          for(const k in scoreOpts) if ([undefined, ''].includes(scoreOpts[k])) delete scoreOpts[k]
-          const code = getAbcTemplateCode(Object.assign({}, defaultScoreOpts, scoreOpts))
+          for(const k in newScoreOpts) if ([undefined, ''].includes(newScoreOpts[k])) delete newScoreOpts[k]
+          scoreOpts = Object.assign(scoreOpts, defaultScoreOpts, newScoreOpts)
+          const code = getAbcTemplateCode(scoreOpts)
           $('#source').val(code)
           abc_change()
         //   flashTimer = null

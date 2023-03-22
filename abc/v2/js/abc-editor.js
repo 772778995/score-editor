@@ -5272,7 +5272,8 @@ var content_vue = new Vue({
             )}`
         );
       } else {
-        initScore(this.m.newScore.scoreOpts);
+        scoreOpts = this.m.newScore.scoreOpts
+        initScore(scoreOpts);
       }
       this.m.newScore.musicType.show = false;
       this.m.newScore.scoreOptsShow = false;
