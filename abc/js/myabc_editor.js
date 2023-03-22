@@ -244,19 +244,19 @@ V:2 bass
 V:1
 ${getAbcNoteCode(opts)}
 V:2
-${getAbcNoteCode(opts)}|`,
+${getAbcNoteCode(opts)}`,
     treble: `
 %%score 1
 V:1 treble
 %%MIDI program 0
 V:1
-${getAbcNoteCode(opts)}|`,
+${getAbcNoteCode(opts)}`,
     bass: `
 %%score 1
 V:1 bass
 %%MIDI program 0
 V:1
-${getAbcNoteCode(opts)}|`,
+${getAbcNoteCode(opts)}`,
     four: `
 %%vsetting_start
 %%score [1 2 3 4]
@@ -276,7 +276,7 @@ ${getAbcNoteCode(opts)}
 V:3 
 ${getAbcNoteCode(opts)}
 V:4 
-${getAbcNoteCode(opts)}|`,
+${getAbcNoteCode(opts)}`,
   }[opts.musicType];
 };
 
@@ -3048,7 +3048,9 @@ const changeLineBars = (() => {
   let lastBars = 0;
   return () => {
     try {
-      const bars = getBarList().length;
+      const bars = getVocalList()
+        .map((item) => item.barList)
+        .flat().length;
       if (lastBars === bars) return;
       lastBars = bars;
       const num = content_vue.m.foldLine.show
