@@ -4124,8 +4124,8 @@ var content_vue = new Vue({
               },
               {
                 title: "恢复",
-                shortList: ["Ctrl", "Shift", "Z"],
-                valueList: ["z"],
+                shortList: ["Ctrl", "Y"],
+                valueList: ["y"],
                 fn: () => $(".forward").click(),
               },
               {
@@ -6162,53 +6162,176 @@ var getAbcContentObj = function () {
   };
 };
 
-function splitString(str, delimiters) {
-  const regex = new RegExp(
-    `[${delimiters
-      .map((d) => d.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"))
-      .join("|")}]`,
-    "g"
+/**
+ * @param {number} start
+ * @param {number} end
+ * @returns {(cb: (str: string) => string) => void}
+ */
+const getChangeStrFn = (start, end) => (cb) => {
+  const newCode = replaceCharsInRange(
+    $("#source").val(),
+    start,
+    end,
+    cb(obj[opts.targetKey])
   );
-  const result = [];
-  let lastIndex = 0;
-  let match;
-  while ((match = regex.exec(str)) !== null) {
-    const value = str.substring(lastIndex, match.index);
-    if (value) {
-      result.push({
-        value,
-        start: lastIndex,
-        end: match.index,
-      });
-    }
-    lastIndex = regex.lastIndex;
-  }
-  const value = str.substring(lastIndex);
-  if (value) {
-    result.push({
-      value,
-      start: lastIndex,
-      end: str.length,
-    });
-  }
-  return result;
-}
+  $("#source").val(newCode);
+  abc_change();
+};
 
-const getBarList = () => {
-  const splitStrList = ["||", "|]", ":||:", ":|", "|"];
-  let sourceStr = $("#source").val();
-  const barList = sourceStr
-    .match(/.*\|.*/g)
-    .map((match, index) => {
-      const subList = splitString(match, splitStrList);
-      const offset = sourceStr.indexOf(match);
-      sourceStr = sourceStr.replace(match, "操".repeat(match.length));
-      return subList.map(({ value, start, end }) => ({
-        value,
-        start: offset + start,
-        end: offset + end,
-      }));
-    })
-    .flat();
+/**
+ * 获取小节列表
+ * @param {Vocal} vocal
+ */
+const getBarList = ({ barListStr, start: vocalStart }) => {
+  const { 0: lastMeterStr, index: lastMeterStrStart } = $("#source")
+    .val()
+    .match(/(?<=M:\s*)[^\s]+/);
+  const lastMeterStrEnd = lastMeterStrStart + lastMeterStr.length;
+  let lastMeterValue = "";
+  if (lastMeterStr === "C") lastMeterValue = "4/4";
+  else if (lastMeterStr === "C|") lastMeterValue = "2/2";
+  else lastMeterValue = lastMeterStr;
+  let lastMeter = {
+    str: lastMeterStr,
+    value: lastMeterValue,
+    start: lastMeterStrStart,
+    end: lastMeterStrEnd,
+    isGlobal: true,
+    isExtend: true,
+    change: getChangeStrFn(lastMeterStrStart, lastMeterStrEnd),
+  };
+  const barList = barListStr
+    .match(/[^\|]+(?:\|\||\|\]|:\|\|:|:\||\|)\$*/g)
+    .map((barStr) => {
+      const barStrStart = barListStr.indexOf(barStr) + vocalStart;
+      const barStrEnd = barStrStart + barStr.length;
+
+      const barLineStr = barStr.match(/\|\||\|\]|:\|\|:|:\||\|/)[0];
+      const barLineStrStart = barStr.indexOf(barLineStr) + barStrStart;
+      const barLineStrEnd = barLineStrStart + barLineStr.length;
+      const barLine = {
+        barLineStr,
+        start: barLineStrStart,
+        end: barLineStrEnd,
+        change: getChangeStrFn(barLineStrStart, barLineStrEnd),
+      };
+
+      const meter = { ...lastMeter, isExtend: true };
+      const meterMatch = barStr.match(/(?<=\[M:)[^\]]+/);
+      if (meterMatch) {
+        const meterStr = meterMatch[0];
+        meter.isExtend = true;
+        meter.str = meterStr;
+        meter.currentMeter = meterStr;
+        meter.value = meterStr.match(/\d+/g);
+
+        if (meter.str === "C") meter.value = "4/4";
+        else if (meter.str === "C|") meter.value = "2/2";
+        else meter.value = meterStr.match(/\d+/g);
+
+        const meterStrStart = barStr.indexOf(meterStr) + barStrStart;
+        meter.start = meterStrStart;
+        meter.end = meterStrStart + meterStr.length;
+        meter.isGlobal = false;
+        lastMeter = { ...meter };
+      }
+      // meter.change = () => {
+      //   if (meter.isExtend) {
+      //     barStr = str.replace(regexp, `${meter}`);
+      //   } else {
+      //     barStr = `[${meter}] ${barStr}`;
+      //   }
+      //   return str;
+      // };
+
+      barListStr = barListStr.replace(barStr, "操".repeat(barStr.length));
+      return {
+        barStr,
+        change: getChangeStrFn(barStrStart, barStrEnd),
+        start: barStrStart,
+        end: barStrEnd,
+        barLine,
+        meter,
+        isBr: barStr.includes("$"),
+      };
+    });
   return barList;
 };
+
+/**
+ * 获取声部列表
+ * @returns {Vocal[]}
+ */
+const getVocalList = () => {
+  let vocalList = $("#source")
+    .val()
+    .replace(/%%.+\n*/g, "")
+    .match(/V:\d+\s*\n.+/g);
+  if (!vocalList) return [];
+  let abcCode = $("#source").val();
+  vocalList = vocalList.map((vocalStr) => {
+    const index = +vocalStr.match(/(?<=V:\s*)\d+/);
+    const barListStr = vocalStr.replace(/V:\d+\s*\n*/, "");
+    const vocalStart = abcCode.indexOf(barListStr);
+    const vocalEnd = vocalStart + barListStr.length;
+
+    const keySign = $("#source")
+      .val()
+      .match(eval(`/(?<=V:${index}\\s*)treble|bass|alto|tenor/`))[0];
+    const vocal = {
+      index,
+      vocalStr,
+      barListStr,
+      change: getChangeStrFn(vocalStart, vocalEnd),
+      start: vocalStart,
+      end: vocalEnd,
+      keySign,
+    };
+    vocal.barList = getBarList({ ...vocal });
+    abcCode = abcCode.replace(vocalStr, "操".repeat(vocalStr.length));
+    return vocal;
+  });
+  return vocalList;
+};
+
+/**
+ * @typedef {Object} Meter - 节拍
+ * @property {string} str - 节拍字符串
+ * @property {string} value - 节拍值
+ * @property {number} start - 节拍在abc中的起始位置
+ * @property {number} end - 节拍在abc中的结束位置
+ * @property {boolean} isGlobal - 是否为全局节拍
+ * @property {boolean} isExtend - 是否为继承的节拍
+ */
+
+/**
+ * @typedef {Object} BarLine - 小节线
+ * @property {string} barLineStr - 小节线字符串
+ * @property {number} start - 小节线在abc中的起始位置
+ * @property {number} end - 小节线在abc中的结束位置
+ * @property {(cb: (str: string) => string) => void} change - 修改小节线字符串
+ */
+
+/**
+ * @typedef {Object} Bar - 小节
+ * @property {string} barContStr - 小节内容字符串
+ * @property {string} barStr - 小节字符串
+ * @property {number} start - 小节在abc中的起始位置
+ * @property {number} end - 小节在abc中的结束位置
+ * @property {boolean} isBr - 是否换行
+ * @property {Meter} meter - 小节的节拍
+ * @property {BarLine} barLine - 小节的小节线
+ * @property {(cb: (str: string) => string) => void} change - 修改小节字符串
+ */
+
+/**
+ * @typedef {Object} Vocal - 声部
+ * @property {string} index - 所在声部
+ * @property {string} vocalStr - 声部字符串
+ * @property {string} barListStr - 声部中的小节字符串
+ * @property {Bar[]} barList - 声部中的小节列表
+ * @property {number} start - 声部在abc中的起始位置
+ * @property {number} end - 声部在abc中的结束位置
+ * @property {string} keySign - 声部的调号
+ * @property {(cb: (str: string) => string) => void} change - 修改声部中的小节字符串
+ */
