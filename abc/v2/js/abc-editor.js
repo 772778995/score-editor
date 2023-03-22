@@ -3349,72 +3349,72 @@ var content_vue = new Vue({
           isShow: !1,
           isExpand: !1,
         },
-        {
-          canClick: false,
-          code: "meter",
-          cols: 4,
-          name: "拍号",
-          imgList: [
-            {
-              url: "./img/notepanel/meter (1).png",
-              value: "[M:2/4]",
-              class: "cmenu",
-              type: "nodeline",
-              position: "beforeInsert",
-            },
-            {
-              url: "./img/notepanel/meter (2).png",
-              value: "[M:3/4]",
-              class: "cmenu",
-              type: "nodeline",
-              position: "beforeInsert",
-            },
-            {
-              url: "./img/notepanel/meter (3).png",
-              value: "[M:4/4]",
-              class: "cmenu",
-              type: "nodeline",
-              position: "beforeInsert",
-            },
-            {
-              url: "./img/notepanel/meter (4).png",
-              value: "[M:3/8]",
-              class: "cmenu",
-              type: "nodeline",
-              position: "beforeInsert",
-            },
-            {
-              url: "./img/notepanel/meter (5).png",
-              value: "[M:6/8]",
-              class: "cmenu",
-              type: "nodeline",
-              position: "beforeInsert",
-            },
-            {
-              url: "./img/notepanel/meter (6).png",
-              value: "[M:9/8]",
-              class: "cmenu",
-              type: "nodeline",
-              position: "beforeInsert",
-            },
-            {
-              url: "./img/notepanel/meter (7).png",
-              value: "[M:C]",
-              class: "cmenu",
-              type: "nodeline",
-              position: "beforeInsert",
-            },
-            {
-              url: "./img/notepanel/meter (8).png",
-              value: "[M:C|]",
-              class: "cmenu",
-              type: "nodeline",
-              position: "beforeInsert",
-            },
-          ],
-          isShow: !1,
-          isExpand: !1,
-        },
+        // {
+        //   canClick: false,
+        //   code: "meter",
+        //   cols: 4,
+        //   name: "拍号",
+        //   imgList: [
+        //     {
+        //       url: "./img/notepanel/meter (1).png",
+        //       value: "[M:2/4]",
+        //       class: "cmenu",
+        //       type: "nodeline",
+        //       position: "beforeInsert",
+        //     },
+        //     {
+        //       url: "./img/notepanel/meter (2).png",
+        //       value: "[M:3/4]",
+        //       class: "cmenu",
+        //       type: "nodeline",
+        //       position: "beforeInsert",
+        //     },
+        //     {
+        //       url: "./img/notepanel/meter (3).png",
+        //       value: "[M:4/4]",
+        //       class: "cmenu",
+        //       type: "nodeline",
+        //       position: "beforeInsert",
+        //     },
+        //     {
+        //       url: "./img/notepanel/meter (4).png",
+        //       value: "[M:3/8]",
+        //       class: "cmenu",
+        //       type: "nodeline",
+        //       position: "beforeInsert",
+        //     },
+        //     {
+        //       url: "./img/notepanel/meter (5).png",
+        //       value: "[M:6/8]",
+        //       class: "cmenu",
+        //       type: "nodeline",
+        //       position: "beforeInsert",
+        //     },
+        //     {
+        //       url: "./img/notepanel/meter (6).png",
+        //       value: "[M:9/8]",
+        //       class: "cmenu",
+        //       type: "nodeline",
+        //       position: "beforeInsert",
+        //     },
+        //     {
+        //       url: "./img/notepanel/meter (7).png",
+        //       value: "[M:C]",
+        //       class: "cmenu",
+        //       type: "nodeline",
+        //       position: "beforeInsert",
+        //     },
+        //     {
+        //       url: "./img/notepanel/meter (8).png",
+        //       value: "[M:C|]",
+        //       class: "cmenu",
+        //       type: "nodeline",
+        //       position: "beforeInsert",
+        //     },
+        //   ],
+        //   isShow: !1,
+        //   isExpand: !1,
+        // },
         {
           canClick: true,
           name: "临时记号",
@@ -4065,8 +4065,8 @@ var content_vue = new Vue({
             leftList: [
               {
                 title: "新建",
-                shortList: ["Ctrl", "W"],
-                valueList: ["w"],
+                shortList: ["Ctrl", "M"],
+                valueList: ["m"],
                 fn: () => (content_vue.newScore.musicType.show = true),
               },
               {
@@ -4161,6 +4161,10 @@ var content_vue = new Vue({
                 valueList: ["Backspace"],
                 fn: () => delSelectedNode(),
               },
+              {
+                title: '选取',
+                shortList: ['鼠标单击'],
+              }
             ],
           },
           {
@@ -5606,9 +5610,6 @@ var content_vue = new Vue({
     }
   },
   mounted() {
-    setTimeout(() => {
-      $("#panZoom").css({ height: $("#target").height() + "px" });
-    }, 1000);
     this.m.isMusicNoteShow = true;
     window.alert = (msg) => {
       this.m.alertMsg = msg;
@@ -5641,7 +5642,6 @@ var content_vue = new Vue({
       setTimeout(() => {
         this.m.isInsertMode = draw_editor;
       });
-      $("#panZoom").css({ height: $("#target").height() + "px" });
       changeSelectNoteStyle();
     };
     document.addEventListener("keyup", event);
