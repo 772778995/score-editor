@@ -531,6 +531,7 @@
     <div
       id="content"
       v-cloak
+      style="min-height: 100vh; width: 100vw; overflow: hidden;"
       @click="() => {
       if (!m.menuIndex) m.menuIndex = -1
       m.addBar = { show: false, before: 1, after: 1 }
@@ -1714,7 +1715,7 @@
             :class="[
               { 'row-span-2': [7, 14].includes(idx) },
               { 'col-span-2': idx === 15 },
-              { 'is-select-key': (scoreOpts.musicType === 'easy' && item.isSelect) || item.isSelect && m.isInsertMode }
+              { 'is-select-key': item.isSelect }
             ]"
             :key="idx"
             @click.stop="() => {
@@ -1725,7 +1726,7 @@
             }"
             :title="item.title"
           >
-            <div v-if="item.className" class="m-auto" :class="[item.className + ((scoreOpts.musicType === 'easy' && item.isSelect) || item.isSelect && m.isInsertMode ? '-active' : '')]"></div>
+            <div v-if="item.className" class="m-auto" :class="[item.className + (item.isSelect ? '-active' : '')]"></div>
             <img v-else-if="item.url" :src="item.url" draggable="false" class="object-contain w-7 h-7"/>
           </div>
         </div>
@@ -1734,7 +1735,7 @@
 
       <input type="file" id="input-file" class="hidden" @change="inputFile"/>
 
-      <div class="flex items-center text-#666 text-sm bg-#f5f5f6">
+      <div class="fixed top-0 left-0 w-full flex items-center text-#666 text-sm bg-#f5f5f6" style="z-index: 999999;">
         <div
           v-for="(item, i) in m.menuList"
           :key="item.txt"
@@ -1764,8 +1765,8 @@
       </div>
 
       <div
-        class="flex items-center space-x-2 border-t border-b bg-#f5f5f6"
-        style="border-color: #DEDEDF;"
+        class="flex fixed left-0 items-center space-x-2 w-full border-t border-b bg-#f5f5f6"
+        style="top: 32px; border-color: #DEDEDF;z-index: 999999;"
       >
         <div class="_tool-box ml-3.5 _tips" style="--tips: '保存（Ctrl+S）'">
           <div class="i-save"></div>
@@ -1805,13 +1806,14 @@
         </div>
 
         <div
-          class="relative _tool-box"
+          class="relative _tool-box _tips"
+          style="--tips: '添加小节（Ctrl+Shift+B）'"
           @click.stop="checkIsSelectBar() && (m.addBar.show = true)"
         >
           <div class="i-addBar"></div>
           <div
             v-if="m.addBar.show"
-            class="absolute top-12 left-6 bg-white  z-50 box-border rounded-sm"
+            class="absolute top-12 left-3.5 bg-white  z-50 box-border rounded-sm"
             style="box-shadow: 0px 4px 30px 0px rgba(3,35,63,0.28); right: -3px; padding: 8px 10px; font-size: 12px; width: 216px;"
             @click.stop
           >
@@ -1835,7 +1837,7 @@
 
         <div
           class="_tool-box items-center _tips text-xs cursor-pointer"
-          style="--tips: '删除小节'"
+          style="--tips: '删除小节（Ctrl+Backspace）'"
           @click="checkIsSelectBar() && delSelectedNode()"
         >
           <div class="i-delBar"></div>
@@ -1974,7 +1976,10 @@
         <div id="player" class="_tool-box _tips _right" style="--tips: '播放/展厅（空格键）'" @click="myplay">
           <div class="i-play"></div>
         </div>
-        <div id="player-2" class="_tool-box _tips _right" style="--tips: '回到开始处（Home）'" @click="mystop() | setTimeout(myplay, 100)">
+        <div id="player-2" class="_tool-box _tips _right" style="--tips: '回到开始处（Home）'" @click="() => {
+          mystop()
+          $('#player').removeClass('active')
+        }">
           <div class="i-play-restar"></div>
         </div>
       </div>
@@ -3214,7 +3219,7 @@
         </div>
       </div>
       <!-- 中间主要内容 -->
-      <div class="body-box relative" style="overflow: auto; background: #B5C5D3;">
+      <div class="body-box relative" style="overflow: hidden; height: 100%; background: #B5C5D3;">
         <!-- 左边列表 -->
         <div class="body-left" style="z-index: 20; position: fixed; top: 84px; left: 0px;">
           <div class="body-left-content scroll" style="background: #F5F5F6">
@@ -3481,8 +3486,7 @@
         <!-- 右边琴谱 -->
         <div
           id="panZoom"
-          class="body-right flex w-screen overflow-y-visible h-full justify-center top-0 left-0"
-          style="padding-bottom: 600px;"
+          class="body-right flex overflow-y-visible w-screen h-screen justify-center top-0 left-0"
         >
           <!--左侧符号面板区域  -->
           <!-- <img
@@ -3491,7 +3495,7 @@
             src="v2/images/left.png"
           /> -->
           <!-- 谱子区域 -->
-          <div class="right-top pb-52" style="width: 768px">
+          <div class="right-top" style="width: 768px; margin-top: 100px; height: 700px;">
             <div
               class="right-top-content scroll flex justify-end m-4 overflow-visible"
               onmousedown.stop="rightTopContentMouseDown(event)"
