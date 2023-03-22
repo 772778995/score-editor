@@ -5273,9 +5273,9 @@ var content_vue = new Vue({
         );
       } else {
         initScore(this.m.newScore.scoreOpts);
-        this.m.newScore.musicType.show = false;
-        this.m.newScore.scoreOptsShow = false;
       }
+      this.m.newScore.musicType.show = false;
+      this.m.newScore.scoreOptsShow = false;
     },
     /**
      * @param {KeyboardEvent} e
