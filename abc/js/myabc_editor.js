@@ -2261,7 +2261,7 @@ function mystop() {
   $(".abcr").css("fill-opacity", "0");
   if (!play.playing) {
     if ($("#playspan").text() == "继续") {
-      $("#playspan").text("播放");
+      $("#playspan").text("播放");$('#player').removeClass('active')
     }
     return;
   }
@@ -2289,7 +2289,7 @@ function endplaycallbck() {
   stopMeterInterval();
   if ($("#playspan").text() == "暂停") {
     // 如果播放结束，则恢复为播放按钮
-    $("#playspan").text("播放");
+    $("#playspan").text("播放");$('#player').removeClass('active')
     $("#playimg").attr("src", "images/preview_play.png");
   }
   setTimeout(function () {
@@ -2297,7 +2297,7 @@ function endplaycallbck() {
       $("#playspan").text("继续");
     }
     if ($("#playspan").text() == "正在停止") {
-      $("#playspan").text("播放");
+      $("#playspan").text("播放");$('#player').removeClass('active')
     }
     $("#playspan").attr("enabled", true);
   }, 1);
@@ -3076,8 +3076,9 @@ function abc_change() {
   getL();
   getQ();
   doLog();
-  $("#playspan").text("播放");
-  $("#playimg").attr("src", "images/preview_play.png");
+  $('#player').removeClass('active')
+  // $("#playspan").text("播放");$('#player').removeClass('active')
+  // $("#playimg").attr("src", "images/preview_play.png");
   return;
 }
 function getSourceScale(sourceid) {
