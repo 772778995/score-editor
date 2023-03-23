@@ -1172,7 +1172,8 @@ $(document).ready(function () {
     var left = $("#noteInput").css("left").replace("px", "");
     var newleft = parseInt(left) - 430;
     // 判断左边列表是否收起 indexOf > -1 为展开 反之为收起
-    var indexOf = $(".left-show-img").attr("src").indexOf("left");
+
+    // var indexOf = $(".left-show-img").attr("src").indexOf("left");
     if (-newleft > 3905 - $("#noteInput").width()) {
       newleft = -(3905 - $("#noteInput").width());
     }
