@@ -3373,36 +3373,63 @@ function drawSingleLine(
 }
 function renderSuccess() {
   renderTimeout = setTimeout(function () {
-    var $events = $(_$_6a78[509])[_$_6a78[508]](_$_6a78[507]);
-    $(_$_6a78[509])[_$_6a78[515]](_$_6a78[510], function () {
-      if (!user[_$_6a78[511]]) {
-        return false;
+    $('.f1, .f2, .f3').on('dblclick', function() {
+      const el = $(this)
+      let { top, left } = el.offset()
+      let { width, height } = el.get(0).getBoundingClientRect()
+      top +='px'
+      left +='px'
+      width +='px'
+      height +='px'
+      content_vue.m.editor.style = {
+        top, left, width, height,
+        minHeight: '40px'
       }
-      var _0xC30D = this[_$_6a78[459]]();
-      var _0xC33E = document[_$_6a78[238]](_$_6a78[512]);
-      $(_0xC33E)
-        [_$_6a78[155]](_$_6a78[513], 2)
-        [_$_6a78[155]](_$_6a78[281], _$_6a78[277]);
-      $(_$_6a78[250])[_$_6a78[343]]($(_0xC33E));
-      var $self = $(this);
-      $(_0xC33E)
-        [_$_6a78[129]](getAllTitle())
-        [_$_6a78[155]]({
-          left: _0xC30D[_$_6a78[406]],
-          top: _0xC30D[_$_6a78[7]],
-          width: _0xC30D[_$_6a78[330]] < 200 ? 200 : _0xC30D[_$_6a78[330]],
-          height: _0xC30D[_$_6a78[327]] < 80 ? 80 : _0xC30D[_$_6a78[327]],
-        })
-        [_$_6a78[413]]()
-        [_$_6a78[165]]()
-        [_$_6a78[515]](_$_6a78[221], function () {
-          $self[_$_6a78[67]]($(this)[_$_6a78[129]]());
-          $(_$_6a78[514])[_$_6a78[129]]($(this)[_$_6a78[129]]());
-          set(_$_6a78[242], $(this)[_$_6a78[129]]());
-          $(this)[_$_6a78[155]](_$_6a78[24], _$_6a78[116]);
-          src_change();
-        });
-    });
+
+      let type = ''
+      const className = el.attr('class')
+      content_vue.m.editor.val = el.text()
+      if (className === 'f1') type = 'title'
+      else if (className === 'f2') type = 'subTitle'
+      else if (className === 'f3') {
+        const index = el.index()
+        if (index === 2) type = 'compose'
+        else if (index === 3) type = 'lyricist'
+      }
+      content_vue.m.editor.type = type
+      
+      content_vue.$nextTick(() => document.getElementById('editor').focus())
+    })
+    var $events = $(_$_6a78[509])[_$_6a78[508]](_$_6a78[507]);
+    // $(_$_6a78[509])[_$_6a78[515]](_$_6a78[510], function () {
+    //   if (!user[_$_6a78[511]]) {
+    //     return false;
+    //   }
+    //   var _0xC30D = this[_$_6a78[459]]();
+    //   var _0xC33E = document[_$_6a78[238]](_$_6a78[512]);
+    //   $(_0xC33E)
+    //     [_$_6a78[155]](_$_6a78[513], 2)
+    //     [_$_6a78[155]](_$_6a78[281], _$_6a78[277]);
+    //   $(_$_6a78[250])[_$_6a78[343]]($(_0xC33E));
+    //   var $self = $(this);
+    //   $(_0xC33E)
+    //     [_$_6a78[129]](getAllTitle())
+    //     [_$_6a78[155]]({
+    //       left: _0xC30D[_$_6a78[406]],
+    //       top: _0xC30D[_$_6a78[7]],
+    //       width: _0xC30D[_$_6a78[330]] < 200 ? 200 : _0xC30D[_$_6a78[330]],
+    //       height: _0xC30D[_$_6a78[327]] < 80 ? 80 : _0xC30D[_$_6a78[327]],
+    //     })
+    //     [_$_6a78[413]]()
+    //     [_$_6a78[165]]()
+    //     [_$_6a78[515]](_$_6a78[221], function () {
+    //       $self[_$_6a78[67]]($(this)[_$_6a78[129]]());
+    //       $(_$_6a78[514])[_$_6a78[129]]($(this)[_$_6a78[129]]());
+    //       set(_$_6a78[242], $(this)[_$_6a78[129]]());
+    //       $(this)[_$_6a78[155]](_$_6a78[24], _$_6a78[116]);
+    //       src_change();
+    //     });
+    // });
     $(_$_6a78[518])[_$_6a78[515]](_$_6a78[510], function () {
       if (!user[_$_6a78[511]]) {
         return false;

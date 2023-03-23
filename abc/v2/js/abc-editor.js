@@ -2361,6 +2361,11 @@ var content_vue = new Vue({
     // ———————————————————————————————————————— 分割线 __data ————————————————————————————————————————
     m: {
       scoreOpts,
+      editor: {
+        type: '',
+        val: '',
+        style: {}
+      },
       alertMsg: "",
       isInsertMode: false,
       export: {
@@ -5459,6 +5464,25 @@ var content_vue = new Vue({
     },
 
     // ———————————————————————————————————————— 分割线 __watch ————————————————————————————————————————
+    'm.editor.type'(val, type) {
+      if (!val) {
+        $('#editor').focus()
+        const abcCode = $('#source').val()
+        const replaceRegs = {
+          title: /(?<=T:\s+).+/,
+          subTitle: /(?<=T:.+\nT:\s+).+/,
+          compose: /(?<=C:\s+).+/,
+          lyricist: /(?<=C:.+\nC:\s+).+/
+        }
+        const strMatch = abcCode.match(replaceRegs[type])
+        const [str] = strMatch
+        const start = strMatch.index
+        const end = str.length + start
+        const newCode = replaceCharsInRange(abcCode, start, end, this.m.editor.val)
+        $('#source').val(newCode)
+        abc_change()
+      }
+    },
     'm.scoreOpts.speedType'(val) {
       this.changeSpeed()
     },

@@ -1687,6 +1687,17 @@
         @mouseup="m.numberKeypad.isMove = false"
       >
       </div>
+
+      <input
+        id="editor"
+        v-show="m.editor.type"
+        v-model="m.editor.val"
+        class="form-control fixed z-50"
+        :style="m.editor.style"
+        @keydown.enter.stop="m.editor.type = ''"
+        @blur="m.editor.type = ''"
+      >
+      </input>
       
       <div
         v-show="m.numberKeypad.isShow"
