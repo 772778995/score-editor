@@ -2440,7 +2440,7 @@ var content_vue = new Vue({
               fn: saveScore,
             },
             {
-              txt: "另存为",
+              txt: "另存为谱例",
               fn: () => {
                 const form = new FormData(document.getElementById("abcform"));
                 const obj = {};
@@ -3795,19 +3795,23 @@ var content_vue = new Vue({
               class: "cmenu",
               position: "before",
             },
-            {
-              url: "./img/notepanel/grace (13).png",
-              value: "!~(!note!~)!",
-              class: "cmenu",
-              type: "gliss",
-              fn: () => changeAbc((txt) => `!~(!${txt}!)~!`),
-            },
+            // {
+            //   url: "./img/notepanel/grace (13).png",
+            //   value: "!~(!note!~)!",
+            //   class: "cmenu",
+            //   type: "gliss",
+            //   fn: () => changeAbc((txt) => `!~(!${txt}!)~!`),
+            // },
             {
               url: "./img/notepanel/grace (14).png",
               value: "!trill!",
               class: "cmenu",
               position: "before",
             },
+            {
+              url: "./img/notepanel/grace (14).png",
+              class: 'opacity-0 pointer-events-none'
+            }
           ],
           isShow: !1,
         },
@@ -4097,7 +4101,7 @@ var content_vue = new Vue({
                 valueList: ["s"],
                 fn: saveScore,
               },
-              { title: "另存为", shortList: ["Shift", "S"] },
+              { title: "另存为谱例", shortList: ["Shift", "S"] },
               { title: "音符输入", shortList: ["N"] },
               { title: "缩放", shortList: ["Ctrl", "鼠标滚动"] },
               { title: "谱面拖动", shortList: ["鼠标左击"] },
@@ -5082,7 +5086,6 @@ var content_vue = new Vue({
       const [speedNote, speedNum] = sppedTxt.split('=')
       this.m.scoreOpts.speedNote = speedNote
       this.m.scoreOpts.speedNum = speedNum
-      console.log([speedNote, speedNum])
     },
     async updateMyScoreList() {
       this.m.myScore.index = -1;
