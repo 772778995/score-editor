@@ -846,7 +846,7 @@
                 <number-input
                   v-model="m.newScore.scoreOpts.rowBars"
                   :min="1"
-                  :max="8"
+                  :max="30"
                   style="width: 64px; height: 28px; margin-right: 6px;">
                 </number-input>
                 <div style="margin-right: 75px;">/ 行</div>
@@ -1944,8 +1944,9 @@
           <div class="i-rhythm"></div>
         </div>
 
-        <div id="player" class="_tool-box _tips _right" style="--tips: '播放/展厅（空格键）'" @click="myplay">
-          <div class="i-play"></div>
+        <div id="player" class="flex-col relative _tool-box _tips _right text-transparent" style="--tips: '播放/暂停（空格键）'" @click="myplay">
+          <div class="i-play flex-shrink-0 absolute"></div>
+          <div id="playspan">播放</div>
         </div>
         <div id="player-2" class="_tool-box _tips _right" style="--tips: '回到开始处（Home）'" @click="() => {
           mystop()
@@ -3363,23 +3364,17 @@
                         z
                       </li>
                     </ul>
-                    <div v-if="model.code === 'speedTerm'" style="border: 1px solid #E6E6E6; position: relative; transform: translate(1px, 1px);z-index: 50;">
+                    <div v-if="model.code === 'speedTerm'" class="flex justify-center py-1" style="margin-bottom: 0; border-radius: 0; background-color: #fff; border: 1px solid #E6E6E6; position: relative; transform: translate(1px, 1px);z-index: 50;">
                       <div
-                        class="flex items-center h-full cursor-pointer"
+                        class="flex items-center h-full cursor-pointer transform"
                         @click="m.scoreOpts.speedType = 'sign'"
+                        style="transform: scale(.85)"
                       >
-                        <img
-                          :src="`./img/radio${m.scoreOpts.speedType === 'sign' ? '1' : '2'}.png`"
-                          class="cursor-pointer mr-2"
-                          :class="{ 'opacity-50 pointer-events-none': m.scoreOpts.speedType !== 'sign' }"
-                          @click="m.scoreOpts.speedType = 'sign'"
-                        />
-                        <div style="font-size: 14px;">节拍器标记：</div>
-                      </div>
-                      <div class="flex h-full items-center relative z-50" :class="{ 'opacity-50 pointer-events-none': m.scoreOpts.speedType !== 'sign' }">
-                        <select-input v-model="m.scoreOpts.speedNote" :list="m.newScore.speedNoteList" style="height: 28px;"></select-input>
-                        <div style="margin: 0 10px;">=</div>
-                        <number-input v-model="m.scoreOpts.speedNum" :min="1" style="width: 64px; height: 28px;"></number-input>
+                        <div class="flex h-full items-center relative z-50">
+                          <select-input v-model="m.scoreOpts.speedNote" :list="m.newScore.speedNoteList" style="height: 28px;"></select-input>
+                          <div style="margin: 0 10px;">=</div>
+                          <number-input v-model="m.scoreOpts.speedNum" :min="1" style="width: 64px; height: 28px;"></number-input>
+                        </div>
                       </div>
                     </div>
                     <div
