@@ -313,6 +313,7 @@
       html,
       body {
         height: 100%;
+        overflow: hidden;
       }
 
       .modal-dialog {
@@ -1689,15 +1690,38 @@
       </div>
 
       <input
+        v-if="m.editor.type && !['lyric', 'lyric2'].includes(m.editor.type)"
         id="editor"
-        v-show="m.editor.type"
         v-model="m.editor.val"
         class="form-control fixed z-50"
         :style="m.editor.style"
+        @keydown.esc.stop="() => {
+          m.editor.isEsc = true
+          m.editor.type = ''
+        }"
         @keydown.enter.stop="m.editor.type = ''"
         @blur="m.editor.type = ''"
       >
       </input>
+      <textarea
+        id="editor"
+        v-else-if="['lyric', 'lyric2'].includes(m.editor.type)"
+        v-model="m.editor.val"
+        class="form-control fixed z-50 overflow-y-hidden"
+        :style="m.editor.style"
+        @keydown.esc.stop="() => {
+          m.editor.isEsc = true
+          m.editor.type = ''
+        }"
+        @keydown.ctrl.enter.stop="m.editor.type = ''"
+        @blur="m.editor.type = ''"
+        @input="() => {
+          if (m.editor.type !== 'lyric') return
+          const lines = m.editor.val.split('\n')
+          m.editor.style.height = lines.length * 23 + 20 + 'px'
+        }"
+      >
+      </textarea>
       
       <div
         v-show="m.numberKeypad.isShow"
@@ -6545,7 +6569,7 @@
     </div>
 
     <!-- 注释编辑 -->
-    <div
+    <!-- <div
       class="modal fade"
       id="ZS_EDIT_div"
       tabindex="-1"
@@ -6568,8 +6592,8 @@
           </div>
           <div class="modal-body">
             <input type="hidden" id="zsistart" />
-            <!-- 这里是内容 start -->
-            <!-- <input type="text"  class="comm comm-short comm-center" style="width:180px;" id="zsInput" > -->
+            <!== 这里是内容 start ==>
+            <!== <input type="text"  class="comm comm-short comm-center" style="width:180px;" id="zsInput" > ==>
             <textarea
               rows=""
               cols=""
@@ -6613,13 +6637,13 @@
               for="zsdown"
               >下</label
             >
-            <!-- <br>
+            <!== <br>
       	  		 位置调整：
 						<a style="cursor: pointer;" href="javascript:setGchPos('down')">&#8595;</a>&nbsp;
 						<a style="cursor: pointer;" href="javascript:setGchPos('up')">&#8593;</a>&nbsp;
 						<a style="cursor: pointer;" href="javascript:setGchPos('left')">&larr;</a>&nbsp;
-						<a style="cursor: pointer;" href="javascript:setGchPos('right')">&rarr;</a>&nbsp; -->
-            <!-- 这里是内容 end -->
+						<a style="cursor: pointer;" href="javascript:setGchPos('right')">&rarr;</a>&nbsp; ==>
+            <!== 这里是内容 end ==>
             <input type="hidden" id="gchcoor" value="" />
             <input type="hidden" id="xoffset" value="" />
             <input type="hidden" id="yoffset" value="" />
@@ -6636,7 +6660,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- 选择强弱模式 -->
     <div

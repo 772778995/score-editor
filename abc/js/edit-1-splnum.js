@@ -3397,8 +3397,6 @@ function renderSuccess() {
         else if (index === 3) type = 'lyricist'
       }
       content_vue.m.editor.type = type
-      
-      content_vue.$nextTick(() => document.getElementById('editor').focus())
     })
     var $events = $(_$_6a78[509])[_$_6a78[508]](_$_6a78[507]);
     // $(_$_6a78[509])[_$_6a78[515]](_$_6a78[510], function () {
@@ -3430,34 +3428,34 @@ function renderSuccess() {
     //       src_change();
     //     });
     // });
-    $(_$_6a78[518])[_$_6a78[515]](_$_6a78[510], function () {
-      if (!user[_$_6a78[511]]) {
-        return false;
-      }
-      var _0xC30D = this[_$_6a78[459]]();
-      var _0xC33E = document[_$_6a78[238]](_$_6a78[512]);
-      $(_0xC33E)
-        [_$_6a78[155]](_$_6a78[513], 2)
-        [_$_6a78[155]](_$_6a78[281], _$_6a78[277]);
-      $(_$_6a78[250])[_$_6a78[343]]($(_0xC33E));
-      var $self = $(this);
-      $(_0xC33E)
-        [_$_6a78[129]]($(_$_6a78[516])[_$_6a78[129]]())
-        [_$_6a78[155]]({
-          left: _0xC30D[_$_6a78[406]] - 100,
-          top: _0xC30D[_$_6a78[7]] - 50,
-          width: _0xC30D[_$_6a78[330]] + 100,
-          height: _0xC30D[_$_6a78[327]] + 80,
-        })
-        [_$_6a78[413]]()
-        [_$_6a78[165]]()
-        [_$_6a78[515]](_$_6a78[221], function () {
-          $(_$_6a78[516])[_$_6a78[129]]($(this)[_$_6a78[129]]());
-          set(_$_6a78[517], $(this)[_$_6a78[129]]());
-          src_change();
-          $(this)[_$_6a78[286]]();
-        });
-    });
+    // $(_$_6a78[518])[_$_6a78[515]](_$_6a78[510], function () {
+    //   if (!user[_$_6a78[511]]) {
+    //     return false;
+    //   }
+    //   var _0xC30D = this[_$_6a78[459]]();
+    //   var _0xC33E = document[_$_6a78[238]](_$_6a78[512]);
+    //   $(_0xC33E)
+    //     [_$_6a78[155]](_$_6a78[513], 2)
+    //     [_$_6a78[155]](_$_6a78[281], _$_6a78[277]);
+    //   $(_$_6a78[250])[_$_6a78[343]]($(_0xC33E));
+    //   var $self = $(this);
+    //   $(_0xC33E)
+    //     [_$_6a78[129]]($(_$_6a78[516])[_$_6a78[129]]())
+    //     [_$_6a78[155]]({
+    //       left: _0xC30D[_$_6a78[406]] - 100,
+    //       top: _0xC30D[_$_6a78[7]] - 50,
+    //       width: _0xC30D[_$_6a78[330]] + 100,
+    //       height: _0xC30D[_$_6a78[327]] + 80,
+    //     })
+    //     [_$_6a78[413]]()
+    //     [_$_6a78[165]]()
+    //     [_$_6a78[515]](_$_6a78[221], function () {
+    //       $(_$_6a78[516])[_$_6a78[129]]($(this)[_$_6a78[129]]());
+    //       set(_$_6a78[517], $(this)[_$_6a78[129]]());
+    //       src_change();
+    //       $(this)[_$_6a78[286]]();
+    //     });
+    // });
     $(_$_6a78[520])[_$_6a78[251]](function (_0x9395) {
       console[_$_6a78[147]](_0x9395[_$_6a78[331]]);
       _0x9395[_$_6a78[204]]();
@@ -3558,26 +3556,15 @@ function editorAnnot(_0x6DAF) {
   if (!user[_$_6a78[537]]) {
     return;
   }
-  if ($(_$_6a78[538] + _0x6DAF + _$_6a78[411])[_$_6a78[22]] > 0) {
-    for (var _0x6D1C = 0; _0x6D1C < syms[_$_6a78[22]]; _0x6D1C++) {
-      var _0x75EA = syms[_0x6D1C];
-      if (_0x75EA) {
-        if (_0x75EA[_$_6a78[539]]) {
-          var _0x9F42 = _0x75EA[_$_6a78[539]];
-          for (var _0x77A3 = 0; _0x77A3 < _0x9F42[_$_6a78[22]]; _0x77A3++) {
-            var _0x9F11 = _0x9F42[_0x77A3];
-            if (_0x9F11 && _0x9F11[_$_6a78[175]] == _0x6DAF) {
-              $(_$_6a78[540] + _0x75EA[_$_6a78[175]] + _$_6a78[411])[
-                _$_6a78[408]
-              ](_$_6a78[407]);
-              createLyricEditor();
-              return;
-            }
-          }
-        }
-      }
-    }
-    return;
+  const txtTyricEl = $(`text[type='lyric'][lyric_istart=${_0x6DAF}]`)
+  if (txtTyricEl.length) {
+    const lyricStr = syms
+      .filter(item => item?.a_ly)
+      .map(item => item.a_ly)
+      .find(item => item.find(item => item?.istart == _0x6DAF))
+      .map(item => item.t)
+      .join('\n')
+    return createLyricEditor(lyricStr, txtTyricEl.attr('istart'))
   }
   console[_$_6a78[147]](_$_6a78[541], syms[_0x6DAF][_$_6a78[9]]);
   if (syms[_0x6DAF][_$_6a78[9]] == 14) {

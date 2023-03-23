@@ -2362,8 +2362,11 @@ var content_vue = new Vue({
     m: {
       scoreOpts,
       editor: {
+        s: 0,
+        isEsc: false,
         type: '',
         val: '',
+        lyricIndex: 0,
         style: {}
       },
       alertMsg: "",
@@ -5465,8 +5468,26 @@ var content_vue = new Vue({
 
     // ———————————————————————————————————————— 分割线 __watch ————————————————————————————————————————
     'm.editor.type'(val, type) {
-      if (!val) {
-        $('#editor').focus()
+      if (val) {
+        this.$nextTick(() => {
+          $('#editor').focus()
+        })
+      }
+      else {
+        if (this.m.editor.isEsc) {
+          this.m.editor.isEsc = false
+          return
+        }
+
+        if (type === 'lyric') {
+          const s = this.m.editor.noteIstart || syms[this.m.editor.lyricIndex]
+          updateLyrics(s, this.m.editor.val.split('\n'))
+          this.m.editor.val = ''
+          this.m.editor.s = 0
+          this.m.editor.lyricIndex = 0
+          return
+        }
+
         const abcCode = $('#source').val()
         const replaceRegs = {
           title: /(?<=T:\s+).+/,
@@ -5481,6 +5502,9 @@ var content_vue = new Vue({
         const newCode = replaceCharsInRange(abcCode, start, end, this.m.editor.val)
         $('#source').val(newCode)
         abc_change()
+        this.m.editor.val = ''
+        this.m.editor.s = 0
+        this.m.editor.lyricIndex = 0
       }
     },
     'm.scoreOpts.speedType'(val) {
