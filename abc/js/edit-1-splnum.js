@@ -1,3 +1,12 @@
+const updateLastSelect = () => {
+  const istart = window.lastIstart
+    if (istart) {
+      console.log(istart)
+      $(`text[type*='HD'][istart='${istart}'],text[type^='r'][istart='${istart}']`).addClass('selected_text')
+      window.lastIstart = null
+    }
+}
+
 const getAllNote = () => $('rect[type="note"]');
 const getNotIstartList = () => [
   ...new Set([...getAllNote()].map((item) => item.getAttribute("istart"))),
@@ -1134,6 +1143,7 @@ function render2(_0xC154) {
     selectNewNote();
     setLyricStyle();
     changeSelectNoteStyle();
+    updateLastSelect()
 
     if (user[_$_6a78[149]]) {
       user[_$_6a78[149]]();

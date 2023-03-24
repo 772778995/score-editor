@@ -257,11 +257,8 @@ function down8() {
 
 function keepSelectNote(cb) {
   const istart = $(".selected_text").attr("istart");
+  if (istart) window.lastIstart = istart;
   cb();
-  setTimeout(() => {
-    const el = $(`[type="hd"][istart="${istart}"]`);
-    el.addClass("selected_text");
-  }, 100);
 }
 
 function getSelectAbcCodeInfo() {
@@ -4119,7 +4116,7 @@ var content_vue = new Vue({
                 title: "删除",
                 shortList: ["Backspace", "/", "Del"],
                 valueList: ["Backspace", "Delete"],
-                fn: () => delSelNote(),
+                fn: () => keepSelectNote(delSelNote),
               },
               {
                 title: "撤回",
@@ -5210,14 +5207,8 @@ var content_vue = new Vue({
       let key = "staffList";
       if (scoreOpts.musicType === "easy") key = "easyList";
       const { selector, fn, isKeepSelect } = this.m.numberKeypad[key][page][i];
-      if (fn) {
-        if (isKeepSelect) keepSelectNote(fn);
-        else fn();
-      }
-      if (selector) {
-        if (isKeepSelect) keepSelectNote(() => $(selector).click());
-        else $(selector).click();
-      }
+      if (fn) keepSelectNote(fn);
+      if (selector) keepSelectNote(() => $(selector).click());
     },
     changeNumKeypadSelect() {
       const { page } = this.m.numberKeypad;
@@ -5717,9 +5708,9 @@ var content_vue = new Vue({
       setLyricStyle();
       setTimeout(() => {
         this.m.isInsertMode = draw_editor;
+        // updateLastSelect()
       });
       changeSelectNoteStyle();
-      // $('#panZoom').height($('#target').height() + 'px')
     };
     document.addEventListener("keyup", event);
     document.addEventListener("click", event);
