@@ -2480,7 +2480,7 @@ var content_vue = new Vue({
       ],
       myScore: {
         list: [],
-        totalPage: 0,
+        totalPage: 1,
         isLoading: false,
         index: -1,
         isShow: false,
