@@ -172,11 +172,11 @@ const getAbcNoteCode = (opts) => {
   const d8 = ~~(num / 0.125);
   num = num % 0.125;
   const d16 = ~~(num / 0.0625);
-  let restStr = "z8".repeat(d1);
-  restStr += "z4".repeat(d2);
-  restStr += "z2".repeat(d4);
-  restStr += "z".repeat(d8);
-  restStr += "z/".repeat(d16);
+  let restStr = "z,8".repeat(d1);
+  restStr += "z,4".repeat(d2);
+  restStr += "z,2".repeat(d4);
+  restStr += "z,".repeat(d8);
+  restStr += "z,/".repeat(d16);
   restStr += "|";
 
   let noteCode = new Array(+opts.rows)
@@ -194,10 +194,10 @@ const getAbcNoteCode = (opts) => {
     num = num % 0.125;
     const d16 = ~~(num / 0.0625);
     // let restStr = 'z8'.repeat(d1)
-    // restStr += 'z4'.repeat(d2)
-    let restStr = "z2".repeat(d4);
-    restStr += "z".repeat(d8);
-    restStr += "z/".repeat(d16);
+    // restStr += 'z,4'.repeat(d2)
+    let restStr = "z,2".repeat(d4);
+    restStr += "z,".repeat(d8);
+    restStr += "z,/".repeat(d16);
     restStr += "|";
     noteCode = noteCode.replace("z,8|", restStr);
   }

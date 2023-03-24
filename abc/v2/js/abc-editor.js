@@ -5478,9 +5478,8 @@ var content_vue = new Vue({
           this.m.editor.isEsc = false
           return
         }
-
-        if (type === 'lyric') {
-          const s = this.m.editor.noteIstart || syms[this.m.editor.lyricIndex]
+        if (type === 'lyric' || type === 'lyric2') {
+          const s = this.m.editor.s || syms[this.m.editor.lyricIndex]
           updateLyrics(s, this.m.editor.val.split('\n'))
           this.m.editor.val = ''
           this.m.editor.s = 0
@@ -5720,6 +5719,7 @@ var content_vue = new Vue({
         this.m.isInsertMode = draw_editor;
       });
       changeSelectNoteStyle();
+      // $('#panZoom').height($('#target').height() + 'px')
     };
     document.addEventListener("keyup", event);
     document.addEventListener("click", event);

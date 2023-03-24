@@ -7857,16 +7857,14 @@ function genLinkClef(_0x15FDB) {
   doLog();
 }
 function createLyricEditor(lyricStr, noteIstart) {
-  if (!user[_$_4d63[760]]) return;
   if (lyricStr && noteIstart) {
     const line = syms[noteIstart].my_line
     const lines = lyricStr.split('\n').length
     const height = lines * 23 + 20 + 'px'
     let { top } = $($(`g[type="staff"]`)[line]).offset()
-    top += 50
+    top += 50 * panzoom.getScale()
     top += 'px'
-    let { left } = $($(`text[type="hd"][istart=${noteIstart}]`)).offset()
-    left -= 45
+    let { left } = $($(`text[type="hd"][istart=${noteIstart}],text[type="r1"][istart=${noteIstart}],text[type="r2"][istart=${noteIstart}],text[type="r4"][istart=${noteIstart}],text[type="r8"][istart=${noteIstart}],text[type="r16"][istart=${noteIstart}],text[type="r32"][istart=${noteIstart}],text[type="64"][istart=${noteIstart}]`)).offset()
     left +='px'
     content_vue.m.editor.style = {
       top: top,
@@ -7874,7 +7872,8 @@ function createLyricEditor(lyricStr, noteIstart) {
       width: '100px',
       height,
     }
-    content_vue.m.editor.s = noteIstart
+    content_vue.m.editor.s = syms[noteIstart]
+    content_vue.m.editor.noteIstart = noteIstart
     content_vue.m.editor.val = lyricStr
     content_vue.m.editor.type = 'lyric2'
     content_vue.$nextTick(() => {
@@ -7888,13 +7887,13 @@ function createLyricEditor(lyricStr, noteIstart) {
 
   el = $(el)
   const istart = el.attr('istart')
-
-  const line = syms[istart].my_line
+  content_vue.m.editor.noteIstart = istart
+  const s = syms[istart]
+  const line = s.my_line
   let { top } = $($(`g[type="staff"]`)[line]).offset()
-  top += 50
+  top += 50 * panzoom.getScale()
   top += 'px'
   let { left } = el.offset()
-  left -= 45
   left +='px'
   content_vue.m.editor.style = {
     top,
@@ -7907,6 +7906,8 @@ function createLyricEditor(lyricStr, noteIstart) {
   content_vue.$nextTick(() => {
     $('#editor').focus()
   })
+  const val = s.a_ly?.map(item => item.t).join('\n') || ''
+  content_vue.m.editor.val = val
   content_vue.m.editor.type = 'lyric'
 }
 function updateLyrics(_0x16170, _0x18E16) {
