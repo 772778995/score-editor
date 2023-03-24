@@ -537,6 +537,7 @@
       if (!m.menuIndex) m.menuIndex = -1
       m.addBar = { show: false, before: 1, after: 1 }
       m.timbre.show = m.foldLine.toolShow = false
+      m.editor.type = ''
     }"
     >
       <div
@@ -838,14 +839,14 @@
                 <number-input
                   v-model="m.newScore.scoreOpts.rows"
                   :min="1"
-                  max="8"
+                  max="30"
                   style="width: 64px; height: 28px;">
                 </number-input>
                 <div class="ml-auto">小节：</div>
                 <number-input
                   v-model="m.newScore.scoreOpts.rowBars"
                   :min="1"
-                  :max="30"
+                  :max="88"
                   style="width: 64px; height: 28px; margin-right: 6px;">
                 </number-input>
                 <div style="margin-right: 75px;">/ 行</div>
@@ -3253,7 +3254,10 @@
         </div>
       </div>
       <!-- 中间主要内容 -->
-      <div class="body-box relative" style="overflow: hidden; height: 100%; background: #B5C5D3;">
+      <div class="body-box relative" style="overflow: hidden; height: 100%; background: #B5C5D3;" @scroll="() => {
+        m.editor.isEsc = true
+        m.editor.type = ''
+      }">
         <!-- 左边列表 -->
         <div class="body-left" style="z-index: 20; position: fixed; top: 84px; left: 0px;">
           <div class="body-left-content scroll" style="background: #F5F5F6">
