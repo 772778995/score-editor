@@ -1909,7 +1909,9 @@
             :style="{ color: m.lyric.style.color }"
             @click="$refs.lyricColorRef.click()"
           >
-            <div class="i-color"></div>
+            <div class="i-color relative">
+              <div class="absolute -bottom-1 h-0.5 w-full" :style="`background: ${m.lyric.style.color}`"></div>
+            </div>
             <input v-model="m.lyric.style.color" ref="lyricColorRef" type="color" class="top-2 left-0 absolute opacity-0 pointer-events-none"/>
           </div>
           <div

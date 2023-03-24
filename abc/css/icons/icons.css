@@ -169,14 +169,14 @@
   height: 19px;
 }
 .i-color {
-  background: url(./icons.png) -689px -0px no-repeat;
-  width: 18px;
-  height: 22px;
+  background: url(./a.png);
+  width: 16px;
+  height: 18px;
 }
 .active .i-color, ._tool-box:hover .i-color {
-  background: url(./icons.png) -707px -0px no-repeat;
-  width: 18px;
-  height: 22px;
+  background: url(./a-active.png);
+  width: 16px;
+  height: 18px;
 }
 .i-cursor {
   background: url(./icons.png) -725px -0px no-repeat;

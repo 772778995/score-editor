@@ -5477,7 +5477,14 @@ var content_vue = new Vue({
           this.m.editor.lyricIndex = 0
           return
         }
-
+        if (!this.m.editor.val) {
+          return alert({
+            title: '标题',
+            subTitle: '副标题',
+            compose: '曲作者',
+            lyricist: '词作者'
+          }[type] + '不能为空')
+        }
         const abcCode = $('#source').val()
         const replaceRegs = {
           title: /(?<=T:\s+).+/,
