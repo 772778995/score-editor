@@ -760,7 +760,6 @@
                       >
                         <img :src="item.img" />
                         <div class="flex items-center">
-                          <img v-if="item.isUp" :src="`./img/up${m.newScore.scoreOpts.keySign === item.val ? '1' : '2'}.png`" alt="">
                           <div :style="m.newScore.scoreOpts.keySign === item.val ? 'color: #001F3B' : ''">{{ item.title }}</div>
                         </div>
                       </div>
@@ -780,7 +779,6 @@
                       >
                         <img :src="item.img" />
                         <div class="flex items-center">
-                          <img v-if="item.isDown" :src="`./img/b${m.newScore.scoreOpts.keySign === item.val ? '1' : '2'}.png`" alt="">
                           <div :style="m.newScore.scoreOpts.keySign === item.val ? 'color: #001F3B' : ''">{{ item.title }}</div>
                         </div>
                       </div>
