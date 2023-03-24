@@ -162,8 +162,25 @@ Q: ${opts.speedNote}=${opts.speedNum}`;
  * @param {ScoreOpts} opts
  */
 const getAbcNoteCode = (opts) => {
+  let num = opts.beatNote1 / opts.beatNote2;
+  const d1 = ~~(num / 1);
+  num = num % 1;
+  const d2 = ~~(num / 0.5);
+  num = num % 0.5;
+  const d4 = ~~(num / 0.25);
+  num = num % 0.25;
+  const d8 = ~~(num / 0.125);
+  num = num % 0.125;
+  const d16 = ~~(num / 0.0625);
+  let restStr = "z,8".repeat(d1);
+  restStr += "z,4".repeat(d2);
+  restStr += "z,2".repeat(d4);
+  restStr += "z,".repeat(d8);
+  restStr += "z,/".repeat(d16);
+  restStr += "|";
+
   let noteCode = new Array(+opts.rows)
-    .fill("z,8|".repeat(+opts.rowBars))
+    .fill(restStr.repeat(+opts.rowBars))
     .join("$");
   if (opts.isWeak) {
     let num = opts.weakBarTop / opts.weakBarBot;
@@ -177,10 +194,10 @@ const getAbcNoteCode = (opts) => {
     num = num % 0.125;
     const d16 = ~~(num / 0.0625);
     // let restStr = 'z8'.repeat(d1)
-    // restStr += 'z4'.repeat(d2)
-    let restStr = "z2".repeat(d4);
-    restStr += "z".repeat(d8);
-    restStr += "z/".repeat(d16);
+    // restStr += 'z,4'.repeat(d2)
+    let restStr = "z,2".repeat(d4);
+    restStr += "z,".repeat(d8);
+    restStr += "z,/".repeat(d16);
     restStr += "|";
     noteCode = noteCode.replace("z,8|", restStr);
   }
@@ -227,19 +244,19 @@ V:2 bass
 V:1
 ${getAbcNoteCode(opts)}
 V:2
-${getAbcNoteCode(opts)}|`,
+${getAbcNoteCode(opts)}`,
     treble: `
 %%score 1
 V:1 treble
 %%MIDI program 0
 V:1
-${getAbcNoteCode(opts)}|`,
+${getAbcNoteCode(opts)}`,
     bass: `
 %%score 1
 V:1 bass
 %%MIDI program 0
 V:1
-${getAbcNoteCode(opts)}|`,
+${getAbcNoteCode(opts)}`,
     four: `
 %%vsetting_start
 %%score [1 2 3 4]
@@ -259,7 +276,7 @@ ${getAbcNoteCode(opts)}
 V:3 
 ${getAbcNoteCode(opts)}
 V:4 
-${getAbcNoteCode(opts)}|`,
+${getAbcNoteCode(opts)}`,
   }[opts.musicType];
 };
 
@@ -1155,7 +1172,8 @@ $(document).ready(function () {
     var left = $("#noteInput").css("left").replace("px", "");
     var newleft = parseInt(left) - 430;
     // 判断左边列表是否收起 indexOf > -1 为展开 反之为收起
-    var indexOf = $(".left-show-img").attr("src").indexOf("left");
+
+    // var indexOf = $(".left-show-img").attr("src").indexOf("left");
     if (-newleft > 3905 - $("#noteInput").width()) {
       newleft = -(3905 - $("#noteInput").width());
     }
@@ -2243,7 +2261,7 @@ function mystop() {
   $(".abcr").css("fill-opacity", "0");
   if (!play.playing) {
     if ($("#playspan").text() == "继续") {
-      $("#playspan").text("播放");
+      $("#playspan").text("播放");$('#player').removeClass('active')
     }
     return;
   }
@@ -2271,7 +2289,7 @@ function endplaycallbck() {
   stopMeterInterval();
   if ($("#playspan").text() == "暂停") {
     // 如果播放结束，则恢复为播放按钮
-    $("#playspan").text("播放");
+    $("#playspan").text("播放");$('#player').removeClass('active')
     $("#playimg").attr("src", "images/preview_play.png");
   }
   setTimeout(function () {
@@ -2279,7 +2297,7 @@ function endplaycallbck() {
       $("#playspan").text("继续");
     }
     if ($("#playspan").text() == "正在停止") {
-      $("#playspan").text("播放");
+      $("#playspan").text("播放");$('#player').removeClass('active')
     }
     $("#playspan").attr("enabled", true);
   }, 1);
@@ -3026,7 +3044,30 @@ function getK() {
   }
   // $("#K").change();
 }
+
+const changeLineBars = (() => {
+  if (window.isPreview) return () => {}
+  let lastBars = 0;
+  return () => {
+    try {
+      const bars = getVocalList()
+        .map((item) => item.barList)
+        .flat().length;
+      if (lastBars === bars) return;
+      lastBars = bars;
+      const num = content_vue.m.foldLine.show
+        ? content_vue.m.foldLine.previewV
+        : content_vue.m.foldLine.line;
+      $("#barsperstaff").val(num);
+      var newContent = handleBreakLine($("#source").val(), num);
+      $($("#source")).val(newContent);
+      // abc_change();
+    } catch (err) {}
+  };
+})();
+
 function abc_change() {
+  changeLineBars();
   src_change();
   getX();
   getT();
@@ -3036,8 +3077,9 @@ function abc_change() {
   getL();
   getQ();
   doLog();
-  $("#playspan").text("播放");
-  $("#playimg").attr("src", "images/preview_play.png");
+  $('#player').removeClass('active')
+  // $("#playspan").text("播放");$('#player').removeClass('active')
+  // $("#playimg").attr("src", "images/preview_play.png");
   return;
 }
 function getSourceScale(sourceid) {
@@ -8242,6 +8284,7 @@ function insertNodes(num, isAfter, isFirst) {
     if (isFirst) barIndex = 0;
     insertNodeByIndex(barIndex);
   }
+  changeLineBars();
 }
 /**
  * 改变连音线弧度
@@ -8324,30 +8367,49 @@ function setSlurInfo() {
 }
 //设置符杆方向
 function setNoteStemDirect(dir) {
-  var selectedNote = $(".selected_text");
-  var istart = $(selectedNote).attr("istart");
-  if (istart && istart != -1) {
-    var content = $("#source").val();
-    var s = syms[istart];
-    var pIend = s.istart;
-    var midStr = "";
-    if (s.prev) {
-      sp = s.prev;
-      pIend = sp.iend;
-      midStr = content.substring(pIend, s.istart);
-      midStr = midStr.replace(/\[I:pos stem.[^\[]*\]/g, "");
-    }
-    var newContent =
-      content.substring(0, pIend) +
-      midStr +
-      "[I:pos stem " +
-      dir +
-      "]" +
-      content.substring(istart);
-    $("#source").val(newContent);
-    src_change();
-    doLog();
-  }
+  let start = $(".selected_text").attr("istart");
+  const end = syms[start].iend
+  const abcCode = $("#source").val();
+  const str = `[I:pos stem ${dir}]${abcCode.slice(start, end)}`
+  const newAbcCode = replaceCharsInRange(abcCode, start, end, str)
+  $('#source').val(newAbcCode)
+  src_change()
+  doLog()
+
+  // let str = $('#source').val().slice(start, end)
+  // const regexp = eval(`/(?<=\\[I:pos\sstem\s).+(?=\\])/`)
+  // if (str.match(regexp)) {
+  //   str = str.replace(regexp, dir)
+  // } else {
+  //   str = `[I:pos stem ${dir}]${str}`
+  // }
+  // const newAbcCode = replaceCharsInRange(abcCode, start, end, str)
+  // $("#source").val(newAbcCode);
+  // src_change();
+  // doLog();
+  // if (istart && istart != -1) {
+    
+  //   var content = $("#source").val();
+  //   var s = syms[istart];
+  //   var pIend = s.istart;
+  //   var midStr = "";
+  //   if (s.prev) {
+  //     sp = s.prev;
+  //     pIend = sp.iend;
+  //     midStr = content.substring(pIend, s.istart);
+  //     midStr = midStr.replace(/\[I:pos stem.[^\[]*\]/g, "");
+  //   }
+  //   var newContent =
+  //     content.substring(0, pIend) +
+  //     midStr +
+  //     "[I:pos stem " +
+  //     dir +
+  //     "]" +
+  //     content.substring(istart);
+  //   $("#source").val(newContent);
+  //   src_change();
+  //   doLog();
+  // }
 }
 
 //定位到语法框

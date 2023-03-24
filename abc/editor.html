@@ -313,6 +313,7 @@
       html,
       body {
         height: 100%;
+        overflow: hidden;
       }
 
       .modal-dialog {
@@ -531,10 +532,12 @@
     <div
       id="content"
       v-cloak
+      style="min-height: 100vh; width: 100vw; overflow: hidden;"
       @click="() => {
       if (!m.menuIndex) m.menuIndex = -1
       m.addBar = { show: false, before: 1, after: 1 }
       m.timbre.show = m.foldLine.toolShow = false
+      m.editor.type = ''
     }"
     >
       <div
@@ -758,7 +761,6 @@
                       >
                         <img :src="item.img" />
                         <div class="flex items-center">
-                          <img v-if="item.isUp" :src="`./img/up${m.newScore.scoreOpts.keySign === item.val ? '1' : '2'}.png`" alt="">
                           <div :style="m.newScore.scoreOpts.keySign === item.val ? 'color: #001F3B' : ''">{{ item.title }}</div>
                         </div>
                       </div>
@@ -778,7 +780,6 @@
                       >
                         <img :src="item.img" />
                         <div class="flex items-center">
-                          <img v-if="item.isDown" :src="`./img/b${m.newScore.scoreOpts.keySign === item.val ? '1' : '2'}.png`" alt="">
                           <div :style="m.newScore.scoreOpts.keySign === item.val ? 'color: #001F3B' : ''">{{ item.title }}</div>
                         </div>
                       </div>
@@ -838,14 +839,14 @@
                 <number-input
                   v-model="m.newScore.scoreOpts.rows"
                   :min="1"
-                  max="8"
+                  max="30"
                   style="width: 64px; height: 28px;">
                 </number-input>
                 <div class="ml-auto">小节：</div>
                 <number-input
                   v-model="m.newScore.scoreOpts.rowBars"
                   :min="1"
-                  :max="8"
+                  :max="88"
                   style="width: 64px; height: 28px; margin-right: 6px;">
                 </number-input>
                 <div style="margin-right: 75px;">/ 行</div>
@@ -1686,6 +1687,82 @@
         @mouseup="m.numberKeypad.isMove = false"
       >
       </div>
+
+      <input
+        v-if="m.editor.type && !['lyric', 'lyric2'].includes(m.editor.type)"
+        id="editor"
+        v-model="m.editor.val"
+        class="form-control fixed z-50"
+        style="min-width: 100px"
+        :style="m.editor.style"
+        @keydown.esc.stop="() => {
+          m.editor.isEsc = true
+          m.editor.type = ''
+        }"
+        @keydown.enter.stop="m.editor.type = ''"
+        @blur="m.editor.type = ''"
+        @click.stop
+      >
+      </input>
+      <textarea
+        id="editor"
+        v-else-if="['lyric', 'lyric2'].includes(m.editor.type)"
+        v-model="m.editor.val"
+        class="form-control fixed z-50 overflow-y-hidden"
+        :style="m.editor.style"
+        @keydown.esc.stop="() => {
+          m.editor.isEsc = true
+          m.editor.type = ''
+        }"
+        @click.stop
+        @keydown.tab.stop="() => {
+          m.editor.type = ''
+          $nextTick(() => {
+            const noteList = [...$(`rect[ondblclick][type='rest'],rect[ondblclick][type='note']`)]
+            const index = noteList.findIndex(el => el.getAttribute('istart') === m.editor.noteIstart)
+            if (noteList < 0) return
+            const nextIstart = noteList[index + 1]?.getAttribute('istart')
+            if (!nextIstart) return
+            $('.selected_text').removeClass('selected_text')
+            const note = [...$(`text[istart=${nextIstart}]`)].find(el => {
+              el = $(el)
+              console.log(el.attr('type'))
+              return ['r1', 'r2', 'r4', 'r8', 'r16', 'r32', 'r64', 'hd'].includes(el.attr('type'))
+            })
+            const istart = $(note).attr('istart')
+            m.editor.noteIstart = istart
+            const s = syms[istart]
+            const line = s.my_line
+            let { top } = $($(`g[type='staff']`)[line]).offset()
+            top += 50 * panzoom.getScale()
+            top += 'px'
+            let { left } = $(note).offset()
+            left +='px'
+            m.editor.style = {
+              top,
+              left,
+              width: '100px',
+              height: '40px',
+              minHeight: '40px'
+            }
+            m.editor.lyricIndex = istart
+            $nextTick(() => {
+              $('#editor').focus()
+            })
+            const val = s.a_ly?.map(item => item.t).join('\n') || ''
+            m.editor.val = val
+            m.editor.type = 'lyric'
+          })
+        }"
+        @keydown.ctrl.enter.stop="m.editor.type = ''"
+        @blur="m.editor.type = ''"
+        @input="() => {
+          if (m.editor.type !== 'lyric') return
+          const lines = m.editor.val.split('\n')
+          m.editor.style.height = lines.length * 23 + 20 + 'px'
+        }"
+      >
+      </textarea>
       
       <div
         v-show="m.numberKeypad.isShow"
@@ -1709,11 +1786,12 @@
         <div class="p-2 bg-white grid grid-cols-4 gap-2 text-base">
           <div
             v-for="(item, idx) in m.numberKeypad[{ 'easy': 'easyList' }[scoreOpts.musicType] || 'staffList'][m.numberKeypad.page]"
-            class="min-w-10 p-1.5 num-key cursor-pointer duration-300 flex justify-center items-center"
+            class="p-1.5 num-key cursor-pointer duration-300 flex justify-center items-center"
+            style="min-width: 42px; min-height: 42px;"
             :class="[
               { 'row-span-2': [7, 14].includes(idx) },
               { 'col-span-2': idx === 15 },
-              { 'is-select-key': item.isSelect && m.isInsertMode }
+              { 'is-select-key': item.isSelect }
             ]"
             :key="idx"
             @click.stop="() => {
@@ -1724,7 +1802,7 @@
             }"
             :title="item.title"
           >
-            <div v-if="item.className" class="m-auto" :class="[item.className + (item.isSelect && m.isInsertMode ? '-active' : '')]"></div>
+            <div v-if="item.className" class="m-auto" :class="[item.className + (item.isSelect ? '-active' : '')]"></div>
             <img v-else-if="item.url" :src="item.url" draggable="false" class="object-contain w-7 h-7"/>
           </div>
         </div>
@@ -1733,38 +1811,9 @@
 
       <input type="file" id="input-file" class="hidden" @change="inputFile"/>
 
-      <div class="flex items-center text-#666 text-sm bg-#f5f5f6">
-        <div
-          v-for="(item, i) in m.menuList"
-          :key="item.txt"
-          class="cursor-pointer relative w-20 h-8 deep-blue-line flex items-center justify-center rounded duration-300"
-          :class="{ 'text-#333 rounded bg-sky-blue show': m.menuIndex ===  i }"
-          @click.stop="item.fn ? item.fn(i) : changeMenuIndex(i)"
-        >
-          {{ item.txt }}
-          <div
-            v-if="m.menuIndex ===  i && item.children"
-            class="absolute top-8 left-0 z-50 w-24 bg-white"
-            style="box-shadow: 4px 4px 10px 0px rgba(0,22,41,0.25); border-radius: 2px 2px 2px 2px; font-size: 12px; padding: 1px;"
-          >
-            <div
-              v-for="child in item.children"
-              class="w-full flex cursor-pointer hover:sky-blue-bg duration-300"
-              style="padding: 4px 0 4px 14px; min-width: 88px;border-radius: 2px 2px 2px 2px;"
-              @click="child.fn"
-            >
-              {{ child.txt }}
-            </div>
-          </div>
-        </div>
-
-        <div class="cursor-pointer ml-auto" @click="m.shortcutsPanel.index = 0">快捷键</div>
-        <div class="mx-1 cursor-pointer">帮助</div>
-      </div>
-
       <div
-        class="flex items-center space-x-2 border-t border-b bg-#f5f5f6"
-        style="border-color: #DEDEDF;"
+        class="flex fixed left-0 items-center space-x-2 w-full border-t border-b bg-#f5f5f6"
+        style="top: 32px; border-color: #DEDEDF;z-index: 99;"
       >
         <div class="_tool-box ml-3.5 _tips" style="--tips: '保存（Ctrl+S）'">
           <div class="i-save"></div>
@@ -1789,7 +1838,7 @@
           <div class="i-withdraw"></div>
         </div>
 
-        <div class="forward _tool-box _tips" style="--tips: '恢复（Ctrl+Shift+Z）'">
+        <div class="forward _tool-box _tips" style="--tips: '恢复（Ctrl+Y）'">
           <div class="i-recover"></div>
         </div>
 
@@ -1804,13 +1853,14 @@
         </div>
 
         <div
-          class="relative _tool-box"
+          class="relative _tool-box _tips"
+          style="--tips: '添加小节（Ctrl+Shift+B）'"
           @click.stop="checkIsSelectBar() && (m.addBar.show = true)"
         >
           <div class="i-addBar"></div>
           <div
             v-if="m.addBar.show"
-            class="absolute top-12 left-6 bg-white  z-50 box-border rounded-sm"
+            class="absolute top-12 left-3.5 bg-white  z-50 box-border rounded-sm"
             style="box-shadow: 0px 4px 30px 0px rgba(3,35,63,0.28); right: -3px; padding: 8px 10px; font-size: 12px; width: 216px;"
             @click.stop
           >
@@ -1834,7 +1884,7 @@
 
         <div
           class="_tool-box items-center _tips text-xs cursor-pointer"
-          style="--tips: '删除小节'"
+          style="--tips: '删除小节（Ctrl+Backspace）'"
           @click="checkIsSelectBar() && delSelectedNode()"
         >
           <div class="i-delBar"></div>
@@ -1846,7 +1896,7 @@
           <div
             class="_tool-box _tips text-xl"
             style="--tips: '歌词（L）'"
-            @click="checkIsSelectNote() && createLyricEditor()"
+            @click.stop="checkIsSelectNote() && createLyricEditor()"
           >
             <div class="i-l"></div>
           </div>
@@ -1894,7 +1944,7 @@
 
           <div class="flex items-center space-x-2.5 cursor-pointer" @click="(menuActive = '') | keyboardClick()">
             <img :src="`./img/checkbox${keyboardShow ? '2' : '1'}.png`" />
-            <div>MIDI键盘</div>
+            <div>钢琴键盘</div>
           </div>
           
           <div class="flex items-center space-x-2.5 cursor-pointer" @click="m.numberKeypad.isShow = !m.numberKeypad.isShow">
@@ -1970,18 +2020,51 @@
           <div class="i-rhythm"></div>
         </div>
 
-        <div id="player" class="_tool-box _tips _right" style="--tips: '播放/展厅（空格键）'" @click="myplay">
-          <div class="i-play"></div>
+        <div id="player" class="flex-col relative _tool-box _tips _right text-transparent" style="--tips: '播放/暂停（空格键）'" @click="myplay">
+          <div class="i-play flex-shrink-0 absolute"></div>
+          <div id="playspan">播放</div>
         </div>
-        <div id="player-2" class="_tool-box _tips _right" style="--tips: '回到开始处（Home）'" @click="mystop() | setTimeout(myplay, 100)">
+        <div id="player-2" class="_tool-box _tips _right" style="--tips: '回到开始处（Home）'" @click="() => {
+          mystop()
+          $('#player').removeClass('active')
+        }">
           <div class="i-play-restar"></div>
         </div>
+      </div>
+
+      <div class="fixed top-0 left-0 w-full flex items-center text-#666 text-sm bg-#f5f5f6" style="z-index: 99;">
+        <div
+          v-for="(item, i) in m.menuList"
+          :key="item.txt"
+          class="cursor-pointer relative w-20 h-8 deep-blue-line flex items-center justify-center rounded duration-300"
+          :class="{ 'text-#333 rounded bg-sky-blue show': m.menuIndex ===  i }"
+          @click.stop="item.fn ? item.fn(i) : changeMenuIndex(i)"
+        >
+          {{ item.txt }}
+          <div
+            v-if="m.menuIndex ===  i && item.children"
+            class="fixed top-8 left-0 w-24 bg-white"
+            style="z-index: 100; box-shadow: 4px 4px 10px 0px rgba(0,22,41,0.25); border-radius: 2px 2px 2px 2px; font-size: 12px; padding: 1px;"
+          >
+            <div
+              v-for="child in item.children"
+              class="w-full flex cursor-pointer hover:sky-blue-bg duration-300"
+              style="padding: 4px 0 4px 14px; min-width: 88px;border-radius: 2px 2px 2px 2px;"
+              @click="child.fn"
+            >
+              {{ child.txt }}
+            </div>
+          </div>
+        </div>
+
+        <div class="cursor-pointer ml-auto" @click="m.shortcutsPanel.index = 0">快捷键</div>
+        <div class="mx-1 cursor-pointer">帮助</div>
       </div>
       
       <div
         :class="m.alertMsg ? '_show' : '_hide'"
         class="fixed top-0 left-0 duration-300 h-screen w-screen flex items-center justify-center"
-        style="z-index: 9998;"
+        style="z-index: 98;"
       >
         <div
           class="rounded-xl overflow-hidden flex flex-col"
@@ -3213,7 +3296,10 @@
         </div>
       </div>
       <!-- 中间主要内容 -->
-      <div class="body-box relative" style="overflow: auto; background: #B5C5D3;">
+      <div class="body-box relative" style="overflow: hidden; height: 100%; background: #B5C5D3;" @scroll="() => {
+        m.editor.isEsc = true
+        m.editor.type = ''
+      }">
         <!-- 左边列表 -->
         <div class="body-left" style="z-index: 20; position: fixed; top: 84px; left: 0px;">
           <div class="body-left-content scroll" style="background: #F5F5F6">
@@ -3357,9 +3443,23 @@
                         z
                       </li>
                     </ul>
+                    <div v-if="model.code === 'speedTerm'" class="flex justify-center py-1" style="margin-bottom: 0; border-radius: 0; background-color: #fff; border: 1px solid #E6E6E6; position: relative; transform: translate(1px, 1px);z-index: 50;">
+                      <div
+                        class="flex items-center h-full cursor-pointer transform"
+                        @click="m.scoreOpts.speedType = 'sign'"
+                        style="transform: scale(.85)"
+                      >
+                        <div class="flex h-full items-center relative z-50">
+                          <select-input v-model="m.scoreOpts.speedNote" :list="m.newScore.speedNoteList" style="height: 28px;"></select-input>
+                          <div style="margin: 0 10px;">=</div>
+                          <number-input v-model="m.scoreOpts.speedNum" :min="1" style="width: 64px; height: 28px;"></number-input>
+                        </div>
+                      </div>
+                    </div>
                     <div
                       class="grid items-center justify-center bg-white border-l border-t"
-                      :class="[`grid-cols-${model.cols || 1}`]"
+                      :class="[`grid-cols-${(model.code === 'speedTerm' && index === 0) ? 1 : model.cols || 1}`]"
+                      :style="model.code === 'speedTerm' ? 'margin-top: 0px' : ''"
                     >
                       <template v-if="model.code === 'speedTerm'">
                         <div
@@ -3480,8 +3580,7 @@
         <!-- 右边琴谱 -->
         <div
           id="panZoom"
-          class="body-right flex w-screen overflow-y-visible h-full justify-center top-0 left-0"
-          style="padding-bottom: 600px;"
+          class="body-right flex overflow-y-visible w-screen h-screen justify-center top-0 left-0"
         >
           <!--左侧符号面板区域  -->
           <!-- <img
@@ -3490,7 +3589,7 @@
             src="v2/images/left.png"
           /> -->
           <!-- 谱子区域 -->
-          <div class="right-top pb-52" style="width: 768px">
+          <div class="right-top" style="width: 768px; margin-top: 100px; height: 700px;">
             <div
               class="right-top-content scroll flex justify-end m-4 overflow-visible"
               onmousedown.stop="rightTopContentMouseDown(event)"
@@ -3556,7 +3655,12 @@
 							</div>
 							<span>同步钢琴键盘时值</span>
 						</div> -->
-                <div id="target" class="rounded overflow-hidden panzoom-exclude" @click.right="draw_editor || openCtxMenu($event)" style="min-height: 800px; background: rgb(245, 245, 245)">
+                <div
+                  id="target"
+                  class="rounded overflow-hidden panzoom-exclude"
+                  @click.right="draw_editor || openCtxMenu($event)"
+                  style="width: 690px; min-height: 800px; background: rgb(245, 245, 245)"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -6509,7 +6613,7 @@
     </div>
 
     <!-- 注释编辑 -->
-    <div
+    <!-- <div
       class="modal fade"
       id="ZS_EDIT_div"
       tabindex="-1"
@@ -6532,8 +6636,8 @@
           </div>
           <div class="modal-body">
             <input type="hidden" id="zsistart" />
-            <!-- 这里是内容 start -->
-            <!-- <input type="text"  class="comm comm-short comm-center" style="width:180px;" id="zsInput" > -->
+            <!== 这里是内容 start ==>
+            <!== <input type="text"  class="comm comm-short comm-center" style="width:180px;" id="zsInput" > ==>
             <textarea
               rows=""
               cols=""
@@ -6577,13 +6681,13 @@
               for="zsdown"
               >下</label
             >
-            <!-- <br>
+            <!== <br>
       	  		 位置调整：
 						<a style="cursor: pointer;" href="javascript:setGchPos('down')">&#8595;</a>&nbsp;
 						<a style="cursor: pointer;" href="javascript:setGchPos('up')">&#8593;</a>&nbsp;
 						<a style="cursor: pointer;" href="javascript:setGchPos('left')">&larr;</a>&nbsp;
-						<a style="cursor: pointer;" href="javascript:setGchPos('right')">&rarr;</a>&nbsp; -->
-            <!-- 这里是内容 end -->
+						<a style="cursor: pointer;" href="javascript:setGchPos('right')">&rarr;</a>&nbsp; ==>
+            <!== 这里是内容 end ==>
             <input type="hidden" id="gchcoor" value="" />
             <input type="hidden" id="xoffset" value="" />
             <input type="hidden" id="yoffset" value="" />
@@ -6600,7 +6704,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- 选择强弱模式 -->
     <div

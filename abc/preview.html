@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <script src="js/myabc_plus.js?v=2022102712"></script>
   <script type="text/javascript">
+    window.isPreview = true
     window.onerror = function() { return true }
     Object.defineProperty(window, 'onerror', {
       get() { return () => {} },
@@ -9,13 +10,14 @@
     });
     // let flashTimer = null
     window.addEventListener('message', function(event) {
-      const scoreOpts = event.data
-      changeStaffType(null, scoreOpts?.musicType === 'easy' ? 2 : 0) | restoreEditor()
-      if (typeof scoreOpts === 'object') {
+      const newScoreOpts = event.data
+      changeStaffType(null, newScoreOpts?.musicType === 'easy' ? 2 : 0) | restoreEditor()
+      if (typeof newScoreOpts === 'object') {
         // if (flashTimer) clearTimeout(flashTimer)
         // flashTimer = setTimeout(() => {
-          for(const k in scoreOpts) if ([undefined, ''].includes(scoreOpts[k])) delete scoreOpts[k]
-          const code = getAbcTemplateCode(Object.assign({}, defaultScoreOpts, scoreOpts))
+          for(const k in newScoreOpts) if ([undefined, ''].includes(newScoreOpts[k])) delete newScoreOpts[k]
+          scoreOpts = Object.assign(scoreOpts, defaultScoreOpts, newScoreOpts)
+          const code = getAbcTemplateCode(scoreOpts)
           $('#source').val(code)
           abc_change()
         //   flashTimer = null
@@ -299,7 +301,7 @@
       </div> -->
 
       <!-- 中间主要内容 -->
-      <div class="body-box relative" style="overflow: auto; background: #B5C5D3;">
+      <div class="body-box relative" style="width: 100%; height: 100%; background: #B5C5D3;">
 
 
 
