@@ -3046,6 +3046,7 @@ function getK() {
 }
 
 const changeLineBars = (() => {
+  if (window.isPreview) return () => {}
   let lastBars = 0;
   return () => {
     try {
