@@ -609,7 +609,7 @@
         <div style="padding: 37px 0 23px 0; background: #fff;">
           <div style="margin: 0 27px 40px 27px;">
             <div class="relative">
-              <input v-model="m.myScore.query.fu_name" class="form-control pr-24" placeholder="大雨"/>
+              <input v-model="m.myScore.query.fu_name" class="form-control pr-24" placeholder="大雨" @keydown.enter="updateMyScoreList"/>
               <div class="absolute right-3 h-full items-center flex top-0 cursor-pointer" @click="updateMyScoreList">
                 <img src="./img/search.png"/>
                 <div class="text-sm" style="color: #0E518F;">搜索</div>
