@@ -3445,13 +3445,24 @@
                         z
                       </li>
                     </ul>
-                    <div v-if="model.code === 'speedTerm'" class="flex justify-center py-1" style="margin-bottom: 0; border-radius: 0; background-color: #fff; border: 1px solid #E6E6E6; position: relative; transform: translate(1px, 1px);z-index: 50;">
+                    <div
+                      v-if="model.code === 'speedTerm'"
+                      class="flex justify-center py-1"
+                      style="margin-bottom: 0; border-radius: 0; background-color: #fff; border: 1px solid #E6E6E6; position: relative; transform: translate(1px, 1px);z-index: 50;"
+                    >
                       <div
                         class="flex items-center h-full cursor-pointer transform"
-                        @click="m.scoreOpts.speedType = 'sign'"
                         style="transform: scale(.85)"
                       >
-                        <div class="flex h-full items-center relative z-50">
+                        <img
+                          :src="`./img/radio${m.scoreOpts.speedType === 'sign' ? '1' : '2'}.png`"
+                          class="cursor-pointer mr-3"
+                          @click="m.scoreOpts.speedType = 'sign'"
+                        />
+                        <div
+                          class="flex h-full items-center relative z-50 duration-300"
+                          :class="{ 'opacity-50 pointer-events-none': m.scoreOpts.speedType !== 'sign' }"
+                        >
                           <select-input v-model="m.scoreOpts.speedNote" :list="m.newScore.speedNoteList" style="height: 28px;"></select-input>
                           <div style="margin: 0 10px;">=</div>
                           <number-input v-model="m.scoreOpts.speedNum" :min="1" style="width: 64px; height: 28px;"></number-input>
