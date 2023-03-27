@@ -5117,6 +5117,7 @@ var content_vue = new Vue({
       if (isNoChecked) return;
 
       const [pic, pdf] = this.m.export.list;
+      if (!this.m.isInsertMode) switchPrachEditor()
 
       if (pic.checked)
         saveAs(
@@ -5127,6 +5128,7 @@ var content_vue = new Vue({
               .match(/(?<=T:\s+).+/)[0]
           }.png`
         );
+        src_change()
       if (pdf.checked) {
         window.code = $("#source").val();
         exportAbc2Pdf("source");
