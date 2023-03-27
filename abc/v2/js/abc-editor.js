@@ -32,11 +32,12 @@ const request = async (opts = {}) => {
       dataType: "json",
       contentType: "application/json",
       success: (data) => resolve(data),
-      error: (err) => reject(err),
+      error: config => {
+        if (config.status >= 200 && config.status <= 500) resolve(config.responseText)
+        else reject(config.status + config.statusText)
+      },
     };
-    if (typeof opts === "string") {
-      opts = { url: opts };
-    }
+    if (typeof opts === "string") opts = { url: opts };
     opts = Object.assign(defaultOpts, opts);
     if (opts.url[0] && opts.url[0] === "/") {
       opts.url = "http://10.88.18.164:30000/api" + opts.url;
@@ -48,6 +49,12 @@ const request = async (opts = {}) => {
         return str + key + "=" + opts.params[key] + "&";
       }, "?");
       opts.url += paramsStr;
+    }
+    if (!opts.headers) opts.headers = {}
+    if (content_vue?.m.token) {
+      opts.headers = Object.assign({
+        Authorization: 'Bearer ' + content_vue?.m.token
+      }, opts.headers)
     }
     if (typeof opts.data === "object") opts.data = JSON.stringify(opts.data);
     $.ajax(opts);
@@ -291,7 +298,7 @@ function replaceCharsInRange(str, start, end, newChars) {
  */
 function changeAbc(cb) {
   const info = getSelectAbcCodeInfo();
-  if (!info) return alert("请选中音符");
+  if (!info) return alert("未选中音符：请选取一个音符，然后重试");
   let { istart, iend, txt } = info;
   const abcCode = $("#source").val();
   const newCode = replaceCharsInRange(abcCode, istart, iend, cb(txt));
@@ -302,7 +309,7 @@ function changeAbc(cb) {
 function lineTo() {
   keepSelectNote(() => {
     const info = getSelectAbcCodeInfo();
-    if (!info) return alert("请选中音符");
+    if (!info) return alert("未选中音符：请选取一个音符，然后重试");
     let { istart, txt } = info;
     let abcCode = $("#source").val();
     const headCode = abcCode.substr(0, istart);
@@ -367,7 +374,7 @@ function emitDownKeyboardEvent(opts) {
 function changeGroupNote(dir, type) {
   keepSelectNote(() => {
     const info = getSelectAbcCodeInfo();
-    if (!info) return alert("请选中音符");
+    if (!info) return alert("未选中音符：请选取一个音符，然后重试");
     let { istart, txt } = info;
     /** @type { string } */
     let abcCode = $("#source").val();
@@ -2357,6 +2364,8 @@ var content_vue = new Vue({
 
     // ———————————————————————————————————————— 分割线 __data ————————————————————————————————————————
     m: {
+      id: '',
+      token: '',
       scoreOpts,
       editor: {
         s: 0,
@@ -5105,10 +5114,15 @@ var content_vue = new Vue({
       this.m.myScore.isLoading = false;
     },
     async openMyNewScore() {
-      const selectScore = this.m.myScore.list[this.m.myScore.index];
-      const abcVal = selectScore.abc_json_val;
-      $("#source").val(abcVal);
-      abc_change();
+      const url = this.m.myScore.list[this.m.myScore.index].abc_json_val
+      const abcCode = await request({
+        method: 'POST',
+        url: '/music-attach/abc',
+        data: { url }
+      })
+      $("#source").val(abcCode);
+      abc_change()
+      log = []
       this.m.myScore.isShow = false;
     },
     async exportScore() {
@@ -5161,7 +5175,7 @@ var content_vue = new Vue({
     checkIsSelectNote(showAlert = true) {
       const selectNote = $(".selected_text")[0];
       console.log(selectNote);
-      !selectNote && showAlert && alert("请选中音符");
+      !selectNote && showAlert && alert("未选中音符：请选取一个音符，然后重试");
       return selectNote;
     },
     inputFile(e) {
@@ -5684,15 +5698,17 @@ var content_vue = new Vue({
       }
     }
   },
-  mounted() {
+  async mounted() {
     this.m.isMusicNoteShow = true;
     window.alert = (msg) => {
       this.m.alertMsg = msg;
     };
     const params = new URLSearchParams(location.search);
-    if (!params.get("scoreOpts")) {
+    this.m.id = params.get('id') || ''
+    if (!params.get("scoreOpts") && !this.m.id) {
       this.m.newScore.musicType.show = true;
     }
+    this.m.token = params.get('token') || ''
     if (Object.keys(scoreOpts).length) {
       $("#source").val(getAbcTemplateCode(scoreOpts));
       let keySign = scoreOpts.keySign;

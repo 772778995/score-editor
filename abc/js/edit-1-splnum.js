@@ -15,9 +15,20 @@ let oldNoteList = [];
 
 const _init = (() => {
   let isFirst = true;
-  return () => {
+  return async () => {
     if (!isFirst) return;
     isFirst = false;
+    if (content_vue.m.id) {
+      const res = await request({ url: `/musicals/${content_vue.m.id}` })
+      const url = res.abc_json_val
+      const abcCode = await request({
+        method: 'POST',
+        url: '/music-attach/abc',
+        data: { url }
+      })
+      $('#source').val(abcCode)
+      src_change()
+    }
     changeStaffType(null, scoreOpts?.musicType === "easy" ? 2 : 0) |
       restoreEditor();
   };
