@@ -7192,7 +7192,7 @@ function pasteNode() {
                   } else {
                     newLineStr += copyNodeStr.replace("$", "");
                   }
-                } else {
+                } else if (copyNodeStr) {
                   newLineStr += copyNodeStr.replace("$", "");
                 }
                 hasPaste = true;

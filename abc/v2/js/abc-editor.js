@@ -1,3 +1,12 @@
+const changeSaveToList = async () => {
+  const res = await request({
+    method: 'POST',
+    url: '/musicals/check-name',
+    data: { keywork: content_vue.m.saveToScore.title, page: 1, page_size: 20 }
+  })
+  content_vue.m.saveToScore.list = res.map(item => item.name)
+}
+
 function changeSelectNoteStyle() {
   $("._select-note").removeClass("_select-note");
   const selectNote = $(".selected_text")[0];
@@ -33,8 +42,11 @@ const request = async (opts = {}) => {
       contentType: "application/json",
       success: (data) => resolve(data),
       error: config => {
-        if (config.status >= 200 && config.status <= 500) resolve(config.responseText)
-        else reject(config.status + config.statusText)
+        if (config.status >= 200 && config.status <= 400) resolve(config.responseText)
+        else {
+          reject(config.status + config.statusText)
+          alert(config.responseJSON?.error_msg || config.responseJSON?.message || '请求异常')
+        }
       },
     };
     if (typeof opts === "string") opts = { url: opts };
@@ -195,6 +207,7 @@ function copy() {
   );
   if (selectNotes.length > 0) {
     copyNote();
+    copyNodeInfo = null
     return false;
   }
 }
@@ -2456,12 +2469,7 @@ var content_vue = new Vue({
             {
               txt: "另存为谱例",
               fn: () => {
-                const form = new FormData(document.getElementById("abcform"));
-                const obj = {};
-                for (const key of form.keys()) {
-                  obj[key] = form.get(key);
-                }
-                console.log(obj);
+                content_vue.m.saveToScore.isShow = !content_vue.m.saveToScore.isShow
               },
             },
             {
@@ -2496,6 +2504,12 @@ var content_vue = new Vue({
           fu_name: "",
           fu_music_type: "",
         },
+      },
+      saveToScore: {
+        isShow: false,
+        title: '',
+        repeatList: [],
+        isFoucs: false
       },
       isMusicNoteShow: false,
       addBar: {
@@ -4115,7 +4129,7 @@ var content_vue = new Vue({
                 valueList: ["s"],
                 fn: saveScore,
               },
-              { title: "另存为谱例", shortList: ["Shift", "S"] },
+              { title: "另存为谱例", shortList: ["Shift", "S"], valueList: ['s'], fn: () => content_vue.m.saveToScore.isShow = !content_vue.m.saveToScore.isShow },
               { title: "音符输入", shortList: ["N"] },
               { title: "缩放", shortList: ["Ctrl", "鼠标滚动"] },
               { title: "谱面拖动", shortList: ["鼠标左击"] },
@@ -4163,7 +4177,11 @@ var content_vue = new Vue({
                 title: "全选",
                 shortList: ["Ctrl", "A"],
                 valueList: ["a"],
-                fn: () => $('text[type="hd"]').addClass("selected_text"),
+                fn: () => {
+                  $('.selected_text').removeClass('selected_text')
+                  $('._select-note').removeClass('_select-note')
+                  $('text[type="hd"]').addClass("selected_text")
+                },
               },
               {
                 title: "剪切",
@@ -5367,7 +5385,7 @@ var content_vue = new Vue({
           title: `粘贴`,
           subTitle: "Ctrl + V",
           disabled:
-            !(isSelectBar && copyBarInfo.size) &&
+            !(isSelectBar && copyBarInfo?.size) &&
             !(isSelectNote && copyNodeInfo.s),
           fn: paste,
         },
