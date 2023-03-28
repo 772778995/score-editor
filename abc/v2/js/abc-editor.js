@@ -1,3 +1,16 @@
+const AbcType = Object.freeze({
+  /** 速度 */
+  Speed: 14,
+  /** 节拍 */
+  Beat: 6,
+  /** 谱号 */
+  KeySign: 1,
+  /** 休止符 */
+  Rest: 10,
+  /** 音符 */
+  Note: 8
+})
+
 const changeSaveToList = debounce(async () => {
   if (!content_vue.m.saveToScore.title) return
   content_vue.m.saveToScore.isLoading = true
