@@ -76,7 +76,7 @@ const request = async (opts = {}) => {
   });
 };
 
-const saveScore = (isUpdate = true) => {
+const saveScore = async (isUpdate = true) => {
   const abcVal = $("#source").val();
   let [title, subTitle] = abcVal.match(/(?<=T:\s).+/g);
   const [composer, lyricist] = abcVal.match(/(?<=C:\s).+/g);
@@ -96,7 +96,7 @@ const saveScore = (isUpdate = true) => {
     method = 'POST'
   }
 
-  return request({
+  await request({
     url,
     method,
     data: {
@@ -118,6 +118,8 @@ const saveScore = (isUpdate = true) => {
       music_type: scoreOpts.musicType,
     },
   });
+
+  alert(isUpdate ? '成功另存为谱例' : '成功保存谱例')
 };
 
 async function getScorePngBase64() {
