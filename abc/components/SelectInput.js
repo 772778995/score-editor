@@ -24,7 +24,7 @@ Vue.component("select-input", {
       </div>
       <img v-else-if="list.find(item => item.val === value)?.img" class="flex-1" :src="list.find(item => item.val === value)?.img"/>
 
-      <img src="/abc/img/arrow_down.png" style="width: 12px; height: 6px;" class="ml-2 transform duration-300" :class="{
+      <img src="./img/arrow_down.png" style="width: 12px; height: 6px;" class="ml-2 transform duration-300" :class="{
         'rotate-180': showList
       }" />
 
