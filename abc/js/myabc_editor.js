@@ -8268,21 +8268,16 @@ function delSelectedNode() {
 }
 //插入小节
 function insertNodes(num, isAfter, isFirst) {
-  const barIndex = $("svg[type='rectnode'],svg[type='rectbar']").attr(
-    "barindex"
-  );
-  if (barIndex <= bar_count) return appendNodes(num);
+  const barRectEl = $("svg[type='rectnode'],svg[type='rectbar']")
+  const barIndex = barRectEl.attr('barIndex') || barRectEl.attr('barindex')
+
+  if (barIndex >= bar_count) return appendNodes(num);
   if (!isFirst && !content_vue.checkIsSelectBar()) return;
   for (let i = 1; i <= num; i++) {
-    let barIndex = $("svg[type='rectnode'],svg[type='rectbar']").attr(
-      "barindex"
-    );
-    if (barIndex == undefined) {
-      barIndex = $("svg[type='rectnode'],svg[type='rectbar']").attr("barIndex");
-    }
-    if (isAfter) barIndex = +barIndex + 1;
-    if (isFirst) barIndex = 0;
-    insertNodeByIndex(barIndex);
+    let yourBarIndex = barIndex
+    if (isAfter) yourBarIndex = +yourBarIndex + 1;
+    if (isFirst) yourBarIndex = 0;
+    insertNodeByIndex(yourBarIndex);
   }
   changeLineBars();
 }
