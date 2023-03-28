@@ -587,6 +587,51 @@
           </div>
         </div>
       </div>
+
+      <div
+        class="fixed flex top-0 left-0 duration-300 transform-gpu h-screen w-screen items-center justify-center"
+        style="z-index: 9998;"
+        :class="{ 'opacity-0 pointer-events-none' : !m.saveToScore.isShow }"
+      >
+        <div class="rounded-md" style="box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);">
+          <b class="flex justify-between items-center text-xl bg-#f5f5f6 rounded-t-md" style="padding: 10px 20px">
+            <div>保存到谱例库</div>
+            <img src="./img/close.png" class="cursor-pointer" @click="m.saveToScore.isShow = false"/>
+          </b>
+
+          <div class="rounded-b-md" style="width: 792px; padding: 40px 30px 10px 30px; background-color: #fff;">
+            <div class="flex items-center">
+              <div class="flex-shrink-0">名称</div>
+              <div class="ml-3 flex-1 relative">
+                <input
+                  v-model="m.saveToScore.title"
+                  class="form-control"
+                  placeholder="大雨和小雨 副本"
+                  @focus="m.saveToScore.isFoucs = true"
+                  @blur="m.saveToScore.isFoucs = false"
+                  @input="changeSaveToList"
+                />
+                <div
+                  v-if="m.saveToScore.repeatList.length"
+                  style="transform: translateY(8px); position: relative; z-index: 99; max-height: 250px; overflow-y: auto; position: absolute; top: 100%; width: 100%; left: 0; background: #fff; box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28); color:#0E518F;font-size: 12px;"
+                >
+                  <div v-for="item in m.saveToScore.repeatList" style="padding: 4px 8px; max-height: 400px; overflow-y: auto;">{{ item }}</div>
+                </div>
+              </div>
+            </div> 
+
+            <div class="mt-8 flex justify-center">
+              <div class="_btn _border" @click="m.saveToScore.isShow = false">取消</div>
+              <i style="width: 182px;"></i>
+              <div
+                class="_btn"
+                @click="saveScore(false) | (m.saveToScore.isShow = false)">
+                  保存
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
     
     <div
       class="fixed flex top-0 left-0 duration-300 transform-gpu h-screen w-screen items-center justify-center"
@@ -622,7 +667,7 @@
                 @click="(m.myScore.query.fu_music_type = val) | updateMyScoreList()"
               >
                 <img :src="val === m.myScore.query.fu_music_type ? './img/checkbox2.png' : './img/checkbox1.png'"/>
-                <span :style="`color: ${val === m.myScore.query.fu_music_type ? '#0E518F' : '#787878'}`">{{ txt }}</span>
+                <div :style="`color: ${val === m.myScore.query.fu_music_type ? '#0E518F' : '#787878'}`">{{ txt }}</div>
               </div>
             </div>
           </div>
@@ -648,7 +693,8 @@
               <div
                 class="_btn mt-3 text-center w-full"
                 :class="{'text-#666 bg-ea' : m.myScore.index !== i}"
-                style="padding-left: 0; padding-right: 0;"
+                style="padding-left: 5px; padding-right: 5px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;"
+                :title="item.name"
               >
                 {{ item.name }}
               </div>
@@ -2066,11 +2112,11 @@
       <div
         :class="m.alertMsg ? '_show' : '_hide'"
         class="fixed top-0 left-0 duration-300 h-screen w-screen flex items-center justify-center"
-        style="z-index: 98;"
+        style="z-index: 9999999;"
       >
         <div
           class="rounded-xl overflow-hidden flex flex-col"
-          style="background: #F5F5F5; box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28); width: 449px; height: 207px;"
+          style="background: #F5F5F5; box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28); width: 449px; min-height: 207px;"
         >
           <b class="flex justify-between items-center text-xl" style="background-color: #F5F5F5; padding: 12px 21px;">
             <div style="color: #C05E5E;">提示</div>

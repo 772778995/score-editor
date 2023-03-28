@@ -1,11 +1,14 @@
-const changeSaveToList = async () => {
+const changeSaveToList = debounce(async () => {
+  if (!content_vue.m.saveToScore.title) return
+  content_vue.m.saveToScore.isLoading = true
   const res = await request({
     method: 'POST',
     url: '/musicals/check-name',
-    data: { keywork: content_vue.m.saveToScore.title, page: 1, page_size: 20 }
+    data: { keyword: content_vue.m.saveToScore.title, page: 1, page_size: 20 }
   })
-  content_vue.m.saveToScore.list = res.map(item => item.name)
-}
+  content_vue.m.saveToScore.isLoading = false
+  content_vue.m.saveToScore.repeatList = res.map(item => item.name)
+}, 500)
 
 function changeSelectNoteStyle() {
   $("._select-note").removeClass("_select-note");
@@ -73,9 +76,9 @@ const request = async (opts = {}) => {
   });
 };
 
-const saveScore = () => {
+const saveScore = (isUpdate = true) => {
   const abcVal = $("#source").val();
-  const [title, subTitle] = abcVal.match(/(?<=T:\s).+/g);
+  let [title, subTitle] = abcVal.match(/(?<=T:\s).+/g);
   const [composer, lyricist] = abcVal.match(/(?<=C:\s).+/g);
   const keySign = abcVal.match(/(?<=K:\s).+/g)[0];
   const timeSign = abcVal.match(/(?<=M:\s).+/g)[0];
@@ -85,9 +88,17 @@ const saveScore = () => {
   const musicType = scoreOpts.musicType;
   const isHasLyric = !!abcVal.match(/\nw:.+/g);
 
+  let url = '/musicals'
+  let method = 'PUT'
+  if (!isUpdate) {
+    url += `/${content_vue.m.id}`
+    title = content_vue.m.saveToScore.title
+    method = 'POST'
+  }
+
   return request({
-    url: "/musicals",
-    type: "POST",
+    url,
+    method,
     data: {
       name: title,
       base_info: {
@@ -5492,6 +5503,12 @@ var content_vue = new Vue({
     },
 
     // ———————————————————————————————————————— 分割线 __watch ————————————————————————————————————————
+    'm.saveToScore.isShow'(val) {
+      if (!val) {
+        this.m.saveToScore.title = ''
+        this.m.saveToScore.repeatList = []
+      }
+    },
     'm.editor.type'(val, type) {
       if (val) {
         this.$nextTick(() => {
