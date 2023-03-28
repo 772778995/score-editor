@@ -5932,7 +5932,9 @@ function genNoteDeco(_0x16251, _0x189B1, _0x15F54, _0x1873B) {
     doLog();
     return;
   }
+  // 这，就是连线！
   if (_0x16251 == _$_4d63[632]) {
+    if (cen.type === 10) return
     var _0x17007 = cen[_$_4d63[190]];
     var _0x192A8 = cen[_$_4d63[69]];
     var _0x1951E = -1;
