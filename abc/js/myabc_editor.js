@@ -124,7 +124,7 @@ const abcTemplateHeadCode = `%%staffsep 60
 %%stretchlast 0.9
 %%linebreak $
 %%pos vocal down 
-%%createby abc.ixzds.com  2023-02-28 
+%%createby ${location.hostname} ${new Date().toLocaleString()}
 %%equalbars 0 
 %%keywarn 0 
 %%cancelkey 0 
@@ -199,7 +199,7 @@ const getAbcNoteCode = (opts) => {
     restStr += "z,".repeat(d8);
     restStr += "z,/".repeat(d16);
     restStr += "|";
-    noteCode = noteCode.replace("z,8|", restStr);
+    noteCode = noteCode.replace(/[^\|]+\|/, restStr);
   }
   return noteCode;
 };
