@@ -80,8 +80,9 @@ const saveScore = async (isSaveAs = false) => {
   let abcVal = $("#source").val() + '';
   let [title, subTitle] = abcVal.match(/(?<=T:\s).+/g);
   const [composer, lyricist] = abcVal.match(/(?<=C:\s).+/g);
-  const keySign = abcVal.match(/(?<=K:\s).+/g)[0];
-  const timeSign = abcVal.match(/(?<=M:\s).+/g)[0];
+  const [keySign] = abcVal.match(/(?<=K:\s).+/);
+  const [timeSign] = abcVal.match(/(?<=M:\s).+/);
+  const [speed] = abcVal.match(/(?<=Q:\s+).+/);
   const isChangeTimeSign = !!abcVal.match(/\$\[M:\d+\/\d+\]/g);
   const isChangeKeySign = !!abcVal.match(/\$\[K:[A-G]\]/g);
   const isUpbeat = scoreOpts.isWeak;
@@ -110,6 +111,7 @@ const saveScore = async (isSaveAs = false) => {
         composer,
         lyricist,
         keySign,
+        speed,
         timeSign,
         isChangeTimeSign,
         isChangeKeySign,
