@@ -34,6 +34,15 @@ const _init = (() => {
   };
 })();
 
+const changeSign = () => {
+  $(`g[transform]>use[cat='decos'][type='wedge']`).each((i, item) => {
+    const el = $(item)
+    el.css({
+      'transform': 'translateY(30px) rotate(180deg)'
+    })
+  })
+}
+
 const selectNewNote = () => {
   const newNoteIstartList = getNotIstartList();
   const lengthDiff = newNoteIstartList.length - oldNoteList.length;
@@ -1153,6 +1162,7 @@ function render2(_0xC154) {
     _init();
     selectNewNote();
     setLyricStyle();
+    changeSign()
     changeSelectNoteStyle();
     updateLastSelect()
 

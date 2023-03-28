@@ -3380,6 +3380,7 @@ function getNodeCoor() {
     staff.top = $(item).offset().top;
     data.staff.push(staff);
     setLyricStyle();
+    changeSign()
     updateLastSelect()
   });
   return data;
