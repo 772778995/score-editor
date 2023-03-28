@@ -595,11 +595,11 @@
       >
         <div class="rounded-md" style="box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);">
           <b class="flex justify-between items-center text-xl bg-#f5f5f6 rounded-t-md" style="padding: 10px 20px">
-            <div>保存到谱例库</div>
+            <div><img class="mr-2" src="./css/icons/cloud.png"/>保存到谱例库</div>
             <img src="./img/close.png" class="cursor-pointer" @click="m.saveToScore.isShow = false"/>
           </b>
 
-          <div class="rounded-b-md" style="width: 792px; padding: 40px 30px 10px 30px; background-color: #fff;">
+          <div class="rounded-b-md" style="width: 792px; padding: 40px 30px 15px 30px; background-color: #fff;">
             <div class="flex items-center">
               <div class="flex-shrink-0">名称</div>
               <div class="ml-3 flex-1 relative">
@@ -612,7 +612,7 @@
                   @input="changeSaveToList"
                 />
                 <div
-                  v-if="m.saveToScore.repeatList.length"
+                  v-if="m.saveToScore.repeatList.length && m.saveToScore.isFoucs"
                   style="transform: translateY(8px); position: relative; z-index: 99; max-height: 250px; overflow-y: auto; position: absolute; top: 100%; width: 100%; left: 0; background: #fff; box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28); color:#0E518F;font-size: 12px;"
                 >
                   <div v-for="item in m.saveToScore.repeatList" style="padding: 4px 8px; max-height: 400px; overflow-y: auto;">{{ item }}</div>
@@ -620,12 +620,12 @@
               </div>
             </div> 
 
-            <div class="mt-8 flex justify-center">
+            <div class="mt-20 flex justify-center">
               <div class="_btn _border" @click="m.saveToScore.isShow = false">取消</div>
               <i style="width: 182px;"></i>
               <div
                 class="_btn"
-                @click="saveScore(false) | (m.saveToScore.isShow = false)">
+                @click="saveScore(true)">
                   保存
                 </div>
             </div>

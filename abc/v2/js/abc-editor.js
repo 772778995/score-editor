@@ -76,8 +76,8 @@ const request = async (opts = {}) => {
   });
 };
 
-const saveScore = async (isUpdate = true) => {
-  const abcVal = $("#source").val();
+const saveScore = async (isSaveAs = false) => {
+  let abcVal = $("#source").val() + '';
   let [title, subTitle] = abcVal.match(/(?<=T:\s).+/g);
   const [composer, lyricist] = abcVal.match(/(?<=C:\s).+/g);
   const keySign = abcVal.match(/(?<=K:\s).+/g)[0];
@@ -89,37 +89,42 @@ const saveScore = async (isUpdate = true) => {
   const isHasLyric = !!abcVal.match(/\nw:.+/g);
 
   let url = '/musicals'
-  let method = 'PUT'
-  if (!isUpdate) {
-    url += `/${content_vue.m.id}`
-    title = content_vue.m.saveToScore.title
+  let method = content_vue.m.id ? 'PUT' : 'POST'
+  if (isSaveAs) {
     method = 'POST'
+    title = content_vue.m.saveToScore.title
+    abcVal = abcVal.replace(/(?<=T:\s).+/, title)
+  }
+  if (method === 'PUT') {
+    url += `/${content_vue.m.id}`
   }
 
-  await request({
+  const reqOpts = {
     url,
     method,
     data: {
       name: title,
       base_info: {
-        title, // 标题
-        subTitle, // 副标题
-        composer, // 作曲家
-        lyricist, // 作词家
-        keySign, // 调号
-        timeSign, // 节拍
-        isChangeTimeSign, // 有变换拍
-        isChangeKeySign, // 有转调
-        isUpbeat, // 弱起小节
-        musicType, // 谱表类型
-        isHasLyric, // 谱有歌词
+        title,
+        subTitle,
+        composer,
+        lyricist,
+        keySign,
+        timeSign,
+        isChangeTimeSign,
+        isChangeKeySign,
+        isUpbeat,
+        musicType,
+        isHasLyric,
       },
       abc_json_val: abcVal,
       music_type: scoreOpts.musicType,
-    },
-  });
+    }
+  }
 
-  alert(isUpdate ? '成功另存为谱例' : '成功保存谱例')
+  content_vue.m.saveToScore.isShow = false
+  await request(reqOpts);
+  alert(isSaveAs ? '成功另存为谱例' : content_vue.m.id ? '成功保存谱例' : '成功创建谱例')
 };
 
 async function getScorePngBase64() {
@@ -2477,7 +2482,7 @@ var content_vue = new Vue({
             },
             {
               txt: "保存",
-              fn: saveScore,
+              fn: () => saveScore(),
             },
             {
               txt: "另存为谱例",
@@ -4140,7 +4145,7 @@ var content_vue = new Vue({
                 title: "保存",
                 shortList: ["Ctrl", "S"],
                 valueList: ["s"],
-                fn: saveScore,
+                fn: () => saveScore(),
               },
               { title: "另存为谱例", shortList: ["Shift", "S"], valueList: ['s'], fn: () => content_vue.m.saveToScore.isShow = !content_vue.m.saveToScore.isShow },
               { title: "音符输入", shortList: ["N"] },
@@ -5505,10 +5510,14 @@ var content_vue = new Vue({
     },
 
     // ———————————————————————————————————————— 分割线 __watch ————————————————————————————————————————
-    'm.saveToScore.isShow'(val) {
-      if (!val) {
-        this.m.saveToScore.title = ''
+    'm.saveToScore.title'(title) {
+      if (!title) {
         this.m.saveToScore.repeatList = []
+      }
+    },
+    'm.saveToScore.isShow'(isShow) {
+      if (!isShow) {
+        this.m.saveToScore.title = ''
       }
     },
     'm.editor.type'(val, type) {
