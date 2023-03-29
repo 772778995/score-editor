@@ -5413,7 +5413,7 @@ var content_vue = new Vue({
       // 	{ title: '退出曲式标记', fn: this.startDrawMF }
       // ]
       const menuList = [
-        { title: `复制`, subTitle: "Ctrl + C", fn: copy },
+        { title: `复制`, subTitle: "Ctrl + C", fn: copy, disabled: !isSelectNote && !isSelectBar },
         {
           title: `粘贴`,
           subTitle: "Ctrl + V",
