@@ -8,7 +8,9 @@ const AbcType = Object.freeze({
   /** 休止符 */
   Rest: 10,
   /** 音符 */
-  Note: 8
+  Note: 8,
+  /** 小节 */
+  Bar: 0
 })
 
 const changeSaveToList = debounce(async () => {
@@ -51,18 +53,23 @@ function debounce(fn, delay) {
  */
 const request = async (opts = {}) => {
   return new Promise((resolve, reject) => {
+    content_vue.m.reqs++
     /** @type { Parameters<JQueryStatic['ajax']>[0] } */
     const defaultOpts = {
       type: "GET",
       dataType: "json",
       contentType: "application/json",
-      success: (data) => resolve(data),
+      success: (data) => {
+        resolve(data)
+        content_vue.m.reqs--
+      },
       error: config => {
         if (config.status >= 200 && config.status <= 400) resolve(config.responseText)
         else {
           reject(config.status + config.statusText)
           alert(config.responseJSON?.error_msg || config.responseJSON?.message || '请求异常')
         }
+        content_vue.m.reqs--
       },
     };
     if (typeof opts === "string") opts = { url: opts };
@@ -85,7 +92,7 @@ const request = async (opts = {}) => {
       }, opts.headers)
     }
     if (typeof opts.data === "object") opts.data = JSON.stringify(opts.data);
-    $.ajax(opts);
+    $.ajax(opts)
   });
 };
 
@@ -101,6 +108,7 @@ const saveScore = async (isSaveAs = false) => {
   const isUpbeat = scoreOpts.isWeak;
   const musicType = scoreOpts.musicType;
   const isHasLyric = !!abcVal.match(/\nw:.+/g);
+  const initOpts = content_vue.m.scoreOpts
 
   let url = '/musicals'
   let method = content_vue.m.id ? 'PUT' : 'POST'
@@ -131,6 +139,7 @@ const saveScore = async (isSaveAs = false) => {
         isUpbeat,
         musicType,
         isHasLyric,
+        initOpts
       },
       abc_json_val: abcVal,
       music_type: scoreOpts.musicType,
@@ -138,7 +147,10 @@ const saveScore = async (isSaveAs = false) => {
   }
 
   content_vue.m.saveToScore.isShow = false
-  await request(reqOpts);
+  const res = await request(reqOpts);
+  if (!isSaveAs && method === 'POST') {
+    content_vue.m.id = res.id
+  }
   alert(isSaveAs ? '成功另存为谱例' : content_vue.m.id ? '成功保存谱例' : '成功创建谱例')
 };
 
@@ -2412,6 +2424,7 @@ var content_vue = new Vue({
     m: {
       id: '',
       token: '',
+      reqs: 0,
       scoreOpts,
       editor: {
         s: 0,
@@ -5165,15 +5178,8 @@ var content_vue = new Vue({
       this.m.myScore.isLoading = false;
     },
     async openMyNewScore() {
-      const url = this.m.myScore.list[this.m.myScore.index].abc_json_val
-      const abcCode = await request({
-        method: 'POST',
-        url: '/music-attach/abc',
-        data: { url }
-      })
-      $("#source").val(abcCode);
-      abc_change()
-      log = []
+      const { id } = this.m.myScore.list[this.m.myScore.index]
+      this.m.id = id
       this.m.myScore.isShow = false;
     },
     async exportScore() {
@@ -5525,6 +5531,37 @@ var content_vue = new Vue({
     },
 
     // ———————————————————————————————————————— 分割线 __watch ————————————————————————————————————————
+    async 'm.id'(id) {
+      if (!id) return
+      const res = await request({ url: `/musicals/${content_vue.m.id}` })
+      const url = res.abc_json_val
+      this.m.scoreOpts = Object.assign(this.m.scoreOpts, res.base_info.initOpts)
+      const abcCode = await request({
+        method: 'POST',
+        url: '/music-attach/abc',
+        data: { url }
+      })
+      $('#source').val(abcCode)
+      abc_change()
+      log = []
+      changeStaffType(null, content_vue.m.scoreOpts?.musicType === "easy" ? 2 : 0) |
+      restoreEditor();
+    },
+    'm.reqs': (function() {
+      let timer = null
+      return function(reqs) {
+        clearTimeout(timer)
+        if (reqs > 0) {
+          timer = setTimeout(() => {
+            document.querySelector('html').classList.add('cursor-wait')
+            document.querySelector('body').classList.add('pointer-events-none')
+          }, 300)
+        } else {
+          document.querySelector('html').classList.remove('cursor-wait')
+          document.querySelector('body').classList.remove('pointer-events-none')
+        }
+      }
+    })(),
     'm.saveToScore.title'(title) {
       if (!title) {
         this.m.saveToScore.repeatList = []
@@ -5769,7 +5806,8 @@ var content_vue = new Vue({
     if (!params.get("scoreOpts") && !this.m.id) {
       this.m.newScore.musicType.show = true;
     }
-    this.m.token = params.get('token') || ''
+    this.m.token = params.get('token') || localStorage.getItem("token") || '';
+    localStorage.setItem("token", this.m.token);
     if (Object.keys(scoreOpts).length) {
       $("#source").val(getAbcTemplateCode(scoreOpts));
       let keySign = scoreOpts.keySign;
