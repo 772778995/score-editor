@@ -2508,6 +2508,7 @@ function selectStaff(_0x17688, _0x16062) {
   }
 }
 function findNearNote(_0x16062, _0x1792B, _0x16008, _0x16035) {
+  if ([..._0x16062.target.classList].find(item => ['f1', 'f2', 'f3'].includes(item))) return
   console[_$_4d63[75]](_$_4d63[303]);
   select_note_info = new Object();
   delObj = new Object();
