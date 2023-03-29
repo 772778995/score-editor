@@ -1736,7 +1736,7 @@
       <input
         v-if="m.editor.type && !['lyric', 'lyric2'].includes(m.editor.type)"
         id="editor"
-        v-model="m.editor.val"
+        v-model.trim="m.editor.val"
         class="form-control fixed z-50"
         style="min-width: 100px"
         :style="m.editor.style"
