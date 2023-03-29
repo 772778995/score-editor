@@ -22,12 +22,12 @@ const _init = async () => {
 };
 
 const changeSign = () => {
-  $(`g[transform]>use[cat='decos'][type='wedge']`).each((i, item) => {
-    const el = $(item)
-    el.css({
-      'transform': 'translateY(30px) rotate(180deg)'
-    })
-  })
+  // $(`g[transform]>use[cat='decos'][type='wedge']`).each((i, item) => {
+  //   const el = $(item)
+  //   el.css({
+  //     'transform': 'translateY(30px) rotate(180deg)'
+  //   })
+  // })
 }
 
 const selectNewNote = () => {
