@@ -4316,6 +4316,12 @@ var content_vue = new Vue({
             title: "连音",
             leftList: [
               {
+                title: "二连音",
+                shortList: ["Ctrl", "2"],
+                valueList: ["2"],
+                fn: () => liaison("(2"),
+              },
+              {
                 title: "三连音",
                 shortList: ["Ctrl", "3"],
                 valueList: ["3"],
@@ -4344,19 +4350,7 @@ var content_vue = new Vue({
                 shortList: ["Ctrl", "7"],
                 valueList: ["7"],
                 fn: () => liaison("(7"),
-              },
-              {
-                title: "八连音",
-                shortList: ["Ctrl", "8"],
-                valueList: ["8"],
-                fn: () => liaison("(8"),
-              },
-              {
-                title: "九连音",
-                shortList: ["Ctrl", "9"],
-                valueList: ["9"],
-                fn: () => liaison("(9"),
-              },
+              }
             ],
             rightList: [],
           },
