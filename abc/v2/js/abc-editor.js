@@ -5366,8 +5366,8 @@ var content_vue = new Vue({
             )}`
         );
       } else {
-        this.m.scoreOpts = this.m.newScore.scoreOpts
-        scoreOpts = this.m.newScore.scoreOpts
+        Object.assign(this.m.scoreOpts, this.m.newScore.scoreOpts);
+        Object.assign(scoreOpts, this.m.newScore.scoreOpts)
         initScore(scoreOpts);
       }
       this.m.newScore.musicType.show = false;
