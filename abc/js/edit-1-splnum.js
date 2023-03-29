@@ -1152,6 +1152,7 @@ function render2(_0xC154) {
     changeSign()
     changeSelectNoteStyle();
     updateLastSelect()
+    changeLineBars()
 
     if (user[_$_6a78[149]]) {
       user[_$_6a78[149]]();
