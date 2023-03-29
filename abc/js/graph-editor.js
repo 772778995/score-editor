@@ -4851,6 +4851,10 @@ function delDecoPosInfo(_0x16AEE, _0x16170, _0x15FDB) {
 }
 var d_reg = /m(.*)v/;
 function graphMouseMoveHandle(_0x16062) {
+  const noMoves = $('[x][type="To Coda"],[x][type="Fine"],[x][type="D.C."],[x][type="D.S."],[x][type="D.C. al Fine"],[x][type="D.C. al Fine"],[x][type="D.C. al Coda"]')
+  if (noMoves.length > 0) {
+    return
+  }
   var _0x1A5FE = new Date()[_$_4d63[236]]();
   if (_0x1A5FE - clickTimeMill < 200) {
     return;
