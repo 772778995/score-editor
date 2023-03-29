@@ -3354,7 +3354,7 @@ var content_vue = new Vue({
               class: "cmenu",
               type: "nodeline",
               position: "beforeInsert",
-              title: "#F大调",
+              title: "♯F大调",
             },
             {
               url: "./img/notepanel/key (8).png",
@@ -3362,7 +3362,7 @@ var content_vue = new Vue({
               class: "cmenu",
               type: "nodeline",
               position: "beforeInsert",
-              title: "#C大调",
+              title: "♯C大调",
             },
             {
               url: "./img/notepanel/key (9).png",
@@ -3378,7 +3378,7 @@ var content_vue = new Vue({
               class: "cmenu",
               type: "nodeline",
               position: "beforeInsert",
-              title: "bB大调",
+              title: "♭B大调",
             },
             {
               url: "./img/notepanel/key (11).png",
@@ -3386,7 +3386,7 @@ var content_vue = new Vue({
               class: "cmenu",
               type: "nodeline",
               position: "beforeInsert",
-              title: "bE大调",
+              title: "♭E大调",
             },
             {
               url: "./img/notepanel/key (12).png",
@@ -3394,7 +3394,7 @@ var content_vue = new Vue({
               class: "cmenu",
               type: "nodeline",
               position: "beforeInsert",
-              title: "bA大调",
+              title: "♭A大调",
             },
             {
               url: "./img/notepanel/key (13).png",
@@ -3402,7 +3402,7 @@ var content_vue = new Vue({
               class: "cmenu",
               type: "nodeline",
               position: "beforeInsert",
-              title: "bD大调",
+              title: "♭D大调",
             },
             {
               url: "./img/notepanel/key (14).png",
@@ -3410,7 +3410,7 @@ var content_vue = new Vue({
               class: "cmenu",
               type: "nodeline",
               position: "beforeInsert",
-              title: "bG大调",
+              title: "♭G大调",
             },
             {
               url: "./img/notepanel/key (15).png",
@@ -3418,7 +3418,7 @@ var content_vue = new Vue({
               class: "cmenu",
               type: "nodeline",
               position: "beforeInsert",
-              title: "bC大调",
+              title: "♭C大调",
             },
           ],
           isShow: !1,
