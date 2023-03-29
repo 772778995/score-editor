@@ -3521,10 +3521,11 @@
                     >
                       <template v-if="model.code === 'speedTerm'">
                         <div
-                          v-for="(item) in [...model.speedList, {}]"
+                          v-for="(item) in model.speedList"
                           :key="item.val"
                           class="flex items-center justify-center h-8 text-sm font-normal"
                           style="margin-left: -2px; margin-top: -2px; border: 1px solid #E6E6E6; transform: translate(1px, 1px);"
+                          :title="item.title"
                           @click="() => {
                             scoreOpts.speedType = 'txt'
                             scoreOpts.speedText = item.txt

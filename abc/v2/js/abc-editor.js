@@ -3612,7 +3612,7 @@ var content_vue = new Vue({
             {
               url: "./img/notepanel/bar (1).png",
               value: "|:",
-              title: "反覆开始",
+              title: "反复记号",
               class: "cmenu",
               type: "nodeline",
               position: "preReplace",
@@ -3620,7 +3620,7 @@ var content_vue = new Vue({
             {
               url: "./img/notepanel/bar (2).png",
               value: ":|",
-              title: "反覆结束",
+              title: "反复记号",
               class: "cmenu",
               type: "nodeline",
               position: "afterReplace",
@@ -3628,7 +3628,7 @@ var content_vue = new Vue({
             {
               url: "./img/notepanel/bar (3).png",
               value: "||",
-              title: "双小节线",
+              title: "结束线",
               class: "cmenu",
               type: "nodeline",
               position: "afterReplace",
@@ -3637,7 +3637,7 @@ var content_vue = new Vue({
               url: "./img/notepanel/bar (4).png",
               value: "|",
               title: "小节线",
-              class: "cmenu",
+              class: "cmenu opacity-0 pointer-events-none",
               type: "nodeline",
               position: "afterReplace",
             },
@@ -3655,7 +3655,7 @@ var content_vue = new Vue({
               url: "./img/notepanel/linemark (1).png",
               value: "!8va(!",
               value2: "!8va)!",
-              title: "高8度演奏",
+              title: "高八度记号",
               class: "cmenu",
               position: "surround",
             },
@@ -3663,7 +3663,7 @@ var content_vue = new Vue({
               url: "./img/notepanel/linemark (2).png",
               value: "!8vb(!",
               value2: "!8vb)!",
-              title: "低8度演奏",
+              title: "低八度记号",
               class: "cmenu",
               position: "surround",
             },
@@ -3677,7 +3677,7 @@ var content_vue = new Vue({
             {
               url: "./img/notepanel/linemark (4).png",
               value: "!ped-up!",
-              title: "放松",
+              title: "松开",
               class: "cmenu",
               position: "before",
             },
@@ -3700,7 +3700,7 @@ var content_vue = new Vue({
             {
               url: "./img/notepanel/linemark (7).png",
               value: "[1.",
-              title: "反复跳跃记号1.",
+              title: "反复至第一房子",
               class: "cmenu",
               type: "nodeline",
               position: "beforeInsert",
@@ -3708,7 +3708,7 @@ var content_vue = new Vue({
             {
               url: "./img/notepanel/linemark (8).png",
               value: "[2.",
-              title: "反复跳跃记号2.",
+              title: "反复至第二房子",
               class: "cmenu",
               type: "nodeline",
               position: "beforeInsert",
@@ -3716,7 +3716,7 @@ var content_vue = new Vue({
             {
               url: "./img/notepanel/linemark (9).png",
               value: "[3.",
-              title: "反复跳跃记号3.",
+              title: "反复至第三房子",
               class: "cmenu",
               type: "nodeline",
               position: "beforeInsert",
@@ -3726,7 +3726,7 @@ var content_vue = new Vue({
               id: "slurbtn",
               value: "(note)",
               class: "slur cmenu",
-              title: "连句线",
+              title: "连线",
             },
             {
               url: "./img/notepanel/linemark (11).png",
@@ -3739,6 +3739,20 @@ var content_vue = new Vue({
               url: "./img/notepanel/linemark (12).png",
               value: "!accel!",
               title: "渐快",
+              class: "cmenu",
+              position: "before",
+            },
+            {
+              url: "./img/notepanel/linemark (13).png",
+              value: "!cresc.!",
+              title: "渐强",
+              class: "cmenu",
+              position: "before",
+            },
+            {
+              url: "./img/notepanel/linemark (14).png",
+              value: "!dim.!",
+              title: "渐弱",
               class: "cmenu",
               position: "before",
             },
@@ -3755,7 +3769,7 @@ var content_vue = new Vue({
               url: "./img/notepanel/grace (1).png",
               value: "{/}",
               class: "cmenu",
-              title: "倚音",
+              title: "单短倚音",
               position: "before",
               type: "8",
               fn: () => {
@@ -3781,7 +3795,7 @@ var content_vue = new Vue({
               url: "./img/notepanel/grace (3).png",
               value: "{}",
               class: "cmenu",
-              title: "倚音",
+              title: "长倚音",
               position: "before",
               type: "4",
               fn: () => {
@@ -3794,7 +3808,7 @@ var content_vue = new Vue({
               url: "./img/notepanel/grace (4).png",
               value: "{}",
               class: "cmenu",
-              title: "倚音",
+              title: "短倚音",
               position: "before",
               type: "16",
               fn: () => {
@@ -3804,8 +3818,17 @@ var content_vue = new Vue({
               },
             },
             {
-              url: "./img/notepanel/grace (4).png",
-              class: "opacity-0 pointer-events-none h-full",
+              url: "./img/notepanel/grace (15).png",
+              value: "{}",
+              class: "cmenu",
+              title: "复短倚音",
+              type: "syy",
+              position: "before",
+              fn: () => {
+                const type = $(".selected_text")?.attr("type") || "";
+                if (type[0] === "r") return;
+                changeAbc((txt) => `{${txt + txt}}${txt}`);
+              },
             },
             {
               url: "./img/notepanel/grace (4).png",
@@ -3816,23 +3839,26 @@ var content_vue = new Vue({
               value: "!arpeggio!",
               class: "cmenu",
               position: "before",
+              title: '琶音'
             },
             {
               url: "./img/notepanel/grace (6).png",
               value: "!arpeggioup!",
               class: "cmenu",
               position: "before",
+              title: '向上琶音'
             },
             {
               url: "./img/notepanel/grace (7).png",
               value: "!arpeggiodown!",
               class: "cmenu",
               position: "before",
+              title: '向下琶音'
             },
             {
               url: "./img/notepanel/grace (8).png",
               value: "!turn!",
-              title: "顺回音",
+              title: "回音",
               class: "cmenu",
               position: "before",
             },
@@ -3852,12 +3878,14 @@ var content_vue = new Vue({
               value: "!umrd!",
               class: "cmenu",
               position: "before",
+              title: '波音'
             },
             {
               url: "./img/notepanel/grace (11).png",
               value: "!mordent!",
               class: "cmenu",
               position: "before",
+              title: '逆波音'
             },
             {
               url: "./img/notepanel/grace (10).png",
@@ -3868,6 +3896,7 @@ var content_vue = new Vue({
               value: "!jpslid!",
               class: "cmenu",
               position: "before",
+              title: '滑音'
             },
             // {
             //   url: "./img/notepanel/grace (13).png",
@@ -3881,6 +3910,7 @@ var content_vue = new Vue({
               value: "!trill!",
               class: "cmenu",
               position: "before",
+              title: '颤音'
             },
             {
               url: "./img/notepanel/grace (14).png",
@@ -3896,66 +3926,77 @@ var content_vue = new Vue({
           canClick: true,
           imgList: [
             {
+              title: '强',
               url: "./img/notepanel/strength mark (1).png",
               value: "!f!",
               class: "cmenu",
               position: "before",
             },
             {
+              title: '很强',
               url: "./img/notepanel/strength mark (2).png",
               value: "!ff!",
               class: "cmenu",
               position: "before",
             },
             {
+              title: '非常强',
               url: "./img/notepanel/strength mark (3).png",
               value: "!fff!",
               class: "cmenu",
               position: "before",
             },
             {
+              title: '中强',
               url: "./img/notepanel/strength mark (4).png",
-              value: "!mp!",
+              value: "!mf!",
               class: "cmenu",
               position: "before",
             },
             {
+              title: '弱',
               url: "./img/notepanel/strength mark (5).png",
               value: "!p!",
               class: "cmenu",
               position: "before",
             },
             {
+              title: '很弱',
               url: "./img/notepanel/strength mark (6).png",
               value: "!pp!",
               class: "cmenu",
               position: "before",
             },
             {
+              title: '非常弱',
               url: "./img/notepanel/strength mark (7).png",
               value: "!ppp!",
               class: "cmenu",
               position: "before",
             },
             {
+              title: '中弱',
               url: "./img/notepanel/strength mark (8).png",
               value: "!mp!",
               class: "cmenu",
               position: "before",
             },
             {
+              title: '特强',
               url: "./img/notepanel/strength mark (9).png",
               value: "!sf!",
               class: "cmenu",
               position: "before",
             },
             {
+              title: '特强',
               url: "./img/notepanel/strength mark (10).png",
               value: "!sfz!",
               class: "cmenu",
               position: "before",
             },
             {
+              title: '特强后弱',
               url: "./img/notepanel/strength mark (11).png",
               value: "!sfp!",
               class: "cmenu",
@@ -3974,32 +4015,35 @@ var content_vue = new Vue({
           cols: 3,
           imgList: [
             {
+              title: '跳音',
               url: "./img/notepanel/playMark (1).png",
               value: ".",
               class: "cmenu",
               position: "before",
             },
             {
+              title: '重音',
               url: "./img/notepanel/playMark (2).png",
               value: "!>!",
               class: "cmenu",
               position: "before",
             },
             {
+              title: '保持音',
               url: "./img/notepanel/playMark (3).png",
               value: "!tenuto!",
-              title: "位置不跟随符头方向",
               class: "cmenu",
               position: "before",
             },
             {
+              title: "延长记号",
               url: "./img/notepanel/playMark (4).png",
               value: "!fermata!",
-              title: "延长记号",
               class: "cmenu",
               position: "before",
             },
             {
+              title: '顿音',
               url: "./img/notepanel/playMark (5).png",
               value: "!wedge!",
               class: "cmenu",
@@ -4022,12 +4066,13 @@ var content_vue = new Vue({
             {
               url: "./img/notepanel/repeat (1).png",
               value: "!segno!",
-              title: "segno记号",
+              title: "记号",
               class: "cmenu",
               position: "preInsert",
               type: "nodeline",
             },
             {
+              title: "反复省略记号",
               url: "./img/notepanel/repeat (2).png",
               value: "!coda!",
               class: "cmenu",
@@ -4035,6 +4080,7 @@ var content_vue = new Vue({
               type: "nodeline",
             },
             {
+              title: "曲终",
               url: "./img/notepanel/repeat (3).png",
               value: "!fine!",
               class: "cmenu",
@@ -4042,6 +4088,7 @@ var content_vue = new Vue({
               type: "nodeline",
             },
             {
+              title: "到结尾",
               url: "./img/notepanel/repeat (4).png",
               value: "!tocoda!",
               class: "cmenu",
@@ -4051,7 +4098,7 @@ var content_vue = new Vue({
             {
               url: "./img/notepanel/repeat (5).png",
               value: "!D.C.!",
-              title: "从头反复",
+              title: "从头开始反复",
               class: "cmenu",
               position: "afterInsert",
               type: "nodeline",
@@ -4059,7 +4106,7 @@ var content_vue = new Vue({
             {
               url: "./img/notepanel/repeat (6).png",
               value: "!D.S.!",
-              title: "跳转到segno记号",
+              title: "从记号处反复",
               class: "cmenu",
               position: "afterInsert",
               type: "nodeline",
@@ -4067,7 +4114,7 @@ var content_vue = new Vue({
             {
               url: "./img/notepanel/repeat (7).png",
               value: "!D.C.alfine!",
-              title: "从头反复到fine终止",
+              title: "从头反复到结束",
               class: "cmenu",
               position: "afterInsert",
               type: "nodeline",
@@ -4075,7 +4122,7 @@ var content_vue = new Vue({
             {
               url: "./img/notepanel/repeat (8).png",
               value: "!D.C.alcoda!",
-              title: "",
+              title: "跳过反复到结尾",
               class: "cmenu",
               position: "afterInsert",
               type: "nodeline",
@@ -4090,28 +4137,28 @@ var content_vue = new Vue({
           imgList: [
             {
               url: "./img/notepanel/tail (1).png",
-              title: "无符杆",
+              title: "单拆音符",
               // class: "cmenu",
               fn: () => changeGroupNote("all", "split"),
               value: "$split",
             },
             {
               url: "./img/notepanel/tail (2).png",
-              title: "启动符杆",
+              title: "向右",
               // class: "cmenu",
               fn: () => changeGroupNote("right", "merge"),
               value: "$mergeRight",
             },
             {
               url: "./img/notepanel/tail (3).png",
-              title: "结束符杆",
+              title: "向左",
               // class: "cmenu",
               fn: () => changeGroupNote("left", "merge"),
               value: "$mergeLeft",
             },
             {
               url: "./img/notepanel/tail (4).png",
-              title: "符杆中间",
+              title: "连接符尾",
               // class: "cmenu",
               fn: () => changeGroupNote("all", "merge"),
               value: "$mergeAll",

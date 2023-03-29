@@ -52,19 +52,19 @@ var clipdataContent = "";
 
 /** 速度文本列表 */
 const speedTxtList = [
-  { val: "40", txt: "Grave" },
-  { val: "46", txt: "Largo" },
-  { val: "52", txt: "Lento" },
-  { val: "56", txt: "Adagio" },
-  { val: "60", txt: "Larghtto" },
-  { val: "66", txt: "Andante" },
-  { val: "69", txt: "Andantino" },
-  { val: "88", txt: "Moderato" },
-  { val: "108", txt: "Allegretto" },
-  { val: "132", txt: "Allegro" },
-  { val: "160", txt: "Vivace" },
-  { val: "184", txt: "Presto" },
-  { val: "208", txt: "Prestissimo" },
+  { val: "40", txt: "Grave", title: '庒板' },
+  { val: "46", txt: "Largo", title: '广板' },
+  { val: "52", txt: "Lento", title: '慢板' },
+  { val: "56", txt: "Adagio", title: '柔板' },
+  { val: "60", txt: "Larghtto", title: '小广板' },
+  { val: "66", txt: "Andante", title: '行板' },
+  { val: "69", txt: "Andantino", title: '小行板' },
+  { val: "88", txt: "Moderato", title: '中板' },
+  { val: "108", txt: "Allegretto", title: '小快板' },
+  { val: "132", txt: "Allegro", title: '快板' },
+  // { val: "160", txt: "Vivace" },
+  { val: "184", txt: "Presto", title: '急板' },
+  { val: "208", txt: "Prestissimo", title: '最急板' },
 ];
 
 /** @type {ScoreOpts} */
