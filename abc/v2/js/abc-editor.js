@@ -184,7 +184,7 @@ const initNewScoreOpts = {
 
 function liaison(val) {
   var selectEl = $(".selected_text")[0];
-  if (!selectEl) return alert("请先选中音符");
+  if (!selectEl) return alert("未选中音符：请选取一个音符，然后重试");
   var _0x15C57 = $("#source").val();
   var matchArr = val.match(/\((\d)/);
   var num = matchArr[1];
