@@ -125,12 +125,19 @@
     <script src="js/main.js?v=20221027"></script>
     <script src="js/xml2abcutil.js?v=20221027"></script>
     <style type="text/css">
-      * {
+      *:not(.cao-ni-ma) {
         user-select: none;
+        overflow: visible !important;
       }
+      /* html body div {
+        height: 100% !important;
+      } */
       html,
       body {
         height: 100%;
+        transform-origin: top;
+        background-color: rgb(245, 245, 245);
+        overflow: initial;
       }
 
       .modal-dialog {
@@ -294,6 +301,7 @@
   <body>
     <div
       id="content"
+      class="h-screen"
       v-cloak
     >
       <!-- <div class="fixed opacity-0 -z-10 pointer-events-none">
@@ -312,9 +320,9 @@
 
           <div class="right-top">
             <div
-              class="right-top-content w-screen h-screen overflow-hidden"
+              class="right-top-content w-screen h-screen overflow-visible"
             >
-              <div class="abc-content rounded-md overflow-x-hidden" style="background: #F5F5F5;">
+              <div class="abc-content rounded-md overflow-visible" style="background: #F5F5F5;">
 
                 <div id="target" class="pointer-events-none w-screen"  style="background: rgb(245, 245, 245)">
                   <svg
