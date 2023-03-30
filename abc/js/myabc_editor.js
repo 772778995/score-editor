@@ -141,7 +141,13 @@ X: 1`;
  * @returns {string}
  */
 const getBeatNote = (opts) => {
-  if (["C", "C|"].includes(opts.beatType)) return opts.beatType;
+  if (["C", "C|"].includes(opts.beatType)) {
+    if (opts.musicType === 'easy') {
+      if (opts.beatType === 'C') return '4/4'
+      if (opts.beatType === 'C|') return '2/2'
+    }
+    return opts.beatType;
+  }
   return `${opts.beatNote1}/${opts.beatNote2}`;
 };
 
@@ -166,7 +172,12 @@ Q: ${opts.speedNote}=${opts.speedNum}`;
  * @param {ScoreOpts} opts
  */
 const getAbcNoteCode = (opts) => {
-  let num = opts.beatNote1 / opts.beatNote2;
+  let { beatNote1, beatNote2, beatType } = opts
+  // if (opts.musicType === 'easy') {
+    if (beatType === 'C') [beatNote1, beatNote2] = [4, 4]
+    if (beatType === 'C|') [beatNote1, beatNote2] = [2, 2]
+  // }
+  let num = beatNote1 / beatNote2;
   const d1 = ~~(num / 1);
   num = num % 1;
   const d2 = ~~(num / 0.5);
