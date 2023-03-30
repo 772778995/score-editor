@@ -34,9 +34,25 @@ const previewScale = () => {
   })
 }
 
+const changeNobrk = () => {
+  $('.nobrk').css({
+    borderRadius: '8px',
+    overflow: 'hidden',
+    boxShadow: '4px 4px 24px 0px rgba(0,22,41,0.14)',
+    background: 'rgb(245, 245, 245)',
+    minHeight: '800px',
+    transform: `scale(${content_vue.m.panzoom.scale / 100})`,
+    transformOrigin: 'center',
+    cursor: `url(./img/${!draw_editor ? 'black' : 'blue'}.png), auto`
+  })
+  $('#target').css({
+    height: $('.nobrk').height() * content_vue.m.panzoom.scale + 'px'
+  })
+}
+
 const changeSign = () => {
   previewScale()
-  $('#target').css({ cursor: `url(./img/${!draw_editor ? 'black' : 'blue'}.png), auto` })
+  changeNobrk()
   // $(`g[transform]>use[cat='decos'][type='wedge']`).each((i, item) => {
   //   const el = $(item)
   //   el.css({

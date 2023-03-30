@@ -13,6 +13,14 @@ const AbcType = Object.freeze({
   Bar: 0
 })
 
+window.addEventListener('mousewheel', e => {
+  if (event.ctrlKey === true || event.metaKey) {
+    event.preventDefault();
+    const { deltaY } = e
+    content_vue.m.panzoom.scale -= deltaY / 100
+  }
+}, { passive: false })
+
 const changeSaveToList = debounce(async () => {
   if (!content_vue.m.saveToScore.title) return
   content_vue.m.saveToScore.isLoading = true
@@ -86,9 +94,9 @@ const request = async (opts = {}) => {
       opts.url += paramsStr;
     }
     if (!opts.headers) opts.headers = {}
-    if (content_vue?.m.token) {
+    if (localStorage.getItem('token')) {
       opts.headers = Object.assign({
-        Authorization: 'Bearer ' + content_vue?.m.token
+        Authorization: 'Bearer ' + localStorage.getItem('token')
       }, opts.headers)
     }
     if (typeof opts.data === "object") opts.data = JSON.stringify(opts.data);
@@ -3147,7 +3155,7 @@ var content_vue = new Vue({
         ],
       },
       panzoom: {
-        scale: 1,
+        scale: 100,
       },
       ctxMenu: {
         addBarShow: false,
@@ -5573,6 +5581,16 @@ var content_vue = new Vue({
     },
 
     // ———————————————————————————————————————— 分割线 __watch ————————————————————————————————————————
+    'm.panzoom.scale'(scale) {
+      if (scale >= 150) this.m.panzoom.scale = 150
+      if (scale <= 50) this.m.panzoom.scale = 50
+      const mScale = scale / 100
+      $('.nobrk').css({
+        transform: `scale(${mScale})`,
+        transformOrigin: 'center'
+      })
+      $('#target').height(($('.nobrk').height() * mScale) + 'px')
+    },
     async 'm.id'(id) {
       if (!id) return
       const res = await request({ url: `/musicals/${content_vue.m.id}` })
@@ -5879,12 +5897,44 @@ var content_vue = new Vue({
         this.m.isInsertMode = draw_editor;
         // updateLastSelect()
       });
-      $('#target').css({ cursor: `url(./img/${!draw_editor ? 'black' : 'blue'}.png), auto` })
+      $('.nobrk').css({ cursor: `url(./img/${!draw_editor ? 'black' : 'blue'}.png), auto` })
       changeSelectNoteStyle();
     };
     document.addEventListener("keyup", event);
     document.addEventListener("click", event);
-    this.initPanZoom();
+    // this.initPanZoom();
+
+
+    interact('#target').draggable({
+      // enable inertial throwing
+      inertia: true,
+      // keep the element within the area of it's parent
+      modifiers: [
+        interact.modifiers.restrictRect({
+          restriction: 'parent',
+          endOnly: true
+        })
+      ],
+      // enable autoScroll
+      autoScroll: true,
+
+      // call this function on every dragmove event
+      onmove: dragMoveListener,
+    });
+
+    function dragMoveListener (event) {
+      var target = event.target;
+      // keep the dragged position in the data-x/data-y attributes
+      var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+      var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+      // translate the element
+      target.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+
+      // update the position attributes
+      target.setAttribute('data-x', x);
+      target.setAttribute('data-y', y);
+    }
   },
 });
 
