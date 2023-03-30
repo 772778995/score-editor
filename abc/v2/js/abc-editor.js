@@ -139,7 +139,8 @@ const saveScore = async (isSaveAs = false) => {
         isUpbeat,
         musicType,
         isHasLyric,
-        initOpts
+        initOpts,
+        lyricStyle: content_vue.m.lyric.style
       },
       abc_json_val: abcVal,
       music_type: scoreOpts.musicType,
@@ -5577,6 +5578,9 @@ var content_vue = new Vue({
       const res = await request({ url: `/musicals/${content_vue.m.id}` })
       const url = res.abc_json_val
       this.m.scoreOpts = Object.assign(this.m.scoreOpts, res.base_info.initOpts)
+      if (res.base_info.lyricStyle) {
+        Object.assign(this.m.lyric.style, res.base_info.lyricStyle)
+      }
       const abcCode = await request({
         method: 'POST',
         url: '/music-attach/abc',
