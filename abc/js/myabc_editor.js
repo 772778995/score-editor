@@ -114,12 +114,16 @@ function initScore(scoreOpts) {
   abc_change();
 }
 
-const abcTemplateHeadCode = `%%staffsep 60
+/**
+ * 
+ * @param {ScoreOpts} opts 
+ */
+const getAbcHeadCode = (opts) => `%%staffsep 60
 %%sysstaffsep 60
 %%keydefined C=higher
 %%contbarnb 1
 %%leftmargin 20
-%%rightmargin 10
+%%rightmargin ${opts.musicType === 'four' ? '20' : '10'}
 %%titlefont Microsoft-YaHei 28
 %%stretchlast 0.9
 %%linebreak $
@@ -286,7 +290,7 @@ ${getAbcNoteCode(opts)}`,
  * @returns {string}
  */
 const getAbcTemplateCode = (opts) =>
-  abcTemplateHeadCode + getAbcInfoCode(opts) + getAbcContCode(opts);
+  getAbcHeadCode(opts) + getAbcInfoCode(opts) + getAbcContCode(opts);
 
 var headStr =
   "%%staffsep 60\n%%sysstaffsep 60\n%%keydefined C=higher\n" +

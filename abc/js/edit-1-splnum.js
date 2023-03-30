@@ -24,7 +24,11 @@ const _init = async () => {
 const previewScale = () => {
   if (location.href.indexOf('preview') < 0) return
   const scale = 556 / $('#target').height()
-  if (scale >= 1) return
+  if (scale >= 1) {
+    return $('body').css({
+      transform: `scale(0.9)`
+    })
+  }
   $('body').css({
     transform: `scale(${scale})`
   })
