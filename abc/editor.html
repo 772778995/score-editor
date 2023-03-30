@@ -100,6 +100,7 @@
     <script src="js/main.js?v=20221027"></script>
     <script src="js/xml2abcutil.js?v=20221027"></script>
     <script src="./js/FileSaver.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/interactjs@1.9.20/dist/interact.min.js"></script>
     <style type="text/css">
       [_disabled]:not([_disabled="false"]) {
         pointer-events: none;
@@ -1708,13 +1709,11 @@
 
       <div class="fixed flex items-center space-x-1 z-40 justify-between bottom-11 right-12 rounded-full p-2" style="background: #B0B0B0;">
         <img src="../abc/img/scale-small.png" class="cursor-pointer" @click="() => {
-          m.panzoom.scale -= 0.1
-          panzoom.zoom(m.panzoom.scale)
+          m.panzoom.scale -= 1
         }"/>
-        <input v-model="m.panzoom.scale" step="0.1" min="0.5" max="1.5" type="range" class="w-16" @change="panzoom.zoom($event.target.value)"/>
+        <input v-model="m.panzoom.scale" step="1" min="50" max="150" type="range" class="w-16" @change="panzoom.zoom($event.target.value)"/>
         <img src="../abc/img/scale-big.png" class="cursor-pointer" @click="() => {
-          m.panzoom.scale += 0.1
-          panzoom.zoom(m.panzoom.scale)
+          m.panzoom.scale += 1
         }"/>
       </div>
 
@@ -3656,7 +3655,10 @@
               onmouseup.stop="rightTopContentMouseUp(event)"
               onmouseleave.stop="rightTopContentMouseLeave(event)"
             >
-              <div class="abc-content rounded-md" style="overflow: visible; background: #F5F5F5; box-shadow: 4px 4px 24px 0px rgba(0,22,41,0.14);">
+              <div
+                class="abc-content rounded-md fixed flex flex-col overflow-y-auto left-0 items-center w-screen"
+                style="top:84px; height: calc(100vh - 84px); background: rgb(181, 197, 211);"
+              >
                 <div style="display: none;">
                   <div id="nodeMenu" style="display: none">
                     <button
@@ -3716,9 +3718,9 @@
 						</div> -->
                 <div
                   id="target"
-                  class="rounded overflow-hidden panzoom-exclude"
+                  class="panzoom-exclude box-content"
+                  :style="`padding-top: ${m.panzoom.scale}px; padding-bottom: ${m.panzoom.scale}px;`"
                   @click.right="draw_editor || openCtxMenu($event)"
-                  style="width: 690px; min-height: 800px; background: rgb(245, 245, 245)"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -3737,8 +3739,8 @@
                     ></text>
                   </svg>
                 </div>
-                <div id="paper" style="width: 250px"></div>
-                <div id="paper-speed" style="width: 250px"></div>
+                <div id="paper" style="width: 0px"></div>
+                <div id="paper-speed" style="width: 0px"></div>
                 <div id="midi-download" style="display: none"></div>
                 <div id="midi-download-speed" style="display: none"></div>
               </div>
