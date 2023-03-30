@@ -1711,7 +1711,7 @@
         <img src="../abc/img/scale-small.png" class="cursor-pointer" @click="() => {
           m.panzoom.scale -= 1
         }"/>
-        <input v-model="m.panzoom.scale" step="1" min="50" max="150" type="range" class="w-16" @change="panzoom.zoom($event.target.value)"/>
+        <input v-model="m.panzoom.scale" step="1" min="50" max="150" type="range" class="w-16" @change="m.panzoom.scale = $event.target.value"/>
         <img src="../abc/img/scale-big.png" class="cursor-pointer" @click="() => {
           m.panzoom.scale += 1
         }"/>
@@ -3728,7 +3728,7 @@
                 <div
                   id="target"
                   class="panzoom-exclude box-content"
-                  :style="`padding-top: ${m.panzoom.scale}px; padding-bottom: ${m.panzoom.scale}px;`"
+                  :style="`margin-top: ${(m.panzoom.scale / 100) * 100}px; margin-bottom: ${m.panzoom.scale}px;`"
                   @click.right="draw_editor || openCtxMenu($event)"
                 >
                   <svg
