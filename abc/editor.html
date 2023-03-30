@@ -1895,13 +1895,15 @@
 
         <div class="h-full bg-#dededf w-0.5"></div>
 
-        <div class="_tool-box _tips" style="--tips: '符干向上（U）' " @click="checkIsSelectNote() && setNoteStemDirect('up')">
-          <div class="i-note-down"></div>
-        </div>
-        
-        <div class="_tool-box _tips" style="--tips: '符干向下（I）'" @click="checkIsSelectNote() && setNoteStemDirect('down')">
-          <div class="i-note-up"></div>
-        </div>
+        <template v-if="m.scoreOpts.musicType !== 'easy'">
+          <div class="_tool-box _tips" style="--tips: '符干向上（U）' " @click="checkIsSelectNote() && setNoteStemDirect('up')">
+            <div class="i-note-down"></div>
+          </div>
+          
+          <div class="_tool-box _tips" style="--tips: '符干向下（I）'" @click="checkIsSelectNote() && setNoteStemDirect('down')">
+            <div class="i-note-up"></div>
+          </div>
+        </template>
 
         <div
           class="relative _tool-box _tips"
