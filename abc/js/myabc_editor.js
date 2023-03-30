@@ -236,7 +236,7 @@ const getAbcContCode = (opts) => {
 V:1 treble
 %%MIDI program 0
 V:1
-${getAbcNoteCode(opts)}|`,
+${getAbcNoteCode(opts)}`,
     big: `
 %%vsetting_start
 %%score {1 | 2}
