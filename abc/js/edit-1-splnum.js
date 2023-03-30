@@ -22,7 +22,6 @@ const _init = async () => {
 };
 
 const previewScale = () => {
-  if (location.href.indexOf('preview') < 0) return
   const scale = 556 / $('#target').height()
   if (scale >= 1) {
     return $('body').css({
@@ -51,8 +50,11 @@ const changeNobrk = () => {
 }
 
 const changeSign = () => {
-  previewScale()
-  changeNobrk()
+  if (location.href.indexOf('preview') < 0) {
+    changeNobrk()
+  } else {
+    previewScale()
+  }
   // $(`g[transform]>use[cat='decos'][type='wedge']`).each((i, item) => {
   //   const el = $(item)
   //   el.css({
