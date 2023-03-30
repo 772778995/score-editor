@@ -5875,6 +5875,7 @@ var content_vue = new Vue({
         this.m.isInsertMode = draw_editor;
         // updateLastSelect()
       });
+      $('#target').css({ cursor: `url(./img/${!draw_editor ? 'black' : 'blue'}.png), auto` })
       changeSelectNoteStyle();
     };
     document.addEventListener("keyup", event);

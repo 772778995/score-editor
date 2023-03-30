@@ -1925,3 +1925,6 @@ label.file-uploads{
 /*
 	file ç»„ä»¶
 */
+#target {
+	cursor: url(img/blue-.png), auto;
+}

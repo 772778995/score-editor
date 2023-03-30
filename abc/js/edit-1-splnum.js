@@ -36,7 +36,7 @@ const previewScale = () => {
 
 const changeSign = () => {
   previewScale()
-
+  $('#target').css({ cursor: `url(./img/${!draw_editor ? 'black' : 'blue'}.png), auto` })
   // $(`g[transform]>use[cat='decos'][type='wedge']`).each((i, item) => {
   //   const el = $(item)
   //   el.css({
