@@ -2073,6 +2073,7 @@
         </div>
         <div id="player-2" class="_tool-box _tips _right" style="--tips: '回到开始处（Home）'" @click="() => {
           mystop()
+          $('.selected_text').removeClass('selected_text')
           $('#player').removeClass('active')
         }">
           <div class="i-play-restar"></div>
