@@ -4851,7 +4851,7 @@ function delDecoPosInfo(_0x16AEE, _0x16170, _0x15FDB) {
 }
 var d_reg = /m(.*)v/;
 function graphMouseMoveHandle(_0x16062) {
-  const noMoves = $('[x][type="To Coda"],[x][type="Fine"],[x][type="D.C."],[x][type="D.S."],[x][type="D.C. al Fine"],[x][type="D.C. al Fine"],[x][type="D.C. al Coda"]')
+  const noMoves = $('[x][type="hld"],[x][type="accent"],[x][type="To Coda"],[x][type="Fine"],[x][type="D.C."],[x][type="D.S."],[x][type="D.C. al Fine"],[x][type="D.C. al Fine"],[x][type="D.C. al Coda"]')
   if (noMoves.length > 0) {
     return
   }
