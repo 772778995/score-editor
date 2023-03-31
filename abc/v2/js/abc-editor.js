@@ -4291,9 +4291,7 @@ var content_vue = new Vue({
                 shortList: ["Ctrl", "X"],
                 valueList: ["x"],
                 fn: () =>
-                  copy() | content_vue.getSelectedBar()
-                    ? delSelectedNode()
-                    : delSelNote(),
+                  copy() | delSelectedNode() |delSelNote()
               },
               {
                 title: "删除小节",
