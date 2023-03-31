@@ -1,0 +1,20 @@
+/* 自定义字体 */
+
+@font-face {
+  font-family: "simHei";
+  src: url(simhei.ttf);
+}
+@font-face {
+  font-family: "yahei";
+  src: url(msyh.ttc);
+}
+
+@font-face {
+  font-family: "kai";
+  src: url(simkai.ttf);
+}
+
+@font-face {
+  font-family: "song";
+  src: url(simsun.ttc);
+}

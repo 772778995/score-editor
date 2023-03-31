@@ -101,6 +101,10 @@
     <script src="js/xml2abcutil.js?v=20221027"></script>
     <script src="./js/FileSaver.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/interactjs@1.9.20/dist/interact.min.js"></script>
+
+    <!-- 字体css -->
+    <link rel="stylesheet" href="v2/css/font/font.css?v=20230331-1"/>
+
     <style type="text/css">
       [_disabled]:not([_disabled="false"]) {
         pointer-events: none;
@@ -1961,7 +1965,7 @@
             <div class="i-l"></div>
           </div>
 
-          <select-input v-model="m.lyric.style.fontFamily" :list="m.lyric.fontFamilyList" style="width: 94px; height: 26px; font-size: 12px;background-color:#fff"></select-input>
+          <select-font-input v-model="m.lyric.style.fontFamily" :list="m.lyric.fontFamilyList" style="width: 94px; height: 26px; font-size: 12px;background-color:#fff"></select-font-input>
           <select-input v-model="m.lyric.style.fontSize" :list="m.lyric.fontSizeList" style="width: 94px; height: 26px; font-size: 12px;background-color:#fff"></select-input>
 
           <div
@@ -7224,6 +7228,7 @@
 <script src="js/vue.min.js"></script>
 <script src="components/NumberInput.js"></script>
 <script src="components/SelectInput.js"></script>
+<script src="components/SelectFontInput.js"></script>
 <script src="/abc/js/element-ui.js"></script>
 <script src="v2/js/popper.min.js"></script>
 <script src="v2/js/bootstrap.min.js"></script>
