@@ -7909,7 +7909,12 @@ function createLyricEditor(lyricStr, noteIstart) {
   content_vue.m.editor.noteIstart = istart
   const s = syms[istart]
   const line = s.my_line
-  let { top } = $($(`g[type="staff"]`)[line]).offset()
+  let top
+  if (content_vue.m.scoreOpts.musicType === 'easy') {
+    top = el.offset().top
+  } else {
+    top = $($(`g[type="staff"]`)[line]).offset().top
+  }
   top += 50 * content_vue.m.panzoom.scale / 100
   top += 'px'
   let { left } = el.offset()
