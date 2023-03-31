@@ -8375,51 +8375,32 @@ function setSlurInfo() {
     }
   }
 }
-//设置符杆方向
+// FIXME 设置符杆方向
 function setNoteStemDirect(dir) {
-  let start = $(".selected_text").attr("istart");
+  const abcCode = $('#source').val()
+  const start = $(".selected_text").attr("istart");
   const end = syms[start].iend
-  const abcCode = $("#source").val();
-  const str = `[I:pos stem ${dir}]${abcCode.slice(start, end)}`
-  const newAbcCode = replaceCharsInRange(abcCode, start, end, str)
-  $('#source').val(newAbcCode)
+  let headStr = abcCode.substring(0, start)
+  let txt = abcCode.substring(end - (end - start))
+  txt = txt.substring(0, end - start)
+  let tailStr = abcCode.substring(headStr.length + txt.length)
+  headStr = headStr
+    .split('')
+    .reverse()
+    .join('')
+    .replace(/^(\]otua\smets\ssop:I\[)/, '')
+    .replace(/^\s(\][^\[]]+\smets\ssop:I\[)/, '')
+    .split('')
+    .reverse()
+    .join('')
+  headStr = headStr.replace(/(?<=\s)[^\s]+$/, s => {
+    txt = s + txt
+    return ''
+  })
+  txt = `[I:pos stem ${dir}]${txt}[I:pos stem auto]`
+  $('#source').val(headStr + txt + tailStr)
   src_change()
   doLog()
-
-  // let str = $('#source').val().slice(start, end)
-  // const regexp = eval(`/(?<=\\[I:pos\sstem\s).+(?=\\])/`)
-  // if (str.match(regexp)) {
-  //   str = str.replace(regexp, dir)
-  // } else {
-  //   str = `[I:pos stem ${dir}]${str}`
-  // }
-  // const newAbcCode = replaceCharsInRange(abcCode, start, end, str)
-  // $("#source").val(newAbcCode);
-  // src_change();
-  // doLog();
-  // if (istart && istart != -1) {
-    
-  //   var content = $("#source").val();
-  //   var s = syms[istart];
-  //   var pIend = s.istart;
-  //   var midStr = "";
-  //   if (s.prev) {
-  //     sp = s.prev;
-  //     pIend = sp.iend;
-  //     midStr = content.substring(pIend, s.istart);
-  //     midStr = midStr.replace(/\[I:pos stem.[^\[]*\]/g, "");
-  //   }
-  //   var newContent =
-  //     content.substring(0, pIend) +
-  //     midStr +
-  //     "[I:pos stem " +
-  //     dir +
-  //     "]" +
-  //     content.substring(istart);
-  //   $("#source").val(newContent);
-  //   src_change();
-  //   doLog();
-  // }
 }
 
 //定位到语法框
