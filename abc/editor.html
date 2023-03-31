@@ -1965,8 +1965,16 @@
             <div class="i-l"></div>
           </div>
 
+          <!-- 分割线，和元素高度一致为50px -->
+          <hr style="width:1px;height:50px;background-color:rgb(222, 222, 223)">
+
+
           <select-font-input v-model="m.lyric.style.fontFamily" :list="m.lyric.fontFamilyList" style="width: 94px; height: 26px; font-size: 12px;background-color:#fff"></select-font-input>
           <select-input v-model="m.lyric.style.fontSize" :list="m.lyric.fontSizeList" style="width: 94px; height: 26px; font-size: 12px;background-color:#fff"></select-input>
+
+          
+          <!-- 分割线，和元素高度一致为50px -->
+          <hr style="width:1px;height:50px;background-color:rgb(222, 222, 223)">
 
           <div
             class="_tool-box relative"
@@ -1978,6 +1986,7 @@
             </div>
             <input v-model="m.lyric.style.color" ref="lyricColorRef" type="color" class="top-2 left-0 absolute opacity-0 pointer-events-none"/>
           </div>
+
           <div
             class="_tool-box"
             :class="{ 'active': m.lyric.style.fontWeight === 'bold' }"
