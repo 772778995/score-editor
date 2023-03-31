@@ -337,13 +337,13 @@ function keepSelectNote(cb) {
 }
 
 function getSelectAbcCodeInfo() {
-  localtosource();
-  const txt = window.getSelection().toString();
   const selectEl = $(".selected_text")[0];
-  if (!selectEl) return false;
+  if (!selectEl) return alert("未选中音符：请选取一个音符，然后重试");
   const istart = +selectEl.getAttribute("istart");
+  const iend = syms[istart].iend;
+  let txt = $('#source').val().substring(iend - (iend - istart))
+  txt = txt.substring(0, iend - istart)
   const length = txt.length;
-  const iend = istart + length;
   return { txt, istart, iend, length };
 }
 
