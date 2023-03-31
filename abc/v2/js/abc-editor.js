@@ -4235,7 +4235,7 @@ var content_vue = new Vue({
               { title: "另存为谱例", shortList: ["Shift", "S"], valueList: ['s'], fn: () => content_vue.m.saveToScore.isShow = !content_vue.m.saveToScore.isShow },
               { title: "音符输入", shortList: ["N"] },
               { title: "缩放", shortList: ["Ctrl", "鼠标滚动"] },
-              { title: "谱面拖动", shortList: ["鼠标左击"] },
+              { title: "谱面拖动", shortList: ["Ctrl", "鼠标拖动"] },
             ],
             rightList: [
               {
@@ -5913,7 +5913,7 @@ var content_vue = new Vue({
 
 
     interact('#target').draggable({
-      inertia: true,
+      // inertia: true,
       modifiers: [
         interact.modifiers.restrictRect({
           restriction: 'parent',
