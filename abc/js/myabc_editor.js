@@ -1330,6 +1330,9 @@ $(document).ready(function () {
               }
             }
           }
+          delObj = {
+            click_obj: $("text.selected_text"),
+          };
           return false;
         }
       }
@@ -1353,6 +1356,9 @@ $(document).ready(function () {
               }
             }
           }
+          delObj = {
+            click_obj: $("text.selected_text"),
+          };
           return false;
         }
       }
