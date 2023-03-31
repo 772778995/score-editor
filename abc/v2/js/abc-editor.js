@@ -5301,7 +5301,7 @@ var content_vue = new Vue({
           break;
         }
         default: {
-          alert("仅支持 xml，musicxml，mid 格式的文件");
+          alert("仅支持 xml，musicxml 的文件");
         }
       }
     },
