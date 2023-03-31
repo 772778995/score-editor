@@ -1893,6 +1893,9 @@
           <div class="i-recover"></div>
         </div>
 
+        <!-- 分割线，和元素高度一致为50px -->
+        <hr style="width:1px;height:50px;background-color:rgb(222, 222, 223)">
+
         <div class="h-full bg-#dededf w-0.5"></div>
 
         <template v-if="m.scoreOpts.musicType !== 'easy'">
@@ -1910,6 +1913,7 @@
           style="--tips: '添加小节（Ctrl+Shift+B）'"
           @click.stop="checkIsSelectBar() && (m.addBar.show = true)"
         >
+
           <div class="i-addBar"></div>
           <div
             v-if="m.addBar.show"
@@ -1944,6 +1948,9 @@
         </div>
 
         <div class="h-full bg-#dededf w-0.5"></div>
+
+        <!-- 分割线，和元素高度一致为50px -->
+        <hr style="width:1px;height:50px;background-color:rgb(222, 222, 223)">
 
         <template v-if="getMenuTxt === '文本'">
           <div
