@@ -7880,7 +7880,7 @@ function createLyricEditor(lyricStr, noteIstart) {
     const lines = lyricStr.split('\n').length
     const height = lines * 23 + 20 + 'px'
     let { top } = $($(`g[type="staff"]`)[line]).offset()
-    top += 50 * panzoom.getScale()
+    top += 50 * content_vue.m.panzoom.scale / 100
     top += 'px'
     let { left } = $($(`text[type="hd"][istart=${noteIstart}],text[type="r1"][istart=${noteIstart}],text[type="r2"][istart=${noteIstart}],text[type="r4"][istart=${noteIstart}],text[type="r8"][istart=${noteIstart}],text[type="r16"][istart=${noteIstart}],text[type="r32"][istart=${noteIstart}],text[type="64"][istart=${noteIstart}]`)).offset()
     left +='px'
@@ -7909,7 +7909,7 @@ function createLyricEditor(lyricStr, noteIstart) {
   const s = syms[istart]
   const line = s.my_line
   let { top } = $($(`g[type="staff"]`)[line]).offset()
-  top += 50 * panzoom.getScale()
+  top += 50 * content_vue.m.panzoom.scale / 100
   top += 'px'
   let { left } = el.offset()
   left +='px'

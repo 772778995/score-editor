@@ -1779,7 +1779,7 @@
             const s = syms[istart]
             const line = s.my_line
             let { top } = $($(`g[type='staff']`)[line]).offset()
-            top += 50 * panzoom.getScale()
+            top += 50 * content_vue.m.panzoom.scale / 100
             top += 'px'
             let { left } = $(note).offset()
             left +='px'
