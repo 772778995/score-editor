@@ -2126,7 +2126,7 @@
               v-for="child in item.children"
               class="w-full flex cursor-pointer hover:sky-blue-bg duration-300"
               style="padding: 4px 0 4px 14px; min-width: 88px;border-radius: 2px 2px 2px 2px;"
-              @click="child.fn"
+              @click.stop="child.fn() | (m.menuInde = -1)"
             >
               {{ child.txt }}
             </div>
