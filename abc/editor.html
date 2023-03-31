@@ -3726,28 +3726,47 @@
 							</div>
 							<span>同步钢琴键盘时值</span>
 						</div> -->
-                <div
-                  id="target"
-                  class="panzoom-exclude box-content"
-                  :style="`margin-top: ${(m.panzoom.scale / 100) * 100}px; margin-bottom: ${m.panzoom.scale}px;`"
-                  @click.right="draw_editor || openCtxMenu($event)"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                    xml:space="preserve"
-                    width="18.3in"
-                    height="2in"
-                    viewBox="0 0 595 144"
-                    id="svg_pic"
+                <div :style="{
+                  padding: `${m.panzoom.scale / 100 * 40}px 0px`,
+                  transform: `scale(${m.panzoom.scale / 100})`,
+                  transformOrigin: 'top',
+                  minWidth: '95vw',
+                  display: 'flex',
+                  left: '0px',
+                  justifyContent: 'center',
+                }">
+                  <div
+                    id="target"
+                    class="panzoom-exclude box-content"
+                    :class="!m.isInsertMode ? 'cbk' : 'cbe'"
+                    :style="{
+                      borderRadius: '8px',
+                      overflow: 'hidden',
+                      background: 'rgb(245, 245, 245)',
+                      minHeight: '800px',
+                      transformOrigin: 'top',
+                      boxShadow: '4px 4px 24px 0px rgba(0,22,41,0.14)',
+                      cursor: `url(./img/${!draw_editor ? 'black' : 'blue'}.png), auto`
+                    }"
+                    @click.right="draw_editor || openCtxMenu($event)"
                   >
-                    <text
-                      x="250"
-                      y="100"
-                      font-family="serif"
-                      font-size="12"
-                    ></text>
-                  </svg>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                      xml:space="preserve"
+                      width="18.3in"
+                      height="2in"
+                      viewBox="0 0 595 144"
+                      id="svg_pic"
+                    >
+                      <text
+                        x="250"
+                        y="100"
+                        font-family="serif"
+                        font-size="12"
+                      ></text>
+                    </svg>
+                  </div>
                 </div>
                 <div id="paper" style="width: 0px"></div>
                 <div id="paper-speed" style="width: 0px"></div>

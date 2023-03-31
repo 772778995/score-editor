@@ -5585,12 +5585,10 @@ var content_vue = new Vue({
     'm.panzoom.scale'(scale) {
       if (scale >= 150) this.m.panzoom.scale = 150
       if (scale <= 50) this.m.panzoom.scale = 50
-      const mScale = scale / 100
-      $('.nobrk').css({
-        transform: `scale(${mScale})`,
-        transformOrigin: 'center'
-      })
-      $('#target').height(($('.nobrk').height() * mScale) + 'px')
+      // $('#target').css({
+      //   height: $('.nobrk').height() * mScale + 'px',
+      //   // width: $('.nobrk').width() * mScale + 'px'
+      // })
     },
     async 'm.id'(id) {
       if (!id) return
