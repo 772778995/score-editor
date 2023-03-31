@@ -337,13 +337,13 @@ function keepSelectNote(cb) {
 }
 
 function getSelectAbcCodeInfo() {
-  localtosource();
-  const txt = window.getSelection().toString();
   const selectEl = $(".selected_text")[0];
-  if (!selectEl) return false;
+  if (!selectEl) return alert("未选中音符：请选取一个音符，然后重试");
   const istart = +selectEl.getAttribute("istart");
+  const iend = syms[istart].iend;
+  let txt = $('#source').val().substring(iend - (iend - istart))
+  txt = txt.substring(0, iend - istart)
   const length = txt.length;
-  const iend = istart + length;
   return { txt, istart, iend, length };
 }
 
@@ -4434,20 +4434,20 @@ var content_vue = new Vue({
                 valueList: ["y"],
                 fn: () => (content_vue.m.key.show = !content_vue.m.key.show),
               },
-              {
-                title: "符干向上",
-                shortList: ["U"],
-                valueList: ["u"],
-                fn: () =>
-                  content_vue.checkIsSelectNote() && setNoteStemDirect("up"),
-              },
-              {
-                title: "符干向下",
-                shortList: ["I"],
-                valueList: ["i"],
-                fn: () =>
-                  content_vue.checkIsSelectNote() && setNoteStemDirect("down"),
-              },
+              // {
+              //   title: "符干向上",
+              //   shortList: ["U"],
+              //   valueList: ["u"],
+              //   fn: () =>
+              //     content_vue.checkIsSelectNote() && setNoteStemDirect("up"),
+              // },
+              // {
+              //   title: "符干向下",
+              //   shortList: ["I"],
+              //   valueList: ["i"],
+              //   fn: () =>
+              //     content_vue.checkIsSelectNote() && setNoteStemDirect("down"),
+              // },
               {
                 title: "音色",
                 shortList: ["S"],

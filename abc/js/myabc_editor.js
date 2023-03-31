@@ -123,7 +123,7 @@ const getAbcHeadCode = (opts) => `%%staffsep 60
 %%keydefined C=higher
 %%contbarnb 1
 %%leftmargin 20
-%%rightmargin ${opts.musicType === 'four' ? '20' : '10'}
+%%rightmargin ${opts.musicType === 'four' ? '20' : opts.musicType === 'easy' ? '50' : '10'}
 %%titlefont Microsoft-YaHei 28
 %%stretchlast 0.9
 %%linebreak $
@@ -1331,6 +1331,9 @@ $(document).ready(function () {
               }
             }
           }
+          delObj = {
+            click_obj: $("text.selected_text"),
+          };
           return false;
         }
       }
@@ -1354,6 +1357,9 @@ $(document).ready(function () {
               }
             }
           }
+          delObj = {
+            click_obj: $("text.selected_text"),
+          };
           return false;
         }
       }
