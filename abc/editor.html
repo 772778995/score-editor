@@ -2037,6 +2037,7 @@
           <div
             id="timbre"
             class="_tool-box _tips relative"
+            :class="{ 'active': m.timbre.show }"
             style="--tips: '音色（S）'"
             @click.stop="(m.timbre.show = true) | (m.foldLine.toolShow = false)"
           >
