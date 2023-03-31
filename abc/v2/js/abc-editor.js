@@ -5485,7 +5485,7 @@ var content_vue = new Vue({
         },
         {
           title: "删除",
-          subTitle: "Backspace",
+          subTitle: (isSelectBar ? "Ctrl + " : "") + "Backspace",
           fn: () => (isSelectBar ? delSelectedNode() : delSelNote()),
           disabled: !(isSelectNote || isSelectBar),
         },
