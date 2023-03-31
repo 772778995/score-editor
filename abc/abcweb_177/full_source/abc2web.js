@@ -179,9 +179,9 @@ Wijzer.prototype.setline = function (line) {
     n.scrollTop(this.line_offsets[line] - this.tmargin);
   }
 };
-Wijzer.prototype.sety = function (ymin, ymax) {
+Wijzer.prototype.sety = function (ymin = 0, ymax) {
   // set height, width and top y-coor of music cursor
-  this.wijzer.attr("y", ymin.toFixed(2)); // top of first staff
+  this.wijzer.attr("y", ymin?.toFixed(2)); // top of first staff
   this.wijzer.attr("width", "2");
   this.wijzer.attr("height", (ymax - ymin).toFixed(2));
   this.shade.attr("fill", "blue");
