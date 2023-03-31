@@ -101,6 +101,10 @@
     <script src="js/xml2abcutil.js?v=20221027"></script>
     <script src="./js/FileSaver.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/interactjs@1.9.20/dist/interact.min.js"></script>
+
+    <!-- 字体css -->
+    <link rel="stylesheet" href="v2/css/font/font.css?v=20230331-1"/>
+
     <style type="text/css">
       [_disabled]:not([_disabled="false"]) {
         pointer-events: none;
@@ -1961,7 +1965,7 @@
             <div class="i-l"></div>
           </div>
 
-          <select-input v-model="m.lyric.style.fontFamily" :list="m.lyric.fontFamilyList" style="width: 94px; height: 26px; font-size: 12px;background-color:#fff"></select-input>
+          <select-font-input v-model="m.lyric.style.fontFamily" :list="m.lyric.fontFamilyList" style="width: 94px; height: 26px; font-size: 12px;background-color:#fff"></select-font-input>
           <select-input v-model="m.lyric.style.fontSize" :list="m.lyric.fontSizeList" style="width: 94px; height: 26px; font-size: 12px;background-color:#fff"></select-input>
 
           <div
@@ -2055,18 +2059,24 @@
             <div class="i-br"></div>
             <div
               v-if="m.foldLine.toolShow"
-              class="absolute top-12 left-6 bg-white  z-50 box-border rounded-sm"
-              style="box-shadow: 0px 4px 30px 0px rgba(3,35,63,0.28); right: -3px; padding: 2px; font-size: 12px; width: 92px;"
+              class="absolute top-12 left-1 bg-white  z-50 box-border rounded-sm"
+              style="box-shadow: 0px 4px 30px 0px rgba(3,35,63,0.28); right: -3px; padding: 2px; font-size: 12px; width: 170px;"
               @click.stop
             >
               <div class="w-full rounded-sm hover:sky-blue-bg duration-300" style="padding: 4px 14px;" @click="() => {
                 checkIsSelectBar() && addBr()
                 m.foldLine.toolShow = false
               }">
-                折行
+                <div class="flex flex-row flex-nowrap justify-between">
+                  <div>折行</div>
+                  <div>Enter</div>
+                </div>
               </div>
-              <div class="rounded-sm hover:sky-blue-bg duration-300" style="padding: 4px 14px;" @click=" (m.foldLine.toolShow = false) | (m.foldLine.show = true)">
-                自定义折行
+              <div class="rounded-sm hover:sky-blue-bg duration-300" style="padding: 4px 14px;" @click="(m.foldLine.show = true) | (m.foldLine.toolShow = false)">
+                <div class="flex flex-row flex-nowrap justify-between">
+                  <div>自定义折行</div>
+                  <div>  Ctrl+Enter</div>
+                </div>
               </div>
             </div>
           </div>
@@ -7244,6 +7254,7 @@
 <script src="js/vue.min.js"></script>
 <script src="components/NumberInput.js"></script>
 <script src="components/SelectInput.js"></script>
+<script src="components/SelectFontInput.js"></script>
 <script src="/abc/js/element-ui.js"></script>
 <script src="v2/js/popper.min.js"></script>
 <script src="v2/js/bootstrap.min.js"></script>
