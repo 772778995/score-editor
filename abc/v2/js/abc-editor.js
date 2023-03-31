@@ -5900,29 +5900,32 @@ var content_vue = new Vue({
       $('.nobrk').css({ cursor: `url(./img/${!draw_editor ? 'black' : 'blue'}.png), auto` })
       changeSelectNoteStyle();
     };
+    document.addEventListener("keydown", e => {
+      window._isCtrl = e.ctrlKey
+    });
+    document.addEventListener("keyup", e => {
+      window._isCtrl = e.ctrlKey
+    })
     document.addEventListener("keyup", event);
     document.addEventListener("click", event);
     // this.initPanZoom();
 
 
     interact('#target').draggable({
-      // enable inertial throwing
       inertia: true,
-      // keep the element within the area of it's parent
       modifiers: [
         interact.modifiers.restrictRect({
           restriction: 'parent',
           endOnly: true
-        })
+        }),
       ],
-      // enable autoScroll
       autoScroll: true,
-
-      // call this function on every dragmove event
       onmove: dragMoveListener,
     });
 
     function dragMoveListener (event) {
+      console.log(event)
+      if (!_isCtrl) return
       var target = event.target;
       // keep the dragged position in the data-x/data-y attributes
       var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
