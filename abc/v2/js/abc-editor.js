@@ -1,3 +1,4 @@
+window._isCtrl = false
 const AbcType = Object.freeze({
   /** 速度 */
   Speed: 14,
