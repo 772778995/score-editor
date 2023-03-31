@@ -1105,23 +1105,26 @@
               {{ item }}
             </div>
           </div>
+          <!-- <div style="padding: 20px 25px 12px 25px; border: 2px solid #E7E7E7;"></div> -->
+          <div class="flex h-full flex-1 rounded" style=" border: 2px solid #E7E7E7;">
 
-          <div class="flex h-full flex-1 rounded" style="padding: 20px 25px 12px 25px; border: 2px solid #E7E7E7;">
-            <div class="flex-1 pr-6 mr-6" style="border-right: 2px solid #E7E7E7;">
-              <div
-                v-for="item in m.shortcutsPanel.typeList[m.shortcutsPanel.index]?.leftList"
-                :key="item.title"
-                class="mb-3"
-              >
-                <div class="flex">
-                  <div>{{ item.title }}</div>
-                  <div class="flex ml-auto space-x-2 items-center">
-                    <div
-                      v-for="item in item.shortList"
-                      class="rounded"
-                      :style="item !== '/' ? 'background: #F2F2F2; color: #767676; font-size: 14px; padding: 5px 8px;' : ''"
-                    >
-                      {{ item }}
+            <div style="border-right: 2px solid #E7E7E7;">
+              <div class="flex-1 pr-6 mr-6" style="padding: 20px 25px 12px 25px;">
+                <div
+                  v-for="item in m.shortcutsPanel.typeList[m.shortcutsPanel.index]?.leftList"
+                  :key="item.title"
+                  class="mb-3"
+                >
+                  <div class="flex">
+                    <div>{{ item.title }}</div>
+                    <div class="flex ml-auto space-x-2 items-center">
+                      <div
+                        v-for="item in item.shortList"
+                        class="rounded"
+                        :style="item !== '/' ? 'background: #F2F2F2; color: #767676; font-size: 14px; padding: 5px 8px;' : ''"
+                      >
+                        {{ item }}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1129,26 +1132,30 @@
             </div>
 
             <div class="flex-1">
-              <div 
-                v-for="item in m.shortcutsPanel.typeList[m.shortcutsPanel.index]?.rightList"
-                :key="item.title"
-                class="mb-3"
-              >
-                <div class="flex">
-                  <div>{{ item.title }}</div>
-                  <div class="flex ml-auto space-x-2 items-center">
-                    <div
-                      v-for="item2 in item.shortList"
-                      class="rounded"
-                      :style="item2 !== '/' || item.shortList.length === 1 ? 'background: #F2F2F2; color: #767676; font-size: 14px; padding: 5px 8px;' : ''"
-                    >
-                      {{ item2 }}
+              <div style="padding: 20px 25px 12px 25px;">
+                <div
+                  v-for="item in m.shortcutsPanel.typeList[m.shortcutsPanel.index]?.rightList"
+                  :key="item.title"
+                  class="mb-3"
+                >
+                  <div class="flex">
+                    <div>{{ item.title }}</div>
+                    <div class="flex ml-auto space-x-2 items-center">
+                      <div
+                        v-for="item2 in item.shortList"
+                        class="rounded"
+                        :style="item2 !== '/' || item.shortList.length === 1 ? 'background: #F2F2F2; color: #767676; font-size: 14px; padding: 5px 8px;' : ''"
+                      >
+                        {{ item2 }}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+
           </div>
+          
         </div>
       </div>
     </div>
