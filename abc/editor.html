@@ -1901,7 +1901,7 @@
 
         <div class="h-full bg-#dededf w-0.5"></div>
 
-        <template v-if="m.scoreOpts.musicType !== 'easy'">
+        <template v-if="false">
           <div class="_tool-box _tips" style="--tips: '符干向上（U）' " @click="checkIsSelectNote() && setNoteStemDirect('up')">
             <div class="i-note-down"></div>
           </div>
@@ -1913,6 +1913,7 @@
 
         <div
           class="relative _tool-box _tips"
+          :class="{ 'active': m.addBar.show }"
           style="--tips: '添加小节（Ctrl+Shift+B）'"
           @click.stop="checkIsSelectBar() && (m.addBar.show = true)"
         >
@@ -2035,6 +2036,7 @@
           <div
             id="timbre"
             class="_tool-box _tips relative"
+            :class="{ 'active': m.timbre.show }"
             style="--tips: '音色（S）'"
             @click.stop="(m.timbre.show = true) | (m.foldLine.toolShow = false)"
           >
@@ -2053,6 +2055,7 @@
 
           <div
             class="_tool-box relative"
+            :class="{ 'active': m.foldLine.toolShow }"
             @click.stop="(m.foldLine.toolShow = true) | (m.timbre.show = false)"
           >
             <div class="i-br"></div>
@@ -2060,6 +2063,7 @@
               v-if="m.foldLine.toolShow"
               class="absolute top-12 left-1 bg-white  z-50 box-border rounded-sm"
               style="box-shadow: 0px 4px 30px 0px rgba(3,35,63,0.28); right: -3px; padding: 2px; font-size: 12px; width: 170px;"
+              @click.stop
             >
               <div class="w-full rounded-sm hover:sky-blue-bg duration-300" style="padding: 4px 14px;" @click="() => {
                 checkIsSelectBar() && addBr()
@@ -2122,7 +2126,7 @@
               v-for="child in item.children"
               class="w-full flex cursor-pointer hover:sky-blue-bg duration-300"
               style="padding: 4px 0 4px 14px; min-width: 88px;border-radius: 2px 2px 2px 2px;"
-              @click="child.fn"
+              @click.stop="child.fn() | (m.menuIndex = -1)"
             >
               {{ child.txt }}
             </div>
