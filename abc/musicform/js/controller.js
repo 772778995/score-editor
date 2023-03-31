@@ -1,7 +1,7 @@
 var file_server_url = "";
 var abcUrl = typeof C == 'undefined' || typeof C.ABC_URL == 'undefined' ? '' : C.ABC_URL.split("?")[0];
 (function(){
-	req(abcUrl + "/abc/fileserver.json", {}, function(data){
+	req(abcUrl + "fileserver.json", {}, function(data){
 		window.file_server_url = data.fileserver;
 	}, null, "GET")
 })();

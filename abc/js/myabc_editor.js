@@ -1148,6 +1148,7 @@ $(document).ready(function () {
         //				}
         //
         //			}
+        console.log('updateNextNote:', val, index_all);
         updateNextNote(val, index_all);
         //			abc_change();
       }
@@ -3796,7 +3797,7 @@ function source_mouseup() {
 function getFileServer() {
   var url = "fileserver.json";
   $.ajax({
-    type: "POST",
+    type: "GET",
     url: url,
     data: "",
     async: false,
@@ -6978,6 +6979,7 @@ function bindAllEvent() {
           var content = $("#source").val();
           var noteStr = content.substring(s.istart, s.iend);
           noteStr = noteStr.replace(/[\d\/]/g, "");
+          console.log('updateNextNote:', noteStr, s.istart);
           updateNextNote(noteStr, s.istart, false, true);
         }
       }

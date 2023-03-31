@@ -5907,19 +5907,6 @@ var content_vue = new Vue({
     document.addEventListener("click", event);
     // this.initPanZoom();
 
-
-    interact('#target').draggable({
-      // inertia: true,
-      modifiers: [
-        interact.modifiers.restrictRect({
-          restriction: 'parent',
-          endOnly: true
-        }),
-      ],
-      autoScroll: true,
-      onmove: dragMoveListener,
-    });
-
     function dragMoveListener (event) {
       console.log(event)
       if (!_isCtrl) return
@@ -5935,6 +5922,21 @@ var content_vue = new Vue({
       target.setAttribute('data-x', x);
       target.setAttribute('data-y', y);
     }
+    setTimeout(function(){
+      // 延迟加载防止报错
+      interact('#target').draggable({
+        // inertia: true,
+        modifiers: [
+          interact.modifiers.restrictRect({
+            restriction: 'parent',
+            endOnly: true
+          }),
+        ],
+        autoScroll: true,
+        onmove: dragMoveListener,
+      });
+    }, 200);
+    
   },
 });
 
@@ -6214,10 +6216,12 @@ function leftPanelClick(obj, isCurrOpenState, closeCb, openCb) {
       "min-width": 0,
     });
     $(".bottom-box").css("left", 0);
-    var left = $("#noteInput").css("left").replace("px", "");
-    if (-left > 3905 - $(window).width()) {
-      left = -(3905 - $(window).width());
-      $("#noteInput").css("left", left + "px");
+    if($("#noteInput").length && $("#noteInput").css("left")){
+      var left = $("#noteInput").css("left").replace("px", "");
+      if (-left > 3905 - $(window).width()) {
+        left = -(3905 - $(window).width());
+        $("#noteInput").css("left", left + "px");
+      }
     }
     return typeof closeCb == "function" && closeCb();
   } else {
