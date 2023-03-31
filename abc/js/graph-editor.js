@@ -2508,6 +2508,9 @@ function selectStaff(_0x17688, _0x16062) {
   }
 }
 function findNearNote(_0x16062, _0x1792B, _0x16008, _0x16035) {
+  if ([..._0x16062.target.classList].find(item => ['f1', 'f2', 'f3'].includes(item))) {
+    if ([..._0x16062.target.classList].length === 1) return
+  }
   console[_$_4d63[75]](_$_4d63[303]);
   select_note_info = new Object();
   delObj = new Object();
@@ -4015,7 +4018,7 @@ function updateDecoPos(_0x1608F) {
       _$_4d63[366] == _0x1BABC ||
       _$_4d63[367] == _0x1BABC
     ) {
-      if (_0x1BAE9[_$_4d63[190]]) {
+      if (_0x1BAE9 && _0x1BAE9[_$_4d63[190]]) {
         _0x1BB43 = _0x1BAE9[_$_4d63[190]][_$_4d63[69]];
       }
     }
@@ -4850,6 +4853,10 @@ function delDecoPosInfo(_0x16AEE, _0x16170, _0x15FDB) {
 }
 var d_reg = /m(.*)v/;
 function graphMouseMoveHandle(_0x16062) {
+  const noMoves = $('[x][type="hld"],[x][type="accent"],[x][type="To Coda"],[x][type="Fine"],[x][type="D.C."],[x][type="D.S."],[x][type="D.C. al Fine"],[x][type="D.C. al Fine"],[x][type="D.C. al Coda"]')
+  if (noMoves.length > 0) {
+    return
+  }
   var _0x1A5FE = new Date()[_$_4d63[236]]();
   if (_0x1A5FE - clickTimeMill < 200) {
     return;
@@ -5932,7 +5939,9 @@ function genNoteDeco(_0x16251, _0x189B1, _0x15F54, _0x1873B) {
     doLog();
     return;
   }
+  // 这，就是连线！
   if (_0x16251 == _$_4d63[632]) {
+    if (cen.type === AbcType.Rest) return
     var _0x17007 = cen[_$_4d63[190]];
     var _0x192A8 = cen[_$_4d63[69]];
     var _0x1951E = -1;
@@ -6043,11 +6052,17 @@ function genNoteDeco(_0x16251, _0x189B1, _0x15F54, _0x1873B) {
             _0x15C57[_$_4d63[177]](cen[_$_4d63[155]]);
         }
       } else {
+        // 这，就是谱号！
         if (_0x15F54 == _$_4d63[626]) {
-          _0x15C57 =
-            _0x15C57[_$_4d63[177]](0, cen[_$_4d63[69]]) +
-            _0x16251 +
-            _0x15C57[_$_4d63[177]](cen[_$_4d63[69]]);
+          if (/(\[K:.+\])$/.test(_0x15C57[_$_4d63[177]](0, cen[_$_4d63[69]]))) {
+            return
+            // _0x15C57 = _0x15C57[_$_4d63[177]](0, cen[_$_4d63[69]]).replace(/(\[K:.+\])$/, _0x16251) + _0x15C57[_$_4d63[177]](cen[_$_4d63[69]])
+          } else {
+            _0x15C57 =
+              _0x15C57[_$_4d63[177]](0, cen[_$_4d63[69]]) +
+              _0x16251 +
+              _0x15C57[_$_4d63[177]](cen[_$_4d63[69]]);
+          }
         }
       }
     }
@@ -7662,7 +7677,10 @@ function genBarDeco(_0x16251, _0x189B1, _0x15F54, _0x1873B, _0x15BFD) {
                       _0x16C29[_$_4d63[135]][_$_4d63[88]](_$_4d63[206]) + 1
                     );
                 } else {
-                  _0x188A3 += _0x16251 + _0x16C29[_$_4d63[135]];
+                  // 这，就是调号！
+                  let rnm = _0x16C29[_$_4d63[135]]
+                  rnm = rnm.replace(/^\[K:.+\]/, '')
+                  _0x188A3 += _0x16251 + rnm;
                 }
               } else {
                 if (_0x15F54 == _$_4d63[751] || _0x15F54 == _$_4d63[755]) {
@@ -7862,7 +7880,7 @@ function createLyricEditor(lyricStr, noteIstart) {
     const lines = lyricStr.split('\n').length
     const height = lines * 23 + 20 + 'px'
     let { top } = $($(`g[type="staff"]`)[line]).offset()
-    top += 50 * panzoom.getScale()
+    top += 50 * content_vue.m.panzoom.scale / 100
     top += 'px'
     let { left } = $($(`text[type="hd"][istart=${noteIstart}],text[type="r1"][istart=${noteIstart}],text[type="r2"][istart=${noteIstart}],text[type="r4"][istart=${noteIstart}],text[type="r8"][istart=${noteIstart}],text[type="r16"][istart=${noteIstart}],text[type="r32"][istart=${noteIstart}],text[type="64"][istart=${noteIstart}]`)).offset()
     left +='px'
@@ -7891,7 +7909,7 @@ function createLyricEditor(lyricStr, noteIstart) {
   const s = syms[istart]
   const line = s.my_line
   let { top } = $($(`g[type="staff"]`)[line]).offset()
-  top += 50 * panzoom.getScale()
+  top += 50 * content_vue.m.panzoom.scale / 100
   top += 'px'
   let { left } = el.offset()
   left +='px'

@@ -52,19 +52,19 @@ var clipdataContent = "";
 
 /** 速度文本列表 */
 const speedTxtList = [
-  { val: "40", txt: "Grave" },
-  { val: "46", txt: "Largo" },
-  { val: "52", txt: "Lento" },
-  { val: "56", txt: "Adagio" },
-  { val: "60", txt: "Larghtto" },
-  { val: "66", txt: "Andante" },
-  { val: "69", txt: "Andantino" },
-  { val: "88", txt: "Moderato" },
-  { val: "108", txt: "Allegretto" },
-  { val: "132", txt: "Allegro" },
-  { val: "160", txt: "Vivace" },
-  { val: "184", txt: "Presto" },
-  { val: "208", txt: "Prestissimo" },
+  { val: "40", txt: "Grave", title: '庒板' },
+  { val: "46", txt: "Largo", title: '广板' },
+  { val: "52", txt: "Lento", title: '慢板' },
+  { val: "56", txt: "Adagio", title: '柔板' },
+  { val: "60", txt: "Larghtto", title: '小广板' },
+  { val: "66", txt: "Andante", title: '行板' },
+  { val: "69", txt: "Andantino", title: '小行板' },
+  { val: "88", txt: "Moderato", title: '中板' },
+  { val: "108", txt: "Allegretto", title: '小快板' },
+  { val: "132", txt: "Allegro", title: '快板' },
+  // { val: "160", txt: "Vivace" },
+  { val: "184", txt: "Presto", title: '急板' },
+  { val: "208", txt: "Prestissimo", title: '最急板' },
 ];
 
 /** @type {ScoreOpts} */
@@ -114,17 +114,21 @@ function initScore(scoreOpts) {
   abc_change();
 }
 
-const abcTemplateHeadCode = `%%staffsep 60
+/**
+ * 
+ * @param {ScoreOpts} opts 
+ */
+const getAbcHeadCode = (opts) => `%%staffsep 60
 %%sysstaffsep 60
 %%keydefined C=higher
 %%contbarnb 1
 %%leftmargin 20
-%%rightmargin 10
+%%rightmargin ${opts.musicType === 'four' ? '20' : '10'}
 %%titlefont Microsoft-YaHei 28
 %%stretchlast 0.9
 %%linebreak $
 %%pos vocal down 
-%%createby abc.ixzds.com  2023-02-28 
+%%createby ${location.hostname} ${new Date().toLocaleString()}
 %%equalbars 0 
 %%keywarn 0 
 %%cancelkey 0 
@@ -137,7 +141,13 @@ X: 1`;
  * @returns {string}
  */
 const getBeatNote = (opts) => {
-  if (["C", "C|"].includes(opts.beatType)) return opts.beatType;
+  if (["C", "C|"].includes(opts.beatType)) {
+    if (opts.musicType === 'easy') {
+      if (opts.beatType === 'C') return '4/4'
+      if (opts.beatType === 'C|') return '2/2'
+    }
+    return opts.beatType;
+  }
   return `${opts.beatNote1}/${opts.beatNote2}`;
 };
 
@@ -162,7 +172,12 @@ Q: ${opts.speedNote}=${opts.speedNum}`;
  * @param {ScoreOpts} opts
  */
 const getAbcNoteCode = (opts) => {
-  let num = opts.beatNote1 / opts.beatNote2;
+  let { beatNote1, beatNote2, beatType } = opts
+  // if (opts.musicType === 'easy') {
+    if (beatType === 'C') [beatNote1, beatNote2] = [4, 4]
+    if (beatType === 'C|') [beatNote1, beatNote2] = [2, 2]
+  // }
+  let num = beatNote1 / beatNote2;
   const d1 = ~~(num / 1);
   num = num % 1;
   const d2 = ~~(num / 0.5);
@@ -199,7 +214,7 @@ const getAbcNoteCode = (opts) => {
     restStr += "z,".repeat(d8);
     restStr += "z,/".repeat(d16);
     restStr += "|";
-    noteCode = noteCode.replace("z,8|", restStr);
+    noteCode = noteCode.replace(/[^\|]+\|/, restStr);
   }
   return noteCode;
 };
@@ -232,7 +247,7 @@ const getAbcContCode = (opts) => {
 V:1 treble
 %%MIDI program 0
 V:1
-${getAbcNoteCode(opts)}|`,
+${getAbcNoteCode(opts)}`,
     big: `
 %%vsetting_start
 %%score {1 | 2}
@@ -286,7 +301,7 @@ ${getAbcNoteCode(opts)}`,
  * @returns {string}
  */
 const getAbcTemplateCode = (opts) =>
-  abcTemplateHeadCode + getAbcInfoCode(opts) + getAbcContCode(opts);
+  getAbcHeadCode(opts) + getAbcInfoCode(opts) + getAbcContCode(opts);
 
 var headStr =
   "%%staffsep 60\n%%sysstaffsep 60\n%%keydefined C=higher\n" +
@@ -8268,21 +8283,16 @@ function delSelectedNode() {
 }
 //插入小节
 function insertNodes(num, isAfter, isFirst) {
-  const barIndex = $("svg[type='rectnode'],svg[type='rectbar']").attr(
-    "barindex"
-  );
-  if (barIndex <= bar_count) return appendNodes(num);
+  const barRectEl = $("svg[type='rectnode'],svg[type='rectbar']")
+  const barIndex = barRectEl.attr('barIndex') || barRectEl.attr('barindex')
+
+  if (barIndex >= bar_count) return appendNodes(num);
   if (!isFirst && !content_vue.checkIsSelectBar()) return;
   for (let i = 1; i <= num; i++) {
-    let barIndex = $("svg[type='rectnode'],svg[type='rectbar']").attr(
-      "barindex"
-    );
-    if (barIndex == undefined) {
-      barIndex = $("svg[type='rectnode'],svg[type='rectbar']").attr("barIndex");
-    }
-    if (isAfter) barIndex = +barIndex + 1;
-    if (isFirst) barIndex = 0;
-    insertNodeByIndex(barIndex);
+    let yourBarIndex = barIndex
+    if (isAfter) yourBarIndex = +yourBarIndex + 1;
+    if (isFirst) yourBarIndex = 0;
+    insertNodeByIndex(yourBarIndex);
   }
   changeLineBars();
 }
@@ -8365,51 +8375,32 @@ function setSlurInfo() {
     }
   }
 }
-//设置符杆方向
+// FIXME 设置符杆方向
 function setNoteStemDirect(dir) {
-  let start = $(".selected_text").attr("istart");
+  const abcCode = $('#source').val()
+  const start = $(".selected_text").attr("istart");
   const end = syms[start].iend
-  const abcCode = $("#source").val();
-  const str = `[I:pos stem ${dir}]${abcCode.slice(start, end)}`
-  const newAbcCode = replaceCharsInRange(abcCode, start, end, str)
-  $('#source').val(newAbcCode)
+  let headStr = abcCode.substring(0, start)
+  let txt = abcCode.substring(end - (end - start))
+  txt = txt.substring(0, end - start)
+  let tailStr = abcCode.substring(headStr.length + txt.length)
+  headStr = headStr
+    .split('')
+    .reverse()
+    .join('')
+    .replace(/^(\]otua\smets\ssop:I\[)/, '')
+    .replace(/^\s(\][^\[]]+\smets\ssop:I\[)/, '')
+    .split('')
+    .reverse()
+    .join('')
+  headStr = headStr.replace(/(?<=\s)[^\s]+$/, s => {
+    txt = s + txt
+    return ''
+  })
+  txt = `[I:pos stem ${dir}]${txt}[I:pos stem auto]`
+  $('#source').val(headStr + txt + tailStr)
   src_change()
   doLog()
-
-  // let str = $('#source').val().slice(start, end)
-  // const regexp = eval(`/(?<=\\[I:pos\sstem\s).+(?=\\])/`)
-  // if (str.match(regexp)) {
-  //   str = str.replace(regexp, dir)
-  // } else {
-  //   str = `[I:pos stem ${dir}]${str}`
-  // }
-  // const newAbcCode = replaceCharsInRange(abcCode, start, end, str)
-  // $("#source").val(newAbcCode);
-  // src_change();
-  // doLog();
-  // if (istart && istart != -1) {
-    
-  //   var content = $("#source").val();
-  //   var s = syms[istart];
-  //   var pIend = s.istart;
-  //   var midStr = "";
-  //   if (s.prev) {
-  //     sp = s.prev;
-  //     pIend = sp.iend;
-  //     midStr = content.substring(pIend, s.istart);
-  //     midStr = midStr.replace(/\[I:pos stem.[^\[]*\]/g, "");
-  //   }
-  //   var newContent =
-  //     content.substring(0, pIend) +
-  //     midStr +
-  //     "[I:pos stem " +
-  //     dir +
-  //     "]" +
-  //     content.substring(istart);
-  //   $("#source").val(newContent);
-  //   src_change();
-  //   doLog();
-  // }
 }
 
 //定位到语法框

@@ -1925,3 +1925,14 @@ label.file-uploads{
 /*
 	file ç»„ä»¶
 */
+/* #target:not(.caonina) {
+	cursor: default !important;
+} */
+
+#target.cbk:not(.caonima) {
+	cursor: url("../../img/black.png"), auto !important;
+}
+
+#target.cbe:not(.caonima) {
+	cursor: url("../../img/blue.png"), auto !important;
+}

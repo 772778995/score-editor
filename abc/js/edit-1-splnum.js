@@ -13,15 +13,52 @@ const getNotIstartList = () => [
 ];
 let oldNoteList = [];
 
-const _init = (() => {
-  let isFirst = true;
-  return () => {
-    if (!isFirst) return;
-    isFirst = false;
-    changeStaffType(null, scoreOpts?.musicType === "easy" ? 2 : 0) |
-      restoreEditor();
-  };
-})();
+let isFirst = true
+const _init = async () => {
+  if (!isFirst) return;
+  isFirst = false;
+  changeStaffType(null, content_vue.m.scoreOpts?.musicType === "easy" ? 2 : 0) |
+    restoreEditor();
+};
+
+const previewScale = () => {
+  const scale = 556 / $('#target').height()
+  if (scale >= 1) {
+    return $('body').css({
+      transform: `scale(0.9)`
+    })
+  }
+  $('body').css({
+    transform: `scale(${scale})`
+  })
+}
+
+const changeNobrk = () => {
+  // $('.nobrk').css({
+  //   borderRadius: '8px',
+  //   overflow: 'hidden',
+  //   boxShadow: '4px 4px 24px 0px rgba(0,22,41,0.14)',
+  //   background: 'rgb(245, 245, 245)',
+  //   minHeight: '800px',
+  //   transform: `scale(${content_vue.m.panzoom.scale / 100})`,
+  //   transformOrigin: 'top',
+  //   cursor: `url(./img/${!draw_editor ? 'black' : 'blue'}.png), auto`
+  // })
+}
+
+const changeSign = () => {
+  if (location.href.indexOf('preview') < 0) {
+    changeNobrk()
+  } else {
+    previewScale()
+  }
+  // $(`g[transform]>use[cat='decos'][type='wedge']`).each((i, item) => {
+  //   const el = $(item)
+  //   el.css({
+  //     'transform': 'translateY(30px) rotate(180deg)'
+  //   })
+  // })
+}
 
 const selectNewNote = () => {
   const newNoteIstartList = getNotIstartList();
@@ -1142,8 +1179,10 @@ function render2(_0xC154) {
     _init();
     selectNewNote();
     setLyricStyle();
+    changeSign()
     changeSelectNoteStyle();
     updateLastSelect()
+    changeLineBars()
 
     if (user[_$_6a78[149]]) {
       user[_$_6a78[149]]();

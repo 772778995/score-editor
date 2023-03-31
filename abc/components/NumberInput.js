@@ -30,14 +30,14 @@ Vue.component('number-input', {
           style="border-left: 1px solid #D9D9D9;"
           @click="increment"
         >
-          <img src="/abc/img/arrow_down.png" class="transform -rotate-180" />
+          <img src="./img/arrow_down.png" class="transform -rotate-180" />
         </div>
         <div
           class="flex-1 w-5 flex justify-center items-center cursor-pointer hover:bg-gray-200 duration-300"
           style="border-top: 1px solid #D9D9D9;border-left: 1px solid #D9D9D9;"
           @click="decrement"
         >
-          <img src="/abc/img/arrow_down.png" />
+          <img src="./img/arrow_down.png" />
         </div>
       </div>
     </div>
