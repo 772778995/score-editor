@@ -1107,8 +1107,9 @@
           <!-- <div style="padding: 20px 25px 12px 25px; border: 2px solid #E7E7E7;"></div> -->
           <div class="flex h-full flex-1 rounded" style=" border: 2px solid #E7E7E7;">
 
-            <div style="border-right: 2px solid #E7E7E7;">
-              <div class="flex-1 pr-6 mr-6" style="padding: 20px 25px 12px 25px;">
+            <div class=" flex-1" style="border-right: 2px solid #E7E7E7;">
+
+              <div style="padding: 20px 25px 12px 25px;" >
                 <div
                   v-for="item in m.shortcutsPanel.typeList[m.shortcutsPanel.index]?.leftList"
                   :key="item.title"
@@ -1128,6 +1129,7 @@
                   </div>
                 </div>
               </div>
+
             </div>
 
             <div class="flex-1">
@@ -2154,8 +2156,8 @@
           </div>
         </div>
 
-        <div class="cursor-pointer ml-auto" @click="m.shortcutsPanel.index = 0">快捷键</div>
-        <div class="mx-1 cursor-pointer">帮助</div>
+        <div class="cursor-pointer ml-auto mr-8" @click="m.shortcutsPanel.index = 0">快捷键</div>
+        <div class="mx-3 cursor-pointer">帮助</div>
       </div>
       
       <div
