@@ -354,14 +354,17 @@ function keepSelectNote(cb) {
 }
 
 function getSelectAbcCodeInfo() {
+  const abcCode = $('#source').val()
   const selectEl = $(".selected_text")[0];
   if (!selectEl) return alert("未选中音符：请选取一个音符，然后重试");
   const istart = +selectEl.getAttribute("istart");
   const iend = syms[istart].iend;
-  let txt = $('#source').val().substring(iend - (iend - istart))
+  let txt = abcCode.substring(iend - (iend - istart))
   txt = txt.substring(0, iend - istart)
   const length = txt.length;
-  return { txt, istart, iend, length };
+  const head = abcCode.substring(0, istart)
+  const tail = abcCode.substring(iend)
+  return { txt, istart, iend, length, head, tail, abcCode };
 }
 
 /** @returns { number[] }*/
@@ -393,7 +396,6 @@ function changeAbc(cb) {
 
 function lineTo() {
   keepSelectNote(() => {
-    debugger
     const info = getSelectAbcCodeInfo();
     if (!info) return alert("未选中音符：请选取一个音符，然后重试");
     let { istart, txt } = info;
@@ -4064,6 +4066,13 @@ var content_vue = new Vue({
               value: ".",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                const { head, tail, txt } =  getSelectAbcCodeInfo()
+                keepSelectNote(() => {
+                  $('#source').val(`${head.replace(/\.$/, '')}.${txt}${tail}`)
+                  abc_change()
+                })
+              },
             },
             {
               title: '重音',
@@ -4071,6 +4080,13 @@ var content_vue = new Vue({
               value: "!>!",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                const { head, tail, txt } =  getSelectAbcCodeInfo()
+                keepSelectNote(() => {
+                  $('#source').val(`${head.replace(/\!>\!$/, '')}!>!${txt}${tail}`)
+                  abc_change()
+                })
+              },
             },
             {
               title: '保持音',
@@ -4078,6 +4094,13 @@ var content_vue = new Vue({
               value: "!tenuto!",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                const { head, tail, txt } =  getSelectAbcCodeInfo()
+                keepSelectNote(() => {
+                  $('#source').val(`${head.replace(/\!tenuto\!$/, '')}!tenuto!${txt}${tail}`)
+                  abc_change()
+                })
+              },
             },
             {
               title: "延长记号",
@@ -4085,6 +4108,13 @@ var content_vue = new Vue({
               value: "!fermata!",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                const { head, tail, txt } =  getSelectAbcCodeInfo()
+                keepSelectNote(() => {
+                  $('#source').val(`${head.replace(/\!fermata\!$/, '')}!fermata!${txt}${tail}`)
+                  abc_change()
+                })
+              },
             },
             {
               title: '顿音',
@@ -4092,6 +4122,13 @@ var content_vue = new Vue({
               value: "!wedge!",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                const { head, tail, txt } =  getSelectAbcCodeInfo()
+                keepSelectNote(() => {
+                  $('#source').val(`${head.replace(/\!wedge\!$/, '')}!wedge!${txt}${tail}`)
+                  abc_change()
+                })
+              },
             },
           ],
         },
