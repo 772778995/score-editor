@@ -3531,6 +3531,9 @@ var content_vue = new Vue({
               title: "升号",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                keepSelectNote(() => $('.pitchbtn[value="^"]').click())
+              }
             },
             {
               url: "./img/notepanel/tempMark (2).png",
@@ -3538,6 +3541,9 @@ var content_vue = new Vue({
               title: "降号",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                keepSelectNote(() => $('.pitchbtn[value="_"]').click())
+              }
             },
             {
               url: "./img/notepanel/tempMark (3).png",
@@ -3545,6 +3551,9 @@ var content_vue = new Vue({
               title: "还原",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                keepSelectNote(() => $('.pitchbtn[value="="]').click())
+              }
             },
             {
               url: "./img/notepanel/tempMark (4).png",
@@ -3552,6 +3561,9 @@ var content_vue = new Vue({
               title: "重升",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                keepSelectNote(() => $('.pitchbtn[value="^^"]').click())
+              }
             },
             {
               url: "./img/notepanel/tempMark (5).png",
@@ -3559,6 +3571,9 @@ var content_vue = new Vue({
               title: "重降",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                keepSelectNote(() => $('.pitchbtn[value="__"]').click())
+              }
             },
             {
               url: "./img/notepanel/tempMark (5).png",
