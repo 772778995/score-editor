@@ -2484,7 +2484,7 @@ var content_vue = new Vue({
           { txt: "D大调", val: "D", valueSelector: "d" },
           { txt: "A大调", val: "A", valueSelector: "a" },
           { txt: "E大调", val: "E", valueSelector: "e" },
-          { txt: "♯B大调", val: "B", valueSelector: "b," },
+          { txt: "B大调", val: "B", valueSelector: "b," },
           { txt: "♯F大调", val: "#F", valueSelector: "^f" },
           { txt: "♯C大调", val: "#C", valueSelector: "^c" },
           { txt: "F大调", val: "F", valueSelector: "f" },
