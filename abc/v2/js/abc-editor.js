@@ -3977,6 +3977,13 @@ var content_vue = new Vue({
               value: "!f!",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                const { head, tail, txt } =  getSelectAbcCodeInfo()
+                keepSelectNote(() => {
+                  $('#source').val(`${head.replace(/(\!f+\!|\!p+\!|\!mf\!|\!mp\!|\!sf(z|p)?\!)$/, '')}!f!${txt}${tail}`)
+                  abc_change()
+                })
+              },
             },
             {
               title: '很强',
@@ -3984,6 +3991,13 @@ var content_vue = new Vue({
               value: "!ff!",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                const { head, tail, txt } =  getSelectAbcCodeInfo()
+                keepSelectNote(() => {
+                  $('#source').val(`${head.replace(/(\!f+\!|\!p+\!|\!mf\!|\!mp\!|\!sf(z|p)?\!)$/, '')}!ff!${txt}${tail}`)
+                  abc_change()
+                })
+              },
             },
             {
               title: '非常强',
@@ -3991,6 +4005,13 @@ var content_vue = new Vue({
               value: "!fff!",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                const { head, tail, txt } =  getSelectAbcCodeInfo()
+                keepSelectNote(() => {
+                  $('#source').val(`${head.replace(/(\!f+\!|\!p+\!|\!mf\!|\!mp\!|\!sf(z|p)?\!)$/, '')}!fff!${txt}${tail}`)
+                  abc_change()
+                })
+              },
             },
             {
               title: '中强',
@@ -3998,6 +4019,13 @@ var content_vue = new Vue({
               value: "!mf!",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                const { head, tail, txt } =  getSelectAbcCodeInfo()
+                keepSelectNote(() => {
+                  $('#source').val(`${head.replace(/(\!f+\!|\!p+\!|\!mf\!|\!mp\!|\!sf(z|p)?\!)$/, '')}!mf!${txt}${tail}`)
+                  abc_change()
+                })
+              },
             },
             {
               title: '弱',
@@ -4005,6 +4033,13 @@ var content_vue = new Vue({
               value: "!p!",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                const { head, tail, txt } =  getSelectAbcCodeInfo()
+                keepSelectNote(() => {
+                  $('#source').val(`${head.replace(/(\!f+\!|\!p+\!|\!mf\!|\!mp\!|\!sf(z|p)?\!)$/, '')}!p!${txt}${tail}`)
+                  abc_change()
+                })
+              },
             },
             {
               title: '很弱',
@@ -4012,6 +4047,13 @@ var content_vue = new Vue({
               value: "!pp!",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                const { head, tail, txt } =  getSelectAbcCodeInfo()
+                keepSelectNote(() => {
+                  $('#source').val(`${head.replace(/(\!f+\!|\!p+\!|\!mf\!|\!mp\!|\!sf(z|p)?\!)$/, '')}!pp!${txt}${tail}`)
+                  abc_change()
+                })
+              },
             },
             {
               title: '非常弱',
@@ -4019,6 +4061,13 @@ var content_vue = new Vue({
               value: "!ppp!",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                const { head, tail, txt } =  getSelectAbcCodeInfo()
+                keepSelectNote(() => {
+                  $('#source').val(`${head.replace(/(\!f+\!|\!p+\!|\!mf\!|\!mp\!|\!sf(z|p)?\!)$/, '')}!ppp!${txt}${tail}`)
+                  abc_change()
+                })
+              },
             },
             {
               title: '中弱',
@@ -4026,6 +4075,13 @@ var content_vue = new Vue({
               value: "!mp!",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                const { head, tail, txt } =  getSelectAbcCodeInfo()
+                keepSelectNote(() => {
+                  $('#source').val(`${head.replace(/(\!f+\!|\!p+\!|\!mf\!|\!mp\!|\!sf(z|p)?\!)$/, '')}!mp!${txt}${tail}`)
+                  abc_change()
+                })
+              },
             },
             {
               title: '特强',
@@ -4033,6 +4089,13 @@ var content_vue = new Vue({
               value: "!sf!",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                const { head, tail, txt } =  getSelectAbcCodeInfo()
+                keepSelectNote(() => {
+                  $('#source').val(`${head.replace(/(\!f+\!|\!p+\!|\!mf\!|\!mp\!|\!sf(z|p)?\!)$/, '')}!sf!${txt}${tail}`)
+                  abc_change()
+                })
+              },
             },
             {
               title: '特强',
@@ -4040,6 +4103,13 @@ var content_vue = new Vue({
               value: "!sfz!",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                const { head, tail, txt } =  getSelectAbcCodeInfo()
+                keepSelectNote(() => {
+                  $('#source').val(`${head.replace(/(\!f+\!|\!p+\!|\!mf\!|\!mp\!|\!sf(z|p)?\!)$/, '')}!sfz!${txt}${tail}`)
+                  abc_change()
+                })
+              },
             },
             {
               title: '特强后弱',
@@ -4047,6 +4117,13 @@ var content_vue = new Vue({
               value: "!sfp!",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                const { head, tail, txt } =  getSelectAbcCodeInfo()
+                keepSelectNote(() => {
+                  $('#source').val(`${head.replace(/(\!f+\!|\!p+\!|\!mf\!|\!mp\!|\!sf(z|p)?\!)$/, '')}!sfp!${txt}${tail}`)
+                  abc_change()
+                })
+              },
             },
             {
               url: "./img/notepanel/strength mark (11).png",
