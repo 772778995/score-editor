@@ -5926,18 +5926,51 @@ function handleKeyPress(e, editorType) {
                 var staffInf = getStaffInfo2();
                 var v_arr = staffInf.vocalArr;
                 var v_ind = 0;
+                var octave = 0; // 中央C所在八度为 0;
                 if($('.selected_text').length){
                   var istart = $('.selected_text').eq($('.selected_text').length-1).attr('istart');
                   v_ind = syms[istart].st;
-                }
+                  if($('.selected_text').eq($('.selected_text').length-1).prev().attr('type')=='note'){
+                    var istart = $('.selected_text').eq($('.selected_text').length-1).prev().attr('istart');
+                    var mid = syms[istart].notes[0].midi;
+                    if(mid>=72){
+                      for(var i=72; i<=108; i+=12){
+                        octave += 1;
+                        if(mid>=i && mid<i+12){
+                          break;
+                        }
+                      }
+                    }else if(mid<60){
+                      for(var i=48; i>=21; i-=12){
+                        octave -= 1;
+                        if(mid<=i && mid>i-12){
+                          break;
+                        }
+                      }
+                    }
+                  }
 
-                // 
-                if(v_arr[v_ind].clef=='bass'){
-                  console.log('updateNextNote', vals[j], -1);
-                  updateNextNote(vals[j]+',', -1);
+                  var octave_str = '';
+                  if(octave>0){
+                    for(var i=1; i<=octave; i++){
+                      octave_str += "'";
+                    }
+                  }else if(octave<0){
+                    for(var i=-1; i>=octave; i--){
+                      octave_str += ",";
+                    }
+                  }
+                  console.log('octave_str', istart, mid, octave, octave_str);
+
+                  updateNextNote(vals[j]+octave_str, -1);
                 }else{
-                  console.log('updateNextNote', vals[j], -1);
-                  updateNextNote(vals[j], -1);
+                  if(v_arr[v_ind].clef=='bass'){
+                    console.log('updateNextNote', vals[j], -1);
+                    updateNextNote(vals[j]+',', -1);
+                  }else{
+                    console.log('updateNextNote', vals[j], -1);
+                    updateNextNote(vals[j], -1);
+                  }
                 }
                 return;
               } else {
