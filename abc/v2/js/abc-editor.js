@@ -5275,7 +5275,7 @@ var content_vue = new Vue({
         if (!e?.id.includes("mysvgnode")) return;
         selectSvg = e;
       });
-      !selectSvg && showAlert && alert("请选中小节");
+      !selectSvg && showAlert && alert("未选中小节：请选取一个小节，然后重试");
       return selectSvg;
     },
     checkIsSelectNote(showAlert = true) {
