@@ -5695,10 +5695,10 @@ var content_vue = new Vue({
         }
         const abcCode = $('#source').val()
         const replaceRegs = {
-          title: /(?<=T:\s+).+/,
-          subTitle: /(?<=T:.+\nT:\s+).+/,
-          compose: /(?<=C:\s+).+/,
-          lyricist: /(?<=C:.+\nC:\s+).+/
+          title: /(?<=T:\s*).+/,
+          subTitle: /(?<=T:.+\nT:\s*).+/,
+          compose: /(?<=C:\s*).+/,
+          lyricist: /(?<=C:.+\nC:\s*).+/
         }
         const strMatch = abcCode.match(replaceRegs[type])
         const [str] = strMatch
