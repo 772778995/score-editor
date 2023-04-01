@@ -1773,7 +1773,7 @@
         @keydown.tab.stop="() => {
           m.editor.type = ''
           $nextTick(() => {
-            const noteList = [...$(`rect[ondblclick][type='rest'],rect[ondblclick][type='note']`)]
+            const noteList = [...$(`rect[ondblclick][type='rest'],rect[ondblclick][type='note'],rect[ondblclick][type='splnum_note'],rect[ondblclick][type='splnum_rest']`)]
             const index = noteList.findIndex(el => el.getAttribute('istart') === m.editor.noteIstart)
             if (noteList < 0) return
             const nextIstart = noteList[index + 1]?.getAttribute('istart')
@@ -1782,13 +1782,19 @@
             const note = [...$(`text[istart=${nextIstart}]`)].find(el => {
               el = $(el)
               console.log(el.attr('type'))
-              return ['r1', 'r2', 'r4', 'r8', 'r16', 'r32', 'r64', 'hd'].includes(el.attr('type'))
+              return ['r1', 'r2', 'r4', 'r8', 'r16', 'r32', 'r64', 'hd', 'note'].includes(el.attr('type'))
             })
             const istart = $(note).attr('istart')
             m.editor.noteIstart = istart
             const s = syms[istart]
-            const line = s.my_line
-            let { top } = $($(`g[type='staff']`)[line]).offset()
+
+            let top
+            if (content_vue.m.scoreOpts.musicType === 'easy') {
+              top = $(note).offset().top
+            } else {
+              const line = s.my_line
+              top = $($(`g[type='staff']`)[line]).offset().top
+            }
             top += 50 * content_vue.m.panzoom.scale / 100
             top += 'px'
             let { left } = $(note).offset()

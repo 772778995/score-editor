@@ -7880,10 +7880,22 @@ function createLyricEditor(lyricStr, noteIstart) {
     const line = syms[noteIstart].my_line
     const lines = lyricStr.split('\n').length
     const height = lines * 23 + 20 + 'px'
-    let { top } = $($(`g[type="staff"]`)[line]).offset()
+    let top
+    if (content_vue.m.scoreOpts.musicType === 'easy') {
+      const el = $(`text[type='note'][istart='${noteIstart}']`)
+      top = el.offset().top
+    } else {
+      top = $($(`g[type="staff"]`)[line]).offset().top
+    }
     top += 50 * content_vue.m.panzoom.scale / 100
     top += 'px'
-    let { left } = $($(`text[type="hd"][istart=${noteIstart}],text[type="r1"][istart=${noteIstart}],text[type="r2"][istart=${noteIstart}],text[type="r4"][istart=${noteIstart}],text[type="r8"][istart=${noteIstart}],text[type="r16"][istart=${noteIstart}],text[type="r32"][istart=${noteIstart}],text[type="64"][istart=${noteIstart}]`)).offset()
+    let left
+    if (content_vue.m.scoreOpts.musicType === 'easy') {
+      left = $(`text[type='note'][istart='${noteIstart}']`).offset().left
+    }
+    else {
+      left = $($(`text[type="hd"][istart=${noteIstart}],text[type="r1"][istart=${noteIstart}],text[type="r2"][istart=${noteIstart}],text[type="r4"][istart=${noteIstart}],text[type="r8"][istart=${noteIstart}],text[type="r16"][istart=${noteIstart}],text[type="r32"][istart=${noteIstart}],text[type="64"][istart=${noteIstart}]`)).offset().left
+    }
     left +='px'
     content_vue.m.editor.style = {
       top: top,
