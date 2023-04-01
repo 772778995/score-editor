@@ -106,6 +106,13 @@ const request = async (opts = {}) => {
 };
 
 const saveScore = async (isSaveAs = false) => {
+  if (!isSaveAs && !content_vue.m.id && !content_vue.m.saveToScore.isShow) {
+    content_vue.m.saveToScore.title = $("#source").val().match(/(?<=T:\s).+/g)[0]
+    content_vue.m.saveToScore.isShow = true
+    content_vue.m.saveToScore.sb = true
+    return
+  }
+
   let abcVal = $("#source").val() + '';
   let [title, subTitle] = abcVal.match(/(?<=T:\s).+/g);
   const [composer, lyricist] = abcVal.match(/(?<=C:\s).+/g);
@@ -158,8 +165,17 @@ const saveScore = async (isSaveAs = false) => {
 
   content_vue.m.saveToScore.isShow = false
   const res = await request(reqOpts);
+  if (content_vue.m.saveToScore.sb) {
+    $('#source').val($('#source').val().replace(/(?<=T:\s).+/, content_vue.m.saveToScore.title))
+    abc_change()
+    content_vue.m.id = res.id
+  }
   if (!isSaveAs && method === 'POST') {
     content_vue.m.id = res.id
+  }
+  if (content_vue.m.saveToScore.sb) {
+    content_vue.m.saveToScore.sb = false
+    return alert('成功创建谱例')
   }
   alert(isSaveAs ? '成功另存为谱例' : content_vue.m.id ? '成功保存谱例' : '成功创建谱例')
 };
