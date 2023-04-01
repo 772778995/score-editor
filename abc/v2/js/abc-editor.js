@@ -3173,7 +3173,7 @@ var content_vue = new Vue({
           show: false,
           list: [
             { title: "简谱", val: "easy", img: "../abc/img/jianpu.png" },
-            { title: "大谱表", val: "big", img: "../abc/img/da_pu_piao.png" },
+            { title: "大谱表", val: "big", img: "../abc/img/da_pu_biao.png" },
             { title: "高音谱表", val: "treble", img: "../abc/img/gao_yin.png" },
             { title: "低音谱表", val: "bass", img: "../abc/img/di_yin.png" },
             {
