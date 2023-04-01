@@ -3856,14 +3856,14 @@ var content_vue = new Vue({
               value: "!arpeggioup!",
               class: "cmenu",
               position: "before",
-              title: '向上琶音'
+              title: '琶音向下'
             },
             {
               url: "./img/notepanel/grace (7).png",
               value: "!arpeggiodown!",
               class: "cmenu",
               position: "before",
-              title: '向下琶音'
+              title: '琶音向下'
             },
             {
               url: "./img/notepanel/grace (8).png",
@@ -5275,7 +5275,7 @@ var content_vue = new Vue({
         if (!e?.id.includes("mysvgnode")) return;
         selectSvg = e;
       });
-      !selectSvg && showAlert && alert("请选中小节");
+      !selectSvg && showAlert && alert("未选中小节：请选取一个小节，然后重试");
       return selectSvg;
     },
     checkIsSelectNote(showAlert = true) {
