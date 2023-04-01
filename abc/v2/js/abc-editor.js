@@ -4476,7 +4476,7 @@ var content_vue = new Vue({
                     !content_vue.m.isMusicNoteShow),
               },
               {
-                title: "MID键盘",
+                title: "虚拟键盘",
                 shortList: ["M"],
                 valueList: ["m"],
                 fn: () => {
