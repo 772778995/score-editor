@@ -106,6 +106,13 @@ const request = async (opts = {}) => {
 };
 
 const saveScore = async (isSaveAs = false) => {
+  if (!isSaveAs && !content_vue.m.id && !content_vue.m.saveToScore.isShow) {
+    content_vue.m.saveToScore.title = $("#source").val().match(/(?<=T:\s).+/g)[0]
+    content_vue.m.saveToScore.isShow = true
+    content_vue.m.saveToScore.sb = true
+    return
+  }
+
   let abcVal = $("#source").val() + '';
   let [title, subTitle] = abcVal.match(/(?<=T:\s).+/g);
   const [composer, lyricist] = abcVal.match(/(?<=C:\s).+/g);
@@ -158,8 +165,17 @@ const saveScore = async (isSaveAs = false) => {
 
   content_vue.m.saveToScore.isShow = false
   const res = await request(reqOpts);
+  if (content_vue.m.saveToScore.sb) {
+    $('#source').val($('#source').val().replace(/(?<=T:\s).+/, content_vue.m.saveToScore.title))
+    abc_change()
+    content_vue.m.id = res.id
+  }
   if (!isSaveAs && method === 'POST') {
     content_vue.m.id = res.id
+  }
+  if (content_vue.m.saveToScore.sb) {
+    content_vue.m.saveToScore.sb = false
+    return alert('成功创建谱例')
   }
   alert(isSaveAs ? '成功另存为谱例' : content_vue.m.id ? '成功保存谱例' : '成功创建谱例')
 };
@@ -2470,9 +2486,9 @@ var content_vue = new Vue({
           { txt: "♯F大调", val: "#F", valueSelector: "^f" },
           { txt: "♯C大调", val: "#C", valueSelector: "^c" },
           { txt: "F大调", val: "F", valueSelector: "f" },
-          { txt: "♭B大调", val: "Bb", valueSelector: "_b" },
+          { txt: "♭B大调", val: "Bb", valueSelector: "_b," },
           { txt: "♭E大调", val: "Eb", valueSelector: "_e" },
-          { txt: "♭A大调", val: "Ab", valueSelector: "_a" },
+          { txt: "♭A大调", val: "Ab", valueSelector: "_a," },
           { txt: "♭D大调", val: "Db", valueSelector: "_d" },
           { txt: "♭G大调", val: "Gb", valueSelector: "_g" },
           { txt: "♭C大调", val: "Cb", valueSelector: "_c" },
@@ -3173,7 +3189,7 @@ var content_vue = new Vue({
           show: false,
           list: [
             { title: "简谱", val: "easy", img: "../abc/img/jianpu.png" },
-            { title: "大谱表", val: "big", img: "../abc/img/da_pu_piao.png" },
+            { title: "大谱表", val: "big", img: "../abc/img/da_pu_biao.png" },
             { title: "高音谱表", val: "treble", img: "../abc/img/gao_yin.png" },
             { title: "低音谱表", val: "bass", img: "../abc/img/di_yin.png" },
             {
@@ -3856,14 +3872,14 @@ var content_vue = new Vue({
               value: "!arpeggioup!",
               class: "cmenu",
               position: "before",
-              title: '向上琶音'
+              title: '琶音向下'
             },
             {
               url: "./img/notepanel/grace (7).png",
               value: "!arpeggiodown!",
               class: "cmenu",
               position: "before",
-              title: '向下琶音'
+              title: '琶音向下'
             },
             {
               url: "./img/notepanel/grace (8).png",
@@ -4476,7 +4492,7 @@ var content_vue = new Vue({
                     !content_vue.m.isMusicNoteShow),
               },
               {
-                title: "MID键盘",
+                title: "虚拟键盘",
                 shortList: ["M"],
                 valueList: ["m"],
                 fn: () => {
@@ -5275,7 +5291,7 @@ var content_vue = new Vue({
         if (!e?.id.includes("mysvgnode")) return;
         selectSvg = e;
       });
-      !selectSvg && showAlert && alert("请选中小节");
+      !selectSvg && showAlert && alert("未选中小节：请选取一个小节，然后重试");
       return selectSvg;
     },
     checkIsSelectNote(showAlert = true) {

@@ -1109,8 +1109,9 @@
           <!-- <div style="padding: 20px 25px 12px 25px; border: 2px solid #E7E7E7;"></div> -->
           <div class="flex h-full flex-1 rounded" style=" border: 2px solid #E7E7E7;">
 
-            <div style="border-right: 2px solid #E7E7E7;">
-              <div class="flex-1 pr-6 mr-6" style="padding: 20px 25px 12px 25px;">
+            <div class=" flex-1" style="border-right: 2px solid #E7E7E7;">
+
+              <div style="padding: 20px 25px 12px 25px;" >
                 <div
                   v-for="item in m.shortcutsPanel.typeList[m.shortcutsPanel.index]?.leftList"
                   :key="item.title"
@@ -1130,6 +1131,7 @@
                   </div>
                 </div>
               </div>
+
             </div>
 
             <div class="flex-1">
@@ -1774,7 +1776,7 @@
         @keydown.tab.stop="() => {
           m.editor.type = ''
           $nextTick(() => {
-            const noteList = [...$(`rect[ondblclick][type='rest'],rect[ondblclick][type='note']`)]
+            const noteList = [...$(`rect[ondblclick][type='rest'],rect[ondblclick][type='note'],rect[ondblclick][type='splnum_note'],rect[ondblclick][type='splnum_rest']`)]
             const index = noteList.findIndex(el => el.getAttribute('istart') === m.editor.noteIstart)
             if (noteList < 0) return
             const nextIstart = noteList[index + 1]?.getAttribute('istart')
@@ -1783,13 +1785,19 @@
             const note = [...$(`text[istart=${nextIstart}]`)].find(el => {
               el = $(el)
               console.log(el.attr('type'))
-              return ['r1', 'r2', 'r4', 'r8', 'r16', 'r32', 'r64', 'hd'].includes(el.attr('type'))
+              return ['r1', 'r2', 'r4', 'r8', 'r16', 'r32', 'r64', 'hd', 'note'].includes(el.attr('type'))
             })
             const istart = $(note).attr('istart')
             m.editor.noteIstart = istart
             const s = syms[istart]
-            const line = s.my_line
-            let { top } = $($(`g[type='staff']`)[line]).offset()
+
+            let top
+            if (content_vue.m.scoreOpts.musicType === 'easy') {
+              top = $(note).offset().top
+            } else {
+              const line = s.my_line
+              top = $($(`g[type='staff']`)[line]).offset().top
+            }
             top += 50 * content_vue.m.panzoom.scale / 100
             top += 'px'
             let { left } = $(note).offset()
@@ -2027,7 +2035,7 @@
 
           <div class="flex items-center space-x-2.5 cursor-pointer" @click="(menuActive = '') | keyboardClick()">
             <img :src="`./img/checkbox${keyboardShow ? '2' : '1'}.png`" />
-            <div>钢琴键盘</div>
+            <div>虚拟键盘</div>
           </div>
           
           <div class="flex items-center space-x-2.5 cursor-pointer" @click="m.numberKeypad.isShow = !m.numberKeypad.isShow">
@@ -2150,8 +2158,8 @@
           </div>
         </div>
 
-        <div class="cursor-pointer ml-auto" @click="m.shortcutsPanel.index = 0">快捷键</div>
-        <div class="mx-1 cursor-pointer">帮助</div>
+        <div class="cursor-pointer ml-auto mr-8" @click="m.shortcutsPanel.index = 0">快捷键</div>
+        <div class="mx-3 cursor-pointer">帮助</div>
       </div>
       
       <div
@@ -3214,7 +3222,7 @@
         />
         <div class="keyboard-box keyboard-up">
           <div class="keyboard-bar">
-            <span class="keyboard-lbl">钢琴键盘</span>
+            <span class="keyboard-lbl">虚拟键盘</span>
             <span class="close piano-close" title="关闭"></span>
             <span class="minimize" title="最小化"></span>
             <span class="restore hide" title="还原"></span>
@@ -6452,7 +6460,7 @@
             Ctrl+E： 显示/隐藏语法编辑框
             <br />
             <hr />
-            Ctrl+D：显示/隐藏钢琴键盘
+            Ctrl+D：显示/隐藏虚拟键盘
             <br />
             <hr />
             Ctrl+Q：切换定位状态
