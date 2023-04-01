@@ -1385,6 +1385,15 @@ $(document).ready(function () {
       // ctrl + 向上箭头
       if (event.which === 38 && event.ctrlKey) {
         console.log("按下ctrl+向上箭头");
+        if($('.selected_text').length || $('.select_text_g').length){
+          var istart = $('.selected_text').length?$('.selected_text').eq($('.selected_text').length-1).attr('istart'):$('.select_text_g').eq(0).attr('istart');
+          var mid = syms[istart].notes[0].midi;
+          console.log('mid:', mid);
+          if(mid+12>108){
+            // 防止超出有效midi值
+            return false;
+          }
+        }
         var handleGraphEditor = upDownKeyWord(12);
         if (handleGraphEditor) {
           return false;
@@ -1394,6 +1403,14 @@ $(document).ready(function () {
 
       if (event.which === 40 && event.ctrlKey) {
         console.log("按下ctrl+向下箭头");
+        if($('.selected_text').length || $('.select_text_g').length){
+          var istart = $('.selected_text').length?$('.selected_text').eq($('.selected_text').length-1).attr('istart'):$('.select_text_g').eq(0).attr('istart');
+          var mid = syms[istart].notes[0].midi;
+          if(mid-12<21){
+            // 防止超出有效midi值
+            return false;
+          }
+        }
         var handleGraphEditor = upDownKeyWord(-12);
         if (handleGraphEditor) {
           return false;
