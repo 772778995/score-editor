@@ -3539,6 +3539,71 @@ function getNearK(sourceid) {
   }
   return "";
 }
+// 取最近的谱号的值
+function getNearStaffInfo(sourceid) {
+  sourceid = sourceid?sourceid:'source';
+  var content = $("#" + sourceid).val();
+  var s_content = content;
+  // 光标位置
+  localtosource();
+  var cursorPos = getStartPos(getById(sourceid));
+  console.log('cursorPos', cursorPos, content.length);
+  if (cursorPos > 0 && cursorPos!=content.length) {
+    content = content.substr(0, cursorPos);
+  }else{
+    var staffInf = getStaffInfo2();
+    return staffInf.vocalArr[0].clef;
+  }
+  // console.log(content);
+  var kPattern = /(V:\d|treble|bass|alto|tenor)/g;
+  var sts = content.match(kPattern);
+  console.log(sts);
+  if (sts == null) {
+    var staffInf = getStaffInfo2();
+    return staffInf.vocalArr[0].clef;
+  } else {
+    var nearSF = sts[sts.length - 1];
+    if (nearSF != "" && nearSF.indexOf('V:')>-1) {
+      var staffInf = getStaffInfo2();
+      var v_arr = nearSF.split(':');
+      var v = v_arr[1];
+      for(var j in staffInf.vocalArr){
+        if(staffInf.vocalArr[j].seq == v){
+          return staffInf.vocalArr[j].clef;
+        }
+      }
+      return staffInf.vocalArr[0].clef;
+    }
+    return nearSF;
+  }
+}
+
+// 取最近的节拍的值
+function getNearK(sourceid) {
+  var content = $("#" + sourceid).val();
+  // 光标位置
+  var cursorPos = getStartPos(getById(sourceid));
+
+  if (cursorPos > 0) {
+    content = content.substr(0, cursorPos);
+  }
+  var kPattern = /\[K:\s*(.[^\]]*)\]|K:\s(.*)\n/g;
+  var keys = content.match(kPattern);
+  if (keys == null) {
+    return null;
+  } else {
+    var pat = /K:\s*(.[^\]]*)]*/;
+    var nearK = keys[keys.length - 1];
+    if (nearK != "") {
+      var ms = nearK.match(pat);
+      if (ms != null) {
+        return ms[1];
+      }
+    }
+    return nearK;
+  }
+  return "";
+}
 // 小数转分数
 function decimalsToFractional(decimals) {
   const formatDecimals = decimals.toFixed(5);
@@ -5923,21 +5988,74 @@ function handleKeyPress(e, editorType) {
               //播放
               play_note(noteSeq, durSetting);
               if (editorType == "editor") {
-                var staffInf = getStaffInfo2();
-                var v_arr = staffInf.vocalArr;
-                var v_ind = 0;
+                console.log('input: ', vals[j]);
+                var staff_str = getNearStaffInfo();
+                console.log('staff_str', staff_str);
+                var octave = 0; // 中央C所在八度为 0;
                 if($('.selected_text').length){
                   var istart = $('.selected_text').eq($('.selected_text').length-1).attr('istart');
-                  v_ind = syms[istart].st;
-                }
+                  if($('.selected_text').eq($('.selected_text').length-1).prev().attr('type')=='note'){
+                    var istart = $('.selected_text').eq($('.selected_text').length-1).prev().attr('istart');
+                    var mid = syms[istart].notes[0].midi;
+                    // var my_key = syms[istart].my_key;
+                    var keys = 'CDEFGAB';
+                    var midis = [60, 62, 64, 65, 67, 69, 71];
+                    var m_ind = keys.indexOf(vals[j]);
+                    
+                    if(mid>=72){
+                      for(var i=72; i<=108; i+=12){
+                        octave += 1;
+                        if(mid>=i && mid<i+12){
+                          break;
+                        }
+                      }
+                    }else if(mid<60){
+                      for(var i=59; i>=21; i-=12){
+                        octave -= 1;
+                        if(mid<=i && mid>i-12){
+                          break;
+                        }
+                      }
+                    }
+                    for(var i in midis){
+                      midis[i] = midis[i]+octave*12;
+                    }
+                    var m_mid = midis[m_ind];
+                    console.log('m_mid:', m_mid, mid, octave);
+                    if(m_mid-mid>6){
+                      octave -= 1;
+                    }else if(m_mid-mid<-6){
+                      octave += 1;
+                    }
+                  }else{
+                    if(staff_str=='bass'){
+                      console.log('updateNextNote', vals[j], -1);
+                      updateNextNote(vals[j]+',', -1);
+                      return;
+                    }
+                  }
 
-                // 
-                if(v_arr[v_ind].clef=='bass'){
-                  console.log('updateNextNote', vals[j], -1);
-                  updateNextNote(vals[j]+',', -1);
+                  var octave_str = '';
+                  if(octave>0){
+                    for(var i=1; i<=octave; i++){
+                      octave_str += "'";
+                    }
+                  }else if(octave<0){
+                    for(var i=-1; i>=octave; i--){
+                      octave_str += ",";
+                    }
+                  }
+                  console.log('octave_str', istart, mid, octave, octave_str);
+
+                  updateNextNote(vals[j]+octave_str, -1);
                 }else{
-                  console.log('updateNextNote', vals[j], -1);
-                  updateNextNote(vals[j], -1);
+                  if(staff_str=='bass'){
+                    console.log('updateNextNote', vals[j], -1);
+                    updateNextNote(vals[j]+',', -1);
+                  }else{
+                    console.log('updateNextNote', vals[j], -1);
+                    updateNextNote(vals[j], -1);
+                  }
                 }
                 return;
               } else {
