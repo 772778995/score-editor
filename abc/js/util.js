@@ -5933,6 +5933,12 @@ function handleKeyPress(e, editorType) {
                   if($('.selected_text').eq($('.selected_text').length-1).prev().attr('type')=='note'){
                     var istart = $('.selected_text').eq($('.selected_text').length-1).prev().attr('istart');
                     var mid = syms[istart].notes[0].midi;
+                    var my_key = syms[istart].my_key;
+                    // vals[j]
+                    var keys = 'CDEFGAB';
+                    var midis = [60, 62, 64, 65, 67, 69, 71];
+                    var m_ind = keys.indexOf(vals[j]);
+                    
                     if(mid>=72){
                       for(var i=72; i<=108; i+=12){
                         octave += 1;
@@ -5941,12 +5947,22 @@ function handleKeyPress(e, editorType) {
                         }
                       }
                     }else if(mid<60){
-                      for(var i=48; i>=21; i-=12){
+                      for(var i=59; i>=21; i-=12){
                         octave -= 1;
                         if(mid<=i && mid>i-12){
                           break;
                         }
                       }
+                    }
+                    for(var i in midis){
+                      midis[i] = midis[i]+octave*12;
+                    }
+                    var m_mid = midis[m_ind];
+                    console.log('m_mid:', m_mid, mid, octave);
+                    if(m_mid-mid>6){
+                      octave -= 1;
+                    }else if(m_mid-mid<-6){
+                      octave += 1;
                     }
                   }
 
