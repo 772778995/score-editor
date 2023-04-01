@@ -186,6 +186,7 @@ function noteOff(noteNumber, timeStamp) {
 		//insertWithVoice(note);
 		user.midiInput = true;
 		updateNextNote(note,noteNumber);
+		console.log('updateNextNote', note,noteNumber);
 		user.midiInput = false;
 	}
 	midiNotes = new Array();

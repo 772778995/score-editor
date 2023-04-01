@@ -3909,6 +3909,7 @@ function mic2Staff(_0x1615B, _0x16097) {
   console[_$_1e54[170]](_$_1e54[516], noteStr);
   if (noteStr != _$_1e54[32]) {
     console[_$_1e54[170]](_$_1e54[32], noteStr);
+    console.log('updateNextNote', noteStr, -1);
     updateNextNote(noteStr, -1);
   }
 }

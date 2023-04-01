@@ -99,8 +99,7 @@
     <script src="js/drag.js?v=20221027"></script>
     <script src="js/main.js?v=20221027"></script>
     <script src="js/xml2abcutil.js?v=20221027"></script>
-    <script src="./js/FileSaver.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/interactjs@1.9.20/dist/interact.min.js"></script>
+    <script src="js/FileSaver.min.js"></script>
 
     <!-- 字体css -->
     <link rel="stylesheet" href="v2/css/font/font.css?v=20230331-1"/>
@@ -1044,7 +1043,7 @@
         <div class="rounded-md bg-white" style="box-shadow: 0px 4px 30px 0px rgba(3,35,63,0.28);">
           <div class="flex justify-between items-center rounded-t-md font-bold" style="font-size: 20px; padding: 13px 20px 11px 20px; background: #F5F5F5">
             导出
-            <img src="../abc/img/close.png" class="cursor-pointer" @click="m.export.show = false"/>
+            <img src="img/close.png" class="cursor-pointer" @click="m.export.show = false"/>
           </div>
 
           <div style="margin: 20px 30px 30px 35px; color: #606060">
@@ -1057,7 +1056,7 @@
                 :class="{ 'opacity-50 pointer-events-none': item.disabled }"
                 @click="item.checked = !item.checked"
               >
-                <img :src="`/abc/img/checkbox${item.checked ? '2' : '1'}.png`" />
+                <img :src="`img/checkbox${item.checked ? '2' : '1'}.png`" />
                 <div>{{ item.txt }}</div>
               </div>
             </div>
@@ -7274,12 +7273,12 @@
   // 默认钢琴按键不播abc
   var noteOnVol = false;
 </script>
-<link rel="stylesheet" href="/abc/css/element-ui.css">
+<link rel="stylesheet" href="css/element-ui.css">
 <script src="js/vue.min.js"></script>
 <script src="components/NumberInput.js"></script>
 <script src="components/SelectInput.js"></script>
 <script src="components/SelectFontInput.js"></script>
-<script src="/abc/js/element-ui.js"></script>
+<script src="js/element-ui.js"></script>
 <script src="v2/js/popper.min.js"></script>
 <script src="v2/js/bootstrap.min.js"></script>
 <script src="compont/sweetalert/sweetalert.min.js?v=20221027"></script>
@@ -7296,7 +7295,7 @@
 <script src="v2/js/abc_menu_config.js?v=20221027"></script>
 <script src="v2/js/pop.js?v=20221027"></script>
 <script src="js/piano.js?v=20221027" type="text/javascript"></script>
-
+<script src="js/interact.min.js"></script>
 <script src="js/staff2num-splnum.js?v=20221027" type="text/javascript"></script>
 <script
   src="js/edit-1-splnum.js?v=20221027"

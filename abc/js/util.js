@@ -3586,6 +3586,26 @@ function setBarsPerstaff(sourceid, num) {
   $("#" + sourceid).val(newContent);
   abc_change();
 }
+
+// 设置每行显示小节数
+function handleBreakLine(content, num){
+  var pattern = /%%barsperstaff\s*(\d)*\n/;
+	if(parseInt(num)<1){
+		// 不限制
+		content = content.replaceAll(pattern,"");
+	}else{
+		var matches = content.match(pattern);
+		var str = "%%barsperstaff " + num + "\n";
+		if(matches!=null){
+			// 已经存在，则替换
+			content = content.replaceAll(pattern,str);
+		}else{
+			content = str + content;
+		}
+	}
+  return content;
+}
+
 // 显示/隐藏小节线序号
 function showNodeSeq(sourceid) {
   var content = $("#" + sourceid).val();
@@ -5903,7 +5923,22 @@ function handleKeyPress(e, editorType) {
               //播放
               play_note(noteSeq, durSetting);
               if (editorType == "editor") {
-                updateNextNote(vals[j], -1);
+                var staffInf = getStaffInfo2();
+                var v_arr = staffInf.vocalArr;
+                var v_ind = 0;
+                if($('.selected_text').length){
+                  var istart = $('.selected_text').eq($('.selected_text').length-1).attr('istart');
+                  v_ind = syms[istart].st;
+                }
+
+                // 
+                if(v_arr[v_ind].clef=='bass'){
+                  console.log('updateNextNote', vals[j], -1);
+                  updateNextNote(vals[j]+',', -1);
+                }else{
+                  console.log('updateNextNote', vals[j], -1);
+                  updateNextNote(vals[j], -1);
+                }
                 return;
               } else {
                 var selectText = getSelectText("source");
@@ -6000,8 +6035,11 @@ function handleNumPress(e, editorType) {
         for (var j = 0; j < vals.length; j++) {
           if (vals[j].toUpperCase().indexOf(keyValue.toUpperCase()) > -1) {
             if (editorType == "editor") {
+              // 获取当前谱号
+
               //updateNextNote(vals[j],-1);//这样会输入选中的那个区域的，比如G调会变成1234567为GABCDEF
               updateNextNote(note, -1, pressShiftKey || chordInput); //这样的输入比较合理，比如G调1234567分别为GABcdef
+              console.log('updateNextNote', note, -1, pressShiftKey || chordInput);
               return;
             } else {
               var selectText = getSelectText("source");
@@ -6473,6 +6511,7 @@ function getStaffInfo(sourceid) {
   var vocalReg = /V:\s*\d{1,2}/g;
   var vocalReg2 = /V:\s*(\d{1,2})/;
   var vocalMatch = content.match(vocalReg);
+  console.log('vocalMatch', vocalMatch);
   if (vocalMatch != null) {
     var vocalArr = new Array();
     for (var i = 0; i < vocalMatch.length; i++) {
@@ -6611,6 +6650,242 @@ function getStaffInfo(sourceid) {
   }
   return staff;
 }
+
+//获取谱子信息
+function getStaffInfo2(sourceid){
+	var content = $("#source").val();
+	if(content==""){
+		return;
+	}
+	var staff = new Object();
+	//获取声部数量 vocalCount
+	staff.vocalCount = 1;//默认一个声部
+	staff.barCount = 0;
+	var vocalReg = /V:\s*\d{1,2}.*/g;
+	var vocalReg2 = /V:\s*(\d{1,2})/;
+	var nmReg = / nm=\"(.[^\"]*)\"/;
+	var snmReg = / snm=\"(.[^\"]*)\"/;
+	var clefReg = /treble|bass|alto|tenor/;
+	var vocalMatch = content.match(vocalReg);
+	var vocalArr = new Array();
+//	genChangMingFlag = true;
+//	var noteData = null;
+//	try{
+//		noteData = getNoteData();
+//	}catch(e){
+//		genChangMingFlag = false;
+//	}
+	if(vocalMatch!=null){
+		
+		for(var i=0;i<vocalMatch.length;i++){
+			var vocalStr = vocalMatch[i];
+			var vocalSeq = vocalStr.match(vocalReg2)[1];
+			var vocalObj = new Object();
+			vocalObj.seq = vocalSeq;
+			vocalObj.nm = "";
+			vocalObj.snm = "";	
+			vocalObj.clef = "treble";
+			var note = syms.find(function(item){
+				if(item && item.p_v){
+					return item.p_v.v == i;
+				}
+			})
+//			var note = noteData.find(function(item,index,arr){
+//				return item[6]==i;
+//			})
+			if(note){
+				vocalObj.midi = note.p_v.instr;//midi序号
+			}
+			var clef = clefReg.exec(vocalStr);
+			if(clef){
+				vocalObj.clef = clef[0];
+			}
+			
+			
+			var existItem = vocalArr.find(function(item,index,arr){
+				return item.seq == vocalSeq;
+			})
+			
+			if(existItem){
+				console.log("已经存在：",existItem)
+				
+			}
+			if(vocalStr.indexOf("perc stafflines=1")>-1){
+				vocalObj.rhythm = 1;//节奏谱
+			}
+			
+			//声部名称
+			var nm = nmReg.exec(vocalStr);
+			if(nm){
+				if(existItem && !existItem.nm){
+					existItem.nm = nm[1]
+				}else{
+					vocalObj.nm = nm[1];
+				}
+			}
+			//声部副名称
+			var snm = snmReg.exec(vocalStr);
+			if(snm){
+				
+				if(existItem && !existItem.snm){
+					existItem.snm = snm[1]
+				}else{
+					vocalObj.snm = snm[1];
+				}
+			}
+			
+			if(!existItem){
+				vocalArr.push(vocalObj);
+			}
+		}
+		staff.vocalCount = vocalArr.length;
+	}
+	staff.vocalArr = vocalArr;
+	
+	//获取小节数量
+	if(!syms){
+		return;
+	}
+	for(var i=0;i<syms.length;i++){
+		if(syms[i]){
+			if(syms[i].bar_num>staff.barCount){
+				staff.barCount = syms[i].bar_num-1;
+			}
+			if(!staff.wmeasure && syms[i].type==8 || syms[i].type==10){
+				staff.wmeasure = syms[i].my_wmeasure
+			}
+		}
+	}
+	
+	//获取每行小节数
+	staff.lineBarNum = -1;
+	var lineBarNumReg = /%%barsperstaff\s*(\d{1,2})/;
+	var lineBarMatch = content.match(lineBarNumReg);
+	if(lineBarMatch != null){
+		staff.lineBarNum = lineBarMatch[1];
+	}
+	
+	//是否有弱起小节
+	staff.hasWeakNode = has_weak_node;
+	//弱起小节时值
+	staff.weakNodeVal = weak_node_dur;
+	if(staff.hasWeakNode && staff.weakNodeVal>0){
+		staff.weakNode = new Object();
+		var tmp = decimalsToFractional(weak_node_dur/1536);
+		staff.weakNode.top = tmp.split("/")[0];
+		staff.weakNode.bot = tmp.split("/")[1];
+	}
+	
+	//行高
+	staff.lineHeight = -1;
+	var lineHeightReg = /%%staffsep\s*(\d{1,3})/;
+	var lineHeightMatch = content.match(lineHeightReg);
+	if(lineHeightMatch!=null){
+		staff.lineHeight = lineHeightMatch[1];
+	}
+	//取节拍
+	staff.meter = null;
+	var meterReg = /M:\s*(\d{1,2}\/\d{1,2})/;
+	var meterMatch = content.match(meterReg);
+	if(meterMatch!=null){
+		staff.meter = new Object();
+		var top = meterMatch[1].split("/")[0];
+		var bot = meterMatch[1].split("/")[1];
+		staff.meter.top = top;
+		staff.meter.bot = bot;
+	}
+	
+	//是否散板
+	staff.isFreeMeasure = false;
+	var freeMeasureReg = /!invisible!M:.*/;
+	var freeMeasureMatch = content.match(freeMeasureReg);
+	if(freeMeasureReg!=null){
+		staff.isFreeMeasure = true;
+	}
+	
+	//速度描述
+	staff.speedDesc = "";
+	var freeDescReg = /Q:.*\"(.[^\"\n]*)\"/;
+	var freeDescMatch = content.match(freeDescReg);
+	if(freeDescMatch!=null){
+		staff.speedDesc = freeDescMatch[1];
+		//判断速度描述是在速度的前面还是后面
+		var spdReg = /Q:.*/;
+		var spdMatch = content.match(spdReg);
+		if(spdMatch!=null){
+			var spdStr = spdMatch[0];
+			if(spdStr.indexOf("=")<spdStr.indexOf('"')){
+				//等号在前面
+				staff.speedDescPos = "after";
+				$("input[name='spdpos'][value='after']").attr("checked",true)
+			}else if(spdStr.indexOf("=")>spdStr.indexOf('"')){
+				staff.speedDescPos = "before";
+				$("input[name='spdpos'][value='before']").attr("checked",true)
+			}
+		}
+	}
+	
+	//速度
+	staff.speed = null;
+	var speedReg = /Q:.*(\d{1,2}\/\d{1,2}\=\d{1,3})/;
+	var speedMatch = content.match(speedReg);
+	if(speedMatch!=null){
+		var speedStr = speedMatch[1];
+		var meterStr = speedStr.split("=")[0];
+		var speedVal = speedStr.split("=")[1];
+		staff.speed = new Object();
+		staff.speed.meter = new Object();
+		staff.speed.meter.top = meterStr.split("/")[0];
+		staff.speed.meter.bot = meterStr.split("/")[1];
+		staff.speed.val = speedVal;
+	}
+	
+	//调号
+	staff.key = getStaffKey().value;
+	
+	//标题字体
+	staff.titleFontSize = null;
+	var titleFontSizeReg = /%%titlefont.*(\d{2})/;
+	var titleFontSizeMatch = content.match(titleFontSizeReg);
+	if(titleFontSizeMatch != null){
+		staff.titleFontSize = titleFontSizeMatch[1];
+	}
+	
+	//标题颜色
+	staff.titleFontColor = null;
+	var titleFontColorReg = /%%titlecolor\s*(.*)/;
+	var titleFontColorMatch = content.match(titleFontColorReg);
+	if(titleFontColorMatch!=null){
+		staff.titleFontColor = titleFontColorMatch[1];
+	}
+	
+	//歌词字体
+	staff.lyricFontSize = null;
+	var lyricFontSizeReg = /%%vocalfont.*(\d{2})/;
+	var lyricFontSizeMatch = content.match(lyricFontSizeReg);
+	if(lyricFontSizeMatch != null){
+		staff.lyricFontSize = lyricFontSizeMatch[1];
+	}
+	
+	//歌词颜色
+	staff.lyricFontColor = null;
+	var lyricFontColorReg = /%%lyriccolor\s*(.*)/;
+	var lyricFontColorMatch = content.match(lyricFontColorReg);
+	if(lyricFontColorMatch!=null){
+		staff.lyricFontColor = lyricFontColorMatch[1];
+	}
+	
+	//是否是节奏谱
+	var rhythmReg = /V:.*perc/;
+	staff.isRhythmStaff = false;
+	if(staff.vocalCount==1){
+		if(rhythmReg.test(content)){
+			staff.isRhythmStaff = true;
+		}
+	}
+	return staff;
+}
+
 /*
  *把文本转为行的对象
  *

@@ -5741,6 +5741,7 @@ function genNoteDeco(_0x16251, _0x189B1, _0x15F54, _0x1873B) {
   }
   if (_0x1873B == _$_4d63[621]) {
     dragSplNum = true;
+    console.log('updateNextNote', _0x16251, cen[_$_4d63[69]], chordInput);
     updateNextNote(_0x16251, cen[_$_4d63[69]], chordInput, true);
     dragSplNum = false;
     lastMidiReplaceNoteIstart = -1;
@@ -6546,10 +6547,13 @@ function moveDeco(_0x16062) {
   console[_$_4d63[75]](_$_4d63[128], nearDecoNote);
   var _0x15EFA = $(_0x15FAE)[_$_4d63[49]](_$_4d63[69]);
 }
+
+// 更新/插入下个音符
 var lastMidiReplaceNoteIstart = -1;
 var lastMidiReplaceNoteV = -1;
 var midiInStatus = false;
 function updateNextNote(_0x1C16A, _0x1B13E, chordInput, _0x1C197) {
+  console.log('updateNextNote:', _0x1C16A, _0x1B13E, chordInput, _0x1C197);
   if (!graph_update) {
     return;
   }
@@ -6636,6 +6640,7 @@ function updateNextNote(_0x1C16A, _0x1B13E, chordInput, _0x1C197) {
       }
       appendNodes(1);
       setTimeout(function () {
+        console.log('updateNextNote', _0x1C16A, _0x1B13E);
         updateNextNote(_0x1C16A, _0x1B13E);
       }, 500);
       midiInStatus = false;
@@ -6737,6 +6742,7 @@ function updateNextNote(_0x1C16A, _0x1B13E, chordInput, _0x1C197) {
   }
   return _0x1C1F1;
 }
+
 function showLyricInput() {
   var _0x1B738 = new Array();
   var _0x1673D = $(_$_4d63[277])[_$_4d63[274]]()[_$_4d63[198]];
