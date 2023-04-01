@@ -6152,9 +6152,11 @@ function genNoteDeco(_0x16251, _0x189B1, _0x15F54, _0x1873B) {
             }
           }
           var _0x16BFC = getMidStr(cen);
+          // 这，就是谱号！
+          debugger
           if (_0x16BFC[_$_4d63[88]](_0x16251) < 0) {
             _0x15C57 =
-              _0x15C57[_$_4d63[177]](0, cen[_$_4d63[69]]) +
+              _0x15C57[_$_4d63[177]](0, cen[_$_4d63[69]]).replace(/\[K:[^\]]+\]$/, '') +
               _0x16251 +
               _0x15C57[_$_4d63[177]](cen[_$_4d63[69]]);
           }
@@ -6554,7 +6556,7 @@ var lastMidiReplaceNoteV = -1;
 var midiInStatus = false;
 function updateNextNote(_0x1C16A, _0x1B13E, chordInput, _0x1C197) {
   console.log('updateNextNote:', _0x1C16A, _0x1B13E, chordInput, _0x1C197);
-  if (!graph_update) {
+  if (!graph_update && _0x1C16A !== 'z') {
     return;
   }
   console[_$_4d63[75]](_$_4d63[666], _0x1C16A);

@@ -107,20 +107,20 @@ const request = async (opts = {}) => {
 
 const saveScore = async (isSaveAs = false) => {
   if (!isSaveAs && !content_vue.m.id && !content_vue.m.saveToScore.isShow) {
-    content_vue.m.saveToScore.title = $("#source").val().match(/(?<=T:\s).+/g)[0]
+    content_vue.m.saveToScore.title = $("#source").val().match(/(?<=T:\s*).+/g)[0]
     content_vue.m.saveToScore.isShow = true
     content_vue.m.saveToScore.sb = true
     return
   }
 
   let abcVal = $("#source").val() + '';
-  let [title, subTitle] = abcVal.match(/(?<=T:\s).+/g);
-  const [composer, lyricist] = abcVal.match(/(?<=C:\s).+/g);
-  const [keySign] = abcVal.match(/(?<=K:\s).+/);
-  const [timeSign] = abcVal.match(/(?<=M:\s).+/);
-  const [speed] = abcVal.match(/(?<=Q:\s+).+/);
-  const isChangeTimeSign = !!abcVal.match(/\$\[M:\d+\/\d+\]/g);
-  const isChangeKeySign = !!abcVal.match(/\$\[K:[A-G]\]/g);
+  let [title, subTitle] = abcVal.match(/(?<=T:\s*).+/g);
+  const [composer, lyricist] = abcVal.match(/(?<=C:\s*).+/g);
+  const [keySign] = abcVal.match(/(?<=K:\s*).+/);
+  const [timeSign] = abcVal.match(/(?<=M:\s*).+/);
+  const [speed] = abcVal.match(/(?<=Q:\s*).+/);
+  const isChangeTimeSign = !!abcVal.match(/\$\[M:\s*\d+\/\d+\]/g);
+  const isChangeKeySign = !!abcVal.match(/\$\[K:\s*[A-G]\]/g);
   const isUpbeat = scoreOpts.isWeak;
   const musicType = scoreOpts.musicType;
   const isHasLyric = !!abcVal.match(/\nw:.+/g);
@@ -209,6 +209,7 @@ const initNewScoreOpts = {
 };
 
 function liaison(val) {
+  debugger
   var selectEl = $(".selected_text")[0];
   if (!selectEl) return alert("未选中音符：请选取一个音符，然后重试");
   var _0x15C57 = $("#source").val();
@@ -392,6 +393,7 @@ function changeAbc(cb) {
 
 function lineTo() {
   keepSelectNote(() => {
+    debugger
     const info = getSelectAbcCodeInfo();
     if (!info) return alert("未选中音符：请选取一个音符，然后重试");
     let { istart, txt } = info;
@@ -400,7 +402,7 @@ function lineTo() {
     let tailCode = abcCode.substr(istart).replace(txt, "");
     txt = "(" + txt;
     tailCode = tailCode.replace(
-      /[H-Zh-z]*({.*})?(!.*!)?\(?[A-Ga-g]\)?/,
+      /[H-Zh-z]*({.*})?(!.*!)?\(?[A-Ga-g]\)?,*/,
       (s) => s + ")"
     );
     abcCode = headCode + txt + tailCode;
@@ -2711,7 +2713,8 @@ var content_vue = new Vue({
               isKeepSelect: true,
               className: "k-5-16",
               title: "休止符",
-              selector: ".reststatus",
+              // selector: ".reststatus",
+              fn: () => updateNextNote('z', -1),
               isSelect: false,
             },
             {
@@ -3528,6 +3531,9 @@ var content_vue = new Vue({
               title: "升号",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                keepSelectNote(() => $('.pitchbtn[value="^"]').click())
+              }
             },
             {
               url: "./img/notepanel/tempMark (2).png",
@@ -3535,6 +3541,9 @@ var content_vue = new Vue({
               title: "降号",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                keepSelectNote(() => $('.pitchbtn[value="_"]').click())
+              }
             },
             {
               url: "./img/notepanel/tempMark (3).png",
@@ -3542,6 +3551,9 @@ var content_vue = new Vue({
               title: "还原",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                keepSelectNote(() => $('.pitchbtn[value="="]').click())
+              }
             },
             {
               url: "./img/notepanel/tempMark (4).png",
@@ -3549,6 +3561,9 @@ var content_vue = new Vue({
               title: "重升",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                keepSelectNote(() => $('.pitchbtn[value="^^"]').click())
+              }
             },
             {
               url: "./img/notepanel/tempMark (5).png",
@@ -3556,6 +3571,9 @@ var content_vue = new Vue({
               title: "重降",
               class: "cmenu",
               position: "before",
+              fn: () => {
+                keepSelectNote(() => $('.pitchbtn[value="__"]').click())
+              }
             },
             {
               url: "./img/notepanel/tempMark (5).png",
