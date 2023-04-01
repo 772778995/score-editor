@@ -2711,7 +2711,8 @@ var content_vue = new Vue({
               isKeepSelect: true,
               className: "k-5-16",
               title: "休止符",
-              selector: ".reststatus",
+              // selector: ".reststatus",
+              fn: () => updateNextNote('z', -1),
               isSelect: false,
             },
             {

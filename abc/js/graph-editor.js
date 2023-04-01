@@ -6554,7 +6554,7 @@ var lastMidiReplaceNoteV = -1;
 var midiInStatus = false;
 function updateNextNote(_0x1C16A, _0x1B13E, chordInput, _0x1C197) {
   console.log('updateNextNote:', _0x1C16A, _0x1B13E, chordInput, _0x1C197);
-  if (!graph_update) {
+  if (!graph_update && _0x1C16A !== 'z') {
     return;
   }
   console[_$_4d63[75]](_$_4d63[666], _0x1C16A);
