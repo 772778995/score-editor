@@ -84,7 +84,7 @@ const request = async (opts = {}) => {
     if (typeof opts === "string") opts = { url: opts };
     opts = Object.assign(defaultOpts, opts);
     if (opts.url[0] && opts.url[0] === "/") {
-      opts.url = "http://10.88.18.164:30000/api" + opts.url;
+      opts.url = API_SERVER_URL + opts.url;
     }
     if (opts.params) {
       const paramsStr = Object.keys(opts.params).reduce((str, key) => {
@@ -4434,20 +4434,20 @@ var content_vue = new Vue({
                 valueList: ["y"],
                 fn: () => (content_vue.m.key.show = !content_vue.m.key.show),
               },
-              // {
-              //   title: "符干向上",
-              //   shortList: ["U"],
-              //   valueList: ["u"],
-              //   fn: () =>
-              //     content_vue.checkIsSelectNote() && setNoteStemDirect("up"),
-              // },
-              // {
-              //   title: "符干向下",
-              //   shortList: ["I"],
-              //   valueList: ["i"],
-              //   fn: () =>
-              //     content_vue.checkIsSelectNote() && setNoteStemDirect("down"),
-              // },
+              {
+                title: "符干向上",
+                shortList: ["U"],
+                valueList: ["u"],
+                fn: () =>
+                  content_vue.checkIsSelectNote() && setNoteStemDirect("up"),
+              },
+              {
+                title: "符干向下",
+                shortList: ["I"],
+                valueList: ["i"],
+                fn: () =>
+                  content_vue.checkIsSelectNote() && setNoteStemDirect("down"),
+              },
               {
                 title: "音色",
                 shortList: ["S"],

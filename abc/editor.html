@@ -3,6 +3,8 @@
   <script type="text/javascript">
     //文件服务器地址
     var file_server_url = "";
+    //文件服务器地址
+    var API_SERVER_URL = "http://10.88.18.164:30000/api";
     //五线谱的宽度
     var pagewidth = 20;
     //五线谱图片大小
@@ -1907,7 +1909,7 @@
 
         <div class="h-full bg-#dededf w-0.5"></div>
 
-        <template v-if="false">
+        <template v-if="true">
           <div class="_tool-box _tips" style="--tips: '符干向上（U）' " @click="checkIsSelectNote() && setNoteStemDirect('up')">
             <div class="i-note-down"></div>
           </div>

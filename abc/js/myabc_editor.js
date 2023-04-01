@@ -8402,13 +8402,17 @@ function setSlurInfo() {
 }
 // FIXME 设置符杆方向
 function setNoteStemDirect(dir) {
+  console.log('setNoteStemDirect:', dir);
   const abcCode = $('#source').val()
   const start = $(".selected_text").attr("istart");
   const end = syms[start].iend
   let headStr = abcCode.substring(0, start)
   let txt = abcCode.substring(end - (end - start))
-  txt = txt.substring(0, end - start)
+  console.log('txt', txt);
+  txt = txt.substring(0, end - start);
+  console.log('txt:', txt);
   let tailStr = abcCode.substring(headStr.length + txt.length)
+  console.log('tailStr:', tailStr);
   headStr = headStr
     .split('')
     .reverse()
