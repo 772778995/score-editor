@@ -23,10 +23,22 @@ function loadXml (data) {
 //	}else if(location.href.indexOf("xmajd.cn")>-1){
 //		abcText = abcText.replace(/%%pagewidth.*\n/,"%%pagewidth 1024\n");
 //	}
-    abcText = abcText.replace(/%%pagewidth.*\n/,"%%pagewidth 1500\n");
+    abcText = abcText.replace(/%%pagewidth.*\n/,"%%pagewidth 800\n");
     abcText = abcText.replace(/%%leftmargin.*\n/,"%%leftmargin 2\n");
     abcText = abcText.replace(/%%rightmargin .*\n/,"%%rightmargin 10\n");
     abcText = abcText.replace(/%%scale .*\n/,"");
+    const titleMatch = abcText.match(/T:\s?.+/g)
+    if (!titleMatch) {
+        abcText = abcText.replace(/^M:\s*\d+\/\d+/, s => `${s}\nT:标题\nT:副标题\n`)
+    } else if (titleMatch.length === 1) {
+        abcText = abcText.replace(/T:\s?.+/, s => `${s}\nT:副标题\n`)
+    }
+    const authorMatch = abcText.match(/C:\s?.+/g)
+    if (!authorMatch) {
+        abcText = abcText.replace(/^M:\s*\d+\/\d+/, s => `${s}\nC:曲作者\nC:词作者\n`)
+    } else if (authorMatch.length === 1) {
+        abcText = abcText.replace(/C:\s?.+/, s => `${s}\nC:词作者\n`)
+    }
 
     
     $('#source').val(abcText);

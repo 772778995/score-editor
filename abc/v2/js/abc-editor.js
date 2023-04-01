@@ -107,20 +107,20 @@ const request = async (opts = {}) => {
 
 const saveScore = async (isSaveAs = false) => {
   if (!isSaveAs && !content_vue.m.id && !content_vue.m.saveToScore.isShow) {
-    content_vue.m.saveToScore.title = $("#source").val().match(/(?<=T:\s).+/g)[0]
+    content_vue.m.saveToScore.title = $("#source").val().match(/(?<=T:\s*).+/g)[0]
     content_vue.m.saveToScore.isShow = true
     content_vue.m.saveToScore.sb = true
     return
   }
 
   let abcVal = $("#source").val() + '';
-  let [title, subTitle] = abcVal.match(/(?<=T:\s).+/g);
-  const [composer, lyricist] = abcVal.match(/(?<=C:\s).+/g);
-  const [keySign] = abcVal.match(/(?<=K:\s).+/);
-  const [timeSign] = abcVal.match(/(?<=M:\s).+/);
-  const [speed] = abcVal.match(/(?<=Q:\s+).+/);
-  const isChangeTimeSign = !!abcVal.match(/\$\[M:\d+\/\d+\]/g);
-  const isChangeKeySign = !!abcVal.match(/\$\[K:[A-G]\]/g);
+  let [title, subTitle] = abcVal.match(/(?<=T:\s*).+/g);
+  const [composer, lyricist] = abcVal.match(/(?<=C:\s*).+/g);
+  const [keySign] = abcVal.match(/(?<=K:\s*).+/);
+  const [timeSign] = abcVal.match(/(?<=M:\s*).+/);
+  const [speed] = abcVal.match(/(?<=Q:\s*).+/);
+  const isChangeTimeSign = !!abcVal.match(/\$\[M:\s*\d+\/\d+\]/g);
+  const isChangeKeySign = !!abcVal.match(/\$\[K:\s*[A-G]\]/g);
   const isUpbeat = scoreOpts.isWeak;
   const musicType = scoreOpts.musicType;
   const isHasLyric = !!abcVal.match(/\nw:.+/g);
