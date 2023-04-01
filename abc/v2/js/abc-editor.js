@@ -209,6 +209,7 @@ const initNewScoreOpts = {
 };
 
 function liaison(val) {
+  debugger
   var selectEl = $(".selected_text")[0];
   if (!selectEl) return alert("未选中音符：请选取一个音符，然后重试");
   var _0x15C57 = $("#source").val();
@@ -392,6 +393,7 @@ function changeAbc(cb) {
 
 function lineTo() {
   keepSelectNote(() => {
+    debugger
     const info = getSelectAbcCodeInfo();
     if (!info) return alert("未选中音符：请选取一个音符，然后重试");
     let { istart, txt } = info;
@@ -400,7 +402,7 @@ function lineTo() {
     let tailCode = abcCode.substr(istart).replace(txt, "");
     txt = "(" + txt;
     tailCode = tailCode.replace(
-      /[H-Zh-z]*({.*})?(!.*!)?\(?[A-Ga-g]\)?/,
+      /[H-Zh-z]*({.*})?(!.*!)?\(?[A-Ga-g]\)?,*/,
       (s) => s + ")"
     );
     abcCode = headCode + txt + tailCode;
