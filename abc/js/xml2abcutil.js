@@ -39,6 +39,10 @@ function loadXml (data) {
     } else if (authorMatch.length === 1) {
         abcText = abcText.replace(/C:\s?.+/, s => `${s}\nC:词作者\n`)
     }
+    const speedMatch = abcText.match(/Q:\s?.+/g)
+    if (!speedMatch) {
+        abcText = abcText.replace(/M:\s*\d+\/\d+/, s => `${s}\nQ:1/4=88\n`)
+    }
 
     
     $('#source').val(abcText);

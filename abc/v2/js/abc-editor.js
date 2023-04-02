@@ -5417,8 +5417,7 @@ var content_vue = new Vue({
       abc_change()
     },
     getSpeed() {
-      var sppedStr = $('#source').val().match(/(?<=Q:\s+).+/);
-      const [sppedTxt] = sppedStr?sppedStr:'1/4=88';
+      const [sppedTxt] = $('#source').val().match(/(?<=Q:\s+).+/);
       const [speedNote, speedNum] = sppedTxt.split('=')
       this.m.scoreOpts.speedNote = speedNote
       this.m.scoreOpts.speedNum = speedNum
