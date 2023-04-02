@@ -6142,10 +6142,16 @@ function genNoteDeco(_0x16251, _0x189B1, _0x15F54, _0x1873B) {
             }
           }
           var _0x16BFC = getMidStr(cen);
-          // 这，就是谱号！(放置音符)
           if (_0x16BFC["indexOf"](_0x16251) < 0) {
+            let head = _0x15C57["substring"](0, cen["istart"])
+            if (/\[K:[^\]]+\]/.test(_0x16251)) {
+              head = head.replace(/\[K:[^\]]+\]\|?$/, s => s.indexOf('|') > -1 ? '|' : '')
+            }
+            else if (/((\!p+\!)|(\!m(f|p)\!)|(\!f+\!)|(\!sf(z|p)?\!))$/.test(_0x16251)) {
+              head = head.replace(/((\!p+\!)|(\!m(f|p)\!)|(\!f+\!)|(\!sf(z|p)?\!))$/, s => s.indexOf('|') > -1 ? '|' : '')
+            }
             _0x15C57 =
-              _0x15C57["substring"](0, cen["istart"]).replace(/\[K:[^\]]+\]\|?$/, s => s.indexOf('|') > -1 ? '|' : '') +
+              head +
               _0x16251 +
               _0x15C57["substring"](cen["istart"]);
           }
