@@ -178,29 +178,19 @@ const getAbcNoteCode = (opts) => {
     if (beatType === 'C|') [beatNote1, beatNote2] = [2, 2]
   // }
   let num = beatNote1 / beatNote2;
-  let z16
-  let z12
-  if (opts.musicType === 'easy') {
-    z12 = ~~(num / 1.5);
-    num = num % 1.5;
-    if (z12 > 0) z12 = 1
-    z16 = ~~(num / 2);
-    num = num % 2;
+  let z8 = 0, z4 = 0, z2 = 0, z = 0, z_ = 0;
+  if (opts.musicType !== 'easy') {
+    z8 = ~~(num / 1);
+    num = num % 1;
+    z4 = ~~(num / 0.5);
+    num = num % 0.5;
   }
-  const z8 = ~~(num / 1);
-  num = num % 1;
-  const z4 = ~~(num / 0.5);
-  num = num % 0.5;
-  const z2 = ~~(num / 0.25);
+  z2 = ~~(num / 0.25);
   num = num % 0.25;
-  const z = ~~(num / 0.125);
+  z = ~~(num / 0.125);
   num = num % 0.125;
-  const z_ = ~~(num / 0.0625);
+  z_ = ~~(num / 0.0625);
   let restStr = ''
-  if (opts.musicType === 'easy') {
-    restStr += "z,12".repeat(z12);
-    restStr += "z,16".repeat(z16);
-  }
   restStr += "z,8".repeat(z8);
   restStr += "z,4".repeat(z4);
   restStr += "z,2".repeat(z2);
