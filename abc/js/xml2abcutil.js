@@ -23,7 +23,7 @@ function loadXml (data) {
 //	}else if(location.href.indexOf("xmajd.cn")>-1){
 //		abcText = abcText.replace(/%%pagewidth.*\n/,"%%pagewidth 1024\n");
 //	}
-    abcText = abcText.replace(/%%pagewidth.*\n/,"%%pagewidth 800\n");
+    abcText = abcText.replace(/%%pagewidth.*\n/,"%%pagewidth 1000\n");
     abcText = abcText.replace(/%%leftmargin.*\n/,"%%leftmargin 2\n");
     abcText = abcText.replace(/%%rightmargin .*\n/,"%%rightmargin 10\n");
     abcText = abcText.replace(/%%scale .*\n/,"");

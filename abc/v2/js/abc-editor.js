@@ -3203,7 +3203,7 @@ var content_vue = new Vue({
         ],
       },
       panzoom: {
-        scale: 100,
+        scale: 90,
       },
       ctxMenu: {
         addBarShow: false,
@@ -4622,20 +4622,20 @@ var content_vue = new Vue({
                 valueList: ["y"],
                 fn: () => (content_vue.m.key.show = !content_vue.m.key.show),
               },
-              {
-                title: "符干向上",
-                shortList: ["U"],
-                valueList: ["u"],
-                fn: () =>
-                  content_vue.checkIsSelectNote() && setNoteStemDirect("up"),
-              },
-              {
-                title: "符干向下",
-                shortList: ["I"],
-                valueList: ["i"],
-                fn: () =>
-                  content_vue.checkIsSelectNote() && setNoteStemDirect("down"),
-              },
+              // {
+              //   title: "符干向上",
+              //   shortList: ["U"],
+              //   valueList: ["u"],
+              //   fn: () =>
+              //     content_vue.checkIsSelectNote() && setNoteStemDirect("up"),
+              // },
+              // {
+              //   title: "符干向下",
+              //   shortList: ["I"],
+              //   valueList: ["i"],
+              //   fn: () =>
+              //     content_vue.checkIsSelectNote() && setNoteStemDirect("down"),
+              // },
               {
                 title: "音色",
                 shortList: ["S"],
@@ -5397,7 +5397,8 @@ var content_vue = new Vue({
       abc_change()
     },
     getSpeed() {
-      const [sppedTxt] = $('#source').val().match(/(?<=Q:\s+).+/)
+      var sppedStr = $('#source').val().match(/(?<=Q:\s+).+/);
+      const [sppedTxt] = sppedStr?sppedStr:'1/4=88';
       const [speedNote, speedNum] = sppedTxt.split('=')
       this.m.scoreOpts.speedNote = speedNote
       this.m.scoreOpts.speedNum = speedNum
@@ -5427,18 +5428,12 @@ var content_vue = new Vue({
       const [pic, pdf] = this.m.export.list;
       // if (!this.m.isInsertMode) switchPrachEditor()
 
-      if (pic.checked)
-        saveAs(
-          await getScorePngBase64(),
-          `${
-            $("#source")
-              .val()
-              .match(/(?<=T:\s+).+/)[0]
-          }.png`
-        );
-        src_change()
+      window.code = $("#source").val();
+      if (pic.checked){
+        exportAbc2Pdf("source", 'png');
+      }
+      // src_change()
       if (pdf.checked) {
-        window.code = $("#source").val();
         exportAbc2Pdf("source");
       }
     },
