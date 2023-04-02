@@ -216,42 +216,42 @@ function liaison(val) {
   var matchArr = val.match(/\((\d)/);
   var num = matchArr[1];
   var cen = syms[selectEl.getAttribute("istart")];
-  console["log"](cen);
-  var _0x1927B = cen["dur"];
-  var _0x17115 = _0x15C57["substring"](cen["istart"], cen["iend"]);
+  console[abc_symbols[75]](cen);
+  var _0x1927B = cen[abc_symbols[104]];
+  var _0x17115 = _0x15C57[abc_symbols[177]](cen[abc_symbols[69]], cen[abc_symbols[155]]);
   var _0x1946A = _0x1927B / 2;
-  var _0x19497 = "";
-  var _0x18BA0 = cen["my_ulen"];
+  var _0x19497 = abc_symbols[3];
+  var _0x18BA0 = cen[abc_symbols[592]];
   if (_0x1946A > _0x18BA0) {
     var _0x1738B = parseInt(_0x1946A / _0x18BA0);
     if (_0x1738B != 1) {
-      _0x19497 = _0x1738B + "";
+      _0x19497 = _0x1738B + abc_symbols[3];
     }
   } else {
     if (_0x1946A < _0x18BA0) {
       var _0x1738B = parseInt(_0x18BA0 / _0x1946A);
       if (_0x1738B > 1) {
         for (var _0x15CDE = 1; _0x15CDE < _0x1738B; _0x15CDE = _0x15CDE * 2) {
-          _0x19497 += "/";
+          _0x19497 += abc_symbols[630];
         }
       }
     }
   }
-  if (/\d{1,}|\/{1,}/["test"](_0x17115)) {
-    _0x17115 = _0x17115["replace"](/\d{1,}|\/{1,}/, _0x19497);
+  if (/\d{1,}|\/{1,}/[abc_symbols[623]](_0x17115)) {
+    _0x17115 = _0x17115[abc_symbols[122]](/\d{1,}|\/{1,}/, _0x19497);
   } else {
     _0x17115 = _0x17115 + _0x19497;
   }
   for (var _0x15CDE = 0; _0x15CDE < num - 1; _0x15CDE++) {
-    _0x17115 += "z" + _0x19497;
+    _0x17115 += abc_symbols[124] + _0x19497;
   }
   var _0x1638C =
-    _0x15C57["substring"](0, cen["istart"]) +
+    _0x15C57[abc_symbols[177]](0, cen[abc_symbols[69]]) +
     val +
     _0x17115 +
-    " " +
-    _0x15C57["substring"](cen["iend"]);
-  $("#source")["val"](_0x1638C);
+    abc_symbols[159] +
+    _0x15C57[abc_symbols[177]](cen[abc_symbols[155]]);
+  $(abc_symbols[120])[abc_symbols[119]](_0x1638C);
   if (musicType == 2) {
     src_change();
   } else {
