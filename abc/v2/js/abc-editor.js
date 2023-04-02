@@ -2744,6 +2744,7 @@ var content_vue = new Vue({
               isKeepSelect: true,
               title: "延长",
               fn: () => {
+                if (!content_vue.checkIsSelectNote()) return;
                 const { head, tail, txt } =  getSelectAbcCodeInfo()
                 $('#source').val(`${head.replace(/\!fermata\!$/, '')}!fermata!${txt}${tail}`)
                 abc_change()
@@ -2765,6 +2766,7 @@ var content_vue = new Vue({
               isKeepSelect: true,
               title: "重音",
               fn: () => {
+                if (!content_vue.checkIsSelectNote()) return;
                 const { head, tail, txt } =  getSelectAbcCodeInfo()
                 keepSelectNote(() => {
                   $('#source').val(`${head.replace(/\!>\!$/, '')}!>!${txt}${tail}`)
@@ -2779,6 +2781,7 @@ var content_vue = new Vue({
               isKeepSelect: true,
               title: "跳音",
               fn: () => {
+                if (!content_vue.checkIsSelectNote()) return;
                 const { head, tail, txt } =  getSelectAbcCodeInfo()
                 keepSelectNote(() => {
                   $('#source').val(`${head.replace(/\.$/, '')}.${txt}${tail}`)
@@ -2793,6 +2796,7 @@ var content_vue = new Vue({
               isKeepSelect: true,
               title: "保持音",
               fn: () => {
+                if (!content_vue.checkIsSelectNote()) return;
                 const { head, tail, txt } =  getSelectAbcCodeInfo()
                 keepSelectNote(() => {
                   $('#source').val(`${head.replace(/\!tenuto\!$/, '')}!tenuto!${txt}${tail}`)
@@ -4000,6 +4004,7 @@ var content_vue = new Vue({
               class: "cmenu",
               position: "before",
               fn: () => {
+                if (!content_vue.checkIsSelectNote()) return;
                 const { head, tail, txt } =  getSelectAbcCodeInfo()
                 keepSelectNote(() => {
                   $('#source').val(`${head.replace(/(\!f+\!|\!p+\!|\!mf\!|\!mp\!|\!sf(z|p)?\!)$/, '')}!f!${txt}${tail}`)
@@ -4014,6 +4019,7 @@ var content_vue = new Vue({
               class: "cmenu",
               position: "before",
               fn: () => {
+                if (!content_vue.checkIsSelectNote()) return;
                 const { head, tail, txt } =  getSelectAbcCodeInfo()
                 keepSelectNote(() => {
                   $('#source').val(`${head.replace(/(\!f+\!|\!p+\!|\!mf\!|\!mp\!|\!sf(z|p)?\!)$/, '')}!ff!${txt}${tail}`)
@@ -4028,6 +4034,7 @@ var content_vue = new Vue({
               class: "cmenu",
               position: "before",
               fn: () => {
+                if (!content_vue.checkIsSelectNote()) return;
                 const { head, tail, txt } =  getSelectAbcCodeInfo()
                 keepSelectNote(() => {
                   $('#source').val(`${head.replace(/(\!f+\!|\!p+\!|\!mf\!|\!mp\!|\!sf(z|p)?\!)$/, '')}!fff!${txt}${tail}`)
@@ -4042,6 +4049,7 @@ var content_vue = new Vue({
               class: "cmenu",
               position: "before",
               fn: () => {
+                if (!content_vue.checkIsSelectNote()) return;
                 const { head, tail, txt } =  getSelectAbcCodeInfo()
                 keepSelectNote(() => {
                   $('#source').val(`${head.replace(/(\!f+\!|\!p+\!|\!mf\!|\!mp\!|\!sf(z|p)?\!)$/, '')}!mf!${txt}${tail}`)
@@ -4056,6 +4064,7 @@ var content_vue = new Vue({
               class: "cmenu",
               position: "before",
               fn: () => {
+                if (!content_vue.checkIsSelectNote()) return;
                 const { head, tail, txt } =  getSelectAbcCodeInfo()
                 keepSelectNote(() => {
                   $('#source').val(`${head.replace(/(\!f+\!|\!p+\!|\!mf\!|\!mp\!|\!sf(z|p)?\!)$/, '')}!p!${txt}${tail}`)
@@ -4070,6 +4079,7 @@ var content_vue = new Vue({
               class: "cmenu",
               position: "before",
               fn: () => {
+                if (!content_vue.checkIsSelectNote()) return;
                 const { head, tail, txt } =  getSelectAbcCodeInfo()
                 keepSelectNote(() => {
                   $('#source').val(`${head.replace(/(\!f+\!|\!p+\!|\!mf\!|\!mp\!|\!sf(z|p)?\!)$/, '')}!pp!${txt}${tail}`)
@@ -4084,6 +4094,7 @@ var content_vue = new Vue({
               class: "cmenu",
               position: "before",
               fn: () => {
+                if (!content_vue.checkIsSelectNote()) return;
                 const { head, tail, txt } =  getSelectAbcCodeInfo()
                 keepSelectNote(() => {
                   $('#source').val(`${head.replace(/(\!f+\!|\!p+\!|\!mf\!|\!mp\!|\!sf(z|p)?\!)$/, '')}!ppp!${txt}${tail}`)
@@ -4098,6 +4109,7 @@ var content_vue = new Vue({
               class: "cmenu",
               position: "before",
               fn: () => {
+                if (!content_vue.checkIsSelectNote()) return;
                 const { head, tail, txt } =  getSelectAbcCodeInfo()
                 keepSelectNote(() => {
                   $('#source').val(`${head.replace(/(\!f+\!|\!p+\!|\!mf\!|\!mp\!|\!sf(z|p)?\!)$/, '')}!mp!${txt}${tail}`)
@@ -4112,6 +4124,7 @@ var content_vue = new Vue({
               class: "cmenu",
               position: "before",
               fn: () => {
+                if (!content_vue.checkIsSelectNote()) return;
                 const { head, tail, txt } =  getSelectAbcCodeInfo()
                 keepSelectNote(() => {
                   $('#source').val(`${head.replace(/(\!f+\!|\!p+\!|\!mf\!|\!mp\!|\!sf(z|p)?\!)$/, '')}!sf!${txt}${tail}`)
@@ -4126,6 +4139,7 @@ var content_vue = new Vue({
               class: "cmenu",
               position: "before",
               fn: () => {
+                if (!content_vue.checkIsSelectNote()) return;
                 const { head, tail, txt } =  getSelectAbcCodeInfo()
                 keepSelectNote(() => {
                   $('#source').val(`${head.replace(/(\!f+\!|\!p+\!|\!mf\!|\!mp\!|\!sf(z|p)?\!)$/, '')}!sfz!${txt}${tail}`)
@@ -4140,6 +4154,7 @@ var content_vue = new Vue({
               class: "cmenu",
               position: "before",
               fn: () => {
+                if (!content_vue.checkIsSelectNote()) return;
                 const { head, tail, txt } =  getSelectAbcCodeInfo()
                 keepSelectNote(() => {
                   $('#source').val(`${head.replace(/(\!f+\!|\!p+\!|\!mf\!|\!mp\!|\!sf(z|p)?\!)$/, '')}!sfp!${txt}${tail}`)
@@ -4166,6 +4181,7 @@ var content_vue = new Vue({
               class: "cmenu",
               position: "before",
               fn: () => {
+                if (!content_vue.checkIsSelectNote()) return;
                 const { head, tail, txt } =  getSelectAbcCodeInfo()
                 keepSelectNote(() => {
                   $('#source').val(`${head.replace(/\.$/, '')}.${txt}${tail}`)
@@ -4180,6 +4196,7 @@ var content_vue = new Vue({
               class: "cmenu",
               position: "before",
               fn: () => {
+                if (!content_vue.checkIsSelectNote()) return;
                 const { head, tail, txt } =  getSelectAbcCodeInfo()
                 keepSelectNote(() => {
                   $('#source').val(`${head.replace(/\!>\!$/, '')}!>!${txt}${tail}`)
@@ -4194,6 +4211,7 @@ var content_vue = new Vue({
               class: "cmenu",
               position: "before",
               fn: () => {
+                if (!content_vue.checkIsSelectNote()) return;
                 const { head, tail, txt } =  getSelectAbcCodeInfo()
                 keepSelectNote(() => {
                   $('#source').val(`${head.replace(/\!tenuto\!$/, '')}!tenuto!${txt}${tail}`)
@@ -4208,6 +4226,7 @@ var content_vue = new Vue({
               class: "cmenu",
               position: "before",
               fn: () => {
+                if (!content_vue.checkIsSelectNote()) return;
                 const { head, tail, txt } =  getSelectAbcCodeInfo()
                 $('#source').val(`${head.replace(/\!fermata\!$/, '')}!fermata!${txt}${tail}`)
                 abc_change()
@@ -4220,6 +4239,7 @@ var content_vue = new Vue({
               class: "cmenu",
               position: "before",
               fn: () => {
+                if (!content_vue.checkIsSelectNote()) return;
                 const { head, tail, txt } =  getSelectAbcCodeInfo()
                 keepSelectNote(() => {
                   $('#source').val(`${head.replace(/\!wedge\!$/, '')}!wedge!${txt}${tail}`)
@@ -5405,7 +5425,7 @@ var content_vue = new Vue({
       if (isNoChecked) return;
 
       const [pic, pdf] = this.m.export.list;
-      if (!this.m.isInsertMode) switchPrachEditor()
+      // if (!this.m.isInsertMode) switchPrachEditor()
 
       if (pic.checked)
         saveAs(
