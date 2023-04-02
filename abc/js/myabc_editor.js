@@ -178,29 +178,34 @@ const getAbcNoteCode = (opts) => {
     if (beatType === 'C|') [beatNote1, beatNote2] = [2, 2]
   // }
   let num = beatNote1 / beatNote2;
-  let d05
+  let z16
+  let z12
   if (opts.musicType === 'easy') {
-    d05 = ~~(num / 2);
+    z12 = ~~(num / 1.5);
+    num = num % 1.5;
+    if (z12 > 0) z12 = 1
+    z16 = ~~(num / 2);
     num = num % 2;
   }
-  const d1 = ~~(num / 1);
+  const z8 = ~~(num / 1);
   num = num % 1;
-  const d2 = ~~(num / 0.5);
+  const z4 = ~~(num / 0.5);
   num = num % 0.5;
-  const d4 = ~~(num / 0.25);
+  const z2 = ~~(num / 0.25);
   num = num % 0.25;
-  const d8 = ~~(num / 0.125);
+  const z = ~~(num / 0.125);
   num = num % 0.125;
-  const d16 = ~~(num / 0.0625);
+  const z_ = ~~(num / 0.0625);
   let restStr = ''
   if (opts.musicType === 'easy') {
-    restStr += "z,16".repeat(d05);
+    restStr += "z,12".repeat(z12);
+    restStr += "z,16".repeat(z16);
   }
-  restStr += "z,8".repeat(d1);
-  restStr += "z,4".repeat(d2);
-  restStr += "z,2".repeat(d4);
-  restStr += "z,".repeat(d8);
-  restStr += "z,/".repeat(d16);
+  restStr += "z,8".repeat(z8);
+  restStr += "z,4".repeat(z4);
+  restStr += "z,2".repeat(z2);
+  restStr += "z,".repeat(z);
+  restStr += "z,/".repeat(z_);
   restStr += "|";
 
   let noteCode = new Array(+opts.rows)
