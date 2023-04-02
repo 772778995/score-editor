@@ -2743,7 +2743,11 @@ var content_vue = new Vue({
               className: "k-5-19",
               isKeepSelect: true,
               title: "延长",
-              fn: () => changeAbc((txt) => `!fermata!${txt}`),
+              fn: () => {
+                const { head, tail, txt } =  getSelectAbcCodeInfo()
+                $('#source').val(`${head.replace(/\!fermata\!$/, '')}!fermata!${txt}${tail}`)
+                abc_change()
+              },
               isSelect: false,
             },
             {
@@ -2760,7 +2764,13 @@ var content_vue = new Vue({
               className: "k-5-22",
               isKeepSelect: true,
               title: "重音",
-              fn: () => changeAbc((txt) => `!>!${txt}`),
+              fn: () => {
+                const { head, tail, txt } =  getSelectAbcCodeInfo()
+                keepSelectNote(() => {
+                  $('#source').val(`${head.replace(/\!>\!$/, '')}!>!${txt}${tail}`)
+                  abc_change()
+                })
+              },
               isSelect: false,
             },
             {
@@ -2768,7 +2778,13 @@ var content_vue = new Vue({
               className: "k-5-23",
               isKeepSelect: true,
               title: "跳音",
-              fn: () => changeAbc((txt) => `.${txt}`),
+              fn: () => {
+                const { head, tail, txt } =  getSelectAbcCodeInfo()
+                keepSelectNote(() => {
+                  $('#source').val(`${head.replace(/\.$/, '')}.${txt}${tail}`)
+                  abc_change()
+                })
+              },
               isSelect: false,
             },
             {
@@ -2776,7 +2792,13 @@ var content_vue = new Vue({
               className: "k-5-24",
               isKeepSelect: true,
               title: "保持音",
-              fn: () => changeAbc((txt) => `!emb!${txt}`),
+              fn: () => {
+                const { head, tail, txt } =  getSelectAbcCodeInfo()
+                keepSelectNote(() => {
+                  $('#source').val(`${head.replace(/\!tenuto\!$/, '')}!tenuto!${txt}${tail}`)
+                  abc_change()
+                })
+              },
               isSelect: false,
             },
             {
@@ -4180,17 +4202,15 @@ var content_vue = new Vue({
               },
             },
             {
-              title: "延长记号",
+              title: "延长",
               url: "./img/notepanel/playMark (4).png",
               value: "!fermata!",
               class: "cmenu",
               position: "before",
               fn: () => {
                 const { head, tail, txt } =  getSelectAbcCodeInfo()
-                keepSelectNote(() => {
-                  $('#source').val(`${head.replace(/\!fermata\!$/, '')}!fermata!${txt}${tail}`)
-                  abc_change()
-                })
+                $('#source').val(`${head.replace(/\!fermata\!$/, '')}!fermata!${txt}${tail}`)
+                abc_change()
               },
             },
             {
