@@ -3545,9 +3545,12 @@ function getNearStaffInfo(sourceid) {
   var content = $("#" + sourceid).val();
   var s_content = content;
   // 光标位置
-  localtosource();
+  // localtosource();
   var cursorPos = getStartPos(getById(sourceid));
-  console.log('cursorPos', cursorPos, content.length);
+  if(!cursorPos && $(".selected_text").length){
+    cursorPos = $(".selected_text").eq($(".selected_text").length-1).attr("istart");
+  }
+  // console.log('cursorPos', cursorPos, istart, content.length);
   if (cursorPos > 0 && cursorPos!=content.length) {
     content = content.substr(0, cursorPos);
   }else{
