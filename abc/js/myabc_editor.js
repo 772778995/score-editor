@@ -6005,7 +6005,7 @@ function setLyricFontColor() {
 // 导出pdf
 // %%header " 第$P页"
 // %%pageheight 29.7cm
-function exportAbc2Pdf(sourceid) {
+function exportAbc2Pdf(sourceid, toImage) {
   maskFullTxt("正在准备导出...");
   abc2svg.modules.pageheight.fn = "page-pdf.js"; //导出pdf时分页的js用这个
   var content = $("#" + sourceid).val();
@@ -6138,34 +6138,69 @@ function exportAbc2Pdf(sourceid) {
         if (imgDatas.length == $("#target>div>svg").length && execFlag) {
           execFlag = false;
           setTimeout(function () {
-            var images = new Array();
-            for (var i = 0; i < imgDatas.length; i++) {
-              var imgdata = imgDatas[i].imgdata;
-              // 导出pdf start
-              var myImage = document.createElement("img");
-              myImage.id = "my_img" + i;
-              myImage.src = imgdata;
-              myImage.index = imgDatas[i].index;
-              document.body.appendChild(myImage);
+            // console.log('toImage', toImage);
+            if(!toImage){
 
-              images.push(document.getElementById("my_img" + i));
+              var images = new Array();
+              for (var i = 0; i < imgDatas.length; i++) {
+                var imgdata = imgDatas[i].imgdata;
+                // 导出pdf start
+                var myImage = document.createElement("img");
+                myImage.id = "my_img" + i;
+                myImage.src = imgdata;
+                myImage.index = imgDatas[i].index;
+                document.body.appendChild(myImage);
 
-              // 导出pdf end
-            }
-            images.sort(function (a, b) {
-              return a.index - b.index;
-            });
-            exportPdf(images, function () {
-              // 删除临时图片
-              for (var i = 0; i < images.length; i++) {
-                $(images[i]).remove();
+                images.push(document.getElementById("my_img" + i));
+
+                // 导出pdf end
               }
-              $("#source").val(content_vue.voicePart.abcContent);
-              //								scale = tmp_scale;
-              //								abc_change();
-              $(".loading,.loading-box").remove();
-              abc2svg.modules.pageheight.fn = "page-1.js";
-            });
+              images.sort(function (a, b) {
+                return a.index - b.index;
+              });
+              
+              exportPdf(images, function () {
+                // 删除临时图片
+                for (var i = 0; i < images.length; i++) {
+                  $(images[i]).remove();
+                }
+                // $("#source").val(content_vue.voicePart.abcContent);
+                //								scale = tmp_scale;
+                //								abc_change();
+                console.log(123123123123123);
+                $("#source").val(window.code);
+                setTimeout(function(){
+                  abc_change();
+                  $(".loading,.loading-box").remove();
+                }, 1000);
+                $(".loading,.loading-box").remove();
+                abc2svg.modules.pageheight.fn = "page-1.js";
+              });
+
+            }else{
+              
+              var filename = getFirstTitle();
+              filename = filename?filename:'Export';
+              for (var i = 0; i < imgDatas.length; i++) {
+                var imgdata = imgDatas[i].imgdata;;
+                var a = document.createElement('a');
+                a.style.display = 'none';
+                a.setAttribute('target', '_blank');
+                a.setAttribute('download', filename + (i+1) + '.png');
+                a.href = imgdata;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+              }
+
+              $("#source").val(window.code);
+              setTimeout(function(){
+                abc_change();
+                $(".loading,.loading-box").remove();
+              }, 200);
+            }
+
+            
             clearInterval(tmpInterval);
           }, 2000);
         }

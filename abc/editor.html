@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
   <script type="text/javascript">
+    // window.onerror = function(err) { console.error(err); return true; }
+    Object.defineProperty(window, 'onerror', {
+      get() { return console.error },
+      set() { return () => {} }
+    });
     //文件服务器地址
     var file_server_url = "";
     //文件服务器地址
@@ -1917,7 +1922,7 @@
 
         <div class="h-full bg-#dededf w-0.5"></div>
 
-        <template v-if="true">
+        <!-- <template v-if="true">
           <div class="_tool-box _tips" style="--tips: '符干向上（U）' " @click="checkIsSelectNote() && setNoteStemDirect('up')">
             <div class="i-note-down"></div>
           </div>
@@ -1925,7 +1930,7 @@
           <div class="_tool-box _tips" style="--tips: '符干向下（I）'" @click="checkIsSelectNote() && setNoteStemDirect('down')">
             <div class="i-note-up"></div>
           </div>
-        </template>
+        </template> -->
 
         <div
           class="relative _tool-box _tips"
@@ -3702,7 +3707,7 @@
             src="v2/images/left.png"
           /> -->
           <!-- 谱子区域 -->
-          <div class="right-top" style="width: 768px; margin-top: 100px; height: 700px;">
+          <div class="right-top" style="width: 1000px; margin-top: 100px; height: 700px;">
             <div
               class="right-top-content scroll flex justify-end m-4 overflow-visible"
               onmousedown.stop="rightTopContentMouseDown(event)"

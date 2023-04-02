@@ -6616,6 +6616,17 @@ function getAllTitle() {
   }
   return allTitle;
 }
+//获取正标题
+function getFirstTitle() {
+  var content = $("#source").val();
+  var titleReg = /T:.*/g;
+  var matchs = content.match(titleReg);
+  var title = "";
+  if (matchs != null && matchs.length) {
+    title = matchs[0].replace("T:", "").trim();
+  }
+  return title;
+}
 //获取谱子信息
 function getStaffInfo(sourceid) {
   var content = $("#source").val();
