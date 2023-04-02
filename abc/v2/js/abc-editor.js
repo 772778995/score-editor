@@ -356,7 +356,10 @@ function keepSelectNote(cb) {
 function getSelectAbcCodeInfo() {
   const abcCode = $('#source').val()
   const selectEl = $(".selected_text")[0];
-  if (!selectEl) return alert("未选中音符：请选取一个音符，然后重试");
+  if (!selectEl || !['hd', 'note'].includes($(selectEl).attr('type').toLowerCase())) {
+    alert("未选中音符：请选取一个音符，然后重试")
+    return false
+  }
   const istart = +selectEl.getAttribute("istart");
   const iend = syms[istart].iend;
   let txt = abcCode.substring(iend - (iend - istart))
@@ -395,19 +398,19 @@ function changeAbc(cb) {
 }
 
 function lineTo() {
+  const info = getSelectAbcCodeInfo();
+  if (!info) return
   keepSelectNote(() => {
-    const info = getSelectAbcCodeInfo();
-    if (!info) return alert("未选中音符：请选取一个音符，然后重试");
-    let { istart, txt } = info;
+    let { head, tail, istart, txt } = info;
     let abcCode = $("#source").val();
-    const headCode = abcCode.substr(0, istart);
-    let tailCode = abcCode.substr(istart).replace(txt, "");
+    head = head.replace(/\($/, '');
+    tail = tail.replace(/^\)/, '');
     txt = "(" + txt;
-    tailCode = tailCode.replace(
+    tail = tail.replace(
       /[H-Zh-z]*({.*})?(!.*!)?\(?[A-Ga-g]\)?,*/,
       (s) => s + ")"
     );
-    abcCode = headCode + txt + tailCode;
+    abcCode = head + txt + tail;
     $("#source").val(abcCode);
     abc_change();
   });
@@ -3795,6 +3798,7 @@ var content_vue = new Vue({
               value: "(note)",
               class: "slur cmenu",
               title: "连线",
+              fn: lineTo
             },
             {
               url: "./img/notepanel/linemark (11).png",
