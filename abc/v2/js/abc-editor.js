@@ -3197,7 +3197,11 @@ var content_vue = new Vue({
               url: "images/yy1.png",
               isKeepSelect: true,
               title: "倚音",
-              fn: () => changeAbc((txt) => `{/b}${txt}`),
+              fn: () => {
+                const type = $(".selected_text")?.attr("type") || "";
+                if (type[0] === "r") return;
+                changeAbc((txt) => `${txt}{${txt}/}`);
+              },
               isSelect: false,
             },
             {
