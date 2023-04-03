@@ -3069,7 +3069,8 @@ var content_vue = new Vue({
               className: "k-e-16",
               url: "images/rest.png",
               title: "休止符",
-              selector: ".reststatus",
+              // selector: ".reststatus",
+              fn: () => updateNextNote('z', -1),
               isSelect: false,
             },
             {
