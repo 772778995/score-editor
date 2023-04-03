@@ -443,6 +443,14 @@
     width: 20px;
     height: 21px;
 }
+.k-5-26 {
+    background: url(./k-5-26.png);
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 20px;
+    height: 21px;
+}
 .k-5-27 {
     background: url(./k.png) -1103px -0px no-repeat;
     width: 20px;
@@ -463,10 +471,18 @@
     width: 9px;
     height: 21px;
 }
-.k-5-28 {
+/* .k-5-28 {
     background: url(./k.png) -1149px -0px no-repeat;
     width: 19px;
     height: 20px;
+} */
+.k-5-28 {
+    background-image: url(./k-5-28.png);
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 23px;
+    height: 21px;
 }
 .k-5-32 {
     background: url(./k.png) -1168px -0px no-repeat;
