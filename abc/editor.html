@@ -491,7 +491,6 @@
     <title>创编制谱系统</title>
   </head>
   <body>
-    <!-- 假动画
     <div id="loadingSeven" class="w-screen h-screen fixed items-center flex flex-col justify-center duration-300 filter" style="z-index: 9999999; background: #f5f5f6;">
       <div class="loadingSeven">
         <span></span>
@@ -502,24 +501,24 @@
       </div>
       <div class="pr-2 mt-2 text-xl"><span id="loadNum">0</span>%</div>
       <script>
-        (() => {
-          const loadNumEl = document.querySelector('#loadNum')
-          let num = 0
-          const loadTimer = setInterval(() => {
-            if (num < 100) {
-              num += +(100 - num) / 100
-              loadNumEl.innerText = num.toFixed(2)
-              if (num.toFixed(2) >= 100) {
-                clearInterval(loadTimer)
-                $('#loadingSeven').fadeOut(300, () => {
-                  $('#loadingSeven').remove()
-                })
-              }
-            }
-          }, 10)
-        })()
-      </script>
-    </div> -->
+      //   (() => {
+      //     const loadNumEl = document.querySelector('#loadNum')
+      //     let num = 0
+      //     const loadTimer = setInterval(() => {
+      //       if (num < 100) {
+      //         num += +(100 - num) / 9
+      //         loadNumEl.innerText = num.toFixed(2)
+      //         if (num.toFixed(2) >= 100) {
+      //           clearInterval(loadTimer)
+      //           $('#loadingSeven').fadeOut(300, () => {
+      //             $('#loadingSeven').remove()
+      //           })
+      //         }
+      //       }
+      //     }, 70)
+      //   })()
+      // </script>
+    </div>
     <input
       type="text"
       id="tmpText"
