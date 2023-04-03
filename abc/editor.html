@@ -501,23 +501,23 @@
       </div>
       <div class="pr-2 mt-2 text-xl"><span id="loadNum">0</span>%</div>
       <script>
-      //   (() => {
-      //     const loadNumEl = document.querySelector('#loadNum')
-      //     let num = 0
-      //     const loadTimer = setInterval(() => {
-      //       if (num < 100) {
-      //         num += +(100 - num) / 9
-      //         loadNumEl.innerText = num.toFixed(2)
-      //         if (num.toFixed(2) >= 100) {
-      //           clearInterval(loadTimer)
-      //           $('#loadingSeven').fadeOut(300, () => {
-      //             $('#loadingSeven').remove()
-      //           })
-      //         }
-      //       }
-      //     }, 70)
-      //   })()
-      // </script>
+        (() => {
+          const loadNumEl = document.querySelector('#loadNum')
+          let num = 0
+          const loadTimer = setInterval(() => {
+            if (num < 100) {
+              num += +(100 - num) / 9
+              loadNumEl.innerText = num.toFixed(2)
+              if (num.toFixed(2) >= 100) {
+                clearInterval(loadTimer)
+                $('#loadingSeven').fadeOut(300, () => {
+                  $('#loadingSeven').remove()
+                })
+              }
+            }
+          }, 70)
+        })()
+      </script>
     </div>
     <input
       type="text"
