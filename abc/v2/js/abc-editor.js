@@ -5816,16 +5816,12 @@ var content_vue = new Vue({
     async 'm.id'(id) {
       if (!id) return
       const res = await request({ url: `/musicals/${content_vue.m.id}` })
-      const url = res.abc_json_val
+      const url = window.API_SERVER_URL.replace(/(api)$/, 'storage/public:') + btoa(encodeURI(res.abc_json_val.replace(/^(public:)/, '')))
       this.m.scoreOpts = Object.assign(this.m.scoreOpts, res.base_info.initOpts)
       if (res.base_info.lyricStyle) {
         Object.assign(this.m.lyric.style, res.base_info.lyricStyle)
       }
-      const abcCode = await request({
-        method: 'POST',
-        url: '/music-attach/abc',
-        data: { url }
-      })
+      const abcCode = await request({ url })
       $('#source').val(abcCode)
       abc_change()
       log = []
