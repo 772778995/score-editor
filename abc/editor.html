@@ -6,10 +6,19 @@
       get() { return console.error },
       set() { return () => {} }
     });
+    window.AE = {
+      // 线上/测试服务器
+      // file_server_url: '{$file_server_url}',
+      // api_url: '{$api_url}',
+      // 研发服务器
+      file_server_url: 'http://10.88.18.164:30000/storage',
+      api_url: 'http://10.88.18.164:30000/api',
+    };
     //文件服务器地址
     var file_server_url = "";
-    //文件服务器地址
-    var API_SERVER_URL = "http://10.88.18.164:30000/api";
+    file_server_url = window.AE.file_server_url || '';
+    // API 服务器地址
+    var API_SERVER_URL = window.AE.api_url || '';
     //五线谱的宽度
     var pagewidth = 20;
     //五线谱图片大小
@@ -78,38 +87,28 @@
     />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="v2/css/abc.css?v=20221027" />
-    <link rel="stylesheet" href="v2/css/abc_ug.css?v=20221027" />
-    <link
-      href="css/tailwindcss.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="./css/icons/icons.css">
-    <link rel="stylesheet" href="./css/icons/k.css">
-    <link rel="stylesheet" type="text/css" href="nf/css/piano.css?v=20221027" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="compont/sweetalert/sweetalert.css?v=20221027"
-    />
-    <link href="js/edit-1.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="assets/music_score_editor/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/music_score_editor/css/abc.css?v=1.0.1" />
+    <link rel="stylesheet" href="assets/music_score_editor/css/abc_ug.css?v=1.0.1" />
+    <link href="assets/music_score_editor/css/tailwindcss.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/music_score_editor/css/icons/icons.css">
+    <link rel="stylesheet" href="assets/music_score_editor/css/icons/k.css">
+    <link rel="stylesheet" type="text/css" href="assets/music_score_editor/nf/css/piano.css?v=1.0.1" />
+    <link rel="stylesheet" type="text/css" href="assets/music_score_editor/sweetalert/sweetalert.css?v=1.0.1" />
+    <link href="assets/music_score_editor/js/edit-1.css" rel="stylesheet" type="text/css" />
 
-    <script src="js/jquery.min.js"></script>
-    <link
-      rel="stylesheet"
-      href="menu/jQuery-contextMenu-master/dist/jquery.contextMenu.css"
-    />
-    <script src="menu/jQuery-contextMenu-master/dist/jquery.contextMenu.js"></script>
-    <script src="menu/jQuery-contextMenu-master/dist/jquery.ui.position.js"></script>
-    <script src="xml2abc/xml2abc.js"></script>
-    <script src="js/drag.js?v=20221027"></script>
-    <script src="js/main.js?v=20221027"></script>
-    <script src="js/xml2abcutil.js?v=20221027"></script>
-    <script src="js/FileSaver.min.js"></script>
+    <script src="assets/music_score_editor/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="assets/music_score_editor/menu/jquery.contextMenu.css" />
+    <script src="assets/music_score_editor/menu/jquery.contextMenu.js"></script>
+    <script src="assets/music_score_editor/menu/jquery.ui.position.js"></script>
+    <script src="assets/music_score_editor/js/xml2abc.js"></script>
+    <script src="assets/music_score_editor/js/drag.js?v=1.0.1"></script>
+    <script src="assets/music_score_editor/js/main.js?v=1.0.1"></script>
+    <script src="assets/music_score_editor/js/xml2abcutil.js?v=1.0.1"></script>
+    <script src="assets/music_score_editor/js/FileSaver.min.js"></script>
 
     <!-- 字体css -->
-    <link rel="stylesheet" href="v2/css/font/font.css?v=20230331-1"/>
+    <link rel="stylesheet" href="assets/music_score_editor/css/font/font.css?v=1.0.1"/>
 
     <style type="text/css">
       [_disabled]:not([_disabled="false"]) {
@@ -363,17 +362,17 @@
         padding-right: 5px;
       }
       .pianoKeyboard .keyRow.white .key {
-        background: url("images/keyboard/keyboard_white.png") !important;
+        background: url("assets/music_score_editor/images/keyboard/keyboard_white.png") !important;
         background-size: 100% 100% !important;
       }
       #scoreEditorPianoKeyboard {
         background-color: #000 !important;
       }
       .pianoKeyboard .keyRow.white .key.selected {
-        background: url("images/keyboard/keyboard_white_press.png") !important;
+        background: url("assets/music_score_editor/images/keyboard/keyboard_white_press.png") !important;
       }
       .pianoKeyboard .keyRow.black .key {
-        background: url("images/keyboard/keyboard_black.png") !important;
+        background: url("assets/music_score_editor/images/keyboard/keyboard_black.png") !important;
         background-size: 100% 100% !important;
         border: none;
         height: 100px;
@@ -387,7 +386,7 @@
       .pianoKeyboard .keyRow.black .key.selected {
         width: 45px;
         height: 100px;
-        background: url("images/keyboard/keyboard_black_press.png") !important;
+        background: url("assets/music_score_editor/images/keyboard/keyboard_black_press.png") !important;
         background-size: 100% 100% !important;
         box-shadow: none;
       }
@@ -503,19 +502,19 @@
       <script>
         (() => {
           const loadNumEl = document.querySelector('#loadNum')
-          let num = 0
+          let num = 60
           const loadTimer = setInterval(() => {
             if (num < 100) {
               num += +(100 - num) / 9
               loadNumEl.innerText = num.toFixed(2)
               if (num.toFixed(2) >= 100) {
                 clearInterval(loadTimer)
-                $('#loadingSeven').fadeOut(300, () => {
+                $('#loadingSeven').fadeOut(200, () => {
                   $('#loadingSeven').remove()
                 })
               }
             }
-          }, 70)
+          }, 1)
         })()
       </script>
     </div>
@@ -561,7 +560,7 @@
         >
           <b class="flex justify-between items-center text-xl" style="padding: 10px 20px; background-color: #F5F5F5;">
             <div>新建乐谱</div>
-            <img src="../abc/img/close.png" class="cursor-pointer" @click="m.newScore.musicType.show = false"/>
+            <img src="assets/music_score_editor/img/close.png" class="cursor-pointer" @click="m.newScore.musicType.show = false"/>
           </b>
   
           <div class="" style="background: #fff; padding: 50px 80px 40px 70px;">
@@ -605,8 +604,8 @@
       >
         <div class="rounded-md" style="box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);">
           <b class="flex justify-between items-center text-xl bg-#f5f5f6 rounded-t-md" style="padding: 10px 20px">
-            <div><img class="mr-2" src="./css/icons/cloud.png"/>保存到谱例库</div>
-            <img src="./img/close.png" class="cursor-pointer" @click="m.saveToScore.isShow = false"/>
+            <div><img class="mr-2" src="assets/music_score_editor/css/icons/cloud.png"/>保存到谱例库</div>
+            <img src="assets/music_score_editor/img/close.png" class="cursor-pointer" @click="m.saveToScore.isShow = false"/>
           </b>
 
           <div class="rounded-b-md" style="width: 792px; padding: 40px 30px 15px 30px; background-color: #fff;">
@@ -651,7 +650,7 @@
       <div class="rounded-md overflow-hidden" style="min-width: 820px; box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);">
         <b class="flex justify-between items-center text-xl bg-#f5f5f6" style="padding: 10px 20px">
           <div>打开谱例</div>
-          <img src="./img/close.png" class="cursor-pointer" @click="() => {
+          <img src="assets/music_score_editor/img/close.png" class="cursor-pointer" @click="() => {
             m.myScore.isShow = false
             m.myScore.query.fu_music_type = ''
             m.myScore.query.fu_name = ''
@@ -666,7 +665,7 @@
             <div class="relative">
               <input v-model="m.myScore.query.fu_name" class="form-control pr-24" @keydown.enter="updateMyScoreList"/>
               <div class="absolute right-3 h-full items-center flex top-0 cursor-pointer" @click="updateMyScoreList">
-                <img src="./img/search.png"/>
+                <img src="assets/music_score_editor/img/search.png"/>
                 <div class="text-sm" style="color: #0E518F;">搜索</div>
               </div>
             </div>
@@ -676,7 +675,7 @@
                 class="space-x-1 cursor-pointer flex items-center mr-6"
                 @click="(m.myScore.query.fu_music_type = val) | updateMyScoreList()"
               >
-                <img :src="val === m.myScore.query.fu_music_type ? './img/checkbox2.png' : './img/checkbox1.png'"/>
+                <img :src="val === m.myScore.query.fu_music_type ? 'assets/music_score_editor/img/checkbox2.png' : 'assets/music_score_editor/img/checkbox1.png'"/>
                 <div :style="`color: ${val === m.myScore.query.fu_music_type ? '#0E518F' : '#787878'}`">{{ txt }}</div>
               </div>
             </div>
@@ -696,7 +695,7 @@
                 :style="`padding: 8px 10px; width: 102px; height: 129px; border-radius: 17px 6px 6px 6px; border: 2px solid ${m.myScore.index === i ? '#25649E' : '#B6B6B6'}; background: #fff`"
               >
                 <img
-                  :src="`./img/${{ easy: 'jianpu', bass: 'di_yin', big: 'da_pu_biao', four: 'he_chang', treble: 'gao_yin' }[item.music_type]}.png`"
+                  :src="`assets/music_score_editor/img/${{ easy: 'jianpu', bass: 'di_yin', big: 'da_pu_biao', four: 'he_chang', treble: 'gao_yin' }[item.music_type]}.png`"
                   class="m-auto w-full h-full object-contain"
                 />
               </div>
@@ -750,7 +749,7 @@
       <div class="rounded-md overflow-hidden" style="box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);">
         <b class="flex justify-between items-center text-xl bg-#f5f5f6" style="padding: 10px 20px">
           <div>新建乐谱</div>
-          <img src="./img/close.png" class="cursor-pointer" @click="m.newScore.scoreOptsShow = m.newScore.musicType.show = false"/>
+          <img src="assets/music_score_editor/img/close.png" class="cursor-pointer" @click="m.newScore.scoreOptsShow = m.newScore.musicType.show = false"/>
         </b>
 
         <div class="flex relative" style="height: 650px; background: #B5C5D3;">
@@ -848,7 +847,7 @@
               <div class="blue-title">拍号</div>
               <div class="flex items-center" style="margin: 16px 0">
                 <img
-                  :src="`./img/radio${m.newScore.scoreOpts.beatType === 'custom' ? '1' : '2'}.png`"
+                  :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.beatType === 'custom' ? '1' : '2'}.png`"
                   class="cursor-pointer"
                   @click="m.newScore.scoreOpts.beatType = 'custom'"
                 />
@@ -868,25 +867,25 @@
                 </div>
                 
                 <img
-                  :src="`./img/radio${m.newScore.scoreOpts.beatType === 'C' ? '1' : '2'}.png`"
+                  :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.beatType === 'C' ? '1' : '2'}.png`"
                   class="cursor-pointer ml-auto"
                   @click="m.newScore.scoreOpts.beatType = 'C'"
                 />
-                <img style="margin-left: 13px" src="../abc/img/beatSign-C.png" />
+                <img style="margin-left: 13px" src="assets/music_score_editor/img/beatSign-C.png" />
                 <img
-                  :src="`./img/radio${m.newScore.scoreOpts.beatType === 'C|' ? '1' : '2'}.png`"
+                  :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.beatType === 'C|' ? '1' : '2'}.png`"
                   class="cursor-pointer"
                   style="margin-right: 13px; margin-left: 44px;"
                   @click="m.newScore.scoreOpts.beatType = 'C|'"
                 />
-                <img style="margin-right: 66px" src="./img/beatSign-CI.png" />
+                <img style="margin-right: 66px" src="assets/music_score_editor/img/beatSign-CI.png" />
               </div>
             </div>
 
             <div class="relative rounded items-center" style="padding: 16px 18px; border-bottom: 2px solid #F5F5F5;">
               <div class="flex items-center" style="color: #8F8F8F; font-size: 12px">
                 <div class="blue-title">排版</div>
-                <img src="./img/warning.png" style="margin: 0 2px 0 7px;" />
+                <img src="assets/music_score_editor/img/warning.png" style="margin: 0 2px 0 7px;" />
                 您也可以在创建乐谱后再添加或移除小节。
               </div>
               <div class="flex items-center" style="margin-top: 20px;">
@@ -913,7 +912,7 @@
                 <div class="flex cursor-pointer" @click="m.newScore.scoreOpts.isWeak = !m.newScore.scoreOpts.isWeak">
                   <div class="blue-title">
                     不完全小节（弱起小节）
-                    <img :src="`./img/checkbox${m.newScore.scoreOpts.isWeak ? '2' : '1'}.png`">
+                    <img :src="`assets/music_score_editor/img/checkbox${m.newScore.scoreOpts.isWeak ? '2' : '1'}.png`">
                   </div>
                 </div>
               </div>
@@ -930,7 +929,7 @@
               <div class="flex items-center ">
                 <div class="flex items-center h-full cursor-pointer" @click="m.newScore.scoreOpts.speedType = 'txt'">
                   <img
-                    :src="`./img/radio${m.newScore.scoreOpts.speedType === 'txt' ? '1' : '2'}.png`"
+                    :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.speedType === 'txt' ? '1' : '2'}.png`"
                     class="cursor-pointer mr-2"
                     @click="m.newScore.scoreOpts.speedType = 'txt'"
                   />
@@ -941,7 +940,7 @@
               <div class="flex items-center" style="margin-top: 10px;">
                 <div class="flex items-center h-full cursor-pointer" @click="m.newScore.scoreOpts.speedType = 'sign'">
                   <img
-                    :src="`./img/radio${m.newScore.scoreOpts.speedType === 'sign' ? '1' : '2'}.png`"
+                    :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.speedType === 'sign' ? '1' : '2'}.png`"
                     class="cursor-pointer mr-2"
                     :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.speedType !== 'sign' }"
                     @click="m.newScore.scoreOpts.speedType = 'sign'"
@@ -975,7 +974,7 @@
         <div class="rounded-md bg-white overflow-hidden" style="width: 359px; height: 209px; box-shadow: 0px 4px 30px 0px rgba(3,35,63,0.28);">
           <div class="flex justify-between font-bold items-center" style="font-size: 20px; padding: 13px 20px 11px 20px; background: #F5F5F5">
             折行自定义
-            <img src="../abc/img/close.png" class="cursor-pointer" @click="() => {
+            <img src="assets/music_score_editor/img/close.png" class="cursor-pointer" @click="() => {
               m.foldLine.show = false
               m.foldLine.previewV = m.foldLine.line
             }"/>
@@ -1009,7 +1008,7 @@
         <div class="rounded-md bg-white" style="box-shadow: 0px 4px 30px 0px rgba(3,35,63,0.28);">
           <div class="flex justify-between items-center rounded-t-md font-bold" style="font-size: 20px; padding: 13px 20px 11px 20px; background: #F5F5F5">
             按音调移调
-            <img src="../abc/img/close.png" class="cursor-pointer" @click="() => {
+            <img src="assets/music_score_editor/img/close.png" class="cursor-pointer" @click="() => {
               m.key.previewV = m.key.val
               m.key.show = false
             }"/>
@@ -1049,7 +1048,7 @@
         <div class="rounded-md bg-white" style="box-shadow: 0px 4px 30px 0px rgba(3,35,63,0.28);">
           <div class="flex justify-between items-center rounded-t-md font-bold" style="font-size: 20px; padding: 13px 20px 11px 20px; background: #F5F5F5">
             导出
-            <img src="img/close.png" class="cursor-pointer" @click="m.export.show = false"/>
+            <img src="assets/music_score_editor/img/close.png" class="cursor-pointer" @click="m.export.show = false"/>
           </div>
 
           <div style="margin: 20px 30px 30px 35px; color: #606060">
@@ -1062,7 +1061,7 @@
                 :class="{ 'opacity-50 pointer-events-none': item.disabled }"
                 @click="item.checked = !item.checked"
               >
-                <img :src="`img/checkbox${item.checked ? '2' : '1'}.png`" />
+                <img :src="`assets/music_score_editor/img/checkbox${item.checked ? '2' : '1'}.png`" />
                 <div>{{ item.txt }}</div>
               </div>
             </div>
@@ -1094,7 +1093,7 @@
       >
         <b class="flex justify-between items-center text-xl py-3 px-5">
           <div>快捷键</div>
-          <img src="../abc/img/close.png" class="cursor-pointer" @click="m.shortcutsPanel.index = -1"/>
+          <img src="assets/music_score_editor/img/close.png" class="cursor-pointer" @click="m.shortcutsPanel.index = -1"/>
         </b>
 
         <div class="flex bg-white" style="height: 503px; padding: 22px 30px 22px 30px; width: 876px; color: #535353;">
@@ -1205,7 +1204,7 @@
                 <div style="position: absolute; left: 180px; top: 5px">
                   <iframe
                     id="pdfPreview"
-                    src="pdf_preview.html?time=20111110"
+                    src="assets/music_score_editor/pdf_preview.html?v=1.0.1"
                     style="width: 1200px; height: 600px"
                   ></iframe>
                 </div>
@@ -1335,7 +1334,7 @@
                 <div style="position: absolute; left: 180px; top: 5px">
                   <iframe
                     id="imgPreviewIframe"
-                    src="img_preview.html"
+                    src="assets/music_score_editor/img_preview.html?v=1.0.1"
                     style="width: 1200px; height: 600px"
                   ></iframe>
                 </div>
@@ -1726,11 +1725,11 @@
       </div>
 
       <div class="fixed flex items-center space-x-1 z-40 justify-between bottom-2 right-2 rounded-full p-2" style="background: #B0B0B0;">
-        <img src="../abc/img/scale-small.png" class="cursor-pointer" @click="() => {
+        <img src="assets/music_score_editor/img/scale-small.png" class="cursor-pointer" @click="() => {
           m.panzoom.scale -= 1
         }"/>
         <input v-model="m.panzoom.scale" step="1" min="50" max="150" type="range" class="w-16" @change="m.panzoom.scale = $event.target.value"/>
-        <img src="../abc/img/scale-big.png" class="cursor-pointer" @click="() => {
+        <img src="assets/music_score_editor/img/scale-big.png" class="cursor-pointer" @click="() => {
           m.panzoom.scale += 1
         }"/>
       </div>
@@ -1848,7 +1847,7 @@
           }"
         >
           <div style="font-size: 20px; font-weight: 500;">小键盘</div>
-          <img src="./img/close.png" class="cursor-pointer" @click.stop="m.numberKeypad.isShow = false" @mousedown.stop/>
+          <img src="assets/music_score_editor/img/close.png" class="cursor-pointer" @click.stop="m.numberKeypad.isShow = false" @mousedown.stop/>
         </div>
 
         <div class="p-2 bg-white grid grid-cols-4 gap-2 text-base">
@@ -1950,7 +1949,7 @@
               <div class="mx-2">插入</div>
               <number-input v-model="m.addBar.before" :min="1" style="width: 64px; height: 20px;"></number-input>
               <div class="mx-2">小节</div>
-              <img src="./img/gou.png" class="ml-auto cursor-pointer" @click="insertNodes(m.addBar.before) | (m.addBar.show = false)">
+              <img src="assets/music_score_editor/img/gou.png" class="ml-auto cursor-pointer" @click="insertNodes(m.addBar.before) | (m.addBar.show = false)">
             </div>
 
             <div class="mt-2 flex items-center">
@@ -1958,7 +1957,7 @@
               <div class="ml-2">插入</div>
               <number-input v-model="m.addBar.after" :min="1" class="ml-2" style="width: 64px;height: 20px;"></number-input>
               <div class="mx-2">小节</div>
-              <img src="./img/gou.png" class="ml-auto cursor-pointer" @click="insertNodes(m.addBar.after, true) | (m.addBar.show = false)">
+              <img src="assets/music_score_editor/img/gou.png" class="ml-auto cursor-pointer" @click="insertNodes(m.addBar.after, true) | (m.addBar.show = false)">
             </div>
           </div>
         </div>
@@ -2033,22 +2032,22 @@
               keyboardShow = m.numberKeypad.isShow = m.isMusicNoteShow = true
             }
           }">
-            <img :src="`./img/checkbox${keyboardShow && m.numberKeypad.isShow && m.isMusicNoteShow ? '2' : '1'}.png`" />
+            <img :src="`assets/music_score_editor/img/checkbox${keyboardShow && m.numberKeypad.isShow && m.isMusicNoteShow ? '2' : '1'}.png`" />
             <div>全部{{ keyboardShow && m.numberKeypad.isShow && m.isMusicNoteShow ? '隐藏' : '显示' }}</div>
           </div>
 
           <div class="flex items-center space-x-2.5 cursor-pointer" @click="(menuActive = '') | keyboardClick()">
-            <img :src="`./img/checkbox${keyboardShow ? '2' : '1'}.png`" />
+            <img :src="`assets/music_score_editor/img/checkbox${keyboardShow ? '2' : '1'}.png`" />
             <div>虚拟键盘</div>
           </div>
           
           <div class="flex items-center space-x-2.5 cursor-pointer" @click="m.numberKeypad.isShow = !m.numberKeypad.isShow">
-            <img :src="`./img/checkbox${m.numberKeypad.isShow ? '2' : '1'}.png`" />
+            <img :src="`assets/music_score_editor/img/checkbox${m.numberKeypad.isShow ? '2' : '1'}.png`" />
             <div>小键盘</div>
           </div>
 
           <div class="flex items-center space-x-2.5 cursor-pointer" @click="m.isMusicNoteShow = !m.isMusicNoteShow">
-            <img :src="`./img/checkbox${m.isMusicNoteShow ? '2' : '1'}.png`" />
+            <img :src="`assets/music_score_editor/img/checkbox${m.isMusicNoteShow ? '2' : '1'}.png`" />
             <div>音符面板</div>
           </div>
         </div>
@@ -2177,7 +2176,7 @@
         >
           <b class="flex justify-between items-center text-xl" style="background-color: #F5F5F5; padding: 12px 21px;">
             <div style="color: #C05E5E;">提示</div>
-            <img src="../abc/img/close.png" class="cursor-pointer" @click="m.alertMsg = ''"/>
+            <img src="assets/music_score_editor/img/close.png" class="cursor-pointer" @click="m.alertMsg = ''"/>
           </b>
           <div class="bg-white flex-1 items-center flex justify-center" style="color: #606060; font-size: 18px;">
             <div class="w-96 text-center">
@@ -2237,7 +2236,7 @@
                         :class="['pytb-li', pytbOption == i ? 'active': '']"
                         @click.stop="pytbChoose(i)"
                       >
-                        <img src="v2/images/ic_tick.png" />{{ item.name }}
+                        <img src="assets/music_score_editor/images/ic_tick.png" />{{ item.name }}
                       </div>
                     </template>
                     <template v-else>
@@ -2290,7 +2289,7 @@
         </template>
         <!== 谱例属性 ==>
         <!== <div id="plsx" title="谱例属性" style="display: none;" class="tools-li plsx"  @click="plsxClick">
-			<img src="v2/images/attr.png">
+			<img src="assets/music_score_editor/images/attr.png">
 		</div> ==>
         <!== 语法编辑框 ==>
         <div
@@ -2299,7 +2298,7 @@
           @click="editorClick"
           class="tools-li"
         >
-          <img src="v2/images/editor.png" />
+          <img src="assets/music_score_editor/images/editor.png" />
         </div>
         <div
           id="metronomesetting"
@@ -2307,7 +2306,7 @@
           @click="switchMetro()"
           class="tools-li"
         >
-          <img src="images/jpq.png" />
+          <img src="assets/music_score_editor/images/jpq.png" />
         </div>
         <div
           id="micInput"
@@ -2315,7 +2314,7 @@
           onclick="switchMicInput()"
           class="tools-li"
         >
-          <img src="images/mic.png" />
+          <img src="assets/music_score_editor/images/mic.png" />
         </div>
         <div class="sep"></div>
         <div
@@ -2323,21 +2322,21 @@
           onclick="changeStaffType(this,0)"
           class="tools-li compute-mode"
         >
-          <img src="v2/images/icon_wxp.png" />
+          <img src="assets/music_score_editor/images/icon_wxp.png" />
         </div>
         <div
           title="简谱"
           onclick="changeStaffType(this,2);restoreEditor();"
           class="tools-li compute-mode"
         >
-          <img src="v2/images/icon_jp.png" />
+          <img src="assets/music_score_editor/images/icon_jp.png" />
         </div>
         <div
           title="简线混排"
           onclick="changeStaffType(this,1)"
           class="tools-li compute-mode"
         >
-          <img src="v2/images/icon_jx.png" />
+          <img src="assets/music_score_editor/images/icon_jx.png" />
         </div>
         <div class="sep"></div>
         <div
@@ -2345,21 +2344,21 @@
           @click="startDrawMF"
           class="tools-li compute-mode"
         >
-          <img src="images/draw-mf.png" />
+          <img src="assets/music_score_editor/images/draw-mf.png" />
         </div>
         <div
           :title="showMusicForm ? '隐藏曲式' : '展示曲式'"
           @click="showMF"
           class="tools-li compute-mode"
         >
-          <img src="images/toggle-mf.png" />
+          <img src="assets/music_score_editor/images/toggle-mf.png" />
         </div>
         <div
           @click="isShowHelp =!isShowHelp"
           title="曲式分析使用说明"
           class="tools-li compute-mode"
         >
-          <img src="images/icon_wh.png" />
+          <img src="assets/music_score_editor/images/icon_wh.png" />
         </div>
 
         <div class="sep"></div>
@@ -2368,14 +2367,14 @@
           onclick="changeScale(0.2)"
           class="tools-li compute-mode"
         >
-          <img src="v2/images/fd.png" />
+          <img src="assets/music_score_editor/images/fd.png" />
         </div>
         <div
           title="缩小"
           onclick="changeScale(-0.2)"
           class="tools-li compute-mode"
         >
-          <img src="v2/images/sx.png" />
+          <img src="assets/music_score_editor/images/sx.png" />
         </div>
         <!== <div class="tools-li page-view">
 			<select class="form-control">
@@ -2385,7 +2384,7 @@
         <div class="sep"></div>
         <div title="显示小节序号" class="tools-li compute-mode">
           <img
-            src="v2/images/nodeseq.png"
+            src="assets/music_score_editor/images/nodeseq.png"
             style="width: 30px; height: 30px"
             class="shownodeseq cmenu"
             draggable="false"
@@ -2393,7 +2392,7 @@
         </div>
         <div title="显示每行首个小节序号" class="tools-li compute-mode">
           <img
-            src="v2/images/firstnodeseq.png"
+            src="assets/music_score_editor/images/firstnodeseq.png"
             style="width: 30px; height: 30px"
             value=""
             class="showfirstnodeseq cmenu"
@@ -2402,7 +2401,7 @@
         </div>
         <div title="每5小节显示" class="tools-li compute-mode">
           <img
-            src="v2/images/nodeseq5.png"
+            src="assets/music_score_editor/images/nodeseq5.png"
             style="width: 30px; height: 30px"
             value=""
             class="shownodeseq5 cmenu"
@@ -2411,7 +2410,7 @@
         </div>
         <div title="显示小节序号边框" class="tools-li compute-mode">
           <img
-            src="images/measurebox.png"
+            src="assets/music_score_editor/images/measurebox.png"
             style="width: 30px; height: 30px"
             value=""
             class="showmeasurebox cmenu"
@@ -2420,7 +2419,7 @@
         </div>
         <div title="简谱do位置" class="tools-li compute-mode">
           <img
-            src="images/do_chn.png"
+            src="assets/music_score_editor/images/do_chn.png"
             style="width: 30px; height: 30px"
             id="do_chn"
             value="DO"
@@ -2431,10 +2430,10 @@
           />
         </div>
         <!== <div title="声部下移" class="tools-li compute-mode">
-			<img src="images/direct/staffdown.png" style="width:30px;height:30px;" value="[I:staff +1]" position="before" class="cmenu" draggable="false">
+			<img src="assets/music_score_editor/images/direct/staffdown.png" style="width:30px;height:30px;" value="[I:staff +1]" position="before" class="cmenu" draggable="false">
 		</div>
 		<div title="声部上移" class="tools-li compute-mode">
-			<img src="images/direct/staffup.png" style="width:30px;height:30px;" value="[I:staff -1]" position="before" class="cmenu" draggable="false">
+			<img src="assets/music_score_editor/images/direct/staffup.png" style="width:30px;height:30px;" value="[I:staff -1]" position="before" class="cmenu" draggable="false">
 		</div> ==>
         <div
           title="小节背景色"
@@ -2442,7 +2441,7 @@
           style="display: none"
         >
           <img
-            src="images/beijingse2.png"
+            src="assets/music_score_editor/images/beijingse2.png"
             style="width: 30px; height: 30px"
             id="nodecolorli"
             style="width: 30px; height: 30px"
@@ -2454,12 +2453,12 @@
           />
         </div>
         <!== <div title="音符背景色" class="tools-li compute-mode">
-			<img src="images/beijingse.png" style="width:30px;height:30px;" id="notecolorli" value="&quot;-nb-&quot;" position="before" type="notebg" class="operator cmenu notecolorli" draggable="false">
+			<img src="assets/music_score_editor/images/beijingse.png" style="width:30px;height:30px;" id="notecolorli" value="&quot;-nb-&quot;" position="before" type="notebg" class="operator cmenu notecolorli" draggable="false">
 		</div> ==>
         <div class="sep"></div>
         <div title="升一个音" class="tools-li compute-mode">
           <img
-            src="v2/images/shengjiang1.png"
+            src="assets/music_score_editor/images/shengjiang1.png"
             style="width: 30px; height: 30px"
             id="up"
             value="up"
@@ -2469,7 +2468,7 @@
         </div>
         <div title="降一个音" class="tools-li compute-mode">
           <img
-            src="v2/images/shengjiang2.png"
+            src="assets/music_score_editor/images/shengjiang2.png"
             style="width: 30px; height: 30px"
             id="down"
             value="down"
@@ -2478,10 +2477,10 @@
           />
         </div>
         <!== <div title="上升一个八度" class="tools-li compute-mode">
-			<img src="v2/images/up8.png" id="up8" style="width:30px;height:30px;" value="up8" class="up8 cmenu" draggable="false">
+			<img src="assets/music_score_editor/images/up8.png" id="up8" style="width:30px;height:30px;" value="up8" class="up8 cmenu" draggable="false">
 		</div>
 		<div title="下降一个八度" class="tools-li compute-mode">
-			<img src="v2/images/down8.png" style="width:30px;height:30px;" id="down8" value="down8" class="down8 cmenu" draggable="false">
+			<img src="assets/music_score_editor/images/down8.png" style="width:30px;height:30px;" id="down8" value="down8" class="down8 cmenu" draggable="false">
 		</div> ==>
         <div class="sep"></div>
         <div
@@ -2490,7 +2489,7 @@
           title="更换乐器"
           style="height: 30px"
         >
-          <img src="v2/images/instrument.png" />
+          <img src="assets/music_score_editor/images/instrument.png" />
         </div>
         <div
           id="instrument"
@@ -2499,7 +2498,7 @@
           @click.stop="menuClick('instrument')"
           style="height: 30px"
         >
-          <img src="v2/images/instrument.png" />
+          <img src="assets/music_score_editor/images/instrument.png" />
           <!== <span>乐器</span> ==>
           <div
             class="menu-pulldown-box"
@@ -2513,7 +2512,7 @@
                 @click.stop="instrumentChoose(model.code)"
                 :class="instrumentOption == model.code && 'menu-choose'"
               >
-                <img src="v2/images/ic_tick.png" /><span>{{model.name}}</span>
+                <img src="assets/music_score_editor/images/ic_tick.png" /><span>{{model.name}}</span>
               </li>
             </ul>
           </div>
@@ -2521,7 +2520,7 @@
         <div class="sep"></div>
         <div title="显示唱名" class="tools-li compute-mode">
           <img
-            src="images/doremi.png"
+            src="assets/music_score_editor/images/doremi.png"
             style="width: 30px; height: 30px"
             value="showcm"
             class="showcm cmenu"
@@ -2540,7 +2539,7 @@
         </div>
         <div title="显示竖笛谱" class="tools-li compute-mode">
           <img
-            src="images/sd.png"
+            src="assets/music_score_editor/images/sd.png"
             style="width: 30px; height: 30px"
             value="showsd"
             class="showsd cmenu"
@@ -2549,7 +2548,7 @@
         </div>
         <div title="小节等间距" class="tools-li compute-mode">
           <img
-            src="images/equalbars.png"
+            src="assets/music_score_editor/images/equalbars.png"
             style="width: 30px; height: 30px"
             value="equalbars"
             class="equalbars cmenu"
@@ -2558,7 +2557,7 @@
         </div>
         <div title="复制歌词" class="tools-li compute-mode">
           <img
-            src="images/cplyric.png"
+            src="assets/music_score_editor/images/cplyric.png"
             style="width: 30px; height: 30px"
             class="cplyric cmenu"
             draggable="false"
@@ -2570,7 +2569,7 @@
           onclick="switchPlayNoteChangMing()"
           class="tools-li"
         >
-          <img src="images/changming.png" style="width: 30px; height: 30px" />
+          <img src="assets/music_score_editor/images/changming.png" style="width: 30px; height: 30px" />
         </div>
         <div class="play_option">
           <label>播放速度：</label>
@@ -2597,7 +2596,7 @@
           onclick="typeof (parent.closePop) == 'function' && parent != window  ? parent.closePop() : history.back()"
           class="back-btn"
         >
-          <img src="images/back_arrow.png" />
+          <img src="assets/music_score_editor/images/back_arrow.png" />
           <span style="white-space: nowrap">返回</span>
         </div>
       </div> -->
@@ -2608,19 +2607,19 @@
       >
         <div v-show="!isJxbz" class="play-btn" onclick="musicFormEdit()">
           <div class="play-img qs">
-            <img src="v2/images/qs.png" />
+            <img src="assets/music_score_editor/images/qs.png" />
           </div>
           <span style="white-space: nowrap">曲式</span>
         </div>
         <div class="play-btn" onclick="myplay()">
           <div class="play-img">
-            <img src="v2/images/play.png" id="playimg" />
+            <img src="assets/music_score_editor/images/play.png" id="playimg" />
           </div>
           <span id="playspan" style="white-space: nowrap">播放</span>
         </div>
         <div class="play-btn" onclick="mystop()">
           <div class="play-img">
-            <img style="padding: 2.5px" src="v2/images/stop.png" />
+            <img style="padding: 2.5px" src="assets/music_score_editor/images/stop.png" />
           </div>
           <span id="stopspan">停止</span>
         </div>
@@ -2631,7 +2630,7 @@
           id="save_to_server"
         >
           <div class="play-img">
-            <img style="padding: 2.5px" src="v2/images/save_to_cloud.png" />
+            <img style="padding: 2.5px" src="assets/music_score_editor/images/save_to_cloud.png" />
           </div>
           <span id="save_to_server_span" style="color: #ff9000"
             >存到谱例库</span
@@ -2644,7 +2643,7 @@
           id="save_to_history"
         >
           <div class="play-img">
-            <img style="padding: 2.5px" src="v2/images/save_to_cloud.png" />
+            <img style="padding: 2.5px" src="assets/music_score_editor/images/save_to_cloud.png" />
           </div>
           <span id="save_to_history_span" style="color: #ff9000"
             >存到历史记录</span
@@ -2656,7 +2655,7 @@
           style="border: 1px solid #ff9000"
         >
           <div class="play-img">
-            <img style="padding: 2.5px" src="v2/images/save_to_cloud.png" />
+            <img style="padding: 2.5px" src="assets/music_score_editor/images/save_to_cloud.png" />
           </div>
           <span style="color: #ff9000" @click="saveJxbzAbc">保存</span>
         </div>
@@ -2665,7 +2664,7 @@
           style="border: 1px solid #ff9000"
         >
           <div class="play-img">
-            <img style="padding: 2.5px" src="v2/images/save_to_cloud.png" />
+            <img style="padding: 2.5px" src="assets/music_score_editor/images/save_to_cloud.png" />
           </div>
           <span style="color: #ff9000" @click="startsyn">生成图片</span>
         </div>
@@ -2677,7 +2676,7 @@
           style="display: none"
         >
           <div class="play-img">
-            <img src="v2/images/play.png" id="playimg" />
+            <img src="assets/music_score_editor/images/play.png" id="playimg" />
           </div>
           <span id="scspan" style="white-space: nowrap">视唱</span>
         </div>
@@ -2692,7 +2691,7 @@
           class="tools-li"
           onclick="switchPrachEditor(this);"
         >
-          <img src="images/bianji.png" style="width: 30px; height: 30px" />
+          <img src="assets/music_score_editor/images/bianji.png" style="width: 30px; height: 30px" />
         </div>
         <div
           id="graphEditorMenuUpdate"
@@ -2700,10 +2699,10 @@
           class="tools-li menu-pressed"
           onclick="switchPrachEditor(this);"
         >
-          <img src="images/editor.png" style="width: 30px; height: 30px" />
+          <img src="assets/music_score_editor/images/editor.png" style="width: 30px; height: 30px" />
         </div>
         <!-- <div id="selectedStatus" title="选择（CTRL+Q）" class="tools-li" onclick="enabledEditor(this);">
-          <img src="images/selected.png" style="width:30px;height:30px;"/>
+          <img src="assets/music_score_editor/images/selected.png" style="width:30px;height:30px;"/>
         </div> -->
         <div class="sep"></div>
         <img
@@ -2729,7 +2728,7 @@
           <img
             id="length_swtich"
             title="切换"
-            src="v2/images/switch.png"
+            src="assets/music_score_editor/images/switch.png"
             style="width: 18px; height: 18px"
             class="switch"
           />
@@ -2737,14 +2736,14 @@
         <div class="sep"></div>
         <div title="休止符" target>
           <img
-            src="images/rest.png"
+            src="assets/music_score_editor/images/rest.png"
             style="width: 30px; height: 30px"
             class="reststatus tools-li"
           />
         </div>
         <div title="符点" target>
           <img
-            src="images/dot3.png"
+            src="assets/music_score_editor/images/dot3.png"
             style="width: 30px; height: 30px"
             value="3/"
             class="dotstatus tools-li"
@@ -2752,7 +2751,7 @@
         </div>
         <div title="符点" target>
           <img
-            src="images/dot4.png"
+            src="assets/music_score_editor/images/dot4.png"
             style="width: 30px; height: 30px"
             value="7//"
             class="dotstatus tools-li"
@@ -2761,7 +2760,7 @@
         <div class="sep"></div>
         <div title="升" target>
           <img
-            src="v2/images/yingao1.png"
+            src="assets/music_score_editor/images/yingao1.png"
             style="width: 30px; height: 30px"
             value="^"
             class="pitchbtn tools-li"
@@ -2769,7 +2768,7 @@
         </div>
         <div title="重升" target>
           <img
-            src="v2/images/cs.png"
+            src="assets/music_score_editor/images/cs.png"
             style="width: 30px; height: 30px"
             value="^^"
             class="pitchbtn tools-li"
@@ -2777,7 +2776,7 @@
         </div>
         <div title="降" target>
           <img
-            src="v2/images/yingao2.png"
+            src="assets/music_score_editor/images/yingao2.png"
             style="width: 30px; height: 30px"
             value="_"
             class="pitchbtn tools-li"
@@ -2785,7 +2784,7 @@
         </div>
         <div title="重降" target>
           <img
-            src="v2/images/cj.png"
+            src="assets/music_score_editor/images/cj.png"
             style="width: 30px; height: 30px"
             value="__"
             class="pitchbtn tools-li"
@@ -2793,7 +2792,7 @@
         </div>
         <div title="还原" target>
           <img
-            src="v2/images/yingao3.png"
+            src="assets/music_score_editor/images/yingao3.png"
             style="width: 30px; height: 30px"
             value="="
             class="pitchbtn tools-li"
@@ -3004,7 +3003,7 @@
                   @click.stop="playingInstrumentChange(model.code,model.name)"
                   :class="playingInstrumentOption == model.code && 'menu-choose'"
                 >
-                  <img src="v2/images/ic_tick.png" /><span>{{model.name}}</span>
+                  <img src="assets/music_score_editor/images/ic_tick.png" /><span>{{model.name}}</span>
                 </li>
               </ul>
             </div>
@@ -3015,7 +3014,7 @@
         <div class="tools-box spl-input" style="display: none">
           <div
             class="tools-li cmenu"
-            src="images/jianpu/1.png"
+            src="assets/music_score_editor/images/jianpu/1.png"
             level="0"
             num="1"
             value="C"
@@ -3033,7 +3032,7 @@
           </div>
           <div
             class="tools-li cmenu"
-            src="images/jianpu/2.png"
+            src="assets/music_score_editor/images/jianpu/2.png"
             level="0"
             num="2"
             value="D"
@@ -3051,7 +3050,7 @@
           </div>
           <div
             class="tools-li cmenu"
-            src="images/jianpu/3.png"
+            src="assets/music_score_editor/images/jianpu/3.png"
             level="0"
             num="3"
             value="E"
@@ -3069,7 +3068,7 @@
           </div>
           <div
             class="tools-li cmenu"
-            src="images/jianpu/4.png"
+            src="assets/music_score_editor/images/jianpu/4.png"
             level="0"
             num="4"
             value="F"
@@ -3087,7 +3086,7 @@
           </div>
           <div
             class="tools-li cmenu"
-            src="images/jianpu/5.png"
+            src="assets/music_score_editor/images/jianpu/5.png"
             level="0"
             num="5"
             value="G"
@@ -3105,7 +3104,7 @@
           </div>
           <div
             class="tools-li cmenu"
-            src="images/jianpu/6.png"
+            src="assets/music_score_editor/images/jianpu/6.png"
             level="0"
             num="6"
             value="A"
@@ -3123,7 +3122,7 @@
           </div>
           <div
             class="tools-li cmenu"
-            src="images/jianpu/7.png"
+            src="assets/music_score_editor/images/jianpu/7.png"
             level="0"
             num="7"
             value="B"
@@ -3140,13 +3139,13 @@
             7
           </div>
           <div class="tools-li cmenu" onclick="jianPuOperatorUp8(1)">
-            <img src="images/jianpu/s8.png" />
+            <img src="assets/music_score_editor/images/jianpu/s8.png" />
           </div>
           <div class="tools-li cmenu" onclick="jianPuOperatorUp8(-1)">
-            <img src="images/jianpu/j8.png" />
+            <img src="assets/music_score_editor/images/jianpu/j8.png" />
           </div>
           <div class="tools-li cmenu" id="jphxButton">
-            <img src="images/jianpu/jphx.png" />
+            <img src="assets/music_score_editor/images/jianpu/jphx.png" />
           </div>
         </div>
       </div>
@@ -3445,7 +3444,7 @@
               <div class="panel-name">
                 音符面板
                 <img
-                  src="../abc/img/arrow-2.png"
+                  src="assets/music_score_editor/img/arrow-2.png"
                   class="plsx-close"
                   @click="m.isMusicNoteShow = false"
                 />
@@ -3459,7 +3458,7 @@
                 >
                   <div class="flex space-x-1 px-1 cursor-pointer group items-center">
                     <div class="w-5 h-5 flex items-center justify-center rounded-sm group-hover:bg-gray-300">
-                      <img src="../abc/img/right.png" :class="{'arrow-down': model.isExpand}" class="duration-300" />
+                      <img src="assets/music_score_editor/img/right.png" :class="{'arrow-down': model.isExpand}" class="duration-300" />
                     </div>
                     <span>{{model.name}}</span>
                   </div>
@@ -3469,7 +3468,7 @@
                     title="切换"
                     @click.stop="model.isExpand = true"
                     v-if="model.canSwitch"
-                    src="v2/images/switch.png"
+                    src="assets/music_score_editor/images/switch.png"
                   />
                   <div
                     class="left-hide-content mb-3 bg-transparent"
@@ -3558,7 +3557,7 @@
                         style="transform: scale(.85)"
                       >
                         <img
-                          :src="`./img/radio${m.scoreOpts.speedType === 'sign' ? '1' : '2'}.png`"
+                          :src="`assets/music_score_editor/img/radio${m.scoreOpts.speedType === 'sign' ? '1' : '2'}.png`"
                           class="cursor-pointer mr-3"
                           @click="m.scoreOpts.speedType = 'sign'"
                         />
@@ -3661,7 +3660,7 @@
               <div>{{ item.title }}</div>
               <div v-if="item.subTitle" style="color: #767676;">{{ item.subTitle }}</div>
               <template v-if="item.title === '添加小节'">
-                <img src="./img/arrow_down.png" class="transform -rotate-90 w-2 h-1" >
+                <img src="assets/music_score_editor/img/arrow_down.png" class="transform -rotate-90 w-2 h-1" >
                 <div
                   class="absolute addBar duration-300 right-0 top-0 transform cursor-default translate-x-full bg-white rounded-sm pointer-events-none opacity-0"
                   style="box-shadow: 0px 4px 30px 0px rgba(3,35,63,0.28); width: 215px; padding: 6px 10px"
@@ -3672,14 +3671,14 @@
                     <div class="ml-2">插入</div>
                     <number-input v-model="m.addBar.before" :min="1" class="ml-2" style="width: 64px"></number-input>
                     <div class="mx-2">小节</div>
-                    <img src="./img/gou.png" class="cursor-pointer" @click="insertNodes(m.addBar.before) | (m.ctxMenu.isShow = false)">
+                    <img src="assets/music_score_editor/img/gou.png" class="cursor-pointer" @click="insertNodes(m.addBar.before) | (m.ctxMenu.isShow = false)">
                   </div>
                   <div class="mt-2 flex items-center">
                     <div>小节后</div>
                     <div class="ml-2">插入</div>
                     <number-input v-model="m.addBar.after" :min="1" class="ml-2" style="width: 64px"></number-input>
                     <div class="mx-2">小节</div>
-                    <img src="./img/gou.png" class="cursor-pointer" @click="insertNodes(m.addBar.after, true) | (m.ctxMenu.isShow = false)">
+                    <img src="assets/music_score_editor/img/gou.png" class="cursor-pointer" @click="insertNodes(m.addBar.after, true) | (m.ctxMenu.isShow = false)">
                   </div>
                 </div>
               </template>
@@ -3703,7 +3702,7 @@
           <!-- <img
             class="left-show-img pointer hide"
             :style="keyboardShow ? 'margin-top: -208px;' : ''"
-            src="v2/images/left.png"
+            src="assets/music_score_editor/images/left.png"
           /> -->
           <!-- 谱子区域 -->
           <div class="right-top" style="width: 1000px; margin-top: 100px; height: 700px;">
@@ -3771,7 +3770,7 @@
 						<input type="button" style="position: absolute;right:10px;top:40px;width: 30px;" value="-" onclick="changeScale(-0.2)"> -->
                 <!-- <div class="tbjpsz tbjpsz-other noselect" @click="tbjpszClick">
 							<div class="check-box">
-								<img :class="!isTbjpsz && 'hide'" src="v2/images/tick.png" />
+								<img :class="!isTbjpsz && 'hide'" src="assets/music_score_editor/images/tick.png" />
 							</div>
 							<span>同步钢琴键盘时值</span>
 						</div> -->
@@ -3795,7 +3794,7 @@
                       minHeight: '800px',
                       transformOrigin: 'top',
                       boxShadow: '4px 4px 24px 0px rgba(0,22,41,0.14)',
-                      cursor: `url(./img/${!draw_editor ? 'black' : 'blue'}.png), auto`
+                      cursor: `url(assets/music_score_editor/img/${!draw_editor ? 'black' : 'blue'}.png), auto`
                     }"
                     @click.right="draw_editor || openCtxMenu($event)"
                   >
@@ -3841,8 +3840,8 @@
                 <strong>友情提醒:</strong> 您已经有3分钟未保存数据,请及时保存.
               </div>
               <!-- <div class="mode-change compute-mobile-change play-way-box">
-            <div class="play-way piano active" title="钢琴播放" onclick="setAbcPlayWay(0)"><img src="v2/images/piano_play.png" /></div>
-            <div class="play-way system" title="系统播放" onclick="setAbcPlayWay(1)"><img src="v2/images/system_play.png" /></div>
+            <div class="play-way piano active" title="钢琴播放" onclick="setAbcPlayWay(0)"><img src="assets/music_score_editor/images/piano_play.png" /></div>
+            <div class="play-way system" title="系统播放" onclick="setAbcPlayWay(1)"><img src="assets/music_score_editor/images/system_play.png" /></div>
           </div>
           <span class="play-vol">按键声音：<a href="javascript: setNoteOnVol()" style="text-decoration: underline;">关</a></span> -->
             </div>
@@ -4155,7 +4154,7 @@
           </div>
           <!--  曲式分析编辑框 end -->
           <!-- 钢琴键盘展开、收起按钮  -->
-          <!-- <img class="keyboard-show-img pointer" :style="keyboardShow ? 'bottom: 200px;' : ''" :src="keyboardShow ? 'v2/images/bottom.png' : 'v2/images/top.png'" @click="keyboardClick" /> -->
+          <!-- <img class="keyboard-show-img pointer" :style="keyboardShow ? 'bottom: 200px;' : ''" :src="keyboardShow ? 'assets/music_score_editor/images/bottom.png' : 'assets/music_score_editor/images/top.png'" @click="keyboardClick" /> -->
         </div>
         <!-- 属性面板 -->
         <div
@@ -4177,7 +4176,7 @@
               >排版</span
             >
             <img
-              src="v2/images/close.png"
+              src="assets/music_score_editor/images/close.png"
               title="关闭"
               class="panel-close attr-close"
             />
@@ -4387,7 +4386,7 @@
                   aria-expanded="false"
                 >
                   <div>
-                    <img id="selectSpeedImg" src="images/note_1.png" />
+                    <img id="selectSpeedImg" src="assets/music_score_editor/images/note_1.png" />
                   </div>
                 </div>
                 <div
@@ -4401,49 +4400,49 @@
                     href="javascript:void(0);"
                     onclick="selectSpeed(1,'1/1')"
                     val="1/1"
-                    ><img src="images/note_1.png"
+                    ><img src="assets/music_score_editor/images/note_1.png"
                   /></a>
                   <a
                     class="dropdown-item"
                     href="javascript:void(0);"
                     onclick="selectSpeed(2,'1/2')"
                     val="1/2"
-                    ><img src="images/note_2.png"
+                    ><img src="assets/music_score_editor/images/note_2.png"
                   /></a>
                   <a
                     class="dropdown-item"
                     href="javascript:void(0);"
                     onclick="selectSpeed(3,'1/4')"
                     val="1/4"
-                    ><img src="images/note_3.png"
+                    ><img src="assets/music_score_editor/images/note_3.png"
                   /></a>
                   <a
                     class="dropdown-item"
                     href="javascript:void(0);"
                     onclick="selectSpeed(4,'1/8')"
                     val="1/8"
-                    ><img src="images/note_4.png"
+                    ><img src="assets/music_score_editor/images/note_4.png"
                   /></a>
                   <a
                     class="dropdown-item"
                     href="javascript:void(0);"
                     onclick="selectSpeed(5,'1/16')"
                     val="1/16"
-                    ><img src="images/note_5.png"
+                    ><img src="assets/music_score_editor/images/note_5.png"
                   /></a>
                   <a
                     class="dropdown-item"
                     href="javascript:void(0);"
                     onclick="selectSpeed(6,'1/32')"
                     val="1/32"
-                    ><img src="images/note_6.png"
+                    ><img src="assets/music_score_editor/images/note_6.png"
                   /></a>
                   <a
                     class="dropdown-item"
                     href="javascript:void(0);"
                     onclick="selectSpeed(7,'1/64')"
                     val="1/64"
-                    ><img src="images/note_7.png"
+                    ><img src="assets/music_score_editor/images/note_7.png"
                   /></a>
                 </div>
               </div>
@@ -5524,7 +5523,7 @@
         <img
           class="plsx-close"
           @click="plsxClick"
-          src="v2/images/close.png"
+          src="assets/music_score_editor/images/close.png"
           title="关闭"
         />
         <div class="comm comm-short">
@@ -5611,7 +5610,7 @@
             <img
               title=""
               @click.stop="isShowHelp=false"
-              src="images/close.png"
+              src="assets/music_score_editor/images/close.png"
             />
           </div>
           <div class="pop-window-body">
@@ -5777,7 +5776,7 @@
                   aria-expanded="false"
                 >
                   <div>
-                    <img id="selectSpeedImg2" src="images/note_1.png" />
+                    <img id="selectSpeedImg2" src="assets/music_score_editor/images/note_1.png" />
                   </div>
                 </div>
                 <div
@@ -5790,49 +5789,49 @@
                     href="javascript:void(0);"
                     onclick="selectSpeed2(1,'1/1')"
                     val="1/1"
-                    ><img src="images/note_1.png"
+                    ><img src="assets/music_score_editor/images/note_1.png"
                   /></a>
                   <a
                     class="dropdown-item"
                     href="javascript:void(0);"
                     onclick="selectSpeed2(2,'1/2')"
                     val="1/2"
-                    ><img src="images/note_2.png"
+                    ><img src="assets/music_score_editor/images/note_2.png"
                   /></a>
                   <a
                     class="dropdown-item"
                     href="javascript:void(0);"
                     onclick="selectSpeed2(3,'1/4')"
                     val="1/4"
-                    ><img src="images/note_3.png"
+                    ><img src="assets/music_score_editor/images/note_3.png"
                   /></a>
                   <a
                     class="dropdown-item"
                     href="javascript:void(0);"
                     onclick="selectSpeed2(4,'1/8')"
                     val="1/8"
-                    ><img src="images/note_4.png"
+                    ><img src="assets/music_score_editor/images/note_4.png"
                   /></a>
                   <a
                     class="dropdown-item"
                     href="javascript:void(0);"
                     onclick="selectSpeed2(5,'1/16')"
                     val="1/16"
-                    ><img src="images/note_5.png"
+                    ><img src="assets/music_score_editor/images/note_5.png"
                   /></a>
                   <a
                     class="dropdown-item"
                     href="javascript:void(0);"
                     onclick="selectSpeed2(6,'1/32')"
                     val="1/32"
-                    ><img src="images/note_6.png"
+                    ><img src="assets/music_score_editor/images/note_6.png"
                   /></a>
                   <a
                     class="dropdown-item"
                     href="javascript:void(0);"
                     onclick="selectSpeed2(7,'1/64')"
                     val="1/64"
-                    ><img src="images/note_7.png"
+                    ><img src="assets/music_score_editor/images/note_7.png"
                   /></a>
                 </div>
               </div>
@@ -6516,7 +6515,7 @@
           <div class="modal-body">
             <!-- 这里是内容 start -->
             <iframe
-              src="rhythm.html"
+              src="assets/music_score_editor/rhythm.html?v=1.0.1"
               style="
                 width: 100%;
                 height: 440px;
@@ -7033,7 +7032,7 @@
           <div class="modal-body">
             <iframe
               id="staffListIframe"
-              src="stafflist.html"
+              src="assets/music_score_editor/stafflist.html?v=1.0.1"
               style="width: 955px; height: 555px; border: 0px"
             >
             </iframe>
@@ -7200,187 +7199,166 @@
       onmousemove="source_float_mousemove(event)"
       onmouseup="source_float_mouseup(event)"
     >
-      <img src="v2/images/close.png" title="关闭" />
+      <img src="assets/music_score_editor/images/close.png" title="关闭" />
     </div>
     <div id="float_div"></div>
-  </body>
-</html>
-<script type="text/javascript">
-  //鼠标按下触发的事件
-  var dragTarget;
-  function Grab(evt) {
-    var targetElement = evt.target; //取得要拖动的DOM Object
-    if (targetElement.tagName.toLowerCase() == "rect") {
-      dragTarget = targetElement;
-    }
-    //console.log(targetElement.tagName)
-  }
-  function Drag(evt) {
-    evt.stopImmediatePropagation();
-    evt.preventDefault();
-    if (dragTarget != null) {
-      //有选中内容
-      //console.log("Drag")
-      //console.log(evt.clientY)
-      if (initY == 0) {
-        initStartPos = getStartPos(document.getElementById("source"));
-        initY = evt.clientY;
-        initNote = getSelectText("source");
-        lastNote = initNote;
+
+    
+    <script type="text/javascript">
+      //鼠标按下触发的事件
+      var dragTarget;
+      function Grab(evt) {
+        var targetElement = evt.target; //取得要拖动的DOM Object
+        if (targetElement.tagName.toLowerCase() == "rect") {
+          dragTarget = targetElement;
+        }
+        //console.log(targetElement.tagName)
       }
-      var distance = initY - evt.clientY;
-      var interval = parseInt(distance / 3);
-      if (interval != lastInterval) {
-        var newNote = getNoteByInterval(initNote, interval);
-        if (newNote != "") {
-          var endPos = initStartPos + lastNote.length;
-          var bStr = $("#source").val().substr(0, initStartPos);
-          var eStr = $("#source").val().substr(endPos);
-          $("#source").val(bStr + newNote + eStr);
-          //replaceSelected(lastNote,newNote)
-          lastInterval = interval;
-          lastNote = newNote;
-          src_change();
+      function Drag(evt) {
+        evt.stopImmediatePropagation();
+        evt.preventDefault();
+        if (dragTarget != null) {
+          //有选中内容
+          //console.log("Drag")
+          //console.log(evt.clientY)
+          if (initY == 0) {
+            initStartPos = getStartPos(document.getElementById("source"));
+            initY = evt.clientY;
+            initNote = getSelectText("source");
+            lastNote = initNote;
+          }
+          var distance = initY - evt.clientY;
+          var interval = parseInt(distance / 3);
+          if (interval != lastInterval) {
+            var newNote = getNoteByInterval(initNote, interval);
+            if (newNote != "") {
+              var endPos = initStartPos + lastNote.length;
+              var bStr = $("#source").val().substr(0, initStartPos);
+              var eStr = $("#source").val().substr(endPos);
+              $("#source").val(bStr + newNote + eStr);
+              //replaceSelected(lastNote,newNote)
+              lastInterval = interval;
+              lastNote = newNote;
+              src_change();
+            }
+          }
+        } else {
+          //没有选中内容
+          //console.log(evt.x+","+evt.y)
         }
       }
-    } else {
-      //没有选中内容
-      //console.log(evt.x+","+evt.y)
-    }
-  }
-  function Drop(evt) {
-    //evt不是要拖动的元素本身，而是它所覆盖的元素，画布或其他元素
-    //console.log("Drop")
-    initY = 0;
-    initNote = "";
-    dragTarget = null;
-    lastNote = "";
-  }
-
-  $(function () {
-    // 默认显示谱子的展示形式（0：五线谱；1：简线；2：简谱）
-    $(".spl-staff-change")
-      .find("div:eq(" + musicType + ")")
-      .addClass("active");
-  });
-
-  function setAbcPlayWay(abcPlayWay, isOnload) {
-    if (user) {
-      if (isOnload && user.abcPlayWay != null) {
-        return;
+      function Drop(evt) {
+        //evt不是要拖动的元素本身，而是它所覆盖的元素，画布或其他元素
+        //console.log("Drop")
+        initY = 0;
+        initNote = "";
+        dragTarget = null;
+        lastNote = "";
       }
-      user.abcPlayWay = abcPlayWay;
-      $(".play-way").removeClass("active");
-      if (abcPlayWay == 0) {
-        $(".play-way.piano").addClass("active");
-      } else {
-        $(".play-way.system").addClass("active");
+    
+      $(function () {
+        // 默认显示谱子的展示形式（0：五线谱；1：简线；2：简谱）
+        $(".spl-staff-change")
+          .find("div:eq(" + musicType + ")")
+          .addClass("active");
+      });
+    
+      function setAbcPlayWay(abcPlayWay, isOnload) {
+        if (user) {
+          if (isOnload && user.abcPlayWay != null) {
+            return;
+          }
+          user.abcPlayWay = abcPlayWay;
+          $(".play-way").removeClass("active");
+          if (abcPlayWay == 0) {
+            $(".play-way.piano").addClass("active");
+          } else {
+            $(".play-way.system").addClass("active");
+          }
+        }
       }
-    }
-  }
-  // 默认钢琴按键不播abc
-  var noteOnVol = false;
-</script>
-<link rel="stylesheet" href="css/element-ui.css">
-<script src="js/vue.min.js"></script>
-<script src="components/NumberInput.js"></script>
-<script src="components/SelectInput.js"></script>
-<script src="components/SelectFontInput.js"></script>
-<script src="js/element-ui.js"></script>
-<script src="v2/js/popper.min.js"></script>
-<script src="v2/js/bootstrap.min.js"></script>
-<script src="compont/sweetalert/sweetalert.min.js?v=20221027"></script>
-<script src="compont/sweetalert/sweetalert.ext.js?v=20221027"></script>
-<script src="abcweb_177/full_source/abc2web.js"></script>
-<script src="js/util.js?v=20221027" type="text/javascript"></script>
+      // 默认钢琴按键不播abc
+      var noteOnVol = false;
+    </script>
+    <link rel="stylesheet" href="assets/music_score_editor/css/element-ui.css">
+    <script src="assets/music_score_editor/js/vue.min.js"></script>
+    <script src="assets/music_score_editor/components/NumberInput.js"></script>
+    <script src="assets/music_score_editor/components/SelectInput.js"></script>
+    <script src="assets/music_score_editor/components/SelectFontInput.js"></script>
+    <script src="assets/music_score_editor/js/element-ui.js"></script>
+    <script src="assets/music_score_editor/js/popper.min.js"></script>
+    <script src="assets/music_score_editor/js/bootstrap.min.js"></script>
+    <script src="assets/music_score_editor/sweetalert/sweetalert.min.js?v=1.0.1"></script>
+    <script src="assets/music_score_editor/sweetalert/sweetalert.ext.js?v=1.0.1"></script>
+    <script src="assets/music_score_editor/js/abc2web.js"></script>
+    <script src="assets/music_score_editor/js/util.js?v=1.0.1" type="text/javascript"></script>
+    
+    <!-- 框选 -->
+    <script src="assets/music_score_editor/js/abc_select.js?v=1.0.1" type="text/javascript"></script>
+    <!-- 上传组件 begin -->
+    <script src="assets/music_score_editor/js/vue-upload-component.js?v=1.0.1"></script>
+    <!-- 上传组件 end -->
+    <script type="text/javascript" src="assets/music_score_editor/musicform/js/controller.js"></script>
+    <script src="assets/music_score_editor/js/abc_menu_config.js?v=1.0.1"></script>
+    <script src="assets/music_score_editor/js/pop.js?v=1.0.1"></script>
+    <script src="assets/music_score_editor/js/piano.js?v=1.0.1" type="text/javascript"></script>
+    <script src="assets/music_score_editor/js/interact.min.js"></script>
+    <script src="assets/music_score_editor/js/staff2num-splnum.js?v=1.0.1" type="text/javascript"></script>
+    <script src="assets/music_score_editor/js/edit-1-splnum.js?v=1.0.1" onload="setAbcPlayWay(1, true)" type="text/javascript"></script>
+    <script src="assets/music_score_editor/js/panzoom.min.js"></script>
+    <script src="assets/music_score_editor/js/abc2svg-1-splnum.js?v=1.0.1" type="text/javascript"></script>
+    <script src="assets/music_score_editor/js/notes.js" type="text/javascript"></script>
+    <script src="assets/music_score_editor/js/saveSvgAsPng.js"></script>
+    <script src="assets/music_score_editor/js/webmidi-editor.js?v=1.0.1"></script>
+    <script src="assets/music_score_editor/js/staff.js"></script>
+    <script src="assets/music_score_editor/js/myabc_editor.js?v=1.0.1"></script>
+    <script src="assets/music_score_editor/js/abc-editor.js"></script>
+    <script src="assets/music_score_editor/js/voicePart.js?v=1.0.1"></script>
+    <script src="assets/music_score_editor/js/jscolor/jscolor.js"></script>
+    <script src="assets/music_score_editor/js/canvg.js"></script>
+    <script src="assets/music_score_editor/js/jspdf/jsPdf.debug.js"></script>
+    <script src="assets/music_score_editor/js/html2canvas.js"></script>
+    <script src="assets/music_score_editor/js/graph-editor.js?v=1.0.1"></script>
+    <script src="assets/music_score_editor/js/piano_improvisation.js?v=1.0.1"></script>
+    <script src="assets/music_score_editor/js/myabc_plus.js?v=1.0.112"></script>
+    <script src="assets/music_score_editor/js/sing_visual_ug.js"></script>
+    <!-- 颜色选择器组件 -->
+    <script src="assets/music_score_editor/spectrum-2.0.8/spectrum.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="assets/music_score_editor/spectrum-2.0.8/spectrum.min.css"/>
+    
+    <script type="text/javascript">
+      pagewidth = ($(".right-top-content").width() - 50) / 37.8;
+    </script>
+    
+    <script src="assets/music_score_editor/js/soundtouch.js"></script>
+    <!-- <script src="assets/music_score_editor/js/play-cm.js"></script> -->
+    <!-- <script src="assets/music_score_editor/js/tln/tln.min.js"></script>
+    <link href="assets/music_score_editor/js/tln/tln.min.css" type="text/css" rel="stylesheet" /> -->
+    <script type="text/javascript">
+      jscolor.onComplete = function (bgcolor) {
+        content_vue.musicForm.bgcolor = bgcolor;
+      };
+      /* if(window != window.top){
+        window.top.location.href = window.location.href;
+    } */
+      // 使用于曲式分析的预览功能
+      function getAbcContent() {
+        return {
+          abcContent: $("#source").val(),
+          musicType: musicType,
+        };
+      }
+    </script>
+    <script type="text/javascript" src="assets/music_score_editor/js/crypto1/crypto.js"></script>
+    <script type="text/javascript" src="assets/music_score_editor/js/crypto1/hmac.js"></script>
+    <script type="text/javascript" src="assets/music_score_editor/js/crypto1/sha1.js"></script>
+    <script type="text/javascript" src="assets/music_score_editor/js/base64.js"></script>
+    <script type="text/javascript" src="assets/music_score_editor/js/plupload.full.min.js"></script>
+    <script type="text/javascript" src="assets/music_score_editor/js/upload.js"></script>
+    
+    <!-- <script src="soundfont-player-master/dist/soundfont-player.js"></script> -->
+    
 
-<!-- 框选 -->
-<script src="js/abc_select.js?v=20221027" type="text/javascript"></script>
-<!-- 上传组件 begin -->
-<script src="js/vue-upload-component.js?v=20221027"></script>
-<!-- 上传组件 end -->
-<script type="text/javascript" src="musicform/js/controller.js"></script>
-<script src="v2/js/abc_menu_config.js?v=20221027"></script>
-<script src="v2/js/pop.js?v=20221027"></script>
-<script src="js/piano.js?v=20221027" type="text/javascript"></script>
-<script src="js/interact.min.js"></script>
-<script src="js/staff2num-splnum.js?v=20221027" type="text/javascript"></script>
-<script
-  src="js/edit-1-splnum.js?v=20221027"
-  onload="setAbcPlayWay(1, true)"
-  type="text/javascript"
-></script>
-<script src="./js/panzoom.min.js"></script>
-<script src="js/abc2svg-1-splnum.js?v=20221027" type="text/javascript"></script>
-<script src="js/notes.js" type="text/javascript"></script>
-<script src="js/saveSvgAsPng.js"></script>
-<script src="js/webmidi-editor.js?v=20221027"></script>
-<script src="js/staff.js"></script>
-<script src="js/myabc_editor.js?v=20221027"></script>
-<script src="v2/js/abc-editor.js"></script>
-<script src="js/voicePart.js?v=20221027"></script>
-<script src="js/jscolor/jscolor.js"></script>
-<script src="js/canvg.js"></script>
-<script src="js/jspdf/jsPdf.debug.js"></script>
-<script src="js/html2canvas.js"></script>
-<script src="js/graph-editor.js?v=20221027"></script>
-<script src="js/piano_improvisation.js?v=20221027"></script>
-<script src="js/myabc_plus.js?v=2022102712"></script>
-<script src="js/sing_visual_ug.js"></script>
-<!-- 颜色选择器组件 -->
-<script src="spectrum-2.0.8/dist/spectrum.min.js"></script>
-<link
-  rel="stylesheet"
-  type="text/css"
-  href="spectrum-2.0.8/dist/spectrum.min.css"
-/>
 
-<script type="text/javascript">
-  pagewidth = ($(".right-top-content").width() - 50) / 37.8;
-</script>
-
-<script src="cm/soundtouch.js"></script>
-<!-- <script src="cm/play-cm.js"></script> -->
-<!-- <script src="js/tln/tln.min.js"></script>
-<link href="js/tln/tln.min.css" type="text/css" rel="stylesheet" /> -->
-<script type="text/javascript">
-  jscolor.onComplete = function (bgcolor) {
-    content_vue.musicForm.bgcolor = bgcolor;
-  };
-  /* if(window != window.top){
-    window.top.location.href = window.location.href;
-} */
-  // 使用于曲式分析的预览功能
-  function getAbcContent() {
-    return {
-      abcContent: $("#source").val(),
-      musicType: musicType,
-    };
-  }
-</script>
-<script
-  type="text/javascript"
-  src="https://imusic.ixzds.com/ixzdscommon/ossupload/lib/crypto1/crypto/crypto.js"
-></script>
-<script
-  type="text/javascript"
-  src="https://imusic.ixzds.com/ixzdscommon/ossupload/lib/crypto1/hmac/hmac.js"
-></script>
-<script
-  type="text/javascript"
-  src="https://imusic.ixzds.com/ixzdscommon/ossupload/lib/crypto1/sha1/sha1.js"
-></script>
-<script
-  type="text/javascript"
-  src="https://imusic.ixzds.com/ixzdscommon/ossupload/lib/base64.js"
-></script>
-<script
-  type="text/javascript"
-  src="https://imusic.ixzds.com/ixzdscommon/ossupload/lib/plupload-2.1.2/js/plupload.full.min.js"
-></script>
-<script
-  type="text/javascript"
-  src="https://imusic.ixzds.com/ixzdscommon/ossupload/upload.js"
-></script>
-
-<!-- <script src="soundfont-player-master/dist/soundfont-player.js"></script> -->
+  </body>
+</html>

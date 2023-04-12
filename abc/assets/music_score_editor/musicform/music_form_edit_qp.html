@@ -1,0 +1,322 @@
+<!--
+attachid
+传入参数：
+groupid：分组id
+attachid:mp3对应 
+groupid=999&attachid=041fdd2ac26c4afaa24c2aa96208d94e
+
+更新了UpdateAbcInfo,文件服务的UpdateFileInfo,Preview  -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>曲谱曲式展示</title>
+<link href="../css/bootstrap.min.css?v=1144" rel="stylesheet">
+<link href="audio/diy_audio.css?v=1144" rel="stylesheet">
+<link href="assets/music_score_editor/css/music_form_show.css" rel="stylesheet" type="text/css" />
+<link href="assets/music_score_editor/css/tree.css" rel="stylesheet" type="text/css" />
+<link href="assets/music_score_editor/css/music_form_qp_ext.css?v=1144" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="musicForm" v-cloak class="music-form-box">
+
+	<div class="music-form-header">
+		<span class="title">曲式分析</span>
+		<div class="play-btn-box">
+			<abc-audio :a_e="a_e" id="audioId" style="width:30%;"></abc-audio>
+		</div>
+		
+		<div class="other-btn" v-show="reqFrm.IS_CORRECT!=1">
+			<div v-for="( mode, index) in modeList" :class="{'play-btn': true, 'active' : modeIndex == index}" @click.stop="toggleMode(index)">
+				<span>{{ mode }}</span>
+			</div>
+			<div class="submit-btn" @click="save">保存</div>
+			<div class="cancel-btn" @click="top.closePop()">关闭</div>
+		</div>
+	</div>
+
+	<div class="audio-countdown-box">
+		<li v-for="(model, index) in '1111'" v-show="index < audioCountDown.count"></li>
+	</div>
+	<!-- abc html begin "diverr", "source", "src1", "s0", "s1", "target"-->
+	<div class="puzi-content">
+		<!-- 其他参数 -->
+		<div class="other-params hide">
+			<input id="s0" type="button" style="display: inline; background-color: #80ff80" value="(noname)"/>
+			<input id="s1" type="button" style="display: none; background-color: #ffd0d0" value=""/>
+			<label id="er" onclick="popshow('errlist', true)" style="background: #ff8080">Errors</label>
+			<div id="ctxMenu" class="hide" title="Play"></div>
+			<textarea class="hide" id="src1" rows="40" cols="73" wrap="off" style="font: 14px monospace;" oninput="src_change()"></textarea>
+			<div class="hide" id="errlist" class="popup" style="width: 500px;">
+				<div class="close" onclick="popshow('errlist')">x</div>
+				<div id="diverr" style="font-size: 14px;"></div>
+			</div>
+		</div>
+		<!-- 用于存放abc语法 -->
+		<textarea id="source" name="source" rows="14" cols="73" wrap="off"
+			style="font: 14px monospace;height: 100%; display: none;" ondrop="dropped(event)"
+			ondragenter="drag_over(event)" ondragover="drag_over(event)"
+			oninput="src_change()" onclick="" onmouseup=""></textarea>
+		<!-- 用于显示谱子 -->
+		<div id="target">
+			<svg xmlns="http://www.w3.org/2000/svg"
+				xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve"
+				width="18.3in" height="2in" viewBox="0 0 595 144" id="svg_pic"> 
+				<text x="250" y="100" font-family="serif" font-size="12"></text> 
+			</svg>
+		</div>
+	</div>
+	<!-- abc html end -->
+	<template v-if="isPreview">
+	<div class="cont-box diy-scorll" :style="contBoxStyle">
+		<div v-show="currRegionList && currRegionList.length" :class="{ 'mform-box': true, 'sub': index > 0, 'first': index == 0 && currRegionList.length > 1}"  
+			v-for="( item, index) in currRegionList" :key="this" :style="mformBoxStyle">
+			<div class="mform-left" :style="fontSizeStyle">
+				<div class="cont-top"></div>
+				<div class="cont-bot"><i></i>
+					
+					<span v-if="item.fieldno != item.fieldname"><b v-html="item.fieldno"></b><b v-html="item.fieldname"></b></span>
+					<span v-else><b v-html="item.fieldno"></b></span>
+				</div>
+			</div>
+			<div class="mform-right" :style="fontSizeStyle">
+				<img alt="" v-if="item.img_path && item.img_path.indexOf('http') > -1" :src="item.img_path" style="display: block;margin: 10px 10px 10px 0;width: 400px;"/>
+				<div>{{item.fielddesc}}</div>
+			</div>
+		</div>
+	</div>
+	</template>
+	<template v-else>
+	
+		<div class="music-form-table">
+		<div class="table-title"><!-- 段落列表 --></div>
+		<div class="table-body">
+			<table border="0">
+				<tr>
+					<th class="no">编号</th>
+					<th class="bgcolor">颜色</th>
+					<th class="name">段落名称</th>
+					<th class="time">音符起始位置</th>
+					<th class="time">音符终止位置</th>
+					<th class="content">段落内容</th>
+					<th class="op">操作</th>
+				</tr><!-- @keyup.enter -->
+				<tr class="table-tr" v-for="(item, index) in musicFormList" :data-tr-id="item.id" :data-index="index" :key="index">
+					<td>
+						<div class="sel-inp-box op-cloze-sign op-cloze" :data-itemno="item.fieldno"> <!--  @change="rowEdit(index)" -->
+							<input autocomplete="off" class="sign-edit inp" :disabled="isAdd"  v-model="item.fieldno" onblur="inpBlur(this, 'U')" onclick="inpClozeSignEdit(this)" oninput="inpClozeSin(this)"/>
+							<div class="inp-html sign-text html"  v-html="item.fieldno" onclick="inpClozeSignEdit(this)"></div>
+							<div class="pop-sel-box" v-show="item.IS_HX_BOX">
+								<div class="pop-sel-box-sub">
+									<div class="set-item set-sub" data-sign="sub" onclick="setClozeSignStyle('sub', this)"></div>
+									<div class="set-item set-sup" data-sign="sup" onclick="setClozeSignStyle('sup', this)"></div>
+									<div class="set-item set-restore" data-sign="restore" onclick="setClozeSignStyle('restore', this)"><i></i></div>
+								</div>
+							</div>
+						</div>
+					</td>
+					<td><input autocomplete="off" :disabled="isAdd"  type="color" v-model="item.bgcolor" @change="rowEdit(index)"/></td>
+					<td><input autocomplete="off" :disabled="isAdd"  v-model="item.fieldname" @change="rowEdit(index)"/></td>
+					<td><input autocomplete="off" :disabled="isAdd"  v-model="item.startNodeIndex" @change="rowEdit(index)"/></td>
+					<td><input autocomplete="off" :disabled="isAdd"  v-model="item.endNodeIndex" @change="rowEdit(index)"/></td>
+					<td><input autocomplete="off" :disabled="isAdd"  v-model="item.fielddesc" @change="rowEdit(index)"/></td>
+					<td class="op-btn-box">
+						<span class="op-btn" @click.stop="editForm(item.id)"><img src="assets/music_score_editor/images/icon_upd.png"></span>
+						<span class="op-btn" @click="delForm(item.id)"><img src="assets/music_score_editor/images/del.png"></span>
+					</td>
+				</tr>
+				<tr v-if="isAdd" class="table-tr tr-add" :data-tr-id="musicForm.id">
+					<td>
+						<div class="sel-inp-box op-cloze-sign op-cloze" :data-itemno="musicForm.fieldno"> <!--  @change="rowEdit(index)" -->
+							<input class="sign-edit inp add-sign" v-model="musicForm.fieldno" onblur="inpBlur(this, 'A')" onclick="inpClozeSignEdit(this)" oninput="inpClozeSin(this)"/>
+							<div class="inp-html sign-text html add-sign"  v-html="musicForm.fieldno" onclick="inpClozeSignEdit(this)"></div>
+							<div class="pop-sel-box" v-show="false">
+								<div class="pop-sel-box-sub">
+									<div class="set-item set-sub" data-sign="sub" onclick="setClozeSignStyle('sub', this)"></div>
+									<div class="set-item set-sup" data-sign="sup" onclick="setClozeSignStyle('sup', this)"></div>
+									<div class="set-item set-restore" data-sign="restore" onclick="setClozeSignStyle('restore', this)"><i></i></div>
+								</div>
+							</div>
+						</div>
+					</td>
+					<td><input autocomplete="off" type="color" v-model="musicForm.bgcolor"/></td>
+					<td><input autocomplete="off" v-model="musicForm.fieldname"/></td>
+					<td><input autocomplete="off" v-model="musicForm.startNodeIndex"/></td>
+					<td><input autocomplete="off" v-model="musicForm.endNodeIndex"/></td>
+					<td><input autocomplete="off" v-model="musicForm.fielddesc"/></td>
+					<td class="op-btn-box">
+						<span class="op-btn sure" @click.stop="saveRowEdit"><img src="assets/music_score_editor/images/sure_btn.png"></span>
+						<span class="op-btn cancel" @click.stop="closeRowEdit"><img src="assets/music_score_editor/images/cancel_btn.png"></span>
+					</td>
+				</tr>
+			</table>
+			<div style="width: 100%; position: relative;" v-if="!isAdd">
+				<div class="btn-add-btn play-btn tr-add" @click="openRowEdit"><img alt="" src="assets/music_score_editor/images/add.png"> <span>新增</span></div>
+			</div>
+		</div>
+	</div>
+	</template>
+
+	<div class="audio-box hide" style="position: fixed;width: 100%; text-align: center;bottom:0;">
+		<abc-audio :a_e="a_e" id="audioId" style="width:30%;"></abc-audio> 
+		<div v-show="reqFrm.IS_CORRENT != '1'" :class="{'edit-btn':!abcSel.isOpen, 'finish-btn':abcSel.isOpen}" @click.stop="editMF"></div>
+		<div v-show="reqFrm.IS_CORRENT != '1'"  class="help-btn" @click.stop="isShowHelp = !isShowHelp"></div>
+	</div>
+	
+	
+	<!--  曲式分析编辑框 beg -->
+	<div class="modal fade" id="MUSIC_FORM_div" tabindex="-1" role="dialog" aria-labelledby="MUSIC_FORM_divLabel"  data-backdrop="static">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content" style="width:740px;height:auto; left:50%;margin-left:-370px; ">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="MIDI_SETTING_divLabel">绘制曲式</h5>
+	        	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	         	<span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body" style="padding-bottom: 50px">
+	      	<form id="mfForm">
+				<div class="comm-row comm-row-2" style="font-size: 0">
+					<div class="comm-row-2-item">
+						<div class="comm-title">编号</div>
+						<input v-if="!inpdisable" id="number" name="fieldno" v-model="musicForm.fieldno" class="comm-input comm-input-2" ></input>
+						<span v-else="inpdisable" class="disable" v-html="musicForm.fieldno" title="双击可编辑" @dblclick="inpEdit"></span>
+						<div class="set-sub" @click="setStyle('sub')"></div>
+						<div class="set-sup" @click="setStyle('sup')"></div>
+						<div class="set-restore" @click="setStyle('restore')"><i></i></div>
+					</div>
+					<div class="comm-row-2-item">
+						<div class="comm-title">颜色</div>
+						<div class="comm-input comm-input-2 js-color">
+							<input type="color" v-model="musicForm.bgcolor" class="color" ></input>
+						</div>
+					</div>
+				</div>
+				<div class="comm-row">
+					<div class="comm-title">段落名称</div>
+					<input class="comm-input" v-model="musicForm.fieldname" name="fieldname" id="fieldname"></input>
+				</div>
+				<div class="comm-row comm-row-2">
+					<div class="comm-row-2-item">
+						<div class="comm-title">音符起始位置</div>
+						<input class="comm-input comm-input-2" v-model="musicForm.startNodeIndex" id="startNodeIndex"></input>
+					</div>
+					<div class="comm-row-2-item">
+						<div class="comm-title">音符终止位置</div>
+						<input class="comm-input comm-input-2" v-model="musicForm.endNodeIndex" id="startNodeIndex">
+					</div>
+				</div> 
+				<div class="comm-row">
+					<div class="comm-title">段落内容</div>
+					<textarea class="comm-textarea" v-model="musicForm.fielddesc" name="fielddesc" id="fielddesc"></textarea>
+				</div>
+				
+				<div class="comm-row">
+					<div class="comm-title">上传图片</div>
+					<ul class="file-ul comm-textarea" style="height: auto;">
+						<li v-for="( file,index) in fileUpload.showFiles" @click="filePreview.init(fileUpload.showFiles, index)" class="uploadnum"><span v-html='setFileHtml(file)'></span>
+							<div class="remove" @click.stop.prevent="removeFile(file, index)"><i class="ti ti-close"></i></div>
+					    </li>
+					    <li class="upload-add">
+					    	<file-upload ref="upload" v-show="fileUpload.showFiles.length ==0" v-model="fileUpload.files" :multiple="true" :drop="true" @input-file="inputFile" :post-action="fileUpload.fileUrl" :data="fileUpload.fileData">
+								<div class="image-plus" style="position: relative;">      
+									<div class="image-plus-horizontal"></div>
+				     				<div class="image-plus-vertical"></div>
+			      				</div>
+		      				</file-upload>
+						</li>
+					</ul>
+				</div>
+				<div class="pop-btn-box">
+					<div class="pop-btn save" @click="submit">确定</div>
+					<div class="pop-btn delete" data-dismiss="modal" aria-label="Close">取消</div>
+				</div>	
+			</form>	
+	      </div>
+	      
+	      </div>
+	    </div>
+	  </div>
+  <!--  曲式分析编辑框 end -->
+  
+	<div class="pop-window-box help-pop" v-show="isShowHelp">
+		<div class="pop-window-cover"></div>
+		<div class="pop-window-container">
+			<div class="pop-window-header">
+				<span>使用说明</span>
+				<img title="" @click.stop="isShowHelp=false" src="assets/music_score_editor/images/close.png" />
+			</div>
+			<div class="pop-window-body">
+				<ul>
+					<li><p><strong style="color: #44D2B6;">a：&nbsp;</strong><strong>新增片段：</strong>&nbsp;点击“绘制曲式”按钮，按住shift，鼠标点击某一个音符为片段的开始位置，再点击某一个音符为片段的结束位置，弹出编辑框，填写信息即可；</p></li>
+					<li><p><strong style="color: #44D2B6;">b：&nbsp;</strong><strong>新增下级：</strong>&nbsp;先选择某一片段，开始位置定位在当前片段区间，根据第a点操作即可添加；</p></li>
+					<li><p><strong style="color: #44D2B6;">c：&nbsp;</strong><strong>删、改片段：</strong>&nbsp;点击曲式片段，弹出操作框，可编辑、删除、全部删除；</p></li>
+					<li><p><strong style="color: #44D2B6;">d：&nbsp;</strong><strong>完成绘制：</strong>&nbsp;设置完成后，请记得点击"完成绘制"按钮，曲式的配置才会保存下来。<strong style="color: #0E518F;">（如果没有点击"完成绘制"按钮，那都白做了，很重要哦！）。</strong></p></li>
+				</ul>
+			</div>
+		</div>
+	</div>	
+	
+</div>
+
+
+<!-- 倒计时 -->
+<div class="countdown-box"></div>
+<script type="text/javascript">
+var jsLoadNum = 0, scale = 2.0;
+function jsLoad(){
+	jsLoadNum++;
+}
+</script>
+
+ <!-- vue 框架文件 -->
+<!-- <script src='/ixzdscommon/vue/vue.min.js'></script> -->
+<!-- 上传组件 begin -->
+<!-- <script src="/ixzdscommon/vue/vue-upload-component.js"></script> -->
+<!-- abc js -->
+<!-- 
+<script src='/ixzdscommon/abc/js/abc2svg-1-splnum.js?v=1056' onload="jsLoad()"></script>
+<script src='/ixzdscommon/abc/js/staff2num-splnum.js?v=1056' onload="jsLoad()"></script>
+<script src='/ixzdscommon/abc/js/edit-1-splnum.js?v=1056' onload="jsLoad()"></script>
+<script src="/ixzdscommon/abc/js/play-1.js?v=1056" onload="jsLoad()" ></script>
+<script src='/ixzdscommon/abc/js/piano.js' onload="jsLoad()"></script>
+<script src='/ixzdscommon/abc/js/notes.js' onload="jsLoad()"></script>
+<script src='/ixzdscommon/abc/js/Scc1t2/0.js' onload="jsLoad()"></script>
+<script src='/ixzdscommon/abc/js/Scc1t2/115.js' onload="jsLoad()"></script>
+<script src='/ixzdscommon/abc/js/util.js?v=1056'></script> -->
+<!-- 上传组件 begin -->
+<script src="../js/vue-upload-component.js"></script>
+<!-- 上传组件 end -->
+<script src='../js/vue.min.js'></script>
+<script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
+<!-- abc js -->
+<script src='../js/abc2svg-1-splnum.js?v=1056' onload="jsLoad()"></script>
+<script src='../js/staff2num-splnum.js?v=1056' onload="jsLoad()"></script>
+<script src='../js/edit-1-splnum.js?v=1056' onload="jsLoad()"></script>
+<script src="../js/play-1.js?v=1056" onload="jsLoad()" ></script>
+<script src='../js/piano.js' onload="jsLoad()"></script>
+<script src='../js/notes.js' onload="jsLoad()"></script>
+<script src='../js/Scc1t2/0.js' onload="jsLoad()"></script>
+<script src='../js/Scc1t2/115.js' onload="jsLoad()"></script>
+<script src='../js/util.js?v=1056'></script>
+<!-- abc js -->
+<!-- 上传组件 end -->
+<script src='../js/bootstrap.min.js'></script>
+<!-- <script src='/ixzdscommon/jquery/js/jquery-3.2.1.min.js'></script> -->
+<!-- <script src='/../../js/bootstrap.min.js'></script> -->
+<!-- <script src="/ixzdscommon/minipro/assets/vendor_components/sweetalert/sweetalert.min.js"></script> -->
+<!-- <script type="text/javascript" src="assets/music_score_editor/js/wavesufer/wavesurfer.min.js"></script>
+<script type="text/javascript" src="assets/music_score_editor/js/wavesufer/wavesurfer.cursor.js"></script>
+<script type="text/javascript" src="assets/music_score_editor/js/wavesufer/wavesurfer.timeline.js"></script>
+<script type="text/javascript" src="assets/music_score_editor/js/wavesufer/wavesurfer.regions.js"></script>
+<script type="text/javascript" src="assets/music_score_editor/js/wavesufer/mywavesuffer.js"></script>
+<script type="text/javascript" src="assets/music_score_editor/js/waveSurferUtil.js"></script> -->
+<!-- <script type="text/javascript" src="assets/music_score_editor/js/jscolor/jscolor.js"></script> -->
+<script type="text/javascript" src="assets/music_score_editor/js/mftree.js?v=1"></script>
+<script type="text/javascript" src="assets/music_score_editor/js/controller.js"></script>
+<script type="text/javascript" src="audio/abc_audio_v2.js?v=1"></script>
+<!-- 框选 -->
+<script src="../js/abc_select.js?v=1358" type="text/javascript"></script>
+<script type="text/javascript" src="assets/music_score_editor/js/music_form_edit_qp.js"></script>
+</body>
+</html>
