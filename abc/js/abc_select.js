@@ -1,8 +1,302 @@
+
 /***************************************************************************/
-/*                                                                         */
-/*  This obfuscated code was created by Javascript Obfuscator Free Version.*/
-/*  Javascript Obfuscator Free Version can be downloaded here              */
-/*  http://javascriptobfuscator.com                                        */
-/*                                                                         */
-/***************************************************************************/
-var _$_67a4=["use strict","selectedCball","isOk","fill","color","#fff","isOpen","first","end","barlineArr","parentSelector","isSelNote","$notes","prototype","close",".nobrk svg","svg rect[type=\'note\'], svg rect[type=\'rest\'],svg rect[type=\'splnum_note\'], svg rect[type=\'splnum_rest\']","css","each","length","barline_start","barline_end","line","value","animVal","height","<svg class=\"svg-staff\"><rect data-idx=\"","\" x=\"","\" y=\"","\" width=\"","\" height=\"","\" fill=\"","\" fill-opacity=\"","\"></rect></svg>","append","initMoveEvent","reBuild-","log","changedTouches","getEvt","scrollTop","pageX","pageY","mousedown","touchstart","mousemove","touchmove","mouseup","touchend","isPc","offset","istart","attr","node-index","left","top","outerWidth","outerHeight","push",".svg-staff rect","click","shiftKey","that.cStart:","#0F84F5","rect[node-index=\'","\']","that.cEnd:","on","off","data-idx","fill-opacity",".svg-staff rect[data-idx=\'","[type=\"bar\"]","not","preventDefault","stopPropagation","that.first: ","that.end: ","getPageXy","x1","x","x2","y1","y","y2",".svg-staff rect[fill-opacity=\'0\']","remove",".svg-staff","type","4","8","10","bar_index","beam_end","function","seqStart: ",",","AbcSel"];;;(function(_0x113A2,_0x1134A,_0x11376){_$_67a4[0];var _0x1131E=function(_0x113FA,_0x113CE){this[_$_67a4[1]]= _0x113FA?_0x113FA:null;this[_$_67a4[2]]= true;this[_$_67a4[3]]= 0.85;this[_$_67a4[4]]= _$_67a4[5];this[_$_67a4[6]]= false;this[_$_67a4[7]]= null;this[_$_67a4[8]]= null;this[_$_67a4[9]]= [];this[_$_67a4[10]]= _0x113CE|| null;this[_$_67a4[11]]= true;this[_$_67a4[12]]= null};_0x1131E[_$_67a4[13]]= {open:function(){if(this[_$_67a4[6]]){this[_$_67a4[14]]();return};this[_$_67a4[6]]= true;var _0x11426=getBarLineCoor(scale,0,9);if(!_0x11426){return};this[_$_67a4[9]]= [];var _0x11586=$(_$_67a4[15]);var _0x11502;if(this[_$_67a4[11]]){var _0x115B2=this;this[_$_67a4[12]]= $(_$_67a4[16]);this[_$_67a4[12]][_$_67a4[18]](function(){$(this)[_$_67a4[17]]({'fill-opacity':_0x115B2[_$_67a4[3]],'fill':_0x115B2[_$_67a4[4]]})})}else {for(var _0x114D6=0;_0x114D6< _0x11426[_$_67a4[19]];_0x114D6++){_0x11502= _0x11426[_0x114D6];var _0x1152E=_0x11502[_$_67a4[20]];var _0x11452=_0x11502[_$_67a4[21]];var _0x1155A=_0x11586[_0x11502[_$_67a4[22]]];var _0x1147E=_0x1155A[_$_67a4[25]][_$_67a4[24]][_$_67a4[23]];var _0x115DE=_0x11452[0]- _0x1152E[0];var _0x1160A=0;if(_0x11502[_$_67a4[22]]== 0){_0x1160A= _0x1152E[1]- 20;_0x1147E= _0x1147E- _0x1160A};var _0x114AA=_$_67a4[26]+ _0x114D6+ _$_67a4[27]+ _0x1152E[0]+ _$_67a4[28]+ _0x1160A+ _$_67a4[29]+ _0x115DE+ _$_67a4[30]+ _0x1147E+ _$_67a4[31]+ this[_$_67a4[4]]+ _$_67a4[32]+ this[_$_67a4[3]]+ _$_67a4[33];$(_0x1155A)[_$_67a4[34]](_0x114AA)}};this[_$_67a4[35]](true);this[_$_67a4[35]](false)},reBuild:function(){console[_$_67a4[37]](_$_67a4[36]);this[_$_67a4[35]](true);this[_$_67a4[35]](false)},getEvt:function(_0x11636,_0x11662){if(!_0x11662&& _0x11636[_$_67a4[38]] && _0x11636[_$_67a4[38]][_$_67a4[19]]> 0){return (_0x11636[_$_67a4[38]])[0]};return _0x11636},getPageXy:function(_0x11636,_0x11662){var _0x11636=this[_$_67a4[39]](_0x11636,_0x11662);var _0x1168E=this[_$_67a4[10]]?$(this[_$_67a4[10]])[0][_$_67a4[40]]:0;return {x:_0x11636[_$_67a4[41]],y:_0x11636[_$_67a4[42]]+ _0x1168E}},initMoveEvent:function(_0x11662){var _0x115B2=this;var _0x11796=this[_$_67a4[3]];var _0x1197A=_0x11662?_$_67a4[43]:_$_67a4[44];var _0x118CA=_0x11662?_$_67a4[45]:_$_67a4[46];var _0x1176A=_0x11662?_$_67a4[47]:_$_67a4[48];var _0x1194E,_0x11452;var _0x117C2=false;_0x115B2[_$_67a4[49]]= true;var _0x11922={};var _0x118F6= new Array();var _0x11872,_0x1189E,_0x1181A,_0x11846;var _0x117EE;var _0x1168E=this[_$_67a4[10]]?$(this[_$_67a4[10]])[0][_$_67a4[40]]:0;this[_$_67a4[12]]= $(_$_67a4[16]);if(this[_$_67a4[11]]){this[_$_67a4[12]][_$_67a4[18]](function(_0x119A6,_0x119FE){var _0x11A2A=$(this)[_$_67a4[50]]();var _0x119D2=$(this)[_$_67a4[52]](_$_67a4[51]);$(this)[_$_67a4[52]](_$_67a4[53],_0x119A6);_0x118F6[_$_67a4[58]]({x1:_0x11A2A[_$_67a4[54]],y1:_0x11A2A[_$_67a4[55]]+ _0x1168E,x2:_0x11A2A[_$_67a4[54]]+ $(this)[_$_67a4[56]]()+ 2,y2:_0x11A2A[_$_67a4[55]]+ $(this)[_$_67a4[57]]()+ _0x1168E,istart:_0x119D2,index:_0x119A6})})}else {$(_$_67a4[59])[_$_67a4[18]](function(_0x119A6,_0x119FE){var _0x11A2A=$(this)[_$_67a4[50]]();_0x118F6[_$_67a4[58]]({x1:_0x11A2A[_$_67a4[54]],y1:_0x11A2A[_$_67a4[55]]+ _0x1168E,x2:_0x11A2A[_$_67a4[54]]+ $(this)[_$_67a4[56]]()+ 2,y2:_0x11A2A[_$_67a4[55]]+ $(this)[_$_67a4[57]]()+ _0x1168E})})};var _0x1173E=null,_0x11712=null,_0x116E6=0;if(this[_$_67a4[11]]){var $tnotes=this[_$_67a4[12]];$tnotes[_$_67a4[68]](_$_67a4[60])[_$_67a4[67]](_$_67a4[60],function(_0x11636){if(_0x11636[_$_67a4[61]]){$tnotes[_$_67a4[17]]({"fill-opacity":_0x11796,"fill":_0x115B2[_$_67a4[4]]});if(_0x116E6++ == 0){_0x1173E= $(this)[_$_67a4[52]](_$_67a4[53])- 0;console[_$_67a4[37]](_$_67a4[62],_0x1173E);$(_$_67a4[64]+ _0x1173E+ _$_67a4[65])[_$_67a4[17]]({"fill-opacity":0.2,"fill":_$_67a4[63]})}else {_0x11712= $(this)[_$_67a4[52]](_$_67a4[53])- 0;console[_$_67a4[37]](_$_67a4[66],_0x11712);if(_0x115B2[_$_67a4[1]]&& _0x11712!== null){var _0x11AAE=_0x1173E> _0x11712?_0x11712:_0x1173E;var _0x11A82=_0x11712> _0x1173E?_0x11712:_0x1173E;for(var _0x11A56=_0x11AAE;_0x11A56<= _0x11A82;_0x11A56++){$(_$_67a4[64]+ _0x11A56+ _$_67a4[65])[_$_67a4[17]]({"fill-opacity":0.2,"fill":_$_67a4[63]})};_0x115B2[_$_67a4[1]](Number(_0x11AAE),Number(_0x11A82));_0x1173E= null;_0x116E6= 0}}}})}else {$(_$_67a4[59])[_$_67a4[68]](_$_67a4[60])[_$_67a4[67]](_$_67a4[60],function(_0x11636){if(_0x11636[_$_67a4[61]]){if(_0x116E6++ == 0){_0x1173E= $(this)[_$_67a4[52]](_$_67a4[69]);$(_$_67a4[59])[_$_67a4[52]](_$_67a4[70],_0x11796)[_$_67a4[52]](_$_67a4[3],_0x115B2[_$_67a4[4]]);$(_$_67a4[71]+ _0x1173E+ _$_67a4[65])[_$_67a4[52]](_$_67a4[70],0.2)[_$_67a4[52]](_$_67a4[3],_$_67a4[63])}else {_0x11712= $(this)[_$_67a4[52]](_$_67a4[69]);console[_$_67a4[37]](_$_67a4[66],_0x11712);if(_0x115B2[_$_67a4[1]]&& _0x11712!== null){var _0x11AAE=_0x1173E> _0x11712?_0x11712:_0x1173E;var _0x11A82=_0x11712> _0x1173E?_0x11712:_0x1173E;for(var _0x11A56=_0x11AAE;_0x11A56<= _0x11A82;_0x11A56++){$(_$_67a4[71]+ _0x11A56+ _$_67a4[65])[_$_67a4[73]](_$_67a4[72])[_$_67a4[52]](_$_67a4[70],0.2)[_$_67a4[52]](_$_67a4[3],_$_67a4[63])};_0x115B2[_$_67a4[1]](Number(_0x11AAE),Number(_0x11A82));_0x1173E= null;_0x116E6= 0}}}})};if(this[_$_67a4[11]]){return};$(_$_67a4[59])[_$_67a4[68]](_0x1197A)[_$_67a4[67]](_0x1197A,function(_0x11636){_0x11636[_$_67a4[74]]();_0x11636[_$_67a4[75]]();_0x117C2= true;_0x1194E= null;_0x11452= null;_0x115B2[_$_67a4[7]]= null;_0x115B2[_$_67a4[8]]= null;$(_$_67a4[85])[_$_67a4[52]](_$_67a4[70],_0x11796)})[_$_67a4[68]](_0x118CA)[_$_67a4[67]](_0x118CA,function(_0x11636){_0x11636[_$_67a4[74]]();_0x11636[_$_67a4[75]]();if(!_0x117C2){return};_0x11636= _0x115B2[_$_67a4[39]](_0x11636,_0x11662);var _0x11B06=_0x115B2[_$_67a4[78]](_0x11636,_0x11662);var _0x11ADA=$(this)[_$_67a4[52]](_$_67a4[69]);if(!_0x1194E){_0x1194E= _0x11ADA}else {var _0x11A2A;for(var _0x114D6=0;_0x114D6< _0x118F6[_$_67a4[19]];_0x114D6++){_0x11A2A= _0x118F6[_0x114D6];if(_0x11A2A[_$_67a4[79]]<= _0x11B06[_$_67a4[80]]&& _0x11B06[_$_67a4[80]]<= _0x11A2A[_$_67a4[81]]&& _0x11A2A[_$_67a4[82]]<= _0x11B06[_$_67a4[83]]&& _0x11B06[_$_67a4[83]]<= _0x11A2A[_$_67a4[84]]){_0x11ADA= _0x114D6}}};if(!_0x11452|| _0x11452!= _0x11ADA){$(_$_67a4[59])[_$_67a4[52]](_$_67a4[70],_0x11796)[_$_67a4[52]](_$_67a4[3],_0x115B2[_$_67a4[4]]);var _0x11AAE=_0x1194E< _0x11ADA?_0x1194E:_0x11ADA;var _0x11A82=_0x1194E> _0x11ADA?_0x1194E:_0x11ADA;for(var _0x11A56=_0x11AAE;_0x11A56<= _0x11A82;_0x11A56++){$(_$_67a4[71]+ _0x11A56+ _$_67a4[65])[_$_67a4[52]](_$_67a4[70],0.2)[_$_67a4[52]](_$_67a4[3],_$_67a4[63])}};_0x11452= _0x11ADA})[_$_67a4[68]](_0x1176A)[_$_67a4[67]](_0x1176A,function(_0x11636){_0x11636[_$_67a4[74]]();_0x11636[_$_67a4[75]]();_0x117C2= false;_0x115B2[_$_67a4[7]]= parseInt(_0x1194E< _0x11452?_0x1194E:_0x11452);_0x115B2[_$_67a4[8]]= parseInt(_0x1194E> _0x11452?_0x1194E:_0x11452);console[_$_67a4[37]](_$_67a4[76],_0x115B2[_$_67a4[7]]);console[_$_67a4[37]](_$_67a4[77],_0x115B2[_$_67a4[8]]);if(_0x115B2[_$_67a4[1]]){_0x115B2[_$_67a4[1]](_0x115B2[_$_67a4[7]],_0x115B2[_$_67a4[8]])}})},close:function(){this[_$_67a4[6]]= false;this[_$_67a4[7]]= null;this[_$_67a4[8]]= null;$(_$_67a4[87])[_$_67a4[86]]()},getSeq:function(_0x11B32,_0x11B5E){var _0x115B2=this;var _0x11C92,_0x11C66;var _0x11C3A=all_s(true);var _0x11502;var _0x11B8A=0;var _0x11BE2=null;var _0x11C0E=_0x11C3A[_$_67a4[19]];for(var _0x114D6=0;_0x114D6< _0x11C0E;_0x114D6++){_0x11502= _0x11C3A[_0x114D6];var _0x11BB6=(_0x11502[_$_67a4[88]]== _$_67a4[89]|| _0x11502[_$_67a4[88]]== _$_67a4[90]|| _0x11502[_$_67a4[88]]== _$_67a4[91]);if(!_0x11BB6){continue};if(_0x11BE2!= null&& _0x11502[_$_67a4[92]]!= _0x11BE2){_0x11B8A++};if(!_0x11C92&& _0x11B8A== _0x115B2[_$_67a4[7]]){_0x11C92= _0x11502[_$_67a4[51]]};if(_0x11B8A== _0x115B2[_$_67a4[8]]&& _0x11502[_$_67a4[93]]){_0x11C66= _0x11502[_$_67a4[51]]};_0x11BE2= _0x11502[_$_67a4[92]]};if( typeof _0x11B5E== _$_67a4[94]&& _0x11C92&& _0x11C66){_0x11B5E(_0x11C92,_0x11C66)}},getSeqByTime:function(_0x11B32,_0x11B5E){var _0x115B2=this;getAbcParams(_0x11B32,function(_0x11CBE,_0x11DF2){var _0x11D42=_0x11CBE* _0x11DF2;var _0x11D16=_0x115B2[_$_67a4[7]]* _0x11D42;var _0x11CEA=(_0x115B2[_$_67a4[8]]+ 1)* _0x11D42;var _0x11C92,_0x11C66;var _0x11D6E;var _0x11D9A=getNoteData();for(var _0x114D6=0;_0x114D6< _0x11D9A[_$_67a4[19]];_0x114D6++){_0x11D6E= _0x11D9A[_0x114D6];if(_0x11D6E[6]!= 0){continue};var _0x11DC6=_0x11D6E[0];var _0x11E1E=_0x11D6E[1];if(!_0x11C92&& _0x11E1E>= _0x11D16){_0x11C92= _0x11DC6};if(_0x11E1E< _0x11CEA){_0x11C66= _0x11DC6}};if( typeof _0x11B5E== _$_67a4[94]){console[_$_67a4[37]](_$_67a4[95]+ _0x11C92+ _$_67a4[96]+ _0x11C66);_0x11B5E(_0x11C92,_0x11C66)}})}};_0x113A2[_$_67a4[97]]= _0x1131E}(window,document))
+var _$_67a4 = ["use strict", "selectedCball", "isOk", "fill", "color", "#fff", "isOpen", "first", "end", "barlineArr", "parentSelector", "isSelNote", "$notes", "prototype", "close", ".nobrk svg", "svg rect[type=\'note\'], svg rect[type=\'rest\'],svg rect[type=\'splnum_note\'], svg rect[type=\'splnum_rest\']", "css", "each", "length", "barline_start", "barline_end", "line", "value", "animVal", "height", "<svg class=\"svg-staff\"><rect data-idx=\"", "\" x=\"", "\" y=\"", "\" width=\"", "\" height=\"", "\" fill=\"", "\" fill-opacity=\"", "\"></rect></svg>", "append", "initMoveEvent", "reBuild-", "log", "changedTouches", "getEvt", "scrollTop", "pageX", "pageY", "mousedown", "touchstart", "mousemove", "touchmove", "mouseup", "touchend", "isPc", "offset", "istart", "attr", "node-index", "left", "top", "outerWidth", "outerHeight", "push", ".svg-staff rect", "click", "shiftKey", "that.cStart:", "#0F84F5", "rect[node-index=\'", "\']", "that.cEnd:", "on", "off", "data-idx", "fill-opacity", ".svg-staff rect[data-idx=\'", "[type=\"bar\"]", "not", "preventDefault", "stopPropagation", "that.first: ", "that.end: ", "getPageXy", "x1", "x", "x2", "y1", "y", "y2", ".svg-staff rect[fill-opacity=\'0\']", "remove", ".svg-staff", "type", "4", "8", "10", "bar_index", "beam_end", "function", "seqStart: ", ",", "AbcSel"];
+;;(function(w, d, e) {
+    "use strict";
+    var _0x1131E = function(_0x113FA, _0x113CE) {
+        this["selectedCball"] = _0x113FA ? _0x113FA : null;
+        this["isOk"] = true;
+        this["fill"] = 0.85;
+        this["color"] = "#fff";
+        this["isOpen"] = false;
+        this["first"] = null;
+        this["end"] = null;
+        this["barlineArr"] = [];
+        this["parentSelector"] = _0x113CE || null;
+        this["isSelNote"] = true;
+        this["$notes"] = null
+    };
+    _0x1131E["prototype"] = {
+        open: function() {
+            if (this["isOpen"]) {
+                this["close"]();
+                return
+            }
+            ;this["isOpen"] = true;
+            var _0x11426 = getBarLineCoor(scale, 0, 9);
+            if (!_0x11426) {
+                return
+            }
+            ;this["barlineArr"] = [];
+            var _0x11586 = $(".nobrk svg");
+            var _0x11502;
+            if (this["isSelNote"]) {
+                var _0x115B2 = this;
+                this["$notes"] = $("svg rect[type=\'note\'], svg rect[type=\'rest\'],svg rect[type=\'splnum_note\'], svg rect[type=\'splnum_rest\']");
+                this["$notes"]["each"](function() {
+                    $(this)["css"]({
+                        'fill-opacity': _0x115B2["fill"],
+                        'fill': _0x115B2["color"]
+                    })
+                })
+            } else {
+                for (var _0x114D6 = 0; _0x114D6 < _0x11426["length"]; _0x114D6++) {
+                    _0x11502 = _0x11426[_0x114D6];
+                    var _0x1152E = _0x11502["barline_start"];
+                    var _0x11452 = _0x11502["barline_end"];
+                    var _0x1155A = _0x11586[_0x11502["line"]];
+                    var _0x1147E = _0x1155A["height"]["animVal"]["value"];
+                    var _0x115DE = _0x11452[0] - _0x1152E[0];
+                    var _0x1160A = 0;
+                    if (_0x11502["line"] == 0) {
+                        _0x1160A = _0x1152E[1] - 20;
+                        _0x1147E = _0x1147E - _0x1160A
+                    }
+                    ;var _0x114AA = "<svg class=\"svg-staff\"><rect data-idx=\"" + _0x114D6 + "\" x=\"" + _0x1152E[0] + "\" y=\"" + _0x1160A + "\" width=\"" + _0x115DE + "\" height=\"" + _0x1147E + "\" fill=\"" + this["color"] + "\" fill-opacity=\"" + this["fill"] + "\"></rect></svg>";
+                    $(_0x1155A)["append"](_0x114AA)
+                }
+            }
+            ;this["initMoveEvent"](true);
+            this["initMoveEvent"](false)
+        },
+        reBuild: function() {
+            console["log"]("reBuild-");
+            this["initMoveEvent"](true);
+            this["initMoveEvent"](false)
+        },
+        getEvt: function(_0x11636, _0x11662) {
+            if (!_0x11662 && _0x11636["changedTouches"] && _0x11636["changedTouches"]["length"] > 0) {
+                return (_0x11636["changedTouches"])[0]
+            }
+            ;return _0x11636
+        },
+        getPageXy: function(_0x11636, _0x11662) {
+            var _0x11636 = this["getEvt"](_0x11636, _0x11662);
+            var _0x1168E = this["parentSelector"] ? $(this["parentSelector"])[0]["scrollTop"] : 0;
+            return {
+                x: _0x11636["pageX"],
+                y: _0x11636["pageY"] + _0x1168E
+            }
+        },
+        initMoveEvent: function(_0x11662) {
+            var _0x115B2 = this;
+            var _0x11796 = this["fill"];
+            var _0x1197A = _0x11662 ? "mousedown" : "touchstart";
+            var _0x118CA = _0x11662 ? "mousemove" : "touchmove";
+            var _0x1176A = _0x11662 ? "mouseup" : "touchend";
+            var _0x1194E, _0x11452;
+            var _0x117C2 = false;
+            _0x115B2["isPc"] = true;
+            var _0x11922 = {};
+            var _0x118F6 = new Array();
+            var _0x11872, _0x1189E, _0x1181A, _0x11846;
+            var _0x117EE;
+            var _0x1168E = this["parentSelector"] ? $(this["parentSelector"])[0]["scrollTop"] : 0;
+            this["$notes"] = $("svg rect[type=\'note\'], svg rect[type=\'rest\'],svg rect[type=\'splnum_note\'], svg rect[type=\'splnum_rest\']");
+            if (this["isSelNote"]) {
+                this["$notes"]["each"](function(_0x119A6, _0x119FE) {
+                    var _0x11A2A = $(this)["offset"]();
+                    var _0x119D2 = $(this)["attr"]("istart");
+                    $(this)["attr"]("node-index", _0x119A6);
+                    _0x118F6["push"]({
+                        x1: _0x11A2A["left"],
+                        y1: _0x11A2A["top"] + _0x1168E,
+                        x2: _0x11A2A["left"] + $(this)["outerWidth"]() + 2,
+                        y2: _0x11A2A["top"] + $(this)["outerHeight"]() + _0x1168E,
+                        istart: _0x119D2,
+                        index: _0x119A6
+                    })
+                })
+            } else {
+                $(".svg-staff rect")["each"](function(_0x119A6, _0x119FE) {
+                    var _0x11A2A = $(this)["offset"]();
+                    _0x118F6["push"]({
+                        x1: _0x11A2A["left"],
+                        y1: _0x11A2A["top"] + _0x1168E,
+                        x2: _0x11A2A["left"] + $(this)["outerWidth"]() + 2,
+                        y2: _0x11A2A["top"] + $(this)["outerHeight"]() + _0x1168E
+                    })
+                })
+            }
+            ;var _0x1173E = null
+              , _0x11712 = null
+              , _0x116E6 = 0;
+            if (this["isSelNote"]) {
+                var $tnotes = this["$notes"];
+                $tnotes["off"]("click")["on"]("click", function(_0x11636) {
+                    if (_0x11636["shiftKey"]) {
+                        $tnotes["css"]({
+                            "fill-opacity": _0x11796,
+                            "fill": _0x115B2["color"]
+                        });
+                        if (_0x116E6++ == 0) {
+                            _0x1173E = $(this)["attr"]("node-index") - 0;
+                            console["log"]("that.cStart:", _0x1173E);
+                            $("rect[node-index=\'" + _0x1173E + "\']")["css"]({
+                                "fill-opacity": 0.2,
+                                "fill": "#0F84F5"
+                            })
+                        } else {
+                            _0x11712 = $(this)["attr"]("node-index") - 0;
+                            console["log"]("that.cEnd:", _0x11712);
+                            if (_0x115B2["selectedCball"] && _0x11712 !== null) {
+                                var _0x11AAE = _0x1173E > _0x11712 ? _0x11712 : _0x1173E;
+                                var _0x11A82 = _0x11712 > _0x1173E ? _0x11712 : _0x1173E;
+                                for (var _0x11A56 = _0x11AAE; _0x11A56 <= _0x11A82; _0x11A56++) {
+                                    $("rect[node-index=\'" + _0x11A56 + "\']")["css"]({
+                                        "fill-opacity": 0.2,
+                                        "fill": "#0F84F5"
+                                    })
+                                }
+                                ;_0x115B2["selectedCball"](Number(_0x11AAE), Number(_0x11A82));
+                                _0x1173E = null;
+                                _0x116E6 = 0
+                            }
+                        }
+                    }
+                })
+            } else {
+                $(".svg-staff rect")["off"]("click")["on"]("click", function(_0x11636) {
+                    if (_0x11636["shiftKey"]) {
+                        if (_0x116E6++ == 0) {
+                            _0x1173E = $(this)["attr"]("data-idx");
+                            $(".svg-staff rect")["attr"]("fill-opacity", _0x11796)["attr"]("fill", _0x115B2["color"]);
+                            $(".svg-staff rect[data-idx=\'" + _0x1173E + "\']")["attr"]("fill-opacity", 0.2)["attr"]("fill", "#0F84F5")
+                        } else {
+                            _0x11712 = $(this)["attr"]("data-idx");
+                            console["log"]("that.cEnd:", _0x11712);
+                            if (_0x115B2["selectedCball"] && _0x11712 !== null) {
+                                var _0x11AAE = _0x1173E > _0x11712 ? _0x11712 : _0x1173E;
+                                var _0x11A82 = _0x11712 > _0x1173E ? _0x11712 : _0x1173E;
+                                for (var _0x11A56 = _0x11AAE; _0x11A56 <= _0x11A82; _0x11A56++) {
+                                    $(".svg-staff rect[data-idx=\'" + _0x11A56 + "\']")["not"]("[type=\"bar\"]")["attr"]("fill-opacity", 0.2)["attr"]("fill", "#0F84F5")
+                                }
+                                ;_0x115B2["selectedCball"](Number(_0x11AAE), Number(_0x11A82));
+                                _0x1173E = null;
+                                _0x116E6 = 0
+                            }
+                        }
+                    }
+                })
+            }
+            ;if (this["isSelNote"]) {
+                return
+            }
+            ;$(".svg-staff rect")["off"](_0x1197A)["on"](_0x1197A, function(_0x11636) {
+                _0x11636["preventDefault"]();
+                _0x11636["stopPropagation"]();
+                _0x117C2 = true;
+                _0x1194E = null;
+                _0x11452 = null;
+                _0x115B2["first"] = null;
+                _0x115B2["end"] = null;
+                $(".svg-staff rect[fill-opacity=\'0\']")["attr"]("fill-opacity", _0x11796)
+            })["off"](_0x118CA)["on"](_0x118CA, function(_0x11636) {
+                _0x11636["preventDefault"]();
+                _0x11636["stopPropagation"]();
+                if (!_0x117C2) {
+                    return
+                }
+                ;_0x11636 = _0x115B2["getEvt"](_0x11636, _0x11662);
+                var _0x11B06 = _0x115B2["getPageXy"](_0x11636, _0x11662);
+                var _0x11ADA = $(this)["attr"]("data-idx");
+                if (!_0x1194E) {
+                    _0x1194E = _0x11ADA
+                } else {
+                    var _0x11A2A;
+                    for (var _0x114D6 = 0; _0x114D6 < _0x118F6["length"]; _0x114D6++) {
+                        _0x11A2A = _0x118F6[_0x114D6];
+                        if (_0x11A2A["x1"] <= _0x11B06["x"] && _0x11B06["x"] <= _0x11A2A["x2"] && _0x11A2A["y1"] <= _0x11B06["y"] && _0x11B06["y"] <= _0x11A2A["y2"]) {
+                            _0x11ADA = _0x114D6
+                        }
+                    }
+                }
+                ;if (!_0x11452 || _0x11452 != _0x11ADA) {
+                    $(".svg-staff rect")["attr"]("fill-opacity", _0x11796)["attr"]("fill", _0x115B2["color"]);
+                    var _0x11AAE = _0x1194E < _0x11ADA ? _0x1194E : _0x11ADA;
+                    var _0x11A82 = _0x1194E > _0x11ADA ? _0x1194E : _0x11ADA;
+                    for (var _0x11A56 = _0x11AAE; _0x11A56 <= _0x11A82; _0x11A56++) {
+                        $(".svg-staff rect[data-idx=\'" + _0x11A56 + "\']")["attr"]("fill-opacity", 0.2)["attr"]("fill", "#0F84F5")
+                    }
+                }
+                ;_0x11452 = _0x11ADA
+            })["off"](_0x1176A)["on"](_0x1176A, function(_0x11636) {
+                _0x11636["preventDefault"]();
+                _0x11636["stopPropagation"]();
+                _0x117C2 = false;
+                _0x115B2["first"] = parseInt(_0x1194E < _0x11452 ? _0x1194E : _0x11452);
+                _0x115B2["end"] = parseInt(_0x1194E > _0x11452 ? _0x1194E : _0x11452);
+                console["log"]("that.first: ", _0x115B2["first"]);
+                console["log"]("that.end: ", _0x115B2["end"]);
+                if (_0x115B2["selectedCball"]) {
+                    _0x115B2["selectedCball"](_0x115B2["first"], _0x115B2["end"])
+                }
+            })
+        },
+        close: function() {
+            this["isOpen"] = false;
+            this["first"] = null;
+            this["end"] = null;
+            $(".svg-staff")["remove"]()
+        },
+        getSeq: function(_0x11B32, _0x11B5E) {
+            var _0x115B2 = this;
+            var _0x11C92, _0x11C66;
+            var _0x11C3A = all_s(true);
+            var _0x11502;
+            var _0x11B8A = 0;
+            var _0x11BE2 = null;
+            var _0x11C0E = _0x11C3A["length"];
+            for (var _0x114D6 = 0; _0x114D6 < _0x11C0E; _0x114D6++) {
+                _0x11502 = _0x11C3A[_0x114D6];
+                var _0x11BB6 = (_0x11502["type"] == "4" || _0x11502["type"] == "8" || _0x11502["type"] == "10");
+                if (!_0x11BB6) {
+                    continue
+                }
+                ;if (_0x11BE2 != null && _0x11502["bar_index"] != _0x11BE2) {
+                    _0x11B8A++
+                }
+                ;if (!_0x11C92 && _0x11B8A == _0x115B2["first"]) {
+                    _0x11C92 = _0x11502["istart"]
+                }
+                ;if (_0x11B8A == _0x115B2["end"] && _0x11502["beam_end"]) {
+                    _0x11C66 = _0x11502["istart"]
+                }
+                ;_0x11BE2 = _0x11502["bar_index"]
+            }
+            ;if (typeof _0x11B5E == "function" && _0x11C92 && _0x11C66) {
+                _0x11B5E(_0x11C92, _0x11C66)
+            }
+        },
+        getSeqByTime: function(_0x11B32, _0x11B5E) {
+            var _0x115B2 = this;
+            getAbcParams(_0x11B32, function(_0x11CBE, _0x11DF2) {
+                var _0x11D42 = _0x11CBE * _0x11DF2;
+                var _0x11D16 = _0x115B2["first"] * _0x11D42;
+                var _0x11CEA = (_0x115B2["end"] + 1) * _0x11D42;
+                var _0x11C92, _0x11C66;
+                var _0x11D6E;
+                var _0x11D9A = getNoteData();
+                for (var _0x114D6 = 0; _0x114D6 < _0x11D9A["length"]; _0x114D6++) {
+                    _0x11D6E = _0x11D9A[_0x114D6];
+                    if (_0x11D6E[6] != 0) {
+                        continue
+                    }
+                    ;var _0x11DC6 = _0x11D6E[0];
+                    var _0x11E1E = _0x11D6E[1];
+                    if (!_0x11C92 && _0x11E1E >= _0x11D16) {
+                        _0x11C92 = _0x11DC6
+                    }
+                    ;if (_0x11E1E < _0x11CEA) {
+                        _0x11C66 = _0x11DC6
+                    }
+                }
+                ;if (typeof _0x11B5E == "function") {
+                    console["log"]("seqStart: " + _0x11C92 + "," + _0x11C66);
+                    _0x11B5E(_0x11C92, _0x11C66)
+                }
+            })
+        }
+    };
+    w["AbcSel"] = _0x1131E
+}(window, document))

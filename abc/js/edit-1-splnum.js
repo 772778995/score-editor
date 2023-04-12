@@ -82,12 +82,7 @@ const setLyricStyle = () => {
   ).css(content_vue.m.lyric.style);
 };
 
-/***************************************************************************/
-/*                                                                         */
-/*  This obfuscated code was created by Javascript Obfuscator Free Version.*/
-/*  Javascript Obfuscator Free Version can be downloaded here              */
-/*  http://javascriptobfuscator.com                                        */
-/*                                                                         */
+
 /***************************************************************************/
 var _$_6a78 = [
   "onerror",
