@@ -491,7 +491,6 @@
     <title>创编制谱系统</title>
   </head>
   <body>
-    <!-- 假动画
     <div id="loadingSeven" class="w-screen h-screen fixed items-center flex flex-col justify-center duration-300 filter" style="z-index: 9999999; background: #f5f5f6;">
       <div class="loadingSeven">
         <span></span>
@@ -507,7 +506,7 @@
           let num = 0
           const loadTimer = setInterval(() => {
             if (num < 100) {
-              num += +(100 - num) / 100
+              num += +(100 - num) / 9
               loadNumEl.innerText = num.toFixed(2)
               if (num.toFixed(2) >= 100) {
                 clearInterval(loadTimer)
@@ -516,10 +515,10 @@
                 })
               }
             }
-          }, 10)
+          }, 70)
         })()
       </script>
-    </div> -->
+    </div>
     <input
       type="text"
       id="tmpText"
@@ -959,9 +958,9 @@
           </div>
 
           <div class="flex absolute bottom-0 bg-white z-40" style="right: 10px; width: 491px; padding: 20px 17px 20px 17px;">
-            <button class="_btn _border" @click="m.newScore.scoreOptsShow = m.newScore.musicType.show = false">取消</button>
-            <button class="_btn ml-auto mr-2 " @click="m.newScore.scoreOptsShow = false">上一步</button>
-            <button class="_btn" @click="createNewScore">创建</button>
+            <div class="_btn _border" @click="m.newScore.scoreOptsShow = m.newScore.musicType.show = false">取消</div>
+            <div class="_btn ml-auto mr-2 " @click="m.newScore.scoreOptsShow = false">上一步</div>
+            <div class="_btn" @click="createNewScore">创建</div>
           </div>
         </div>
       </div>

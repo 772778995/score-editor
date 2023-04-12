@@ -398,22 +398,44 @@ function changeAbc(cb) {
 }
 
 function lineTo() {
-  const info = getSelectAbcCodeInfo();
-  if (!info) return
-  keepSelectNote(() => {
-    let { head, tail, istart, txt } = info;
-    let abcCode = $("#source").val();
-    head = head.replace(/\($/, '');
-    tail = tail.replace(/^\)/, '');
-    txt = "(" + txt;
-    tail = tail.replace(
-      /[H-Zh-z]*({.*})?(!.*!)?\(?[A-Ga-g]\)?,*/,
-      (s) => s + ")"
-    );
-    abcCode = head + txt + tail;
-    $("#source").val(abcCode);
-    abc_change();
-  });
+  const el = $('.selected_text')
+  var _0x15C57 = $("#source")["val"]();
+  if (!el.length) return alert('未选中音符：请选取一个音符，然后重试')
+  const istart = +el.attr('istart')
+  var cen = syms[istart]
+  if (cen.type === AbcType.Rest) return
+    var _0x17007 = cen["next"];
+    var _0x192A8 = cen["istart"];
+    var _0x1951E = -1;
+    for (var _0x15CDE = _0x192A8 + 1; _0x15CDE < syms["length"]; _0x15CDE++) {
+      _0x17007 = syms[_0x15CDE];
+      if (_0x17007) {
+        if (_0x17007["type"] == 8 || _0x17007["type"] == 10) {
+          if (_0x17007["v"] == cen["v"]) {
+            _0x1951E = _0x17007["iend"];
+            break;
+          }
+        }
+      }
+    }
+    if (_0x1951E == -1) {
+      return;
+    }
+    var _0x16251 = '(note)'
+    var _0x1962C = _0x15C57["substring"](cen["istart"], _0x1951E);
+    _0x16251 = _0x16251["replace"]("note", _0x1962C);
+    _0x15C57 =
+      _0x15C57["substring"](0, cen["istart"]) +
+      _0x16251 +
+      _0x15C57["substring"](_0x1951E);
+    $("#source")["val"](_0x15C57);
+    if (musicType == 2) {
+      src_change();
+    } else {
+      render();
+    }
+    doLog();
+    return;
 }
 
 /**
@@ -3175,7 +3197,7 @@ var content_vue = new Vue({
               url: "images/yy1.png",
               isKeepSelect: true,
               title: "倚音",
-              fn: () => changeAbc((txt) => `{/b}${txt}`),
+              fn: () => changeAbc((txt) => `{gg}${txt}`),
               isSelect: false,
             },
             {
@@ -5794,16 +5816,12 @@ var content_vue = new Vue({
     async 'm.id'(id) {
       if (!id) return
       const res = await request({ url: `/musicals/${content_vue.m.id}` })
-      const url = res.abc_json_val
+      const url = window.API_SERVER_URL.replace(/(api)$/, 'storage/public:') + btoa(encodeURI(res.abc_json_val.replace(/^(public:)/, '')))
       this.m.scoreOpts = Object.assign(this.m.scoreOpts, res.base_info.initOpts)
       if (res.base_info.lyricStyle) {
         Object.assign(this.m.lyric.style, res.base_info.lyricStyle)
       }
-      const abcCode = await request({
-        method: 'POST',
-        url: '/music-attach/abc',
-        data: { url }
-      })
+      const abcCode = await request({ url })
       $('#source').val(abcCode)
       abc_change()
       log = []
