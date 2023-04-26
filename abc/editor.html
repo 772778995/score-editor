@@ -7,16 +7,13 @@
       set() { return () => {} }
     });
     window.AE = {
-      // 线上/测试服务器
-      // file_server_url: '{$file_server_url}',
-      // api_url: '{$api_url}',
-      // 研发服务器
-      file_server_url: 'http://10.88.18.164:30000/storage',
-      api_url: 'http://10.88.18.164:30000/api',
+      api_url: '{{$api_url}}',
+      base_url: '{{$base_url}}',
+      file_url: '{{$file_url}}'
     };
     //文件服务器地址
     var file_server_url = "";
-    file_server_url = window.AE.file_server_url || '';
+    var FILE_URL = window.AE.file_url || '';
     // API 服务器地址
     var API_SERVER_URL = window.AE.api_url || '';
     //五线谱的宽度
@@ -502,7 +499,7 @@
       <script>
         (() => {
           const loadNumEl = document.querySelector('#loadNum')
-          let num = 60
+          let num = 80
           const loadTimer = setInterval(() => {
             if (num < 100) {
               num += +(100 - num) / 9

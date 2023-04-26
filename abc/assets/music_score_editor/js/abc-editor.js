@@ -5816,17 +5816,27 @@ var content_vue = new Vue({
     async 'm.id'(id) {
       if (!id) return
       const res = await request({ url: `/musicals/${content_vue.m.id}` })
-      const url = window.API_SERVER_URL.replace(/(api)$/, 'storage/public:') + btoa(encodeURI(res.abc_json_val.replace(/^(public:)/, '')))
-      this.m.scoreOpts = Object.assign(this.m.scoreOpts, res.base_info.initOpts)
-      if (res.base_info.lyricStyle) {
+      console.log(res)
+      // const url = FILE_URL + '/public:' + btoa(encodeURI(res.abc_json_val.replace(/^(public:)/, '')))
+      const url = res.abc_json_val?res.abc_json_val.url:'';
+      // console.log(this.m.scoreOpts)
+      this.m.scoreOpts = Object.assign(this.m.scoreOpts, res.base_info?.initOpts)
+      if (res.base_info?.lyricStyle) {
         Object.assign(this.m.lyric.style, res.base_info.lyricStyle)
       }
+      console.log(content_vue.m.scoreOpts);
       const abcCode = await request({ url })
       $('#source').val(abcCode)
       abc_change()
       log = []
-      changeStaffType(null, content_vue.m.scoreOpts?.musicType === "easy" ? 2 : 0) |
-      restoreEditor();
+      var music_type = res?.music_type;
+      if(music_type){
+        content_vue.m.scoreOpts.musicType = music_type
+      }
+      // console.log('music_type', content_vue.m.scoreOpts?.musicType);
+      setTimeout(()=>{
+        changeStaffType(null, music_type === "easy" ? 2 : 0) | restoreEditor();
+      }, 10)
     },
     'm.reqs': (function() {
       let timer = null
