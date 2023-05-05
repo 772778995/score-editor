@@ -3725,7 +3725,7 @@ var content_vue = new Vue({
             },
             {
               url: "assets/music_score_editor/img/notepanel/bar (3).png",
-              value: "||",
+              value: "|]",
               title: "结束线",
               class: "cmenu",
               type: "nodeline",
@@ -4308,65 +4308,65 @@ var content_vue = new Vue({
               url: "assets/music_score_editor/img/notepanel/repeat (1).png",
               value: "!segno!",
               title: "记号",
-              class: "cmenu",
               position: "preInsert",
               type: "nodeline",
+              fn: () => setRepeatAndJump('!segno!')
             },
             {
               title: "反复省略记号",
               url: "assets/music_score_editor/img/notepanel/repeat (2).png",
               value: "!coda!",
-              class: "cmenu",
               position: "preInsert",
               type: "nodeline",
+              fn: () => setRepeatAndJump('!coda!')
             },
             {
               title: "曲终",
               url: "assets/music_score_editor/img/notepanel/repeat (3).png",
               value: "!fine!",
-              class: "cmenu",
               position: "afterInsert",
               type: "nodeline",
+              fn: () => setRepeatAndJump('!fine!')
             },
             {
               title: "到结尾",
               url: "assets/music_score_editor/img/notepanel/repeat (4).png",
               value: "!tocoda!",
-              class: "cmenu",
               position: "afterInsert",
               type: "nodeline",
+              fn: () => setRepeatAndJump('!tocoda!')
             },
             {
               url: "assets/music_score_editor/img/notepanel/repeat (5).png",
               value: "!D.C.!",
               title: "从头开始反复",
-              class: "cmenu",
               position: "afterInsert",
               type: "nodeline",
+              fn: () => setRepeatAndJump('!D.C.!')
             },
             {
               url: "assets/music_score_editor/img/notepanel/repeat (6).png",
               value: "!D.S.!",
               title: "从记号处反复",
-              class: "cmenu",
               position: "afterInsert",
               type: "nodeline",
+              fn: () => setRepeatAndJump('!D.S.!')
             },
             {
               url: "assets/music_score_editor/img/notepanel/repeat (7).png",
               value: "!D.C.alfine!",
               title: "从头反复到结束",
-              class: "cmenu",
               position: "afterInsert",
               type: "nodeline",
+              fn: () => setRepeatAndJump('!D.C.alfine!')
             },
             {
               url: "assets/music_score_editor/img/notepanel/repeat (8).png",
               value: "!D.C.alcoda!",
               title: "跳过反复到结尾",
-              class: "cmenu",
               position: "afterInsert",
               type: "nodeline",
+              fn: () => setRepeatAndJump('!D.C.alcoda!')
             },
           ],
         },
@@ -6692,11 +6692,12 @@ var getAbcContentObj = function () {
  * @returns {(cb: (str: string) => string) => void}
  */
 const getChangeStrFn = (start, end) => (cb) => {
+  const selectStr = $("#source").val().slice(start, end);
   const newCode = replaceCharsInRange(
     $("#source").val(),
     start,
     end,
-    cb(obj[opts.targetKey])
+    cb(selectStr)
   );
   $("#source").val(newCode);
   abc_change();
@@ -6706,7 +6707,7 @@ const getChangeStrFn = (start, end) => (cb) => {
  * 获取小节列表
  * @param {Vocal} vocal
  */
-const getBarList = ({ barListStr, start: vocalStart }) => {
+const getBarList = ({ index: vocalIndex, barListStr, start: vocalStart }) => {
   const { 0: lastMeterStr, index: lastMeterStrStart } = $("#source")
     .val()
     .match(/(?<=M:\s*)[^\s]+/);
@@ -6727,10 +6728,10 @@ const getBarList = ({ barListStr, start: vocalStart }) => {
   const barList = barListStr
     .match(/[^\|]+(?:\|\||\|\]|:\|\|:|:\||\|)\$*/g)
     .map((barStr) => {
-      const barStrStart = barListStr.indexOf(barStr) + vocalStart;
-      const barStrEnd = barStrStart + barStr.length;
-
       const barLineStr = barStr.match(/\|\||\|\]|:\|\|:|:\||\|/)[0];
+      barStr = barStr.replace(/\|\||\|\]|:\|\|:|:\||\|/, '')
+      const barStrStart = barListStr.indexOf(barStr) + vocalStart;
+      const barStrEnd = barStrStart + barStr.length
       const barLineStrStart = barStr.indexOf(barLineStr) + barStrStart;
       const barLineStrEnd = barLineStrStart + barLineStr.length;
       const barLine = {
@@ -6770,6 +6771,7 @@ const getBarList = ({ barListStr, start: vocalStart }) => {
 
       barListStr = barListStr.replace(barStr, "操".repeat(barStr.length));
       return {
+        vocalIndex,
         barStr,
         change: getChangeStrFn(barStrStart, barStrEnd),
         start: barStrStart,
@@ -6811,12 +6813,44 @@ const getVocalList = () => {
       end: vocalEnd,
       keySign,
     };
-    vocal.barList = getBarList({ ...vocal });
+    let barList = getBarList({ ...vocal })
+    vocal.barList = barList.map((item, i) => {
+      item.next = barList[i + 1] || null;
+      item.prev = barList[i - 1] || null;
+      return item
+    })
     abcCode = abcCode.replace(vocalStr, "操".repeat(vocalStr.length));
     return vocal;
   });
   return vocalList;
 };
+
+const getAllBarList = () => getVocalList().map(item => item.barList).flat();
+const getSelectBar = () => {
+  const selectBarEl = $('[type="rectnode"]')
+  if (!selectBarEl.length) return alert('未选中小节：请选取一个小节，然后重试')
+  let barIndex = selectBarEl.attr('barIndex')
+  if (barIndex === undefined) barIndex = selectBarEl.attr('barindex')
+  if (barIndex === undefined) return alert('未选中小节：请选取一个小节，然后重试')
+  const barId = selectBarEl.attr('id')
+  const [vocalI, barI] = barId.match(/\d+/g).map(item => +item)
+  const vocalList = getAllBarList().filter(item => item.vocalIndex === +vocalI + 1)
+  return vocalList[barI]
+}
+
+const changeSelectBar = (cb, isRepeatAndJmp = false) => {
+  const bar = getSelectBar(isRepeatAndJmp)
+  if (bar === undefined) return
+  return bar.change(cb)
+}
+const setRepeatAndJump = (sign) => {
+  const bar = getSelectBar()
+  if (bar === undefined) return
+  (bar.prev || bar).change(s => {
+    console.log(s)
+    return s.replace(/((\!fine\!)|(\!D\.S\.\!)|(\!D\.C\.((alfine)|(alcoda))*\!)|(\!(to)?coda\!)|(\!segno\!)(:?\|)?)$/, '') + sign
+  })
+}
 
 /**
  * @typedef {Object} Meter - 节拍
@@ -6838,6 +6872,7 @@ const getVocalList = () => {
 
 /**
  * @typedef {Object} Bar - 小节
+ * @property {number} vocalIndex - 所在声部
  * @property {string} barContStr - 小节内容字符串
  * @property {string} barStr - 小节字符串
  * @property {number} start - 小节在abc中的起始位置
@@ -6845,6 +6880,8 @@ const getVocalList = () => {
  * @property {boolean} isBr - 是否换行
  * @property {Meter} meter - 小节的节拍
  * @property {BarLine} barLine - 小节的小节线
+ * @property {Bar} next - 下一个小节
+ * @property {Bar} prev - 上一个小节
  * @property {(cb: (str: string) => string) => void} change - 修改小节字符串
  */
 
