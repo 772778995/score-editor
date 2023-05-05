@@ -744,7 +744,7 @@
 
     <div
       class="fixed flex top-0 left-0 duration-300 transform-gpu h-screen w-screen items-center justify-center"
-      style="z-index: 9998;"
+      style="z-index: 9998; margin-top: 5px;"
       :class="{ 'opacity-0 pointer-events-none' : !m.newScore.scoreOptsShow }"
     >
       <div class="rounded-md overflow-hidden" style="box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);">
@@ -753,7 +753,7 @@
           <img src="./img/close.png" class="cursor-pointer" @click="m.newScore.scoreOptsShow = m.newScore.musicType.show = false"/>
         </b>
 
-        <div class="flex relative" style="height: 650px; background: #B5C5D3;">
+        <div class="flex relative" style="height: 857px; background: #B5C5D3;">
           <div style="width: 712px;padding: 20px;">
             <iframe
               ref="previewIframeRef"
@@ -762,9 +762,9 @@
             ></iframe>
           </div>
 
-          <div class="bg-white overflow-y-auto" style="padding-bottom: 66px;"> 
-            <div class="rounded" style="padding: 20px 17px; border-bottom: 2px solid #F5F5F5;">
-              <div class="blue-title mb-7">基本信息</div>
+          <div class="bg-white overflow-y-auto" >  <!-- overflow-y-auto -->
+            <div class="rounded" style="padding: 15px 17px; border-bottom: 2px solid #F5F5F5;">
+              <div class="blue-title" style="margin-bottom: 10px;">基本信息</div>
               <div class="relative" style="margin-bottom: 16px;">
                 <div class="input-group">
                   <input v-model="m.newScore.scoreOpts.title" class="form-control" placeholder="标题"/>
@@ -781,7 +781,7 @@
               </div>
             </div>
 
-            <div class="relative rounded flex-shrink-0" style="width: 491px; padding: 16px 21px 10px 21px; border-bottom: 2px solid #F5F5F5;">
+            <div class="relative rounded flex-shrink-0" style="width: 491px; padding: 10px 21px 10px 21px; border-bottom: 2px solid #F5F5F5;">
               <div class="flex items-center">
                 <div class="blue-title">调号</div>
                 <div v-if="m.newScore.scoreOpts.musicType !== 'easy'" class="ml-auto flex justify-center space-x-12 text-#999 relative pb-1" :class="`key-sign-${m.newScore.keySignType}`">
@@ -844,7 +844,7 @@
               </div>
             </div>
 
-            <div class="relative rounded" style="padding: 16px 18px 0 18px; border-bottom: 2px solid #F5F5F5;">
+            <div class="relative rounded" style="padding: 10px 18px 0 18px; border-bottom: 2px solid #F5F5F5;">
               <div class="blue-title">拍号</div>
               <div class="flex items-center" style="margin: 16px 0">
                 <img
@@ -883,7 +883,7 @@
               </div>
             </div>
 
-            <div class="relative rounded items-center" style="padding: 16px 18px; border-bottom: 2px solid #F5F5F5;">
+            <div class="relative rounded items-center" style="padding: 10px 18px; border-bottom: 2px solid #F5F5F5;">
               <div class="flex items-center" style="color: #8F8F8F; font-size: 12px">
                 <div class="blue-title">排版</div>
                 <img src="./img/warning.png" style="margin: 0 2px 0 7px;" />
@@ -908,7 +908,7 @@
               </div>
             </div>
 
-            <div class="relative rounded" style="padding: 16px 18px; border-bottom: 2px solid #F5F5F5;">
+            <div class="relative rounded" style="padding: 10px 18px; border-bottom: 2px solid #F5F5F5;">
               <div class="flex">
                 <div class="flex cursor-pointer" @click="m.newScore.scoreOpts.isWeak = !m.newScore.scoreOpts.isWeak">
                   <div class="blue-title">
@@ -925,7 +925,7 @@
               </div>
             </div>
 
-            <div class="relative rounded" style="padding: 16px 18px;">
+            <div class="relative rounded" style="padding: 10px 18px;">
               <div class="blue-title" style="margin-bottom: 16px;">速度</div>
               <div class="flex items-center ">
                 <div class="flex items-center h-full cursor-pointer" @click="m.newScore.scoreOpts.speedType = 'txt'">
@@ -957,7 +957,7 @@
             </div>
           </div>
 
-          <div class="flex absolute bottom-0 bg-white z-40" style="right: 10px; width: 491px; padding: 20px 17px 20px 17px;">
+          <div class="flex absolute bottom-0 bg-white z-40" style="right: 10px; width: 481px; padding: 20px 17px 20px 17px;">
             <div class="_btn _border" @click="m.newScore.scoreOptsShow = m.newScore.musicType.show = false">取消</div>
             <div class="_btn ml-auto mr-2 " @click="m.newScore.scoreOptsShow = false">上一步</div>
             <div class="_btn" @click="createNewScore">创建</div>
