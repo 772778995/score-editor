@@ -3725,7 +3725,7 @@ var content_vue = new Vue({
             },
             {
               url: "assets/music_score_editor/img/notepanel/bar (3).png",
-              value: "||",
+              value: "|]",
               title: "结束线",
               class: "cmenu",
               type: "nodeline",
