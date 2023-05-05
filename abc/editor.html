@@ -348,7 +348,7 @@
       }
       .drag-note-img {
         position: fixed;
-        transform: translate(-100%, -100%);
+        transform: translate(-50%, -50%);
         z-index: 100;
       }
       .editor-div {
@@ -502,7 +502,7 @@
           let num = 80
           const loadTimer = setInterval(() => {
             if (num < 100) {
-              num += +(100 - num) / 9
+              num += +(100 - num) / 80
               loadNumEl.innerText = num.toFixed(2)
               if (num.toFixed(2) >= 100) {
                 clearInterval(loadTimer)
