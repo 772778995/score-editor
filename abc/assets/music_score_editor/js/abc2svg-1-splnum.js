@@ -17427,7 +17427,7 @@ abc2svg = {
         style += "pointer-events: auto;";
         if (!color) {
           style +=
-            "font-family: Perpetua-Bold, cursive, fangsong, monospace, serif; font-weight: normal;";
+            "font-family: KaiTi, cursive, fangsong, monospace, serif; font-weight: normal;";
           // style += "fill:url(#g34);";
         }
         if (T_url != "") {
