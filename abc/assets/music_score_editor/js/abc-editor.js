@@ -5998,6 +5998,21 @@ var content_vue = new Vue({
     "m.newScore.scoreOpts.rowBars"(num) {
       this.m.foldLine.line = num;
     },
+    'm.foldLine.show'(show) {
+      if (show) {
+        const num = this.m.foldLine.previewV
+        $("#barsperstaff").val(num);
+        var newContent = handleBreakLine($("#source").val(), num);
+        $($("#source")).val(newContent);
+        abc_change();
+      } else {
+        const num = this.m.foldLine.line
+        $("#barsperstaff").val(num);
+        var newContent = handleBreakLine($("#source").val(), num);
+        $($("#source")).val(newContent);
+        abc_change();
+      }
+    },
     "m.foldLine.previewV"(num) {
       $("#barsperstaff").val(num);
       var newContent = handleBreakLine($("#source").val(), num);
