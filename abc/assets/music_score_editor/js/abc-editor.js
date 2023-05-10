@@ -3306,6 +3306,7 @@ var content_vue = new Vue({
           { val: "2/4", img: "assets/music_score_editor/img/note2.png" },
           { val: "1/4", img: "assets/music_score_editor/img/note4.png" },
           { val: "1/8", img: "assets/music_score_editor/img/note8.png" },
+          { val: "1/16", img: "assets/music_score_editor/img/note16.png" },
         ],
         speedTxtList: speedTxtList.map((item) => ({
           val: item.txt,
