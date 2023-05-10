@@ -3,6 +3,7 @@ const updateLastSelect = () => {
     if (istart) {
       console.log(istart)
       $(`text[type*='HD'][istart='${istart}'],text[type^='r'][istart='${istart}']`).addClass('selected_text')
+      $(`text[type='note'][istart='${istart}']`).addClass('selected_text')
       window.lastIstart = null
     }
 }
