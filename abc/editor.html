@@ -499,15 +499,15 @@
       <script>
         (() => {
           const loadNumEl = document.querySelector('#loadNum')
-          let num = 80
+          let num = 95
           const loadTimer = setInterval(() => {
             if (num < 100) {
-              num += +(100 - num) / 80
+              num += +(100 - num) / 3
               loadNumEl.innerText = num.toFixed(2)
               if (num.toFixed(2) >= 100) {
                 clearInterval(loadTimer)
                 $('#loadingSeven').fadeOut(200, () => {
-                  $('#loadingSeven').remove()
+                  // $('#loadingSeven').remove()
                 })
               }
             }

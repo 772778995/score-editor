@@ -1296,6 +1296,7 @@ function getStaffBotLineY(_0x1792B, _0x16035) {
   return _0x1A32E;
 }
 function genClickNote(_0x16062, _0x18BCD) {
+  console.log('genClickNote');
   if (cen == null) {
     return;
   }

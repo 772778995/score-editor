@@ -10388,7 +10388,7 @@ function genNoteChangMing(istart, content) {
   console.log("info", info);
   //var url = file_server_url + "/findByAttachName?time="+(new Date()).getTime();
   var url =
-    "https://file.ixzds.com/file/findByAttachName?time=" + new Date().getTime();
+    "/file/findByAttachName?time=" + new Date().getTime();
   $.ajax({
     url: url,
     dataType: "json",
@@ -10467,6 +10467,7 @@ function getNodeSeq() {
   console.log(arr);
   return JSON.stringify(arr);
 }
+/* 获取音符所在小节 */
 function getNodeIndexByIstart(istart) {
   var content = $("#source").val();
   var lines = getNodesInfo(content);

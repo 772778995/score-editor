@@ -212,13 +212,13 @@ function liaison(val) {
   debugger
   var selectEl = $(".selected_text")[0];
   if (!selectEl) return alert("未选中音符：请选取一个音符，然后重试");
-  var _0x15C57 = $("#source").val();
+  var content = $("#source").val();
   var matchArr = val.match(/\((\d)/);
   var num = matchArr[1];
   var cen = syms[selectEl.getAttribute("istart")];
   console["log"](cen);
   var _0x1927B = cen["dur"];
-  var _0x17115 = _0x15C57["substring"](cen["istart"], cen["iend"]);
+  var _0x17115 = content["substring"](cen["istart"], cen["iend"]);
   var _0x1946A = _0x1927B / 2;
   var _0x19497 = "";
   var _0x18BA0 = cen["my_ulen"];
@@ -246,11 +246,11 @@ function liaison(val) {
     _0x17115 += "z" + _0x19497;
   }
   var _0x1638C =
-    _0x15C57["substring"](0, cen["istart"]) +
+    content["substring"](0, cen["istart"]) +
     val +
     _0x17115 +
     " " +
-    _0x15C57["substring"](cen["iend"]);
+    content["substring"](cen["iend"]);
   $("#source")["val"](_0x1638C);
   if (musicType == 2) {
     src_change();
@@ -356,7 +356,9 @@ function keepSelectNote(cb) {
 function getSelectAbcCodeInfo() {
   const abcCode = $('#source').val()
   const selectEl = $(".selected_text")[0];
-  if (!selectEl || !['hd', 'note'].includes($(selectEl).attr('type').toLowerCase())) {
+  console.log(selectEl);
+  // r1=rest
+  if (!selectEl || !['hd', 'rest', 'r1', 'note'].includes($(selectEl).attr('type').toLowerCase())) {
     alert("未选中音符：请选取一个音符，然后重试")
     return false
   }
@@ -368,6 +370,30 @@ function getSelectAbcCodeInfo() {
   const head = abcCode.substring(0, istart)
   const tail = abcCode.substring(iend)
   return { txt, istart, iend, length, head, tail, abcCode };
+}
+
+/* 获取选中小节 */
+function getSelectAbcNodeIndes() {
+  var node_indexs = [];
+  $('svg.music').each(function() {
+    $(this).find('svg[type="rectnode"]').each(function(){
+      node_indexs.push(Number($(this).attr('barindex')));
+    });
+  });
+  if(!node_indexs.length && $(".selected_text").length){
+    if (!['hd', 'rest', 'r1', 'note'].includes($(".selected_text").attr('type').toLowerCase())) {
+      alert("未选中小节或音符")
+      return []
+    }
+    for(var i=0; i<$(".selected_text").length; i++){
+      var istart = +$(".selected_text")[i].getAttribute("istart");
+      node_indexs.push(getNodeIndexByIstart(istart));
+    }
+  }
+  if(node_indexs.length){
+    node_indexs.sort();
+  }
+  return node_indexs;
 }
 
 /** @returns { number[] }*/
@@ -399,7 +425,7 @@ function changeAbc(cb) {
 
 function lineTo() {
   const el = $('.selected_text')
-  var _0x15C57 = $("#source")["val"]();
+  var content = $("#source")["val"]();
   if (!el.length) return alert('未选中音符：请选取一个音符，然后重试')
   const istart = +el.attr('istart')
   var cen = syms[istart]
@@ -422,13 +448,13 @@ function lineTo() {
       return;
     }
     var _0x16251 = '(note)'
-    var _0x1962C = _0x15C57["substring"](cen["istart"], _0x1951E);
+    var _0x1962C = content["substring"](cen["istart"], _0x1951E);
     _0x16251 = _0x16251["replace"]("note", _0x1962C);
-    _0x15C57 =
-      _0x15C57["substring"](0, cen["istart"]) +
+    content =
+      content["substring"](0, cen["istart"]) +
       _0x16251 +
-      _0x15C57["substring"](_0x1951E);
-    $("#source")["val"](_0x15C57);
+      content["substring"](_0x1951E);
+    $("#source")["val"](content);
     if (musicType == 2) {
       src_change();
     } else {
@@ -3803,6 +3829,7 @@ var content_vue = new Vue({
               class: "cmenu",
               type: "nodeline",
               position: "beforeInsert",
+              fn: () => setRepeatBracket(['[1.', ']']),
             },
             {
               url: "assets/music_score_editor/img/notepanel/linemark (8).png",
@@ -3811,6 +3838,16 @@ var content_vue = new Vue({
               class: "cmenu",
               type: "nodeline",
               position: "beforeInsert",
+              fn: () => setRepeatBracket(['[2.']),
+            },
+            {
+              url: "assets/music_score_editor/img/notepanel/linemark (8)-2.png",
+              value: "[2.",
+              title: "反复至第二房子",
+              class: "cmenu",
+              type: "nodeline",
+              position: "beforeInsert",
+              fn: () => setRepeatBracket(['[2.', ']']),
             },
             {
               url: "assets/music_score_editor/img/notepanel/linemark (9).png",
@@ -3819,6 +3856,7 @@ var content_vue = new Vue({
               class: "cmenu",
               type: "nodeline",
               position: "beforeInsert",
+              fn: () => setRepeatBracket(['[3.']),
             },
             {
               url: "assets/music_score_editor/img/notepanel/linemark (10).png",
@@ -6866,6 +6904,47 @@ const setRepeatAndJump = (sign) => {
     console.log(s)
     return s.replace(/((\!fine\!)|(\!D\.S\.\!)|(\!D\.C\.((alfine)|(alcoda))*\!)|(\!(to)?coda\!)|(\!segno\!)(:?\|)?)$/, '') + sign
   })
+}
+
+const setRepeatBracket = (sign) => {
+  console.log('setRepeatBracket', sign)
+  const node_indexs = getSelectAbcNodeIndes();
+  // console.log(node_indexs);
+  if(node_indexs.length){
+    var str1 = '';
+    var str2 = '';
+    if(typeof sign == 'object'){
+      str1 = sign[0];
+      str2 = typeof sign[1]!='undefined'?sign[1]:'';
+    }else{
+      str1 = sign;
+    }
+    var content = $("#source").val();
+    var lines = getNodesInfo(content);
+    // console.log('lines', lines);
+    for(var i = 0; i<lines.length; i++){
+      if(lines[i].type=='note' && lines[i].v==0){
+        // console.log('note');
+        for(var j=0; j<lines[i].nodes.length; j++){
+          if(lines[i].nodes[j].nodeIndex==node_indexs[0]){
+            content = replaceCharsInRange(content, lines[i].nodes[j].startSeq, lines[i].nodes[j].startSeq, str1);
+            if(node_indexs.length==1){
+              content = replaceCharsInRange(content, lines[i].nodes[j].endSeq+str1.length-1, lines[i].nodes[j].endSeq+str1.length-1, str2);
+              break;
+            }
+          }
+          if(lines[i].nodes[j].nodeIndex==node_indexs[node_indexs.length-1]){
+            content = replaceCharsInRange(content, lines[i].nodes[j].endSeq+str1.length-1, lines[i].nodes[j].endSeq+str1.length-1, str2);
+            break;
+          }
+        }
+        // console.log(content);
+        $("#source").val(content);
+        abc_change();
+        break;
+      }
+    }
+  }
 }
 
 /**

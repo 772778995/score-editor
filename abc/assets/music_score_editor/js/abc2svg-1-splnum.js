@@ -139,9 +139,9 @@ var standVsyms = null; //保留标准歌词声部的syms，用于在拷贝歌词
 var dragDecoFlag = false; //是否有拖动的装饰音
 var dragNumNoteFlag = false; //是否有拖动简谱音符（上下拖动）
 if (window.navigator.onLine) {
-  appname = "https://abc.ixzds.com/abc/";
+  appname = "/abc/";
 }
-var imusicurl = "https://cyydl.oss-cn-shenzhen.aliyuncs.com/imusic/assets/"; //这里是定义自定义图片的路径，如果是外网的则固定用这个路径 ，如果是内网的，则使用空，内网默认为/ixzdscommon/assets/....png,这里需要注意，每次发布到学校的版本，需要把服务器上的assets目录的内容导到本地
+var imusicurl = "/assets/"; //这里是定义自定义图片的路径，如果是外网的则固定用这个路径 ，如果是内网的，则使用空，内网默认为/ixzdscommon/assets/....png,这里需要注意，每次发布到学校的版本，需要把服务器上的assets目录的内容导到本地
 var localurl = location.host;
 
 var source_val = ""; //source的值
@@ -158,7 +158,7 @@ function isContainIP(ip) {
 
 if (isContainIP(localurl) || localurl.indexOf("localhost") > -1) {
   //本地地址
-  imusicurl = "/ixzdscommon/abc/assets/";
+  imusicurl = "/assets/";
 }
 
 var cmFontSize = 14; //唱名字体大小要随着scale的变化而变化
@@ -2542,6 +2542,7 @@ abc2svg = {
         nd = a_de.length;
 
       function draw_repbra(p_voice) {
+        // 绘制反复记号
         var s, s1, y, y2, i, p, w, wh, first_repeat;
         y = staff_tb[p_voice.st].topbar + 25;
         for (s = p_voice.sym; s; s = s.next) {
@@ -2632,7 +2633,7 @@ abc2svg = {
           }
           // 绘制反复记号线
           // create by lhj
-
+          x = x + 2
           if (2 == musicType) {
             out_XYAB('<path class="A" d="mX Y\n', x, y2, "stroke", 0, 1);
           } else {
@@ -2641,6 +2642,7 @@ abc2svg = {
               xypath(x, y2);
             }
           }
+          w = w - 2;
           if (s1.rbstart == 2) output += "m0 20v-20";
           output += "h" + w.toFixed(1);
           if (s.rbstop == 2) output += "v20";
