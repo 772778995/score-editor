@@ -8360,7 +8360,11 @@ function insertNodes(num, isAfter, isFirst) {
     let yourBarIndex = barIndex
     if (isAfter) yourBarIndex = +yourBarIndex + 1;
     if (isFirst) yourBarIndex = 0;
-    insertNodeByIndex(yourBarIndex);
+    if (bar_count === yourBarIndex) {
+      appendNodes(1)
+    } else {
+      insertNodeByIndex(yourBarIndex);
+    }
   }
   changeLineBars();
 }

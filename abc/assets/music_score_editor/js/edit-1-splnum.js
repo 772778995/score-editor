@@ -1,10 +1,19 @@
 const updateLastSelect = () => {
   const istart = window.lastIstart
-    if (istart) {
-      console.log(istart)
-      $(`text[type*='HD'][istart='${istart}'],text[type^='r'][istart='${istart}']`).addClass('selected_text')
-      window.lastIstart = null
-    }
+  if (istart) {
+    $(`text[type*='HD'][istart='${istart}'],text[type^='r'][istart='${istart}']`).addClass('selected_text')
+    $(`text[type='note'][istart='${istart}']`)[0].classList.add('selected_text')
+    window.lastIstart = null
+  }
+}
+
+const asyncRect = () => {
+  // const rectEl = $('[style="fill-opacity: 0.4;"]')
+  // console.log(rectEl)
+  // if (rectEl.length) {
+  //   $('.selected_text').removeClass('selected_text')
+  //   rectEl.addClass('selected_text')
+  // }
 }
 
 const getAllNote = () => $('rect[type="note"]');
@@ -1177,6 +1186,7 @@ function render2(_0xC154) {
     changeSign()
     changeSelectNoteStyle();
     updateLastSelect()
+    asyncRect()
     changeLineBars()
 
     if (user["abcLoadCball"]) {

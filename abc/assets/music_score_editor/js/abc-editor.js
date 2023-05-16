@@ -3306,6 +3306,7 @@ var content_vue = new Vue({
           { val: "2/4", img: "assets/music_score_editor/img/note2.png" },
           { val: "1/4", img: "assets/music_score_editor/img/note4.png" },
           { val: "1/8", img: "assets/music_score_editor/img/note8.png" },
+          { val: "1/16", img: "assets/music_score_editor/img/note16.png" },
         ],
         speedTxtList: speedTxtList.map((item) => ({
           val: item.txt,
@@ -5996,6 +5997,21 @@ var content_vue = new Vue({
     },
     "m.newScore.scoreOpts.rowBars"(num) {
       this.m.foldLine.line = num;
+    },
+    'm.foldLine.show'(show) {
+      if (show) {
+        const num = this.m.foldLine.previewV
+        $("#barsperstaff").val(num);
+        var newContent = handleBreakLine($("#source").val(), num);
+        $($("#source")).val(newContent);
+        abc_change();
+      } else {
+        const num = this.m.foldLine.line
+        $("#barsperstaff").val(num);
+        var newContent = handleBreakLine($("#source").val(), num);
+        $($("#source")).val(newContent);
+        abc_change();
+      }
     },
     "m.foldLine.previewV"(num) {
       $("#barsperstaff").val(num);
