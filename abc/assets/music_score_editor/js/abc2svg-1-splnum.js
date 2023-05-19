@@ -19298,7 +19298,7 @@ abc2svg = {
       invertedturn: {
         x: -5,
         y: -4,
-        c: "\ue567",
+        c: "\ue569",
       },
       turnx: {
         x: -5,
