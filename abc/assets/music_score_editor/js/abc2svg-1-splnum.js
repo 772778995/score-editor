@@ -29032,6 +29032,7 @@ function getA_dd(s, val) {
 }
 //获取a_dd
 function getA_ddInfo(s, val) {
+  console.log('getA_ddInfo', s, val);
   var isSplWedge = false;
   if (musicType == 2) {
     if (val == "wedge") {
