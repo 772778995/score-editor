@@ -13914,6 +13914,11 @@ abc2svg = {
       return [s, info_split(param)];
     }
     function new_meter(p) {
+      if(musicType==1){
+          // 五线谱+简谱时隐藏顶部简谱拍号和调号
+          set_format('hiddenmeter', true)
+          set_format('hiddenkey', true)
+      }
       // 当前拍号 add by hxs
       currMeter = new Array();
       renderStaffMeterCount++;
@@ -22363,6 +22368,9 @@ abc2svg = {
           if (source_val.indexOf("%%text") == -1) {
             y += typeof tempoMgB == "undefined" ? 0 : tempoMgB;
           }
+          // 修改简谱右上角速度位置
+          y -= 20;
+          x -= 66;
         }
       }
       if (x < 0) {

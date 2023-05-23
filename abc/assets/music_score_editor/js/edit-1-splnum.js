@@ -1219,6 +1219,23 @@ function render2(_0xC154) {
     $(".spl_meter_mode")["first"]()["hide"]();
   }
   _0xA18E = null;
+  // 修改速度焦点位置
+  if(typeof $ != 'undefined'){
+      setTimeout(()=>{
+          console.log('writempo reset rect');
+          $('svg.music text[type="tempo"]').each(function(){
+              var tempo_t = $(this);
+              var tempo_e = $('svg.music rect[type="tempo"][istart="'+$(this).eq(0).attr('istart')+'"]');
+              // console.log('writempo reset', tempo_e, tempo_t);
+              if(tempo_e.length && tempo_t.length){
+                  var tempo_e_x = parseFloat(tempo_t.eq(0).attr('x'));
+                  var tempo_e_y = parseFloat(tempo_t.eq(0).attr('y'));
+                  tempo_e.eq(0).attr('x', tempo_e_x);
+                  tempo_e.eq(0).attr('y', tempo_e_y-15);
+              }
+          });
+      }, 500);
+  }
 }
 function gotoabc(_0x6C58, _0x6C27) {
   var _0x6D7E = elt_ref["source"],
