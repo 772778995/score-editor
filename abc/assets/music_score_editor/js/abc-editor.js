@@ -209,49 +209,51 @@ const initNewScoreOpts = {
 };
 
 function liaison(val) {
-  debugger
+  console.log('liaison: 连音');
+  // 连音线
+  // debugger
   var selectEl = $(".selected_text")[0];
   if (!selectEl) return alert("未选中音符：请选取一个音符，然后重试");
   var content = $("#source").val();
   var matchArr = val.match(/\((\d)/);
   var num = matchArr[1];
   var cen = syms[selectEl.getAttribute("istart")];
-  console["log"](cen);
-  var _0x1927B = cen["dur"];
-  var _0x17115 = content["substring"](cen["istart"], cen["iend"]);
-  var _0x1946A = _0x1927B / 2;
-  var _0x19497 = "";
-  var _0x18BA0 = cen["my_ulen"];
-  if (_0x1946A > _0x18BA0) {
-    var _0x1738B = parseInt(_0x1946A / _0x18BA0);
-    if (_0x1738B != 1) {
-      _0x19497 = _0x1738B + "";
+  console.log(cen);
+  var dur = cen["dur"];
+  var sel_content = content["substring"](cen["istart"], cen["iend"]);
+  var n_dur = dur / 2;
+  var n_content = "";
+  var my_ulen = cen["my_ulen"];
+  if (n_dur > my_ulen) {
+    var n_dur_s = parseInt(n_dur / my_ulen);
+    if (n_dur_s != 1) {
+      n_content = n_dur_s + "";
     }
   } else {
-    if (_0x1946A < _0x18BA0) {
-      var _0x1738B = parseInt(_0x18BA0 / _0x1946A);
-      if (_0x1738B > 1) {
-        for (var _0x15CDE = 1; _0x15CDE < _0x1738B; _0x15CDE = _0x15CDE * 2) {
-          _0x19497 += "/";
+    if (n_dur < my_ulen) {
+      var n_dur_s = parseInt(my_ulen / n_dur);
+      if (n_dur_s > 1) {
+        for (var i = 1; i < n_dur_s; i = i * 2) {
+          n_content += "/";
         }
       }
     }
   }
-  if (/\d{1,}|\/{1,}/["test"](_0x17115)) {
-    _0x17115 = _0x17115["replace"](/\d{1,}|\/{1,}/, _0x19497);
+  if (/\d{1,}|\/{1,}/["test"](sel_content)) {
+    sel_content = sel_content["replace"](/\d{1,}|\/{1,}/, n_content);
   } else {
-    _0x17115 = _0x17115 + _0x19497;
+    sel_content = sel_content + n_content;
   }
-  for (var _0x15CDE = 0; _0x15CDE < num - 1; _0x15CDE++) {
-    _0x17115 += "z" + _0x19497;
+  for (var i = 0; i < num - 1; i++) {
+    sel_content += "z" + n_content;
   }
-  var _0x1638C =
+  var new_content =
     content["substring"](0, cen["istart"]) +
     val +
-    _0x17115 +
+    sel_content +
     " " +
     content["substring"](cen["iend"]);
-  $("#source")["val"](_0x1638C);
+  $("#source")["val"](new_content);
   if (musicType == 2) {
     src_change();
   } else {
@@ -433,8 +435,8 @@ function lineTo() {
     var _0x17007 = cen["next"];
     var _0x192A8 = cen["istart"];
     var _0x1951E = -1;
-    for (var _0x15CDE = _0x192A8 + 1; _0x15CDE < syms["length"]; _0x15CDE++) {
-      _0x17007 = syms[_0x15CDE];
+    for (var i = _0x192A8 + 1; i < syms["length"]; i++) {
+      _0x17007 = syms[i];
       if (_0x17007) {
         if (_0x17007["type"] == 8 || _0x17007["type"] == 10) {
           if (_0x17007["v"] == cen["v"]) {
@@ -5671,6 +5673,10 @@ var content_vue = new Vue({
       this.m.ctxMenu.isShow = true;
     },
     createNewScore() {
+      // console.log('createNewScore', this.m.newScore.scoreOpts);
+      this.m.newScore.scoreOpts.subTitle = this.m.newScore.scoreOpts.subTitle?this.m.newScore.scoreOpts.subTitle:' ';
+      this.m.newScore.scoreOpts.compose = this.m.newScore.scoreOpts.compose?this.m.newScore.scoreOpts.compose:' ';
+      this.m.newScore.scoreOpts.lyricist = this.m.newScore.scoreOpts.lyricist?this.m.newScore.scoreOpts.lyricist:' ';
       if (isNewTab) {
         window.open(
           location.href.replace(/\?.+/, "") +
