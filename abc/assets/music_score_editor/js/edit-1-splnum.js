@@ -1,7 +1,8 @@
 const updateLastSelect = () => {
   const istart = window.lastIstart
   if (istart) {
-    $(`text[type*='HD'][istart='${istart}'],text[type^='r'][istart='${istart}']`).addClass('selected_text')
+    $(`text[type*='HD'][istart='${istart}'],text[type^='r'][istart='${istart}']`).addClass('selected_text');
+    if($(`text[type='note'][istart='${istart}']`).length)
     $(`text[type='note'][istart='${istart}']`)[0].classList.add('selected_text')
     window.lastIstart = null
   }
@@ -1200,7 +1201,8 @@ function render2(_0xC154) {
       });
     }
   } catch (e) {
-    window["top"]["alert"](e["message"] + "\x0Aabc2svg image bug - abort");
+    console.error('error:', e);
+    // window["top"]["alert"](e["message"] + "\x0Aabc2svg image bug - abort");
     return;
   }
   document["getElementById"]("er")["style"]["display"] = elt_ref[

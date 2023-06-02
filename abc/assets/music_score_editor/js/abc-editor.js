@@ -218,9 +218,10 @@ function liaison(val) {
   var matchArr = val.match(/\((\d)/);
   var num = matchArr[1];
   var cen = syms[selectEl.getAttribute("istart")];
-  console.log(cen);
+  console.log('liaison cen', cen);
   var dur = cen["dur"];
   var sel_content = content["substring"](cen["istart"], cen["iend"]);
+  console.log('liaison cen', sel_content);
   var n_dur = dur / 2;
   var n_content = "";
   var my_ulen = cen["my_ulen"];
@@ -3536,72 +3537,72 @@ var content_vue = new Vue({
           isShow: !1,
           isExpand: !1,
         },
-        // {
-        //   canClick: false,
-        //   code: "meter",
-        //   cols: 4,
-        //   name: "拍号",
-        //   imgList: [
-        //     {
-        //       url: "assets/music_score_editor/img/notepanel/meter (1).png",
-        //       value: "[M:2/4]",
-        //       class: "cmenu",
-        //       type: "nodeline",
-        //       position: "beforeInsert",
-        //     },
-        //     {
-        //       url: "assets/music_score_editor/img/notepanel/meter (2).png",
-        //       value: "[M:3/4]",
-        //       class: "cmenu",
-        //       type: "nodeline",
-        //       position: "beforeInsert",
-        //     },
-        //     {
-        //       url: "assets/music_score_editor/img/notepanel/meter (3).png",
-        //       value: "[M:4/4]",
-        //       class: "cmenu",
-        //       type: "nodeline",
-        //       position: "beforeInsert",
-        //     },
-        //     {
-        //       url: "assets/music_score_editor/img/notepanel/meter (4).png",
-        //       value: "[M:3/8]",
-        //       class: "cmenu",
-        //       type: "nodeline",
-        //       position: "beforeInsert",
-        //     },
-        //     {
-        //       url: "assets/music_score_editor/img/notepanel/meter (5).png",
-        //       value: "[M:6/8]",
-        //       class: "cmenu",
-        //       type: "nodeline",
-        //       position: "beforeInsert",
-        //     },
-        //     {
-        //       url: "assets/music_score_editor/img/notepanel/meter (6).png",
-        //       value: "[M:9/8]",
-        //       class: "cmenu",
-        //       type: "nodeline",
-        //       position: "beforeInsert",
-        //     },
-        //     {
-        //       url: "assets/music_score_editor/img/notepanel/meter (7).png",
-        //       value: "[M:C]",
-        //       class: "cmenu",
-        //       type: "nodeline",
-        //       position: "beforeInsert",
-        //     },
-        //     {
-        //       url: "assets/music_score_editor/img/notepanel/meter (8).png",
-        //       value: "[M:C|]",
-        //       class: "cmenu",
-        //       type: "nodeline",
-        //       position: "beforeInsert",
-        //     },
-        //   ],
-        //   isShow: !1,
-        //   isExpand: !1,
-        // },
+        {
+          canClick: false,
+          code: "meter",
+          cols: 4,
+          name: "拍号",
+          imgList: [
+            {
+              url: "assets/music_score_editor/img/notepanel/meter (1).png",
+              value: "[M:2/4]",
+              class: "cmenu",
+              type: "nodeline",
+              position: "beforeInsert",
+            },
+            {
+              url: "assets/music_score_editor/img/notepanel/meter (2).png",
+              value: "[M:3/4]",
+              class: "cmenu",
+              type: "nodeline",
+              position: "beforeInsert",
+            },
+            {
+              url: "assets/music_score_editor/img/notepanel/meter (3).png",
+              value: "[M:4/4]",
+              class: "cmenu",
+              type: "nodeline",
+              position: "beforeInsert",
+            },
+            {
+              url: "assets/music_score_editor/img/notepanel/meter (4).png",
+              value: "[M:3/8]",
+              class: "cmenu",
+              type: "nodeline",
+              position: "beforeInsert",
+            },
+            {
+              url: "assets/music_score_editor/img/notepanel/meter (5).png",
+              value: "[M:6/8]",
+              class: "cmenu",
+              type: "nodeline",
+              position: "beforeInsert",
+            },
+            {
+              url: "assets/music_score_editor/img/notepanel/meter (6).png",
+              value: "[M:9/8]",
+              class: "cmenu",
+              type: "nodeline",
+              position: "beforeInsert",
+            },
+            {
+              url: "assets/music_score_editor/img/notepanel/meter (7).png",
+              value: "[M:C]",
+              class: "cmenu",
+              type: "nodeline",
+              position: "beforeInsert",
+            },
+            {
+              url: "assets/music_score_editor/img/notepanel/meter (8).png",
+              value: "[M:C|]",
+              class: "cmenu",
+              type: "nodeline",
+              position: "beforeInsert",
+            },
+          ],
+          isShow: !1,
+          isExpand: !1,
+        },
         {
           canClick: true,
           name: "临时记号",

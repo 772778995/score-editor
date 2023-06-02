@@ -608,6 +608,7 @@ function getNodeDatas_v1(paper, source) {
  * @returns
  */
 function getNodeDatas_v2(source) {
+  source = source?source:'source';
   var size = getVNum(source);
   var content = $("#" + source).val();
   var patterns = new Array();
@@ -2183,6 +2184,7 @@ function getRhythmLine(line) {
 }
 // 取得最后一个节拍的值
 function getLastM(sourceid) {
+  sourceid = sourceid?sourceid:'source';
   var content = $("#" + sourceid).val();
   var m_pattern = /M\:\s*[1-9]\/[1-9]/g;
   var result = content.match(m_pattern);
