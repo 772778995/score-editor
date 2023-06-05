@@ -888,7 +888,7 @@ function genUpdateStaff(val) {
           temp_n_vv_str_d = 0;
         }
       }
-      var curr_node_len = parseInt(t_M_arr[0])*2;
+      var curr_node_len = parseInt(t_M_arr[0])*8/parseInt(t_M_arr[1]);
       if(!temp_n_vv_str){
         if(v_node_arr[i].length==3 && v_node_arr[i].indexOf('z,')>-1){
           var z_arr = v_node_arr[i].split(',');
