@@ -846,8 +846,12 @@ function genUpdateStaff(val) {
     }
   }
   // console.log('genInitStaff v_notes_obj', v_notes_obj);
+  if(abc_content.indexOf("%%vsetting_end")>-1){
+    abc_content_str_a = abc_content.split("%%vsetting_end")[0] + "%%vsetting_end" + "\x0A";
+  }else{
+    abc_content_str_a = abc_content.split("%%MIDI program 0")[0] + "%%MIDI program 0" + "\x0A";
+  }
   
-  abc_content_str_a = abc_content.split("%%vsetting_end")[0] + "%%vsetting_end" + "\x0A";
   console.log('genInitStaff abc_content_str_a', abc_content_str_a);
 
   // 获取全局拍号
@@ -963,131 +967,20 @@ function genUpdateStaff(val) {
                     temp_n_vv_str_d = 0;
                   }else{
                     // 音符拆分
-                    function splitNoteStr(note_str, curr_node_len, before_note_str, new_nodes){
-                      if(note_str && note_str.length && curr_node_len){
-                        new_nodes = new_nodes?new_nodes:[];
-                        before_note_str = before_note_str?before_note_str:'';
-                        var before_note_str_len = calNodeLen(before_note_str);
-                        var b_note_str = '';
-                        for(var k=0; k<note_str.length; k++){
-                          var s_note_str = note_str[k];
-                          if(!s_note_str || s_note_str!=' '){
-                            continue;
-                          }
-                          if('CDEFGAB'.indexOf(s_note_str)>-1){
-                            // 音符
-                            var s_note_after_str = '';
-                            if(parseInt(note_str[k+1])){
-                              s_note_after_str = note_str[k+1];
-                              k++;
-                              for(var n=1; n<8; n++){
-                                if(note_str[k+1].indexOf('/')>-1){
-                                  s_note_after_str += '/';
-                                  k++;
-                                }else{
-                                  break;
-                                }
-                              }
-                            }else if(note_str[k+1].indexOf('/')>-1){
-                              s_note_after_str += '/';
-                              k++;
-                              for(var n=1; n<8; n++){
-                                if(note_str[k+1].indexOf('/')>-1){
-                                  s_note_after_str += '/';
-                                  k++;
-                                }else{
-                                  break;
-                                }
-                              }
-                            }
-
-                            var s_note_len =  calNodeLen(b_note_str+s_note_str+s_note_after_str);
-                            if(before_note_str_len+s_note_len<curr_node_len){
-                              b_note_str += s_note_str+s_note_after_str;
-                            }else if(before_note_str_len+s_note_len==curr_node_len){
-                              b_note_str += s_note_str+s_note_after_str;
-                              new_nodes.push(before_note_str+' '+b_note_str+'|');
-                              var new_note_str = '';
-                              for(var n=k+1; n<note_str.length; n++){
-                                new_note_str += note_str[n];
-                              }
-                              return splitNoteStr(new_note_str, curr_node_len, '', new_nodes);
-                            }else{
-                              // 单音拆分
-                              // Math.pow(2, 3) = 8 , Math.log(8)/Math.log(2) = 3
-                              var need_node_len = curr_node_len-before_note_str_len;
-                              // "/" 数量
-                              // var s = s_note_len/need_node_len;
-                              var ns_note_after_str = '';
-                              // for(var g = 1; g<s; g++){
-
-                              // }
-                              if(s_note_after_str){
-                                if(s_note_after_str[0].indexOf('/')>-1){
-                                  // 
-                                  // ns_note_after_str += s_note_str + need_node_len + s_note_after_str;
-                                  // for(var l=0; l<s_note_len; l++){
-
-                                  // }
-                                }else{
-                                  // 
-                                }
-                              }
-
-                            }
-
-                          }else if(parseInt(s_note_str)){
-                            // 音符倍数
-                          }else if(s_note_str=='/'){
-                            // 音符分数
-                          }
-                        }
-                      }else{
-                        return {
-                          nodes: [],
-                          residue_str: '',
-                          lack_length: 0,
-                        };
+                    // splitNoteStr(note_str, curr_node_len, before_note_str, new_nodes)
+                    var n_node_obj = splitNoteStr(t_note_arr[j], curr_node_len, temp_n_vv_str, [])
+                    for(var b=0;b<n_node_obj.nodes.length; b++){
+                      n_vv_str += n_node_obj.nodes[b] + '|';
+                      barsperstaff_n ++;
+                      if(barsperstaff_n==barsperstaff){
+                        n_vv_str += '$';
+                        barsperstaff_n = 0;
                       }
+                      temp_n_vv_str  = '';
+                      temp_n_vv_str_d = 0;
                     }
-
-                    var s_note_str_a = '';
-                    for(var k=0; k<t_note_arr[j].length; k++){
-                      var s_note_str = t_note_arr[j][k];
-                      if(!s_note_str || s_note_str!=' '){
-                        continue;
-                      }
-                      if('CDEFGAB'.indexOf(s_note_str)>-1){
-                        // 音符
-                        if(parseInt(t_note_arr[j][k+1])){
-                          var c = parseInt(t_note_arr[j][k+1]);
-                          var s_note_len =  calNodeLen(s_note_str_a+s_note_str+c);
-                          if(temp_n_vv_str_len+s_note_len<curr_node_len){
-                            s_note_str_a += s_note_str+c;
-                          }else if(temp_n_vv_str_len+s_note_len==curr_node_len){
-                            s_note_str_a += s_note_str+c;
-                            n_vv_str += temp_n_vv_str + ' ' + s_note_str_a + '|';
-                            barsperstaff_n ++;
-                            if(barsperstaff_n==barsperstaff){
-                              n_vv_str += '$';
-                              barsperstaff_n = 0;
-                            }
-                            temp_n_vv_str  = '';
-                            temp_n_vv_str_d = 0;
-                            for(var k=0; k<t_note_arr[j].length; k++){
-                              
-                            }
-                            break;
-                          }
-                        }else{
-
-                        }
-                      }else if(parseInt(s_note_str)){
-                        // 音符倍数
-                      }else if(s_note_str=='/'){
-                        // 音符分数
-                      }
-                    }
+                    temp_n_vv_str = n_node_obj.residue_str;
+                    temp_n_vv_str_d = n_node_obj.lack_length;
                   }
                 }
               }
@@ -1140,7 +1033,20 @@ function genUpdateStaff(val) {
                     temp_n_vv_str_d = 0;
                   }else{
                     // 音符拆分
-                    
+                    // splitNoteStr(note_str, curr_node_len, before_note_str, new_nodes)
+                    var n_node_obj = splitNoteStr(t_note_arr[j], curr_node_len, temp_n_vv_str, [])
+                    for(var b=0;b<n_node_obj.nodes.length; b++){
+                      n_vv_str += n_node_obj.nodes[b] + '|';
+                      barsperstaff_n ++;
+                      if(barsperstaff_n==barsperstaff){
+                        n_vv_str += '$';
+                        barsperstaff_n = 0;
+                      }
+                      temp_n_vv_str  = '';
+                      temp_n_vv_str_d = 0;
+                    }
+                    temp_n_vv_str = n_node_obj.residue_str;
+                    temp_n_vv_str_d = n_node_obj.lack_length;
                   }
                 }
               }
@@ -1238,7 +1144,21 @@ function genUpdateStaff(val) {
                     temp_n_vv_str_d = 0;
                   }else{
                     // 音符拆分
-                    
+                    // splitNoteStr(note_str, curr_node_len, before_note_str, new_nodes)
+                    var n_node_obj = splitNoteStr(t_note_arr[j], curr_node_len, temp_n_vv_str, []);
+                    console.log(n_node_obj);
+                    for(var b=0;b<n_node_obj.nodes.length; b++){
+                      n_vv_str += n_node_obj.nodes[b] + '|';
+                      barsperstaff_n ++;
+                      if(barsperstaff_n==barsperstaff){
+                        n_vv_str += '$';
+                        barsperstaff_n = 0;
+                      }
+                      temp_n_vv_str  = '';
+                      temp_n_vv_str_d = 0;
+                    }
+                    temp_n_vv_str = n_node_obj.residue_str;
+                    temp_n_vv_str_d = n_node_obj.lack_length;
                   }
                 }
               }
@@ -1292,7 +1212,20 @@ function genUpdateStaff(val) {
                     temp_n_vv_str_d = 0;
                   }else{
                     // 音符拆分
-
+                    // splitNoteStr(note_str, curr_node_len, before_note_str, new_nodes)
+                    var n_node_obj = splitNoteStr(t_note_arr[j], curr_node_len, temp_n_vv_str, [])
+                    for(var b=0;b<n_node_obj.nodes.length; b++){
+                      n_vv_str += n_node_obj.nodes[b] + '|';
+                      barsperstaff_n ++;
+                      if(barsperstaff_n==barsperstaff){
+                        n_vv_str += '$';
+                        barsperstaff_n = 0;
+                      }
+                      temp_n_vv_str  = '';
+                      temp_n_vv_str_d = 0;
+                    }
+                    temp_n_vv_str = n_node_obj.residue_str;
+                    temp_n_vv_str_d = n_node_obj.lack_length;
                   }
                 }
               }
@@ -1342,6 +1275,281 @@ function genUpdateStaff(val) {
   src_change();
   doLog();
 }
+
+// 音符拆分
+function splitNoteStr(note_str, curr_node_len, before_note_str, new_nodes){
+  console.log('splitNoteStr:', note_str, curr_node_len, before_note_str, new_nodes);
+  if(note_str && note_str.length && curr_node_len){
+    new_nodes = new_nodes?new_nodes:[];
+    before_note_str = before_note_str?before_note_str:'';
+    var before_note_str_len = calNodeLen(before_note_str);
+    var b_note_str = '';
+    for(var k=0; k<note_str.length; k++){
+      var s_note_str = note_str[k];
+      if(!s_note_str || s_note_str!=' '){
+        continue;
+      }
+      if('CDEFGAB'.indexOf(s_note_str)>-1){
+        // 音符
+        var s_note_after_str = '';
+        if(parseInt(note_str[k+1])){
+          s_note_after_str = note_str[k+1];
+          k++;
+          for(var n=1; n<8; n++){
+            if(note_str[k+1].indexOf('/')>-1){
+              s_note_after_str += '/';
+              k++;
+            }else{
+              break;
+            }
+          }
+        }else if(note_str[k+1].indexOf('/')>-1){
+          s_note_after_str += '/';
+          k++;
+          for(var n=1; n<8; n++){
+            if(note_str[k+1].indexOf('/')>-1){
+              s_note_after_str += '/';
+              k++;
+            }else{
+              break;
+            }
+          }
+        }
+
+        var s_note_len =  calNodeLen(b_note_str+s_note_str+s_note_after_str);
+        if(before_note_str_len+s_note_len<curr_node_len){
+          b_note_str += s_note_str+s_note_after_str;
+        }else if(before_note_str_len+s_note_len==curr_node_len){
+          b_note_str += s_note_str+s_note_after_str;
+          new_nodes.push(before_note_str+' '+b_note_str+'|');
+          var new_note_str = '';
+          for(var n=k+1; n<note_str.length; n++){
+            new_note_str += note_str[n];
+          }
+          return splitNoteStr(new_note_str, curr_node_len, '', new_nodes);
+        }else{
+          // 单音拆分
+          // Math.pow(2, 3) = 8 , Math.log(8)/Math.log(2) = 3
+          var need_node_len = curr_node_len-before_note_str_len;
+          
+          function fractionConvert(num) {
+            let intPart = Math.floor(num);
+            let floatPart = num - intPart;
+            // 小数化为真分数
+            let numerator = floatPart * 100;
+            let denominator = 100;
+            while (numerator % 10 === 0) {
+              numerator /= 10;
+              denominator /= 10;
+            }
+            // 分数化简
+            let gcd = function(a, b) {
+              return b === 0 ? a : gcd(b, a%b);
+            }
+            let common = gcd(numerator, denominator);
+            numerator /= common;
+            denominator /= common;
+            // 组合
+            let result = '';
+            if (intPart !== 0) {
+              result += intPart + ' ';
+            }
+            result += numerator + '/' + denominator;
+            return result;
+          }
+
+          if(s_note_after_str){
+            if(s_note_after_str[0].indexOf('/')>-1){
+              // 全是 '/'
+              var fm = Math.pow(2, s_note_after_str.length);
+              var fz = 1;
+              // 1/fm
+              // 当前 need_node_len 必定是小数
+              var f_str = fractionConvert(need_node_len);
+              // x/y
+              var f_arr = f_str.split('/');
+              var f_z = parseInt(f_arr[0]);
+              var f_m = parseInt(f_arr[1]);
+              // 目前只有一种情况
+              if(f_m>fm){
+                var s = 2;
+                for(var f=7; f>0; f--){
+                  if(fm*s==f_m){
+                    break;
+                  }else{
+                    s = s*2;
+                  }
+                }
+                fm = fm*s;
+                fz = fz*s;
+                // 剩余 x2/y2
+                var x2 = fz - f_z; 
+                var y2 = fm;
+                // 需要f_z/f_m
+
+                for(var f=7; f>0; f--){
+                  if(f_z%2){
+                    break;
+                  }else{
+                    f_z = f_z/2;
+                    f_m = f_m/2;
+                  }
+                }
+                for(var f=7; f>0; f--){
+                  if(x2%2){
+                    break;
+                  }else{
+                    x2 = x2/2;
+                    y2 = y2/2;
+                  }
+                }
+
+                // 需要字符
+                s_note_after_str = f_z + '';
+                for(var f=Math.log(f_m)/Math.log(2); f>0; f--){
+                  s_note_after_str += '/';
+                }
+
+                // 剩余字符
+                var a_note_str = x2+'';
+                for(var f=Math.log(y2)/Math.log(2); f>0; f--){
+                  a_note_str += '/';
+                }
+
+                b_note_str += s_note_str+s_note_after_str;
+                new_nodes.push(before_note_str+' '+b_note_str+'|');
+                var new_note_str = '';
+                for(var n=k+1; n<note_str.length; n++){
+                  new_note_str += note_str[n];
+                }
+                return splitNoteStr(new_note_str, curr_node_len, s_note_str+a_note_str, new_nodes);
+              }
+
+            }else{
+              // 有分子和分母
+              var s_note_after_arr = s_note_after_str.split('/');
+              var fz = '';
+              var fm_str = '';
+              for(var f=0; f<s_note_after_arr.length; f++){
+                if(s_note_after_arr[f]=='/'){
+                  fm_str += s_note_after_arr[f];
+                }else{
+                  fz += s_note_after_arr[f];
+                }
+              }
+              fz = parseInt(fz);
+              var fm = Math.pow(2, fm_str.length);
+              // 原 fz/fm
+              // 当前 need_node_len 
+              var f_str = fractionConvert(need_node_len);
+              // n + x/y
+              var ff_arr = f_str.split(' ');
+              var ff = 0;
+              if(ff_arr.length==2){
+                ff = parseInt(ff_arr[0]);
+                var f_arr = ff_arr[1].split('/');
+              }else{
+                var f_arr = ff_arr[0].split('/');
+              }
+              var f_z = parseInt(f_arr[0]);
+              var f_m = parseInt(f_arr[1]);
+              if(ff>0){
+                f_z = ff*f_m;
+              }
+              if(f_m>fm){
+                var s = 2;
+                for(var f=7; f>0; f--){
+                  if(fm*s==f_m){
+                    break;
+                  }else{
+                    s = s*2;
+                  }
+                }
+                fz = fz*a;
+                fm = fm*s;
+              }else if(f_m<fm){
+                var s = 2;
+                for(var f=7; f>0; f--){
+                  if(f_m*s==fm){
+                    break;
+                  }else{
+                    s = s*2;
+                  }
+                }
+                f_z = f_z*a;
+                f_m = f_m*s;
+              }
+              var x2 = fz - f_z;
+              var y2 = fm;
+              // 剩余 x2/y2
+              // 需要 f_z/f_m
+              for(var f=7; f>0; f--){
+                if(f_z%2){
+                  break;
+                }else{
+                  f_z = f_z/2;
+                  f_m = f_m/2;
+                }
+              }
+              for(var f=7; f>0; f--){
+                if(x2%2){
+                  break;
+                }else{
+                  x2 = x2/2;
+                  y2 = y2/2;
+                }
+              }
+
+              // 需要字符
+              s_note_after_str = f_z + '';
+              for(var f=Math.log(f_m)/Math.log(2); f>0; f--){
+                s_note_after_str += '/';
+              }
+
+              // 剩余字符
+              var a_note_str = x2+'';
+              for(var f=Math.log(y2)/Math.log(2); f>0; f--){
+                a_note_str += '/';
+              }
+
+              b_note_str += s_note_str+s_note_after_str;
+              new_nodes.push(before_note_str+' '+b_note_str+'|');
+              var new_note_str = '';
+              for(var n=k+1; n<note_str.length; n++){
+                new_note_str += note_str[n];
+              }
+              return splitNoteStr(new_note_str, curr_node_len, s_note_str+a_note_str, new_nodes);
+            }
+          }
+
+        }
+
+      }else{
+        // 其他符号
+        b_note_str += s_note_str;
+      }
+      if(k==note_str.length-1){
+        return {
+          nodes: new_nodes,
+          residue_str: b_note_str,
+          lack_length: curr_node_len-b_note_str,
+        };
+      }
+    }
+    return {
+      nodes: new_nodes,
+      residue_str: b_note_str,
+      lack_length: curr_node_len-b_note_str,
+    };
+  }else{
+    return {
+      nodes: [],
+      residue_str: '',
+      lack_length: 0,
+    };
+  }
+}
+// -- splitNoteStr() end
 
 function handleBarNum() {
   var _0x15331 = getStaffInfo("source");
