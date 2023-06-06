@@ -771,58 +771,25 @@ function genInitStaff() {
   doLog();
 }
 
-// 更新乐谱 更新拍号后重新转换谱内容
+// 更新乐谱 更新(首拍)拍号后重新转换谱内容
 function genUpdateStaff(val) {
+  console.log('genUpdateStaff:');
   lastMidiReplaceNoteIstart = -1;
   lastMidiReplaceNoteV = -1;
   if (updateStaffPropStatus) {
     updateStaffPropStatus = false;
     updateStaffProp();
     return;
-  }
+  } 
+  // 已更新首拍号，未更新音符
   var abc_content = $("#source")["val"]();
-  var gen_v_setting = genVSetting();
-  var staff_num = parseInt($("#STAFFNUM")["val"]());
-  var node_count = parseInt($("#nodecount")["val"]());
-  var barsperstaff = $("#barsperstaff")["val"](); // 每行小节数
-  var weak_bar_rest_notes = "";
-  var WeakBarInfo = null;
-  if ($("#isR")["is"](":checked")) {
-    WeakBarInfo = new Object();
-    WeakBarInfo["top"] = parseInt($("#weakBarTop")["val"]());
-    WeakBarInfo["bot"] = parseInt($("#weakBarBot")["val"]());
-  }
-  if (WeakBarInfo != null) {
-    weak_bar_rest_notes = genWeakBarRestNotes(WeakBarInfo);
-    if (weak_bar_rest_notes != "") {
-      weak_bar_rest_notes += "|";
-    }
-  }
-  console.log('genInitStaff abc_content ', abc_content);
-  var n_score_str = "";
-  var score_str = getScoreStr();
-  if (score_str && score_str != "") {
-    var check_score = /%%(score|staves).*/;
-    var c_score_res = abc_content["match"](check_score);
-    if (c_score_res != null) {
-      abc_content = abc_content["replace"](c_score_res[0], score_str);
-    } else {
-      n_score_str += score_str + "\x0A";
-    }
-  }
-  n_score_str += gen_v_setting;
-  for (var i = 1; i <= staff_num; i++) {
-    n_score_str += "V:" + i + "\x0A";
-    var r_str = weak_bar_rest_notes + genNodesByCount(node_count);
-    if (i == 1 && parseInt(barsperstaff) != -1) {
-    }
-    n_score_str += r_str + "%V" + i + "line0end\x0A";
-  }
+  console.log('genUpdateStaff abc_content ', abc_content);
+  // 行转数组
   var abc_content_arr = abc_content["split"]("\x0A"); // "\x0A" == "\\n"
-  console.log('genInitStaff abc_content_arr ', abc_content_arr);
-  var abc_content_str_a = '';
-  var v_arr = [];
-  var v_notes_obj = {};
+  console.log('genUpdateStaff abc_content_arr ', abc_content_arr);
+
+  var voice_arr = [];
+  var voice_notes_obj = {};
   for(var i = 9; i<abc_content_arr.length; i++){
     if(abc_content_arr[i].indexOf('%%score')>-1){
       var v_str = abc_content_arr[i].replace('%%score ', '').replace('{', '').replace('}', '').replace('| ', '');
@@ -831,440 +798,44 @@ function genUpdateStaff(val) {
         if(vv_arr[j]){
           var v_n = parseInt(vv_arr[j]);
           if(v_n){
-            v_arr.push(v_n);
+            voice_arr.push(v_n);
           }
         }
       }
-      // console.log('genInitStaff v_arr', v_arr);
+      // console.log('genUpdateStaff voice_arr', voice_arr);
     }
-    if(v_arr.length){
-      for(var j=0; j<v_arr.length; j++){
-        if(abc_content_arr[i].indexOf('V:'+v_arr[j])>-1){
-          v_notes_obj['V:'+v_arr[j]] = abc_content_arr[i+1];
+    if(voice_arr.length){
+      for(var j=0; j<voice_arr.length; j++){
+        if(abc_content_arr[i].indexOf('V:'+voice_arr[j])>-1){
+          voice_notes_obj['V:'+voice_arr[j]] = abc_content_arr[i+1];
         }
       }
     }
   }
-  // console.log('genInitStaff v_notes_obj', v_notes_obj);
+  // console.log('genUpdateStaff voice_notes_obj', voice_notes_obj);
+
+  // 获取 head 信息
+  var abc_content_head_str = '';
   if(abc_content.indexOf("%%vsetting_end")>-1){
-    abc_content_str_a = abc_content.split("%%vsetting_end")[0] + "%%vsetting_end" + "\x0A";
+    abc_content_head_str = abc_content.split("%%vsetting_end")[0] + "%%vsetting_end" + "\x0A";
   }else{
-    abc_content_str_a = abc_content.split("%%MIDI program 0")[0] + "%%MIDI program 0" + "\x0A";
+    abc_content_head_str = abc_content.split("%%MIDI program 0")[0] + "%%MIDI program 0" + "\x0A";
   }
-  
-  console.log('genInitStaff abc_content_str_a', abc_content_str_a);
+  console.log('genUpdateStaff abc_content_head_str', abc_content_head_str);
 
   // 获取全局拍号
-  var M_list = abc_content_str_a.match(/M\s*:\s*[1-9]\/[1-9]/g);
-  var M_arr = M_list[0].replace('M: ', '').split('/');
-
-  // console.log('genInitStaff M_arr', M_arr);
-  for(var vt in v_notes_obj){
-    var t_M_arr = M_arr;
-    // console.log('genInitStaff v_notes_obj', v_notes_obj[vt]);
-    var v_node_str = v_notes_obj[vt];
-    v_node_str.replace(/\$/g, '');
-    var v_node_arr = v_node_str.split('|');
-    // console.log('genInitStaff v_node_arr', v_node_arr);
-    var barsperstaff_n = 0;
-    var n_vv_str = '';
-    var temp_n_vv_str = '';
-    var temp_n_vv_str_d = 0;
-    for(var i = 0; i<v_node_arr.length; i++){
-      v_node_arr[i] = v_node_arr[i].replace('$', '');
-      if(v_node_arr[i].indexOf('[M:')>-1){
-        var t_M_list = v_node_arr[i].match(/M\s*:\s*[1-9]\/[1-9]/g);
-        t_M_arr = t_M_list[0].replace('M:', '').split('/');
-        // console.log('genInitStaff t_M_arr', t_M_arr);
-
-        if(temp_n_vv_str){
-          n_vv_str += temp_n_vv_str + ' z,' + (temp_n_vv_str_d>1?temp_n_vv_str_d:'') + '|';
-          barsperstaff_n ++;
-          if(barsperstaff_n==barsperstaff){
-            n_vv_str += '$';
-            barsperstaff_n = 0;
-          }
-          temp_n_vv_str  = '';
-          temp_n_vv_str_d = 0;
-        }
-      }
-      var curr_node_len = parseInt(t_M_arr[0])*8/parseInt(t_M_arr[1]);
-      if(!temp_n_vv_str){
-        if(v_node_arr[i].length==3 && v_node_arr[i].indexOf('z,')>-1){
-          var z_arr = v_node_arr[i].split(',');
-          v_node_arr[i] = 'z,'+ curr_node_len;
-        }
-        // 新小节
-        var node_len = calNodeLen(v_node_arr[i]);
-        if(curr_node_len==node_len){
-          n_vv_str += v_node_arr[i] + '|';
-          barsperstaff_n ++;
-          if(barsperstaff_n==barsperstaff){
-            n_vv_str += '$';
-            barsperstaff_n = 0;
-          }
-        }else if(curr_node_len>node_len){
-          // 需要补音符
-          if(v_node_arr[i].indexOf('[K:')==-1){
-            temp_n_vv_str += v_node_arr[i];
-            temp_n_vv_str_d = curr_node_len - node_len;
-          }else{
-            // 补休止符直接结束
-            var temp_n_vv_arr = v_node_arr[i].split('[K:');
-            temp_n_vv_str_d = curr_node_len - node_len;
-            n_vv_str += temp_n_vv_arr[0] + ' z,'+ (temp_n_vv_str_d>1?temp_n_vv_str_d:'') + '[K:' + temp_n_vv_arr[1] + '|';
-            barsperstaff_n ++;
-            if(barsperstaff_n==barsperstaff){
-              n_vv_str += '$';
-              barsperstaff_n = 0;
-            }
-            temp_n_vv_str  = '';
-            temp_n_vv_str_d = 0;
-          }
-        }else{
-          // 需要减(拆分)音符
-          var t_note_arr = v_node_arr[i].split(' ');
-          if(v_node_arr[i].indexOf('[K:')==-1){
-            for(var j = 0; j<t_note_arr.length; j++){
-              var t_note_lne = calNodeLen(t_note_arr[j]);
-              var temp_n_vv_str_len = calNodeLen(temp_n_vv_str);
-              if(temp_n_vv_str_len+t_note_lne==curr_node_len){
-                n_vv_str += temp_n_vv_str + ' ' + t_note_arr[j] + '|';
-                barsperstaff_n ++;
-                if(barsperstaff_n==barsperstaff){
-                  n_vv_str += '$';
-                  barsperstaff_n = 0;
-                }
-                temp_n_vv_str  = '';
-                temp_n_vv_str_d = 0;
-              }else if(temp_n_vv_str_len+t_note_lne<curr_node_len){
-                temp_n_vv_str += ' ' + t_note_arr[j];
-                temp_n_vv_str_d = curr_node_len - temp_n_vv_str_len - t_note_lne;
-              }else{
-                // 加休止符结束，重新创建小节
-                n_vv_str += temp_n_vv_str + ' z,'+ (curr_node_len-temp_n_vv_str_len==1?'':curr_node_len-temp_n_vv_str_len) + '|';
-                barsperstaff_n ++;
-                if(barsperstaff_n==barsperstaff){
-                  n_vv_str += '$';
-                  barsperstaff_n = 0;
-                }
-                temp_n_vv_str  = '';
-                temp_n_vv_str_d = 0;
-                // 新小节
-                if(t_note_lne<curr_node_len){
-                  temp_n_vv_str += t_note_arr[j];
-                  temp_n_vv_str_d = curr_node_len - t_note_lne;
-                }else{
-                  // 超过小节长度，休止符比较常见
-                  if(t_note_arr[j].indexOf('z,')>-1){
-                    n_vv_str += temp_n_vv_str + ' z,'+ (curr_node_len-temp_n_vv_str_len==1?'':curr_node_len-temp_n_vv_str_len) + '|';
-                    barsperstaff_n ++;
-                    if(barsperstaff_n==barsperstaff){
-                      n_vv_str += '$';
-                      barsperstaff_n = 0;
-                    }
-                    temp_n_vv_str  = '';
-                    temp_n_vv_str_d = 0;
-                  }else{
-                    // 音符拆分
-                    // splitNoteStr(note_str, curr_node_len, before_note_str, new_nodes)
-                    var n_node_obj = splitNoteStr(t_note_arr[j], curr_node_len, temp_n_vv_str, [])
-                    for(var b=0;b<n_node_obj.nodes.length; b++){
-                      n_vv_str += n_node_obj.nodes[b] + '|';
-                      barsperstaff_n ++;
-                      if(barsperstaff_n==barsperstaff){
-                        n_vv_str += '$';
-                        barsperstaff_n = 0;
-                      }
-                      temp_n_vv_str  = '';
-                      temp_n_vv_str_d = 0;
-                    }
-                    temp_n_vv_str = n_node_obj.residue_str;
-                    temp_n_vv_str_d = n_node_obj.lack_length;
-                  }
-                }
-              }
-            }
-          }else{
-            // 存在谱号
-            var k_note_arr = v_node_arr[i].split('[K:');
-            var nk_note_str = k_note_arr[0];
-            var k_str = '[K:'+k_note_arr[1];
-            var t_note_arr = nk_note_str.split(' '); // 覆盖上面note arr 
-            for(var j = 0; j<t_note_arr.length; j++){
-              var t_note_lne = calNodeLen(t_note_arr[j]);
-              var temp_n_vv_str_len = calNodeLen(temp_n_vv_str);
-              if(temp_n_vv_str_len+t_note_lne==curr_node_len){
-                n_vv_str += temp_n_vv_str + ' ' + t_note_arr[j] + (j==t_note_arr.length-1?k_str:'') + '|';
-                barsperstaff_n ++;
-                if(barsperstaff_n==barsperstaff){
-                  n_vv_str += '$';
-                  barsperstaff_n = 0;
-                }
-                temp_n_vv_str  = '';
-                temp_n_vv_str_d = 0;
-              }else if(temp_n_vv_str_len+t_note_lne<curr_node_len){
-                temp_n_vv_str += ' ' + t_note_arr[j];
-                temp_n_vv_str_d = curr_node_len - temp_n_vv_str_len - t_note_lne;
-              }else{
-                // 加休止符结束，重新创建小节
-                n_vv_str += temp_n_vv_str + ' z,'+ (curr_node_len-temp_n_vv_str_len==1?'':curr_node_len-temp_n_vv_str_len) + '|';
-                barsperstaff_n ++;
-                if(barsperstaff_n==barsperstaff){
-                  n_vv_str += '$';
-                  barsperstaff_n = 0;
-                }
-                temp_n_vv_str  = '';
-                temp_n_vv_str_d = 0;
-                // 新小节
-                if(t_note_lne<curr_node_len){
-                  temp_n_vv_str += t_note_arr[j];
-                  temp_n_vv_str_d = curr_node_len - t_note_lne;
-                }else{
-                  // 超过小节长度，休止符比较常见
-                  if(t_note_arr[j].indexOf('z,')>-1){
-                    n_vv_str += temp_n_vv_str + ' z,'+ (curr_node_len-temp_n_vv_str_len==1?'':curr_node_len-temp_n_vv_str_len) + '|';
-                    barsperstaff_n ++;
-                    if(barsperstaff_n==barsperstaff){
-                      n_vv_str += '$';
-                      barsperstaff_n = 0;
-                    }
-                    temp_n_vv_str  = '';
-                    temp_n_vv_str_d = 0;
-                  }else{
-                    // 音符拆分
-                    // splitNoteStr(note_str, curr_node_len, before_note_str, new_nodes)
-                    var n_node_obj = splitNoteStr(t_note_arr[j], curr_node_len, temp_n_vv_str, [])
-                    for(var b=0;b<n_node_obj.nodes.length; b++){
-                      n_vv_str += n_node_obj.nodes[b] + '|';
-                      barsperstaff_n ++;
-                      if(barsperstaff_n==barsperstaff){
-                        n_vv_str += '$';
-                        barsperstaff_n = 0;
-                      }
-                      temp_n_vv_str  = '';
-                      temp_n_vv_str_d = 0;
-                    }
-                    temp_n_vv_str = n_node_obj.residue_str;
-                    temp_n_vv_str_d = n_node_obj.lack_length;
-                  }
-                }
-              }
-            }
-          }
-
-        }
-      }else{
-        // 组合小节
-        if(v_node_arr[i].length==3 && v_node_arr[i].indexOf('z,')>-1){
-          n_vv_str += temp_n_vv_str + ' z,' + (temp_n_vv_str_d>1?temp_n_vv_str_d:'') + '|';
-          barsperstaff_n ++;
-          if(barsperstaff_n==barsperstaff){
-            n_vv_str += '$';
-            barsperstaff_n = 0;
-          }
-          temp_n_vv_str = '';
-          temp_n_vv_str_d = 0;
-          // 
-          var z_arr = v_node_arr[i].split(',');
-          v_node_arr[i] = 'z,'+ curr_node_len;
-        }
-        var node_len = calNodeLen(v_node_arr[i]);
-        var temp_n_vv_str_len = calNodeLen(temp_n_vv_str);
-        if(curr_node_len==node_len+temp_n_vv_str_len){
-          // 刚刚好
-          n_vv_str += temp_n_vv_str + ' ' + v_node_arr[i] + '|';
-          barsperstaff_n ++;
-          if(barsperstaff_n==barsperstaff){
-            n_vv_str += '$';
-            barsperstaff_n = 0;
-          }
-        }else if(curr_node_len>node_len+temp_n_vv_str_len){
-          // 需要补音符
-          if(v_node_arr[i].indexOf('[K:')==-1){
-            temp_n_vv_str += ' ' + v_node_arr[i];
-            temp_n_vv_str_d = curr_node_len - node_len - temp_n_vv_str_len;
-          }else{
-            // 补休止符直接结束
-            var temp_n_vv_arr = v_node_arr[i].split('[K:');
-            temp_n_vv_str_d = curr_node_len - node_len - temp_n_vv_str_len;
-            n_vv_str += ' ' + temp_n_vv_arr[0] + ' z,'+ (temp_n_vv_str_d>1?temp_n_vv_str_d:'') + '[K:' + temp_n_vv_arr[1] + '|';
-            barsperstaff_n ++;
-            if(barsperstaff_n==barsperstaff){
-              n_vv_str += '$';
-              barsperstaff_n = 0;
-            }
-            temp_n_vv_str  = '';
-            temp_n_vv_str_d = 0;
-          }
-          // console.log('genInitStaff temp_n_vv_str_d', temp_n_vv_str_d);
-        }else{
-          // 需要减(拆分)音符
-          var t_note_arr = v_node_arr[i].split(' ');
-          if(v_node_arr[i].indexOf('[K:')==-1){
-            for(var j = 0; j<t_note_arr.length; j++){
-              var t_note_lne = calNodeLen(t_note_arr[j]);
-              var temp_n_vv_str_len = calNodeLen(temp_n_vv_str);
-              if(temp_n_vv_str_len+t_note_lne==curr_node_len){
-                n_vv_str += ' ' + temp_n_vv_str + ' ' + t_note_arr[j] + '|';
-                barsperstaff_n ++;
-                if(barsperstaff_n==barsperstaff){
-                  n_vv_str += '$';
-                  barsperstaff_n = 0;
-                }
-                temp_n_vv_str  = '';
-                temp_n_vv_str_d = 0;
-              }else if(temp_n_vv_str_len+t_note_lne<curr_node_len){
-                temp_n_vv_str += t_note_arr[j];
-                temp_n_vv_str_d = curr_node_len - temp_n_vv_str_len - t_note_lne;
-              }else{
-                // 加休止符结束，重新创建小节
-                n_vv_str += ' ' + temp_n_vv_str + ' z,'+ (curr_node_len-temp_n_vv_str_len==1?'':curr_node_len-temp_n_vv_str_len) + '|';
-                barsperstaff_n ++;
-                if(barsperstaff_n==barsperstaff){
-                  n_vv_str += '$';
-                  barsperstaff_n = 0;
-                }
-                temp_n_vv_str  = '';
-                temp_n_vv_str_d = 0;
-                // 新小节
-                if(t_note_lne<curr_node_len){
-                  temp_n_vv_str += t_note_arr[j];
-                  temp_n_vv_str_d = curr_node_len - t_note_lne;
-                }else{
-                  // 超过小节长度，休止符比较常见
-                  if(t_note_arr[j].indexOf('z,')>-1){
-                    n_vv_str += temp_n_vv_str + ' z,'+ (curr_node_len-temp_n_vv_str_len==1?'':curr_node_len-temp_n_vv_str_len) + '|';
-                    barsperstaff_n ++;
-                    if(barsperstaff_n==barsperstaff){
-                      n_vv_str += '$';
-                      barsperstaff_n = 0;
-                    }
-                    temp_n_vv_str  = '';
-                    temp_n_vv_str_d = 0;
-                  }else{
-                    // 音符拆分
-                    // splitNoteStr(note_str, curr_node_len, before_note_str, new_nodes)
-                    var n_node_obj = splitNoteStr(t_note_arr[j], curr_node_len, temp_n_vv_str, []);
-                    console.log(n_node_obj);
-                    for(var b=0;b<n_node_obj.nodes.length; b++){
-                      n_vv_str += n_node_obj.nodes[b] + '|';
-                      barsperstaff_n ++;
-                      if(barsperstaff_n==barsperstaff){
-                        n_vv_str += '$';
-                        barsperstaff_n = 0;
-                      }
-                      temp_n_vv_str  = '';
-                      temp_n_vv_str_d = 0;
-                    }
-                    temp_n_vv_str = n_node_obj.residue_str;
-                    temp_n_vv_str_d = n_node_obj.lack_length;
-                  }
-                }
-              }
-              // console.log('genInitStaff temp_n_vv_str_d', temp_n_vv_str_d);
-            }
-          }else{
-            // 存在谱号
-            var k_note_arr = v_node_arr[i].split('[K:');
-            var nk_note_str = k_note_arr[0];
-            var k_str = '[K:'+k_note_arr[1];
-            var t_note_arr = nk_note_str.split(' '); // 覆盖上面note arr 
-            for(var j = 0; j<t_note_arr.length; j++){
-              var t_note_lne = calNodeLen(t_note_arr[j]);
-              var temp_n_vv_str_len = calNodeLen(temp_n_vv_str);
-              if(temp_n_vv_str_len+t_note_lne==curr_node_len){
-                n_vv_str += ' ' + temp_n_vv_str + ' ' + t_note_arr[j] + (j==t_note_arr.length-1?k_str:'') + '|';
-                barsperstaff_n ++;
-                if(barsperstaff_n==barsperstaff){
-                  n_vv_str += '$';
-                  barsperstaff_n = 0;
-                }
-                temp_n_vv_str  = '';
-                temp_n_vv_str_d = 0;
-              }else if(temp_n_vv_str_len+t_note_lne<curr_node_len){
-                temp_n_vv_str += ' ' + t_note_arr[j];
-                temp_n_vv_str_d = curr_node_len - temp_n_vv_str_len - t_note_lne;
-              }else{
-                // 加休止符结束，重新创建小节
-                n_vv_str += ' ' + temp_n_vv_str + ' z,'+ (curr_node_len-temp_n_vv_str_len==1?'':curr_node_len-temp_n_vv_str_len) + '|';
-                barsperstaff_n ++;
-                if(barsperstaff_n==barsperstaff){
-                  n_vv_str += '$';
-                  barsperstaff_n = 0;
-                }
-                temp_n_vv_str  = '';
-                temp_n_vv_str_d = 0;
-                // 新小节
-                if(t_note_lne<curr_node_len){
-                  temp_n_vv_str += t_note_arr[j];
-                  temp_n_vv_str_d = curr_node_len - t_note_lne;
-                }else{
-                  // 超过小节长度，休止符比较常见
-                  if(t_note_arr[j].indexOf('z,')>-1){
-                    n_vv_str += temp_n_vv_str + ' z,'+ (curr_node_len-temp_n_vv_str_len==1?'':curr_node_len-temp_n_vv_str_len) + '|';
-                    barsperstaff_n ++;
-                    if(barsperstaff_n==barsperstaff){
-                      n_vv_str += '$';
-                      barsperstaff_n = 0;
-                    }
-                    temp_n_vv_str  = '';
-                    temp_n_vv_str_d = 0;
-                  }else{
-                    // 音符拆分
-                    // splitNoteStr(note_str, curr_node_len, before_note_str, new_nodes)
-                    var n_node_obj = splitNoteStr(t_note_arr[j], curr_node_len, temp_n_vv_str, [])
-                    for(var b=0;b<n_node_obj.nodes.length; b++){
-                      n_vv_str += n_node_obj.nodes[b] + '|';
-                      barsperstaff_n ++;
-                      if(barsperstaff_n==barsperstaff){
-                        n_vv_str += '$';
-                        barsperstaff_n = 0;
-                      }
-                      temp_n_vv_str  = '';
-                      temp_n_vv_str_d = 0;
-                    }
-                    temp_n_vv_str = n_node_obj.residue_str;
-                    temp_n_vv_str_d = n_node_obj.lack_length;
-                  }
-                }
-              }
-              // console.log('genInitStaff temp_n_vv_str_d', temp_n_vv_str_d);
-            }
-          }
-
-        }
-
-      }
-      
-    }
-    // console.log(n_vv_str);
-    v_notes_obj[vt] = n_vv_str;
-  }
+  var Meter_list = abc_content_head_str.match(/M\s*:\s*[1-9]\/[1-9]/g);
+  var Meter_arr = Meter_list[0].replace('M: ', '').split('/');
+  // console.log('genUpdateStaff Meter_arr', Meter_arr);
+  
+  var barsperstaff = $("#barsperstaff")["val"]();
+  voice_notes_obj = resetNodeData(voice_notes_obj, Meter_arr, barsperstaff);
 
   var new_abc_content = "";
-
-  new_abc_content += abc_content_str_a;
-  for(var vt in v_notes_obj){
-    new_abc_content += vt + "\x0A" + v_notes_obj[vt] + "\x0A";
+  new_abc_content += abc_content_head_str;
+  for(var vt in voice_notes_obj){
+    new_abc_content += vt + "\x0A" + voice_notes_obj[vt] + "\x0A";
   }
-
-  // for (var i = 0; i < abc_content_arr["length"]; i++) {
-  //   // if (abc_content_arr[i] == "%%vsetting_start") {
-  //   //   break;
-  //   // }
-  //   // 修改后:
-  //   if(abc_content_arr[i].indexOf('%%score')>-1 || abc_content_arr[i] == "%%vsetting_start"){
-  //     break;
-  //   }
-  //   new_abc_content += abc_content_arr[i] + "\x0A";
-  // }
-  // // console.log('genInitStaff new_abc_content', new_abc_content);
-  // console.log('genInitStaff n_score_str', n_score_str);
-
-  // new_abc_content += n_score_str;
-  // new_abc_content = handleBreakLine(new_abc_content, parseInt(barsperstaff));
-
   console.log('genInitStaff new_abc_content', new_abc_content);
   var M_type = $("#M_type")["val"]();
   if (M_type != "1") {
@@ -1274,6 +845,191 @@ function genUpdateStaff(val) {
   isNew = false;
   src_change();
   doLog();
+}
+
+// 重组小结
+function resetNodeData(voice_notes_obj, Meter_arr, barsperstaff_num, barsperstaff_before_num){
+  barsperstaff_before_num = barsperstaff_before_num?barsperstaff_before_num:0;
+  // console.log('genUpdateStaff Meter_arr', Meter_arr);
+  for(var m=0; m<Meter_arr.length; m++){
+    Meter_arr[m] = parseInt(Meter_arr[m]);
+  }
+  var curr_node_len = parseInt(Meter_arr[0])*8/parseInt(Meter_arr[1]);
+  for(var vt in voice_notes_obj){
+    console.log('genUpdateStaff voice_notes_obj', voice_notes_obj[vt]);
+    var v_node_str = voice_notes_obj[vt];
+    var v_node_after_str = '';
+    // 先把音符通过拍号拆分,因为中途拍号后不用改变
+    var t_Meter_list = v_node_str.match(/\[M\s*:\s*(\d\/\d|C\|?)\]/g);
+    if(t_Meter_list){
+      var v_node_s_arr = v_node_str.split(t_Meter_list[0]);
+      v_node_str = v_node_s_arr[0];
+      v_node_after_str = t_Meter_list[0] + v_node_s_arr[1];
+    }
+    // 去掉 abc 换行号 $ 及小姐符号
+    v_node_str = v_node_str.replace(/\$/g, '')
+                            .replace(/%V\dline\dend/g, '')
+                            .replace(/:\|\|:/g, ' ')
+                            .replace(/:\|/g, ' ')
+                            .replace(/\|:/g, ' ')
+                            .replace(/\.\|/g, ' ')
+                            .replace(/\|\]/g, ' ')
+                            .replace(/\|\|/g, ' ')
+                            .replace(/\|/g, ' '); 
+    // 音符字符转数组
+    var v_node_arr = v_node_str.split(' ');
+    // console.log('genUpdateStaff v_node_arr', v_node_arr);
+    var barsperstaff_n = 0;
+    var new_node_str = '';
+    var temp_new_node_str = '';
+    for(var i = 0; i<v_node_arr.length; i++){
+      var n_note_str = v_node_arr[i];
+      if(temp_new_node_str){
+        var temp_str = temp_new_node_str + ' ' + n_note_str;
+      }else{
+        var temp_str = n_note_str;
+      }
+      var temp_len = calNodeLen(temp_str);
+
+      // 处理音符--开始
+      if(temp_len==curr_node_len){
+        // 刚刚好一小节
+        new_node_str += temp_str + ' | ';
+        // 小节标记
+        barsperstaff_n ++;
+        if(barsperstaff_n+barsperstaff_before_num==barsperstaff_num){
+          new_node_str += '$';
+          barsperstaff_n = 0;
+          barsperstaff_before_num = 0;
+        }
+        temp_new_node_str  = '';
+      }else if(temp_len<curr_node_len){
+        // 小于
+        temp_new_node_str = temp_str;
+      }else{
+        // 大于
+        var temp_note_arr = splitNoteStr2(n_note_str, curr_node_len-calNodeLen(temp_new_node_str), curr_node_len);
+        if(temp_new_node_str){
+          var temp_str = temp_new_node_str + ' ' + temp_note_arr[0];
+        }else{
+          var temp_str = temp_note_arr[0];
+        }
+        new_node_str += temp_str + ' | ';
+        // 小节标记
+        barsperstaff_n ++;
+        if(barsperstaff_n+barsperstaff_before_num==barsperstaff_num){
+          new_node_str += '$';
+          barsperstaff_n = 0;
+          barsperstaff_before_num = 0;
+        }
+        temp_new_node_str = '';
+        for(var j=1; j<temp_note_arr.length; j++){
+          var temp_str  = temp_note_arr[1];
+          if(curr_node_len==calNodeLen(temp_str)){
+            new_node_str += temp_str + ' | ';
+            // 小节标记
+            barsperstaff_n ++;
+            if(barsperstaff_n+barsperstaff_before_num==barsperstaff_num){
+              new_node_str += '$';
+              barsperstaff_n = 0;
+              barsperstaff_before_num = 0;
+            }
+            temp_new_node_str = '';
+          }else{
+            temp_new_node_str = temp_str;
+          }
+        }
+      }
+
+      // 处理音符--结束
+    }
+    if(temp_new_node_str){
+      // 正常情况时小于小节长度，否则算错
+      if(curr_node_len>calNodeLen(temp_new_node_str)){
+        var temp_n_len = curr_node_len>calNodeLen(temp_new_node_str);
+        new_node_str += temp_new_node_str + ' z,'+ (temp_n_len==1?'':temp_n_len) + ' | ';
+        // 小节标记
+        barsperstaff_n ++;
+        if(barsperstaff_n+barsperstaff_before_num==barsperstaff_num){
+          new_node_str += '$';
+          barsperstaff_n = 0;
+          barsperstaff_before_num = 0;
+        }
+        temp_new_node_str = '';
+      }else{
+        console.error('小节组合错误', temp_new_node_str);
+      }
+    }
+    // console.log(new_node_str);
+    voice_notes_obj[vt] = new_node_str;
+  }
+  return voice_notes_obj;
+}
+
+// 音符拆分2
+function splitNoteStr2(note_str, need_len, curr_node_len, note_arr){
+  note_arr = note_arr?note_arr:[]; // 前面拆分音符
+  // 处理音符--开始
+  var note_str_before = '';
+  var note_str_after = '';
+  var temp_note_str = note_str;
+  var tone_arr = temp_note_str.match(/\[K\:[CDEFGAB][b#]?\]/g); // 匹配调号
+  if(tone_arr){
+    note_str_before += tone_arr[0]; // 正常情况一个小节一个调号
+    for(var i=0; i<tone_arr.length; i++){
+      temp_note_str = temp_note_str.replace(tone_arr[i], ''); // 除去调号
+    }
+  }
+  var clef_arr = temp_note_str.match(/\[K\:(treble|bass|alto|tenor)\]/g); // 匹配普号
+  if(clef_arr){
+    note_str_before += clef_arr[0]; // 正常情况一个音符组最多一个普号
+    for(var i=0; i<clef_arr.length; i++){
+      temp_note_str = temp_note_str.replace(clef_arr[i], ''); // 除去普号
+    }
+  }
+
+  var reg_check_after_arr = [
+    /\"\d(\-|\~)\]\"/g, // 匹配上下文字
+    /\!(\>\)|\<\)|\~\)|coda|segno|D\.C\.(alcoda|alfine)?|D\.S\.(alcoda|alfine)?|fine|tocoda)\!/g, //|渐弱|渐强|gliss|coda|segno|D.C.
+  ];
+
+  var reg_check_before_arr = [
+    /\!(8va|8vb|15ma|15mb)(\(|\))\!/g, // 匹配高8|15度开始|结束
+    /\"!"\"/g, // 匹配歌词
+    /\!(\d|pedall|pedall2|ped|ped-up|arpeggio|jpslid|arpeggioup|arpeggiodown|fermata|cresc\.|\>\(|\<\(|\~\(|dim\.|slidelu|slide|sliderd|slideru|sliderd2|\/|\/\/|\/\/\/|pppp|ppp|pp|p|mp|mf|f|ff|fff|ffff|sf|sfz|sff|sfp|fp|fz|strong|sec_strong|weak|kew\d|inst_lingu|inst_pengl|inst_shac|inst_shanjt|inst_shoul|inst_shuanxt|inst_xiangb|inst_xiaojg|inst_feizg|inst_xiaojiao|inst_xiaojiaoxiaoluo|inst_yaoling|inst_wamt|inst_bo|inst_daluo|showsd8|bcb|bc|turn)\!/g, // 匹配指法|踏板符号|ped-up|ped|arpeggio琵琶凑法|jpslid|arpeggioup|arpeggiodown|（自由）延长符号|cresc.|渐弱|渐强|gliss|dim.|slidelu|slide|sliderd|slideru|sliderd2|/|//震音|///|力度记号|科尔文手势|奥尔夫
+    /\[I\:\s*(.*)\]/g, // 方向记号
+  ];
+
+  for(var i=0; i<reg_check_after_arr.length; i++){
+    var res = temp_note_str.match(reg_check_after_arr[i]);
+    if(res){
+      if(res){
+        for(var j=0; j<res.length; j++){
+          note_str_after += res[j];
+          temp_note_str = temp_note_str.replace(res[j], '');
+        }
+      }
+    }
+  }
+
+  for(var i=0; i<reg_check_before_arr.length; i++){
+    var res = temp_note_str.match(reg_check_before_arr[i]);
+    if(res){
+      if(res){
+        for(var j=0; j<res.length; j++){
+          if(reg_check_before_arr[i]+''==(/\!(8va|8vb|15ma|15mb)(\(|\))\!/g)+''){
+            note_str_after += res[j];
+          }else{
+            note_str_before += res[j];
+          }
+          temp_note_str = temp_note_str.replace(res[j], '');
+        }
+      }
+    }
+  }
+
+  
+  // 处理音符--结束
 }
 
 // 音符拆分
