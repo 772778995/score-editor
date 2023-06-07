@@ -996,10 +996,11 @@ function splitNoteStr2(note_str, need_len, curr_node_len, note_arr){
   var reg_check_before_arr = [
     /\!(8va|8vb|15ma|15mb)(\(|\))\!/g, // 匹配高8|15度开始|结束
     /\"!"\"/g, // 匹配歌词
-    /\!(\d|pedall|pedall2|ped|ped-up|arpeggio|jpslid|arpeggioup|arpeggiodown|fermata|cresc\.|\>\(|\<\(|\~\(|dim\.|slidelu|slide|sliderd|slideru|sliderd2|\/|\/\/|\/\/\/|pppp|ppp|pp|p|mp|mf|f|ff|fff|ffff|sf|sfz|sff|sfp|fp|fz|strong|sec_strong|weak|kew\d|inst_lingu|inst_pengl|inst_shac|inst_shanjt|inst_shoul|inst_shuanxt|inst_xiangb|inst_xiaojg|inst_feizg|inst_xiaojiao|inst_xiaojiaoxiaoluo|inst_yaoling|inst_wamt|inst_bo|inst_daluo|showsd8|bcb|bc|turn)\!/g, // 匹配指法|踏板符号|ped-up|ped|arpeggio琵琶凑法|jpslid|arpeggioup|arpeggiodown|（自由）延长符号|cresc.|渐弱|渐强|gliss|dim.|slidelu|slide|sliderd|slideru|sliderd2|/|//震音|///|力度记号|科尔文手势|奥尔夫
+    /\!(\d|pedall|pedall2|ped|ped-up|arpeggio|jpslid|arpeggioup|arpeggiodown|fermata|cresc\.|\>\(|\<\(|\~\(|dim\.|slidelu|slide|sliderd|slideru|sliderd2|\/|\/\/|\/\/\/|pppp|ppp|pp|p|mp|mf|f|ff|fff|ffff|sf|sfz|sff|sfp|fp|fz|strong|sec_strong|weak|kew\d|inst_lingu|inst_pengl|inst_shac|inst_shanjt|inst_shoul|inst_shuanxt|inst_xiangb|inst_xiaojg|inst_feizg|inst_xiaojiao|inst_xiaojiaoxiaoluo|inst_yaoling|inst_wamt|inst_bo|inst_daluo|showsd8|bcb|bc|turn|invertedturn|umrd|mordent|trill|accel|rit|breath|roll|snap|shortphrase|plus|open|emb|tenuto|\>|wedge|\^|upb|dnb|rbr|rbl|lb)\!/g, // 匹配指法|踏板符号|ped-up|ped|arpeggio琵琶凑法|jpslid滑音|arpeggioup|arpeggiodown|（自由）延长符号|cresc.|渐弱|渐强|gliss|dim.|slidelu|slide|sliderd|slideru|sliderd2|/|//震音|///|力度记号|科尔文手势|奥尔夫|回音|逆回音|波音|逆波音|颤音|渐快|渐慢|breath呼吸|shortphrase|roll|snap|plus|open|emb|tenuto|>|wedge|^|upb|dnb|rbr|rbl|lb
     /\[I\:\s*(.*)\]/g, // 方向记号
   ];
 
+  // 除去后无时值修饰符
   for(var i=0; i<reg_check_after_arr.length; i++){
     var res = temp_note_str.match(reg_check_after_arr[i]);
     if(res){
@@ -1011,13 +1012,13 @@ function splitNoteStr2(note_str, need_len, curr_node_len, note_arr){
       }
     }
   }
-
+  // 除去前无时值修饰符
   for(var i=0; i<reg_check_before_arr.length; i++){
     var res = temp_note_str.match(reg_check_before_arr[i]);
     if(res){
       if(res){
         for(var j=0; j<res.length; j++){
-          if(reg_check_before_arr[i]+''==(/\!(8va|8vb|15ma|15mb)(\(|\))\!/g)+''){
+          if(reg_check_before_arr[i]+''==(/\!(8va|8vb|15ma|15mb)(\(|\))\!/g)+'' && j==1){
             note_str_after += res[j];
           }else{
             note_str_before += res[j];
@@ -1027,7 +1028,125 @@ function splitNoteStr2(note_str, need_len, curr_node_len, note_arr){
       }
     }
   }
+  
+  var note_arr = temp_note_str.match(/[A-Ga-g]/g);
+  var note_z_arr = temp_note_str.match(/z,*\d*/g);
+  var note_zs_arr = temp_note_str.match(/\d/g);
+  var note_fs_arr = temp_note_str.match(/\//g);
+  var note_len = calNodeLen(temp_note_str);
+  if(note_len!=calNodeLen(note_str)){
+    console.error('音符拆分错误', note_str, temp_note_str);
+  }
 
+  var temp_note_before_after_arr = note_str.split(temp_note_str);
+
+  // 需要长度转换长度转换
+  var n_zs = 0; // 整数
+  var n_xs = 0; // 小数
+  var n_fz = 0; // 分子
+  var n_fm = 0; // 分母
+  /**
+   * 音符说明 1 = 8分音符，乘以或除以2拆分或组合
+   * 1*2=4分音符，1/2=16分音符
+  **/
+  if(need_len>=1){
+    n_zs = Math.floor(need_len);
+    n_xs = need_len-n_zs;
+  }else{
+    n_xs = need_len;
+  }
+  if(n_xs){
+    var f_str = fractionConvert(n_xs);
+    // n x/y
+    var ff_arr = f_str.split(' ');
+    var t_zs = 0;
+    if(ff_arr.length==2){
+      t_zs = parseInt(ff_arr[0]);
+      var f_arr = ff_arr[1].split('/');
+    }else{
+      var f_arr = ff_arr[0].split('/');
+    }
+    n_fz = parseInt(f_arr[0]);
+    n_fm = parseInt(f_arr[1]);
+    if(t_zs>0){
+      n_fz = t_zs*n_fm;
+    }
+  }
+
+  if(note_z_arr){
+    var n_temp_note_str = temp_note_str;
+    for(var i=0; i<note_z_arr.length; i++){
+      n_temp_note_str.replace(note_z_arr[i], '');
+    }
+    if(calNodeLen(n_temp_note_str)==need_len){
+      // TODO::
+    }
+  }
+
+  if(note_arr.length==1){
+    var zs = 0;
+    var fz = 0;
+    var fm = 0;
+    if(note_zs_arr.length){
+      if(note_zs_arr.length>1){
+        console.error('音符拆分错误', note_str, note_zs_arr);
+      }
+      zs = parseInt(note_zs_arr[0]);
+    }
+    if(note_fs_arr.length){
+      fm = Math.pow(2, note_fs_arr.length)
+    }
+
+    var n_fm_str = '';
+    var sy_zs = 0;
+    var sy_fm_str = '';
+    
+    fm = fm?fm:1;
+    n_fm = n_fm?n_fm:1;
+    n_zs = n_zs?n_zs:1;
+    zs = zs?zs:1;
+
+    var n_fm_str_len = Math.log(n_fm)/Math.log(2);
+    for(var i=0; i<n_fm_str_len; i++){
+      n_fm_str += '/';
+    }
+    if(fm==n_fm){
+      if(zs>1 && zs>n_zs){
+        // 1/8 * zs * 1/fm -  1/8 * n_zs * 1/n_fm = 1/8 * (zs-n_zs)/n_fm
+        sy_zs = zs - n_zs;
+        sy_fm_str = n_fm_str;
+      }else{
+        console.error('音符拆分错误', note_str, note_zs_arr);
+      }
+    }else if(fm>n_fm){
+      var s_len = Math.log(fm)/Math.log(2) - Math.log(n_fm)/Math.log(2);
+      // 1/8 * zs * 1/fm -  1/8 * n_zs * 1/n_fm = 1/8 * (zs-n_zs*s_len*2)/n_fm
+      sy_zs = zs - n_zs*s_len*2;
+      sy_fm_str = n_fm_str;
+      for(var i = 0; i<s_len; i++){
+        sy_fm_str += '/';
+      }
+    }else if(fm<n_fm){
+      var s_len = Math.log(n_fm)/Math.log(2) - Math.log(fm)/Math.log(2);
+      sy_zs = zs*s_len*2 - n_zs;
+      sy_fm_str = n_fm_str;
+    }
+
+    var need_note_str = temp_note_before_after_arr[0] + note_arr + (n_zs<=1?'':n_zs) + n_fm_str + temp_note_before_after_arr[1];
+    note_arr.push(need_note_str);
+    var sy_note_str = temp_note_before_after_arr[0] + note_arr + (sy_zs<=1?'':sy_zs) + sy_fm_str + temp_note_before_after_arr[1];
+    if(calNodeLen(sy_note_str)<=curr_node_len){
+      note_arr.push(sy_note_str);
+      return note_arr;
+    }else{
+      return splitNoteStr2(sy_note_str, curr_node_len, curr_node_len, note_arr);
+    }
+  }else if(note_arr.length>1){
+    var n_note_arr = temp_note_str.match(/\[([A-Ga-g]\d*\/*)*\]/g);
+
+  }else{
+    console.error('音符拆分错误', note_str, temp_note_str);
+  }
   
   // 处理音符--结束
 }
@@ -1088,32 +1207,6 @@ function splitNoteStr(note_str, curr_node_len, before_note_str, new_nodes){
           // Math.pow(2, 3) = 8 , Math.log(8)/Math.log(2) = 3
           var need_node_len = curr_node_len-before_note_str_len;
           
-          function fractionConvert(num) {
-            let intPart = Math.floor(num);
-            let floatPart = num - intPart;
-            // 小数化为真分数
-            let numerator = floatPart * 100;
-            let denominator = 100;
-            while (numerator % 10 === 0) {
-              numerator /= 10;
-              denominator /= 10;
-            }
-            // 分数化简
-            let gcd = function(a, b) {
-              return b === 0 ? a : gcd(b, a%b);
-            }
-            let common = gcd(numerator, denominator);
-            numerator /= common;
-            denominator /= common;
-            // 组合
-            let result = '';
-            if (intPart !== 0) {
-              result += intPart + ' ';
-            }
-            result += numerator + '/' + denominator;
-            return result;
-          }
-
           if(s_note_after_str){
             if(s_note_after_str[0].indexOf('/')>-1){
               // 全是 '/'
@@ -1306,6 +1399,36 @@ function splitNoteStr(note_str, curr_node_len, before_note_str, new_nodes){
   }
 }
 // -- splitNoteStr() end
+
+// 小数转分数
+function fractionConvert(num) {
+  if((num+'').indexOf('.')==-1 || (num+'').indexOf('/')>-1){
+    return num;
+  }
+  let intPart = Math.floor(num);
+  let floatPart = num - intPart;
+  // 小数化为真分数
+  let numerator = floatPart * 100;
+  let denominator = 100;
+  while (numerator % 10 === 0) {
+    numerator /= 10;
+    denominator /= 10;
+  }
+  // 分数化简
+  let gcd = function(a, b) {
+    return b === 0 ? a : gcd(b, a%b);
+  }
+  let common = gcd(numerator, denominator);
+  numerator /= common;
+  denominator /= common;
+  // 组合
+  let result = '';
+  if (intPart !== 0) {
+    result += intPart + ' ';
+  }
+  result += numerator + '/' + denominator;
+  return result;
+}
 
 function handleBarNum() {
   var _0x15331 = getStaffInfo("source");
