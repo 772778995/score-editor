@@ -6513,10 +6513,10 @@ function leftPanelClick(obj, isCurrOpenState, closeCb, openCb) {
     // 当前收起状态
     $(obj).attr("src", "assets/music_score_editor/images/left.png");
     $(".body-left").css({
-      width: "220px",
-      "min-width": "220px",
+      width: "330px",
+      "min-width": "330px",
     });
-    $(".bottom-box").css("left", "220px");
+    $(".bottom-box").css("left", "330px");
     return typeof openCb == "function" && openCb();
   }
 }

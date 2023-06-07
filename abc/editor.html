@@ -3696,7 +3696,7 @@
         <!-- 右边琴谱 -->
         <div
           id="panZoom"
-          class="body-right flex overflow-y-visible w-screen h-screen justify-center top-0 left-0"
+          class="body-right flex overflow-y-visible justify-center top-0 left-0"
         >
           <!--左侧符号面板区域  -->
           <!-- <img
@@ -3714,8 +3714,8 @@
               onmouseleave.stop="rightTopContentMouseLeave(event)"
             >
               <div
-                class="abc-content rounded-md fixed flex flex-col overflow-y-auto left-0 items-center w-screen"
-                style="top:84px; height: calc(100vh - 84px); background: rgb(181, 197, 211);"
+                class="shabi-content abc-content rounded-md fixed flex flex-col overflow-y-auto items-center"
+                style="top:84px; height: calc(100vh - 84px); background: rgb(181, 197, 211);left:400px;"
               >
                 <div style="display: none;">
                   <div id="nodeMenu" style="display: none">
@@ -3776,13 +3776,12 @@
 						</div> -->
                 <div :style="{
                   padding: `${m.panzoom.scale / 100 * 40}px 0px`,
-                  transform: `scale(${m.panzoom.scale / 100})`,
-                  transformOrigin: 'top',
-                  minWidth: '95vw',
                   display: 'flex',
-                  left: '0px',
+                  transformOrigin: 'top',
+                  zoom: `${m.panzoom.scale / 100}`,
                   justifyContent: 'center',
                 }">
+
                   <div
                     id="target"
                     class="panzoom-exclude box-content"
