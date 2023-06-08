@@ -17431,7 +17431,7 @@ abc2svg = {
           }
         }
 
-        style += "pointer-events: auto;";
+        style += "pointer-events: auto;padding-bottom:10px;";
         if (!color) {
           style +=
             "font-family: KaiTi, cursive, fangsong, monospace, serif; font-weight: normal;";
@@ -18135,9 +18135,13 @@ abc2svg = {
         //增加了颜色参数
         xy_str(0, 0, title, "", title_type, cfmt.titlecolor);
       } else {
-        //xy_str(get_lwidth() / 2, 0, title, "c");
+        // 就为了给副标题下降10px左右的距离
+        if (title_type == "subtitle") {
+          xy_str(get_lwidth() / 2, -10, title, "c", title_type, cfmt.titlecolor);
+        } else {
+          xy_str(get_lwidth() / 2, 0, title, "c", title_type, cfmt.titlecolor);
+        }
         //增加了颜色参数
-        xy_str(get_lwidth() / 2, 0, title, "c", title_type, cfmt.titlecolor);
       }
     }
     function put_inf2r(x, y, str1, str2, action, type) {
