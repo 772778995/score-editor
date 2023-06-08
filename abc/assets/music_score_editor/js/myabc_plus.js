@@ -1082,8 +1082,81 @@ function splitNoteStr2(note_str, need_len, curr_node_len, note_arr){
       n_fz = t_zs*n_fm;
     }
   }
+  // 需要拆出音符大小数据
+  var n_fm_str = '';
+  var sy_zs = 0;
+  var sy_fm_str = '';
+  n_fm = n_fm?n_fm:1;
+  n_zs = n_zs?n_zs:1;
+  var n_fm_str_len = Math.log(n_fm)/Math.log(2);
+  for(var i=0; i<n_fm_str_len; i++){
+    n_fm_str += '/';
+  }
+
+  // 当前要拆分的音符大小数据
+  var zs = 0;
+  var fm = 0;
+  if(note_zs_arr.length){
+    if(note_zs_arr.length>1){
+      console.error('音符拆分错误', note_str, note_zs_arr);
+    }
+    zs = parseInt(note_zs_arr[0]);
+  }
+  if(note_fs_arr.length){
+    fm = Math.pow(2, note_fs_arr.length)
+  }
+  fm = fm?fm:1;
+  zs = zs?zs:1;
+
+  var z_zs = 0;
+  var z_fm = 0;
+  var z_mf_str = '';
 
   if(note_z_arr){
+    for(var i=0; i<note_z_arr.length; i++){
+      var n_arr = note_z_arr[i].match(/\d/g);
+      if(n_arr){
+        z_zs += parseInt(n_arr[0]);
+      }
+      var d_arr = note_z_arr[i].match(/\//g);
+      if(d_arr){
+        for(var j=0; j<d_arr.length; j++){
+          z_mf_str += '/';
+        }
+      }
+    }
+    if(z_mf_str.length){
+      z_fm = Math.pow(2, z_mf_str.length)
+    }
+  }
+
+  // TODO: 音符、休止符、音符+休止符，3种情况
+
+  if(fm==n_fm){
+    if(zs>1 && zs>n_zs){
+      // 1/8 * zs * 1/fm -  1/8 * n_zs * 1/n_fm = 1/8 * (zs-n_zs)/n_fm
+      sy_zs = zs - n_zs;
+      sy_fm_str = n_fm_str;
+    }else{
+      console.error('音符拆分错误', note_str, note_zs_arr);
+    }
+  }else if(fm>n_fm){
+    var s_len = Math.log(fm)/Math.log(2) - Math.log(n_fm)/Math.log(2);
+    // 1/8 * zs * 1/fm -  1/8 * n_zs * 1/n_fm = 1/8 * (zs-n_zs*s_len*2)/n_fm
+    sy_zs = zs - n_zs*s_len*2;
+    sy_fm_str = n_fm_str;
+    for(var i = 0; i<s_len; i++){
+      sy_fm_str += '/';
+    }
+  }else if(fm<n_fm){
+    var s_len = Math.log(n_fm)/Math.log(2) - Math.log(fm)/Math.log(2);
+    sy_zs = zs*s_len*2 - n_zs;
+    sy_fm_str = n_fm_str;
+  }
+
+  var note_z_str = '';
+  if(note_z_arr){
+    note_z_str = note_z_arr.join('');
     var n_temp_note_str = temp_note_str;
     for(var i=0; i<note_z_arr.length; i++){
       n_temp_note_str.replace(note_z_arr[i], '');
@@ -1104,81 +1177,19 @@ function splitNoteStr2(note_str, need_len, curr_node_len, note_arr){
         console.error('音符拆分错误', note_str, need_note_str);
       }
     }else if(n_temp_note_str=='' || calNodeLen(n_temp_note_str)==0){
-      var note_z_str = note_z_arr.join('');
+      // 只有休止符
       if(calNodeLen(note_str)==calNodeLen(note_z_str)){
-        var z_str = 'z,';
-        var z_num = 0;
-        var z_d_str = '';
-        for(var i=0; i<note_z_arr.length; i++){
-          var n_arr = note_z_arr[i].match(/\d/g);
-          if(n_arr){
-            z_num += parseInt(n_arr[0]);
-          }
-          var d_arr = note_z_arr[i].match(/\//g);
-          if(d_arr){
-            for(var j=0; j<d_arr.length; j++){
-              z_d_str += '/';
-            }
-          }
-        }
-        z_str = z_str + (z_num<1?'':z_num)+z_d_str;
-
-
+        // TODO: 
 
       }else{
         console.error('音符拆分错误', note_str, note_z_str);
       }
+    }else{
+      // 有音符和休止符
     }
   }
 
   if(note_arr.length==1){
-    var zs = 0;
-    var fm = 0;
-    if(note_zs_arr.length){
-      if(note_zs_arr.length>1){
-        console.error('音符拆分错误', note_str, note_zs_arr);
-      }
-      zs = parseInt(note_zs_arr[0]);
-    }
-    if(note_fs_arr.length){
-      fm = Math.pow(2, note_fs_arr.length)
-    }
-
-    var n_fm_str = '';
-    var sy_zs = 0;
-    var sy_fm_str = '';
-    
-    fm = fm?fm:1;
-    n_fm = n_fm?n_fm:1;
-    n_zs = n_zs?n_zs:1;
-    zs = zs?zs:1;
-
-    var n_fm_str_len = Math.log(n_fm)/Math.log(2);
-    for(var i=0; i<n_fm_str_len; i++){
-      n_fm_str += '/';
-    }
-    if(fm==n_fm){
-      if(zs>1 && zs>n_zs){
-        // 1/8 * zs * 1/fm -  1/8 * n_zs * 1/n_fm = 1/8 * (zs-n_zs)/n_fm
-        sy_zs = zs - n_zs;
-        sy_fm_str = n_fm_str;
-      }else{
-        console.error('音符拆分错误', note_str, note_zs_arr);
-      }
-    }else if(fm>n_fm){
-      var s_len = Math.log(fm)/Math.log(2) - Math.log(n_fm)/Math.log(2);
-      // 1/8 * zs * 1/fm -  1/8 * n_zs * 1/n_fm = 1/8 * (zs-n_zs*s_len*2)/n_fm
-      sy_zs = zs - n_zs*s_len*2;
-      sy_fm_str = n_fm_str;
-      for(var i = 0; i<s_len; i++){
-        sy_fm_str += '/';
-      }
-    }else if(fm<n_fm){
-      var s_len = Math.log(n_fm)/Math.log(2) - Math.log(fm)/Math.log(2);
-      sy_zs = zs*s_len*2 - n_zs;
-      sy_fm_str = n_fm_str;
-    }
-
     var need_note_str = temp_note_before_after_arr[0] + note_arr + (n_zs<=1?'':n_zs) + n_fm_str + temp_note_before_after_arr[1];
     note_arr.push(need_note_str);
     var sy_note_str = temp_note_before_after_arr[0] + note_arr + (sy_zs<=1?'':sy_zs) + sy_fm_str + temp_note_before_after_arr[1];
