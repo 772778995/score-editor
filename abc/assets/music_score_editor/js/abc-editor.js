@@ -208,6 +208,46 @@ const initNewScoreOpts = {
   rowBars: "4",
 };
 
+function createMusicNextEvent() {
+  console.log(this.content_vue.m.toolList[9], '==+++')
+  this.content_vue.m.newScore.scoreOptsShow = true
+  this.content_vue.m.newScore.speedTxtList = speedTxtList.map((item) => {
+    let obj
+    if (this.content_vue.m.newScore.scoreOpts.musicType == 'easy') {
+      obj = {
+        val: item.title,
+        txt: item.title,
+      }
+      this.content_vue.m.newScore.scoreOpts.speedText = "中板"
+    } else {
+      obj = {
+        val: item.txt,
+        txt: item.txt,
+      }
+    }
+    return obj
+  })
+  this.content_vue.m.toolList.forEach((item)=>{
+    if (item.name == '速度术语') {
+      item.speedList = speedTxtList.map((el)=>{
+        if (this.content_vue.m.newScore.scoreOpts.musicType == 'easy') {
+          return {
+            title: el.txt,
+            txt: el.title,
+            val: el.val
+          }
+        } else {
+          return {
+            title: el.title,
+            txt: el.txt,
+            val: el.val
+          }
+        }
+      })
+    }
+  })
+}
+
 function liaison(val) {
   console.log('liaison: 连音');
   // 连音线
@@ -3258,7 +3298,7 @@ var content_vue = new Vue({
         ],
       },
       panzoom: {
-        scale: 90,
+        scale: 100,
       },
       ctxMenu: {
         addBarShow: false,
@@ -5677,7 +5717,7 @@ var content_vue = new Vue({
       // console.log('createNewScore', this.m.newScore.scoreOpts);
       this.m.newScore.scoreOpts.subTitle = this.m.newScore.scoreOpts.subTitle?this.m.newScore.scoreOpts.subTitle:' ';
       this.m.newScore.scoreOpts.compose = this.m.newScore.scoreOpts.compose?this.m.newScore.scoreOpts.compose:' ';
-      this.m.newScore.scoreOpts.lyricist = this.m.newScore.scoreOpts.lyricist?this.m.newScore.scoreOpts.lyricist:' ';
+      this.m.newScore.scoreOpts.lyricist = this.m.newScore.scoreOpts.lyricist?this.m.newScore.scoreOpts.lyricist:'&emsp;';
       if (isNewTab) {
         window.open(
           location.href.replace(/\?.+/, "") +
@@ -6182,6 +6222,11 @@ var content_vue = new Vue({
       this.changeSelectBar();
       this.getSpeed()
       setLyricStyle();
+      const rectSelectEl = $('.abcr[style*="fill-opacity: 0.4"]')
+      if (rectSelectEl.length) {
+        $('selected_text').removeClass('selected_text')
+        rectSelectEl.addClass('rectSelectEl')
+      }
       setTimeout(() => {
         this.m.isInsertMode = draw_editor;
         // updateLastSelect()
@@ -6520,8 +6565,10 @@ function leftPanelClick(obj, isCurrOpenState, closeCb, openCb) {
     // 当前收起状态
     $(obj).attr("src", "assets/music_score_editor/images/left.png");
     $(".body-left").css({
-      width: "220px",
-      "min-width": "220px",
+      // width: "220px",
+      // "min-width": "220px",
+      width: "330px",
+      "min-width": "330px",
     });
     $(".bottom-box").css("left", "220px");
     return typeof openCb == "function" && openCb();

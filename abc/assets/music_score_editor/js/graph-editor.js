@@ -2806,9 +2806,9 @@ function findNearDeco(_0x16062, _0x1792B, _0x16008, _0x16035) {
           ) {
             console["log"]("\u70b9\u51fb\u8fde\u53e5\u7ebf\u91cc\u9762", _0x16062["target"]);
             var _0x17F7F = _0x16062["target"];
-            var type = $(_0x17F7F)["attr"]("dragtype");
+            var dragtype = $(_0x17F7F)["attr"]("dragtype");
             var _0x17F52 = $(_0x17F7F)["attr"]("pos");
-            if (type == "slur" && _0x17F52 == "mid") {
+            if (dragtype == "slur" && _0x17F52 == "mid") {
               return;
             }
             selectDecoInfo = $(this);

@@ -158,7 +158,7 @@ const getBeatNote = (opts) => {
 const _getSpeed = (opts) => {
   if (opts.speedType === "txt") {
     return `
-Q: 1/4=${speedTxtList.find((item) => item.txt === opts.speedText).val}`;
+Q: 1/4=${speedTxtList.find((item) => item.txt === opts.speedText || item.title === opts.speedText).val}`;
   }
   if (opts.speedNote && opts.speedNum) {
     return `

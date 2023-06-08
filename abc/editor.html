@@ -108,7 +108,7 @@
     <link rel="stylesheet" href="assets/music_score_editor/css/font/font.css?v=1.0.1"/>
 
     <style type="text/css">
-      .drag-note-img {
+      .drag-note-img, [type="slur"][recttype="movedragger"] {
         pointer-events: none;
       }
       [_disabled]:not([_disabled="false"]) {
@@ -588,7 +588,7 @@
             <div class="flex justify-end mt-10">
               <div
                 class="_btn ml-auto"
-                @click="m.newScore.scoreOptsShow = true"
+                @click="createMusicNextEvent()"
               >
                 下一步
               </div>
@@ -3777,7 +3777,7 @@
                 <div :style="{
                   padding: `${m.panzoom.scale / 100 * 40}px 0px`,
                   transform: `scale(${m.panzoom.scale / 100})`,
-                  transformOrigin: 'top',
+                  transformOrigin: '330px top',
                   minWidth: '95vw',
                   display: 'flex',
                   left: '0px',
