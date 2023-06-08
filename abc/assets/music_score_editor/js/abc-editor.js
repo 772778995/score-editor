@@ -3297,7 +3297,7 @@ var content_vue = new Vue({
         ],
       },
       panzoom: {
-        scale: 90,
+        scale: 100,
       },
       ctxMenu: {
         addBarShow: false,
@@ -6221,6 +6221,11 @@ var content_vue = new Vue({
       this.changeSelectBar();
       this.getSpeed()
       setLyricStyle();
+      const rectSelectEl = $('.abcr[style*="fill-opacity: 0.4"]')
+      if (rectSelectEl.length) {
+        $('selected_text').removeClass('selected_text')
+        rectSelectEl.addClass('rectSelectEl')
+      }
       setTimeout(() => {
         this.m.isInsertMode = draw_editor;
         // updateLastSelect()
