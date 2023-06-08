@@ -208,6 +208,46 @@ const initNewScoreOpts = {
   rowBars: "4",
 };
 
+function createMusicNextEvent() {
+  console.log(this.content_vue.m.toolList[9], '==+++')
+  this.content_vue.m.newScore.scoreOptsShow = true
+  this.content_vue.m.newScore.speedTxtList = speedTxtList.map((item) => {
+    let obj
+    if (this.content_vue.m.newScore.scoreOpts.musicType == 'easy') {
+      obj = {
+        val: item.title,
+        txt: item.title,
+      }
+      this.content_vue.m.newScore.scoreOpts.speedText = "中板"
+    } else {
+      obj = {
+        val: item.txt,
+        txt: item.txt,
+      }
+    }
+    return obj
+  })
+  this.content_vue.m.toolList.forEach((item)=>{
+    if (item.name == '速度术语') {
+      item.speedList = speedTxtList.map((el)=>{
+        if (this.content_vue.m.newScore.scoreOpts.musicType == 'easy') {
+          return {
+            title: el.txt,
+            txt: el.title,
+            val: el.val
+          }
+        } else {
+          return {
+            title: el.title,
+            txt: el.txt,
+            val: el.val
+          }
+        }
+      })
+    }
+  })
+}
+
 function liaison(val) {
   console.log('liaison: 连音');
   // 连音线
