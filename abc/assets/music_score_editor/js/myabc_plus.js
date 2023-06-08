@@ -875,9 +875,19 @@ function resetNodeData(voice_notes_obj, Meter_arr, barsperstaff_num, barsperstaf
                             .replace(/\.\|/g, ' ')
                             .replace(/\|\]/g, ' ')
                             .replace(/\|\|/g, ' ')
-                            .replace(/\|/g, ' '); 
+                            .replace(/\|/g, ' ')
+                            .replace(/z/g, ' z'); // 休止符与前音符隔开 
     // 音符字符转数组
     var v_node_arr = v_node_str.split(' ');
+    // console.log('genUpdateStaff v_node_arr', v_node_arr);
+    // .replace(eval('/z,*'+curr_node_len+'\\|/g'), '')
+    for(var i=v_node_arr.length-1; i>-1; i--){
+      if(v_node_arr[i].match(eval('/z,*'+curr_node_len+'/g'))){
+        v_node_arr[i] = ''; // 除去结尾多余的空小节
+      }else{
+        break;
+      }
+    }
     // console.log('genUpdateStaff v_node_arr', v_node_arr);
     var barsperstaff_n = 0;
     var new_node_str = '';
@@ -1029,8 +1039,8 @@ function splitNoteStr2(note_str, need_len, curr_node_len, note_arr){
     }
   }
   
-  var note_arr = temp_note_str.match(/[A-Ga-g]/g);
-  var note_z_arr = temp_note_str.match(/z,*\d*/g);
+  var note_arr = temp_note_str.match(/(\[)*[A-Ga-g](,|')*(\])*/g);
+  var note_z_arr = temp_note_str.match(/z,*\/*\d*/g);
   var note_zs_arr = temp_note_str.match(/\d/g);
   var note_fs_arr = temp_note_str.match(/\//g);
   var note_len = calNodeLen(temp_note_str);
@@ -1079,13 +1089,50 @@ function splitNoteStr2(note_str, need_len, curr_node_len, note_arr){
       n_temp_note_str.replace(note_z_arr[i], '');
     }
     if(calNodeLen(n_temp_note_str)==need_len){
-      // TODO::
+      var need_note_str = temp_note_before_after_arr[0] + n_temp_note_str + temp_note_before_after_arr[1];
+      if(calNodeLen(need_note_str)==need_len){
+        note_arr.push(need_note_str);
+        
+        var sy_note_str = note_z_arr.join('');
+        if(calNodeLen(sy_note_str)<=curr_node_len){
+          note_arr.push(sy_note_str);
+          return note_arr;
+        }else{
+          return splitNoteStr2(sy_note_str, curr_node_len, curr_node_len, note_arr);
+        }
+      }else{
+        console.error('音符拆分错误', note_str, need_note_str);
+      }
+    }else if(n_temp_note_str=='' || calNodeLen(n_temp_note_str)==0){
+      var note_z_str = note_z_arr.join('');
+      if(calNodeLen(note_str)==calNodeLen(note_z_str)){
+        var z_str = 'z,';
+        var z_num = 0;
+        var z_d_str = '';
+        for(var i=0; i<note_z_arr.length; i++){
+          var n_arr = note_z_arr[i].match(/\d/g);
+          if(n_arr){
+            z_num += parseInt(n_arr[0]);
+          }
+          var d_arr = note_z_arr[i].match(/\//g);
+          if(d_arr){
+            for(var j=0; j<d_arr.length; j++){
+              z_d_str += '/';
+            }
+          }
+        }
+        z_str = z_str + (z_num<1?'':z_num)+z_d_str;
+
+
+
+      }else{
+        console.error('音符拆分错误', note_str, note_z_str);
+      }
     }
   }
 
   if(note_arr.length==1){
     var zs = 0;
-    var fz = 0;
     var fm = 0;
     if(note_zs_arr.length){
       if(note_zs_arr.length>1){
