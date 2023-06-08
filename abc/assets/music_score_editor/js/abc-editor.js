@@ -3257,7 +3257,7 @@ var content_vue = new Vue({
         ],
       },
       panzoom: {
-        scale: 90,
+        scale: 100,
       },
       ctxMenu: {
         addBarShow: false,
