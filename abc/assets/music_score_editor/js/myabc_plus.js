@@ -1039,15 +1039,35 @@ function splitNoteStr2(note_str, need_len, curr_node_len, note_arr){
     }
   }
   
-  var note_arr = temp_note_str.match(/(\[)*[A-Ga-g](,|')*(\])*/g);
-  var note_z_arr = temp_note_str.match(/z,*\/*\d*/g);
-  var note_zs_arr = temp_note_str.match(/\d/g);
-  var note_fs_arr = temp_note_str.match(/\//g);
   var note_len = calNodeLen(temp_note_str);
   if(note_len!=calNodeLen(note_str)){
     console.error('音符拆分错误', note_str, temp_note_str);
   }
 
+  // 音符、休止符、音符+休止符，3种情况
+  // 单音符或单休止符，（如：A, z, x）
+  // 多音符：多个独立音符（如： AB），一个组合音符组(如：[AB])
+  // 多休止符：如（z,z,2,z,4  x,x,2,x,4,  x,z,2,z,4）(z: 普通休止符，x: 隐藏式休止符)
+  // 音符+休止符：如（Az, AzB, [AB]z）
+
+  var is_collection = false;
+  if(temp_note_str.match(/\[([A-Ga-gzx](,|')*\d*(\/)*)*\]/g)){
+    // 单个音符组
+    is_collection = true;
+  }
+  var note_arr = temp_note_str.match(/[A-Ga-gzx](,|')*/g);
+  var note_zs_arr = temp_note_str.match(/\d/g);
+  var note_fs_arr = temp_note_str.match(/\//g);
+  if(is_collection){
+    if(note_arr.length==note_zs_arr.length){
+      note_zs_arr = [note_zs_arr[0]];
+    }
+    if(note_arr.length==note_fs_arr.length){
+      note_fs_arr = [note_fs_arr[0]];
+    }
+  }
+  
+  // 拆分成音符前后两节（或一节）
   var temp_note_before_after_arr = note_str.split(temp_note_str);
 
   // 需要长度转换长度转换
@@ -1108,30 +1128,6 @@ function splitNoteStr2(note_str, need_len, curr_node_len, note_arr){
   fm = fm?fm:1;
   zs = zs?zs:1;
 
-  var z_zs = 0;
-  var z_fm = 0;
-  var z_mf_str = '';
-
-  if(note_z_arr){
-    for(var i=0; i<note_z_arr.length; i++){
-      var n_arr = note_z_arr[i].match(/\d/g);
-      if(n_arr){
-        z_zs += parseInt(n_arr[0]);
-      }
-      var d_arr = note_z_arr[i].match(/\//g);
-      if(d_arr){
-        for(var j=0; j<d_arr.length; j++){
-          z_mf_str += '/';
-        }
-      }
-    }
-    if(z_mf_str.length){
-      z_fm = Math.pow(2, z_mf_str.length)
-    }
-  }
-
-  // TODO: 音符、休止符、音符+休止符，3种情况
-
   if(fm==n_fm){
     if(zs>1 && zs>n_zs){
       // 1/8 * zs * 1/fm -  1/8 * n_zs * 1/n_fm = 1/8 * (zs-n_zs)/n_fm
@@ -1154,45 +1150,14 @@ function splitNoteStr2(note_str, need_len, curr_node_len, note_arr){
     sy_fm_str = n_fm_str;
   }
 
-  var note_z_str = '';
-  if(note_z_arr){
-    note_z_str = note_z_arr.join('');
-    var n_temp_note_str = temp_note_str;
-    for(var i=0; i<note_z_arr.length; i++){
-      n_temp_note_str.replace(note_z_arr[i], '');
-    }
-    if(calNodeLen(n_temp_note_str)==need_len){
-      var need_note_str = temp_note_before_after_arr[0] + n_temp_note_str + temp_note_before_after_arr[1];
-      if(calNodeLen(need_note_str)==need_len){
-        note_arr.push(need_note_str);
-        
-        var sy_note_str = note_z_arr.join('');
-        if(calNodeLen(sy_note_str)<=curr_node_len){
-          note_arr.push(sy_note_str);
-          return note_arr;
-        }else{
-          return splitNoteStr2(sy_note_str, curr_node_len, curr_node_len, note_arr);
-        }
-      }else{
-        console.error('音符拆分错误', note_str, need_note_str);
-      }
-    }else if(n_temp_note_str=='' || calNodeLen(n_temp_note_str)==0){
-      // 只有休止符
-      if(calNodeLen(note_str)==calNodeLen(note_z_str)){
-        // TODO: 
-
-      }else{
-        console.error('音符拆分错误', note_str, note_z_str);
-      }
-    }else{
-      // 有音符和休止符
-    }
-  }
-
   if(note_arr.length==1){
-    var need_note_str = temp_note_before_after_arr[0] + note_arr + (n_zs<=1?'':n_zs) + n_fm_str + temp_note_before_after_arr[1];
+    // is_collection
+    var nt_note_str = note_arr[0];
+    var new_note_str = (is_collection?'[':'') + nt_note_str + (n_zs<=1?'':n_zs) + n_fm_str + (is_collection?']-':'');
+    var need_note_str = temp_note_before_after_arr[0] + new_note_str + temp_note_before_after_arr[1];
     note_arr.push(need_note_str);
-    var sy_note_str = temp_note_before_after_arr[0] + note_arr + (sy_zs<=1?'':sy_zs) + sy_fm_str + temp_note_before_after_arr[1];
+    var sy_temp_note_str = (is_collection?'[':'') + nt_note_str + (n_zs<=1?'':n_zs) + sy_fm_str + (is_collection?']':'');
+    var sy_note_str = temp_note_before_after_arr[0] + sy_temp_note_str + temp_note_before_after_arr[1];
     if(calNodeLen(sy_note_str)<=curr_node_len){
       note_arr.push(sy_note_str);
       return note_arr;
@@ -1200,8 +1165,12 @@ function splitNoteStr2(note_str, need_len, curr_node_len, note_arr){
       return splitNoteStr2(sy_note_str, curr_node_len, curr_node_len, note_arr);
     }
   }else if(note_arr.length>1){
-    var n_note_arr = temp_note_str.match(/\[([A-Ga-g]\d*\/*)*\]/g);
+    // TODO:
+    if(is_collection){
 
+    }else{
+      
+    }
   }else{
     console.error('音符拆分错误', note_str, temp_note_str);
   }
