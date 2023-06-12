@@ -7557,9 +7557,15 @@ function genBarDeco(val, insert_content, position, type, index) {
       }
       $("#M_mol").val(M_val["split"]("/")[0]);
       $("#M_den").val(M_val["split"]("/")[1]);
+
+      // console.log('genUpdateStaff', abc_content);
+      // var Meter_list = abc_content.match(/M\s*:\s*[1-9]\/[1-9]/g);
+      // var Meter_arr = Meter_list[Meter_list.length-1].replace(/M\:(\s)*/g, '').split('/');
+      // console.log('genUpdateStaff', Meter_arr);
+
       setMValue();
-      // genInitStaff();
-      genUpdateStaff(val);
+      genInitStaff();
+      // genUpdateStaff(val);
       return;
     } else {
       var LinesInfo = getNodesInfo(abc_content);

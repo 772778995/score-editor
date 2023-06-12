@@ -774,6 +774,8 @@ function genInitStaff() {
 // 更新乐谱 更新(首拍)拍号后重新转换谱内容
 function genUpdateStaff(val) {
   console.log('genUpdateStaff:');
+  // var abc_content = $("#source")["val"]();
+  // console.log('genUpdateStaff abc_content ', abc_content);
   lastMidiReplaceNoteIstart = -1;
   lastMidiReplaceNoteV = -1;
   if (updateStaffPropStatus) {
@@ -880,14 +882,13 @@ function resetNodeData(voice_notes_obj, Meter_arr, barsperstaff_num, barsperstaf
     // 音符字符转数组
     var v_node_arr = v_node_str.split(' ');
     // console.log('genUpdateStaff v_node_arr', v_node_arr);
-    // .replace(eval('/z,*'+curr_node_len+'\\|/g'), '')
-    for(var i=v_node_arr.length-1; i>-1; i--){
-      if(v_node_arr[i].match(eval('/z,*'+curr_node_len+'/g'))){
-        v_node_arr[i] = ''; // 除去结尾多余的空小节
-      }else{
-        break;
-      }
-    }
+    // for(var i=v_node_arr.length-1; i>-1; i--){
+    //   if(v_node_arr[i].match(eval('/z,*'+curr_node_len+'/g'))){
+    //     // v_node_arr[i] = ''; // 除去结尾多余的空小节
+    //   }else{
+    //     break;
+    //   }
+    // }
     // console.log('genUpdateStaff v_node_arr', v_node_arr);
     var barsperstaff_n = 0;
     var new_node_str = '';
@@ -1116,26 +1117,29 @@ function splitNoteStr2(note_str, need_len, curr_node_len, note_arr){
   // 当前要拆分的音符大小数据
   var zs = 0;
   var fm = 0;
-  if(note_zs_arr.length){
+  if(note_zs_arr && note_zs_arr.length){
     if(note_zs_arr.length>1){
       console.error('音符拆分错误', note_str, note_zs_arr);
     }
     zs = parseInt(note_zs_arr[0]);
   }
-  if(note_fs_arr.length){
+  if(note_fs_arr && note_fs_arr.length){
     fm = Math.pow(2, note_fs_arr.length)
   }
   fm = fm?fm:1;
   zs = zs?zs:1;
 
   if(fm==n_fm){
-    if(zs>1 && zs>n_zs){
-      // 1/8 * zs * 1/fm -  1/8 * n_zs * 1/n_fm = 1/8 * (zs-n_zs)/n_fm
-      sy_zs = zs - n_zs;
-      sy_fm_str = n_fm_str;
-    }else{
-      console.error('音符拆分错误', note_str, note_zs_arr);
+    if(fm!=1 && zs!=1){
+      if(zs>1 && zs>n_zs){
+        // 1/8 * zs * 1/fm -  1/8 * n_zs * 1/n_fm = 1/8 * (zs-n_zs)/n_fm
+        sy_zs = zs - n_zs;
+        sy_fm_str = n_fm_str;
+      }else{
+        console.error('音符拆分错误', note_str, note_zs_arr, note_str, need_len, curr_node_len, note_arr, zs, n_zs);
+      }
     }
+    
   }else if(fm>n_fm){
     var s_len = Math.log(fm)/Math.log(2) - Math.log(n_fm)/Math.log(2);
     // 1/8 * zs * 1/fm -  1/8 * n_zs * 1/n_fm = 1/8 * (zs-n_zs*s_len*2)/n_fm
@@ -1149,6 +1153,7 @@ function splitNoteStr2(note_str, need_len, curr_node_len, note_arr){
     sy_zs = zs*s_len*2 - n_zs;
     sy_fm_str = n_fm_str;
   }
+  sy_zs = sy_zs<1?1:sy_zs;
 
   if(note_arr.length==1){
     // is_collection
@@ -1156,7 +1161,7 @@ function splitNoteStr2(note_str, need_len, curr_node_len, note_arr){
     var new_note_str = (is_collection?'[':'') + nt_note_str + (n_zs<=1?'':n_zs) + n_fm_str + (is_collection?']-':'');
     var need_note_str = temp_note_before_after_arr[0] + new_note_str + temp_note_before_after_arr[1];
     note_arr.push(need_note_str);
-    var sy_temp_note_str = (is_collection?'[':'') + nt_note_str + (n_zs<=1?'':n_zs) + sy_fm_str + (is_collection?']':'');
+    var sy_temp_note_str = (is_collection?'[':'') + nt_note_str + (sy_zs<=1?'':sy_zs) + sy_fm_str + (is_collection?']':'');
     var sy_note_str = temp_note_before_after_arr[0] + sy_temp_note_str + temp_note_before_after_arr[1];
     if(calNodeLen(sy_note_str)<=curr_node_len){
       note_arr.push(sy_note_str);
@@ -1165,267 +1170,84 @@ function splitNoteStr2(note_str, need_len, curr_node_len, note_arr){
       return splitNoteStr2(sy_note_str, curr_node_len, curr_node_len, note_arr);
     }
   }else if(note_arr.length>1){
-    // TODO:
     if(is_collection){
-
+      var new_note_str = '[';
+      var sy_temp_note_str = '[';
+      for(var i = 0; i<note_arr.length; i++){
+        new_note_str += note_arr[i] + (n_zs<=1?'':n_zs) + n_fm_str;
+        sy_temp_note_str += note_arr[i] + (sy_zs<=1?'':sy_zs) + sy_fm_str;
+      }
+      new_note_str += ']-';
+      sy_temp_note_str += ']';
+      var need_note_str = temp_note_before_after_arr[0] + new_note_str + temp_note_before_after_arr[1];
+      note_arr.push(need_note_str);
+      var sy_note_str = temp_note_before_after_arr[0] + sy_temp_note_str + temp_note_before_after_arr[1];
+      if(calNodeLen(sy_note_str)<=curr_node_len){
+        note_arr.push(sy_note_str);
+        return note_arr;
+      }else{
+        return splitNoteStr2(sy_note_str, curr_node_len, curr_node_len, note_arr);
+      }
     }else{
-      
+      var temp_note_arr = temp_note_str.match(/[A-Ga-gzx](,|')*\d*(\/)*/g)
+      var new_note_str = '';
+      var new_temp_note_str = '';
+      var new_note_builded = false;
+      var sy_temp_note_str = '';
+      temp_note_arr[0] = temp_note_before_after_arr[0] + temp_note_arr[0];
+      temp_note_arr[temp_note_arr.length-1] = temp_note_arr[temp_note_arr.length-1] + temp_note_before_after_arr[1];
+      for(var i = 0; i<temp_note_arr.length; i++){
+        if(new_note_builded){
+          sy_temp_note_str += new_note_str;
+          if(calNodeLen(sy_temp_note_str)==curr_node_len){
+            note_arr.push(sy_temp_note_str);
+            sy_temp_note_str = '';
+          }else if(calNodeLen(sy_temp_note_str)<curr_node_len){
+            
+          }else{
+            console.error('音符拆分错误', sy_temp_note_str, new_temp_note_arr[j]);
+          }
+          continue;
+        }
+        new_temp_note_str += temp_note_arr[i];
+        if(calNodeLen(new_temp_note_str)==need_len){
+          var need_note_str = new_temp_note_str;
+          note_arr.push(need_note_str);
+          new_note_builded = true;
+        }else if(calNodeLen(new_temp_note_str)>need_len){
+          new_temp_note_str = new_note_str;
+          var new_temp_note_arr = splitNoteStr2(temp_note_arr[i], need_len-calNodeLen(new_temp_note_str), curr_node_len, []);
+          new_temp_note_str += new_temp_note_arr[0];
+          var need_note_str = new_temp_note_str;
+          note_arr.push(need_note_str);
+          new_note_builded = true;
+          for(var j=1; j<new_temp_note_arr.length; j++){
+            if(calNodeLen(sy_temp_note_str+new_temp_note_arr[j])==curr_node_len){
+              note_arr.push(sy_temp_note_str+new_temp_note_arr[j]);
+              sy_temp_note_str = '';
+            }else if(calNodeLen(sy_temp_note_str+new_temp_note_arr[j])<curr_node_len){
+              sy_temp_note_str += new_temp_note_arr[j];
+            }else{
+              console.error('音符拆分错误', sy_temp_note_str, new_temp_note_arr[j]);
+            }
+          }
+        }else{
+          new_note_str += temp_note_arr[i];
+        }
+      }
+      if(sy_temp_note_str){
+        note_arr.push(sy_temp_note_str);
+      }
+      console.log(note_arr);
+      return note_arr;
     }
   }else{
     console.error('音符拆分错误', note_str, temp_note_str);
   }
-  
+  return [note_arr];
   // 处理音符--结束
 }
-
-// 音符拆分
-function splitNoteStr(note_str, curr_node_len, before_note_str, new_nodes){
-  console.log('splitNoteStr:', note_str, curr_node_len, before_note_str, new_nodes);
-  if(note_str && note_str.length && curr_node_len){
-    new_nodes = new_nodes?new_nodes:[];
-    before_note_str = before_note_str?before_note_str:'';
-    var before_note_str_len = calNodeLen(before_note_str);
-    var b_note_str = '';
-    for(var k=0; k<note_str.length; k++){
-      var s_note_str = note_str[k];
-      if(!s_note_str || s_note_str!=' '){
-        continue;
-      }
-      if('CDEFGAB'.indexOf(s_note_str)>-1){
-        // 音符
-        var s_note_after_str = '';
-        if(parseInt(note_str[k+1])){
-          s_note_after_str = note_str[k+1];
-          k++;
-          for(var n=1; n<8; n++){
-            if(note_str[k+1].indexOf('/')>-1){
-              s_note_after_str += '/';
-              k++;
-            }else{
-              break;
-            }
-          }
-        }else if(note_str[k+1].indexOf('/')>-1){
-          s_note_after_str += '/';
-          k++;
-          for(var n=1; n<8; n++){
-            if(note_str[k+1].indexOf('/')>-1){
-              s_note_after_str += '/';
-              k++;
-            }else{
-              break;
-            }
-          }
-        }
-
-        var s_note_len =  calNodeLen(b_note_str+s_note_str+s_note_after_str);
-        if(before_note_str_len+s_note_len<curr_node_len){
-          b_note_str += s_note_str+s_note_after_str;
-        }else if(before_note_str_len+s_note_len==curr_node_len){
-          b_note_str += s_note_str+s_note_after_str;
-          new_nodes.push(before_note_str+' '+b_note_str+'|');
-          var new_note_str = '';
-          for(var n=k+1; n<note_str.length; n++){
-            new_note_str += note_str[n];
-          }
-          return splitNoteStr(new_note_str, curr_node_len, '', new_nodes);
-        }else{
-          // 单音拆分
-          // Math.pow(2, 3) = 8 , Math.log(8)/Math.log(2) = 3
-          var need_node_len = curr_node_len-before_note_str_len;
-          
-          if(s_note_after_str){
-            if(s_note_after_str[0].indexOf('/')>-1){
-              // 全是 '/'
-              var fm = Math.pow(2, s_note_after_str.length);
-              var fz = 1;
-              // 1/fm
-              // 当前 need_node_len 必定是小数
-              var f_str = fractionConvert(need_node_len);
-              // x/y
-              var f_arr = f_str.split('/');
-              var f_z = parseInt(f_arr[0]);
-              var f_m = parseInt(f_arr[1]);
-              // 目前只有一种情况
-              if(f_m>fm){
-                var s = 2;
-                for(var f=7; f>0; f--){
-                  if(fm*s==f_m){
-                    break;
-                  }else{
-                    s = s*2;
-                  }
-                }
-                fm = fm*s;
-                fz = fz*s;
-                // 剩余 x2/y2
-                var x2 = fz - f_z; 
-                var y2 = fm;
-                // 需要f_z/f_m
-
-                for(var f=7; f>0; f--){
-                  if(f_z%2){
-                    break;
-                  }else{
-                    f_z = f_z/2;
-                    f_m = f_m/2;
-                  }
-                }
-                for(var f=7; f>0; f--){
-                  if(x2%2){
-                    break;
-                  }else{
-                    x2 = x2/2;
-                    y2 = y2/2;
-                  }
-                }
-
-                // 需要字符
-                s_note_after_str = f_z + '';
-                for(var f=Math.log(f_m)/Math.log(2); f>0; f--){
-                  s_note_after_str += '/';
-                }
-
-                // 剩余字符
-                var a_note_str = x2+'';
-                for(var f=Math.log(y2)/Math.log(2); f>0; f--){
-                  a_note_str += '/';
-                }
-
-                b_note_str += s_note_str+s_note_after_str;
-                new_nodes.push(before_note_str+' '+b_note_str+'|');
-                var new_note_str = '';
-                for(var n=k+1; n<note_str.length; n++){
-                  new_note_str += note_str[n];
-                }
-                return splitNoteStr(new_note_str, curr_node_len, s_note_str+a_note_str, new_nodes);
-              }
-
-            }else{
-              // 有分子和分母
-              var s_note_after_arr = s_note_after_str.split('/');
-              var fz = '';
-              var fm_str = '';
-              for(var f=0; f<s_note_after_arr.length; f++){
-                if(s_note_after_arr[f]=='/'){
-                  fm_str += s_note_after_arr[f];
-                }else{
-                  fz += s_note_after_arr[f];
-                }
-              }
-              fz = parseInt(fz);
-              var fm = Math.pow(2, fm_str.length);
-              // 原 fz/fm
-              // 当前 need_node_len 
-              var f_str = fractionConvert(need_node_len);
-              // n + x/y
-              var ff_arr = f_str.split(' ');
-              var ff = 0;
-              if(ff_arr.length==2){
-                ff = parseInt(ff_arr[0]);
-                var f_arr = ff_arr[1].split('/');
-              }else{
-                var f_arr = ff_arr[0].split('/');
-              }
-              var f_z = parseInt(f_arr[0]);
-              var f_m = parseInt(f_arr[1]);
-              if(ff>0){
-                f_z = ff*f_m;
-              }
-              if(f_m>fm){
-                var s = 2;
-                for(var f=7; f>0; f--){
-                  if(fm*s==f_m){
-                    break;
-                  }else{
-                    s = s*2;
-                  }
-                }
-                fz = fz*a;
-                fm = fm*s;
-              }else if(f_m<fm){
-                var s = 2;
-                for(var f=7; f>0; f--){
-                  if(f_m*s==fm){
-                    break;
-                  }else{
-                    s = s*2;
-                  }
-                }
-                f_z = f_z*a;
-                f_m = f_m*s;
-              }
-              var x2 = fz - f_z;
-              var y2 = fm;
-              // 剩余 x2/y2
-              // 需要 f_z/f_m
-              for(var f=7; f>0; f--){
-                if(f_z%2){
-                  break;
-                }else{
-                  f_z = f_z/2;
-                  f_m = f_m/2;
-                }
-              }
-              for(var f=7; f>0; f--){
-                if(x2%2){
-                  break;
-                }else{
-                  x2 = x2/2;
-                  y2 = y2/2;
-                }
-              }
-
-              // 需要字符
-              s_note_after_str = f_z + '';
-              for(var f=Math.log(f_m)/Math.log(2); f>0; f--){
-                s_note_after_str += '/';
-              }
-
-              // 剩余字符
-              var a_note_str = x2+'';
-              for(var f=Math.log(y2)/Math.log(2); f>0; f--){
-                a_note_str += '/';
-              }
-
-              b_note_str += s_note_str+s_note_after_str;
-              new_nodes.push(before_note_str+' '+b_note_str+'|');
-              var new_note_str = '';
-              for(var n=k+1; n<note_str.length; n++){
-                new_note_str += note_str[n];
-              }
-              return splitNoteStr(new_note_str, curr_node_len, s_note_str+a_note_str, new_nodes);
-            }
-          }
-
-        }
-
-      }else{
-        // 其他符号
-        b_note_str += s_note_str;
-      }
-      if(k==note_str.length-1){
-        return {
-          nodes: new_nodes,
-          residue_str: b_note_str,
-          lack_length: curr_node_len-b_note_str,
-        };
-      }
-    }
-    return {
-      nodes: new_nodes,
-      residue_str: b_note_str,
-      lack_length: curr_node_len-b_note_str,
-    };
-  }else{
-    return {
-      nodes: [],
-      residue_str: '',
-      lack_length: 0,
-    };
-  }
-}
-// -- splitNoteStr() end
+// -- splitNoteStr2() end
 
 // 小数转分数
 function fractionConvert(num) {
