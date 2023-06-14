@@ -14509,6 +14509,7 @@ THE SOFTWARE.
               };
             }
             function replaceNote(abc, start, end, newPitch, index) {
+              console.log('replaceNote2', abc, start, end, newPitch, index);
               // There may be more than just the note between the start and end - there could be spaces, there could be a chord symbol, there could be a decoration.
               // This could also be a part of a chord. If so, then the particular note needs to be teased out.
               var note = abc.substring(start, end);
@@ -21687,6 +21688,7 @@ Emit tab for Guitar staff
             return note;
           }
           function replaceNote(self, newNote, start, end) {
+            console.log('replaceNote', self, newNote, start, end);
             if (self.lastEnd) {
               while (start > self.lastEnd) {
                 self.updatedSrc.push(self.abcSrc[self.lastEnd]);

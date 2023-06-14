@@ -249,11 +249,26 @@ function createMusicNextEvent() {
 }
 
 function liaison(val) {
-  console.log('liaison: 连音');
+  console.log('liaison: 连音', val);
   // 连音线
   // debugger
   var selectEl = $(".selected_text")[0];
   if (!selectEl) return alert("未选中音符：请选取一个音符，然后重试");
+
+  // 时值更新
+  durSetting = $(".operator_sc.selected.jp_note")["attr"]("dur");
+  if (val == "(2" || val == "(4") {
+      durSetting = parseInt(durSetting) * 1.5
+  } else if (val == "(5" || val == "(7" || val == "(7") {
+    durSetting = parseInt(durSetting) * 2
+  } else if (val == "(3") {
+    // 3代2，2/ = 不变
+  } else {
+    // 其他
+  }
+
+  var istart = $(selectEl).attr("istart");
+  console.log(istart);
   var content = $("#source").val();
   var matchArr = val.match(/\((\d)/);
   var num = matchArr[1];
@@ -261,6 +276,7 @@ function liaison(val) {
   console.log('liaison cen', cen);
   var dur = cen["dur"];
   var sel_content = content["substring"](cen["istart"], cen["iend"]);
+  var old_note_str = sel_content;
   console.log('liaison cen', sel_content);
   var n_dur = dur / 2;
   var n_content = "";
@@ -288,6 +304,22 @@ function liaison(val) {
   for (var i = 0; i < num - 1; i++) {
     sel_content += "z" + n_content;
   }
+  console.log(sel_content);
+
+  var note_str = val + sel_content;
+  console.log(note_str);
+  console.log(getNewNote(cen));
+  var g_note = genNoteAndDur('A', cen, null, null, true);
+  console.log(g_note, note_str, g_note["note"], g_note["noteStr"], g_note["oriNoteStr"]);
+  g_note["note"] = note_str;
+  console.log(g_note);
+  update_note_istart = istart;
+  update_note_index = 0;
+  replaceNoteLianyin("source", cen["istart"], cen["iend"], g_note);
+  cen = syms[cen["istart"]];
+  // return 
+
+  content = $("#source").val();
   var new_content =
     content["substring"](0, cen["istart"]) +
     val +
@@ -303,6 +335,148 @@ function liaison(val) {
   doLog();
   return;
 }
+
+function replaceNoteLianyin(source_seleter, istart, iend, g_note_obj) {
+  console.log('replaceNote', source_seleter, istart, iend, g_note_obj);
+  console.log(update_note_istart);
+  if (update_note_istart < istart || update_note_istart > iend) {
+    update_note_istart = -1;
+  }
+  var noteStr = g_note_obj["noteStr"];
+  var abc_content = $("#" + source_seleter)["val"]();
+  var del_s = g_note_obj["del_s"];
+  var update_dur_s = g_note_obj["update_dur_s"];
+  var update_sel_note_str = "";
+  var update_near_note_str = "";
+  if (del_s["length"] > 0) {
+    for (var i = del_s["length"] - 1; i >= 0; i--) {
+      var sym_data = del_s[i];
+      if (sym_data["type"] == 8) {
+        if (
+          graphEditor["pianoImpro"] &&
+          typeof graphEditor["pianoImpro"]["noteUpdate"] == "function"
+        ) {
+          abc_content = graphEditor["pianoImpro"]["noteUpdate"](
+            sym_data["istart"],
+            ""
+          );
+        }
+      }
+    }
+    del_s["forEach"](function (sym_data) {
+      if (sym_data["type"] == 0) {
+        update_sel_note_str = abc_content["substring"](
+          sym_data["istart"],
+          sym_data["iend"]
+        );
+        if (abc_content["substr"](sym_data["iend"], 1) == "$") {
+          update_sel_note_str += "$";
+        }
+      }
+      iend = sym_data["iend"];
+    });
+  }
+  if (update_dur_s != null) {
+    iend = update_dur_s["iend"];
+  }
+  // console.log(noteStr);
+  if (update_sel_note_str != "" && g_note_obj["dur_nodeline_behind"]) {
+    var my_wmeasure = syms[istart]["my_wmeasure"];
+    noteStr = getNoteStr_(my_wmeasure, g_note_obj);
+    update_near_note_str =
+      g_note_obj["note"] +
+      getLenStr(g_note_obj["ulen"], g_note_obj["dur_nodeline_behind"]);
+    if (update_dur_s != null) {
+      update_near_note_str += update_dur_s["restStr"];
+    }
+  } else {
+    if (update_dur_s != null) {
+      update_near_note_str += update_dur_s["restStr"];
+    }
+  }
+  // console.log(noteStr);
+  // console.log(noteStr, update_sel_note_str, update_near_note_str);
+  abc_content =
+    abc_content["substr"](0, istart) +
+    noteStr +
+    update_sel_note_str +
+    update_near_note_str +
+    abc_content["substr"](iend);
+    // console.log(abc_content);
+  abc_content = replaceBlankLine(abc_content);
+  // console.log(abc_content);
+  $("#" + source_seleter)["val"](abc_content);
+  // doLog();
+  if (musicType == 2) {
+    hasTempo = false;
+    render();
+  } else {
+    render();
+  }
+  if (
+    chordNote != "" &&
+    (!graphEditor["pianoImpro"] || !graphEditor["pianoImpro"]["isOpen"])
+  ) {
+    setTimeout(function () {
+      if (hasAddBlank) {
+        istart = parseInt(istart) + 1;
+      }
+      var sym_data = syms[istart];
+      updateLyrics(sym_data, [chordNoteLyric]);
+    }, 100);
+  }
+  if (user["midiInput"]) {
+    var near_note_obj = $("svg ." + istart);
+    if (near_note_obj["length"] > 0) {
+      near_note_obj[0]["scrollIntoView"]();
+    }
+  }
+  if ($("#micInput")["hasClass"]("menu-pressed")) {
+    var n_istart = syms[istart];
+    if (n_istart) {
+      console["log"]("micInput:", istart);
+      var near_note_obj = $("svg ." + n_istart["istart"] + "[x]");
+      if (near_note_obj["length"] > 0) {
+        var _0x16008 =
+          parseInt($($(near_note_obj)[0])["attr"]("x")) * scale;
+        var _0x1770F = $(".right-top-content")["width"]();
+        if (_0x16008 > _0x1770F / 2) {
+          $(".right-top-content")
+            ["stop"]()
+            ["animate"](
+              { scrollLeft: _0x16008 - _0x1770F / 2 + "px" },
+              1000
+            );
+        }
+      }
+    }
+  }
+  if (
+    update_dur_s != null &&
+    graphEditor["pianoImpro"] &&
+    typeof graphEditor["pianoImpro"]["noteUpdate"] == "function"
+  ) {
+    if (!syms[istart]) {
+      return;
+    }
+    var ts_next = syms[istart]["next"];
+    var i = 20;
+    while (ts_next && i > 0) {
+      if (ts_next["type"] == 10) {
+        graphEditor["pianoImpro"]["noteUpdate"](ts_next["istart"]);
+      } else {
+        if (ts_next["type"] == 0) {
+          ts_next = null;
+          i = 0;
+          break;
+        }
+      }
+      ts_next = ts_next["next"];
+      i--;
+    }
+  }
+}
+
 let isNewTab = false;
 function copy() {
   //复制小节
@@ -5062,6 +5236,7 @@ var content_vue = new Vue({
 
     // 工具栏内容点击事件
     toolItemClick: function (code, id, value) {
+      console.log('toolItemClick', code, id, value);
       switch (code) {
         case "edit": // 编辑版块
           break;
@@ -5631,6 +5806,7 @@ var content_vue = new Vue({
         Numpad0: 15,
         NumpadDecimal: 16,
       }[code];
+      console.log(123123);
       if (i === undefined) return;
       const { page } = this.m.numberKeypad;
       let key = "staffList";

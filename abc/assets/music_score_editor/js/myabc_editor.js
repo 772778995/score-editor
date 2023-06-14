@@ -1649,25 +1649,67 @@ $(document).ready(function () {
     }
   });
 
-  //符点选中状态
+  //符点选中状态，修复附点
   $(".dotstatus").click(function () {
-    //休止符状态
-    if ($(this).hasClass("selected")) {
-      $(".dotstatus").removeClass("selected");
-      dot_selected_value = "";
-      durSetting = $(".operator_sc.selected.jp_note").attr("dur");
-    } else {
-      $(".dotstatus").removeClass("selected");
-      $(this).addClass("selected");
-      dot_selected_value = $(this).attr("value");
-      durSetting = $(".operator_sc.selected.jp_note").attr("dur");
-      if (dot_selected_value == "3/") {
-        durSetting = parseInt(durSetting) * 1.5;
-      } else if (dot_selected_value == "7//") {
-        durSetting = parseInt(durSetting) * 1.75;
+      if(window.dotstatus_setting){
+        return;
       }
-      dotClick();
-    }
+      // 防抖
+      window.dotstatus_setting = true;
+      setTimeout(()=>{
+        window.dotstatus_setting = false;
+      },200);
+
+      if ($(this)["hasClass"]("selected")) {
+          $(".dotstatus")["removeClass"]("selected");
+          dot_selected_value = "";
+          durSetting = $(".operator_sc.selected.jp_note")["attr"]("dur");
+          var selected_text = $(".selected_text,.select_text_g");
+          var istart = $(selected_text)["attr"]("istart");
+          if (istart) {
+              console.log(istart);
+              var sym = syms[istart];
+              if (sym) {
+                  console.log(sym);
+                  var bf_dur = 0;
+                  var af_dur = 0;
+                  // var my_note_str = sym["my_note_str"];
+                  var abc_content = $("#source").val();
+                  var my_note_str = abc_content.substring(sym["istart"], sym["iend"]);
+                  if ($(this)["attr"]("value") == "3/") {
+                    bf_dur = sym["dur"] * 2 / 3;
+                    af_dur = sym["dur"] / 3
+                  } else {
+                      if ($(this)["attr"]("value") == "7//") {
+                        bf_dur = sym["dur"] * 4 / 7;
+                        af_dur = sym["dur"] * 3 / 7
+                      }
+                  }
+                  console.log(my_note_str);
+                  var my_note_str_r = my_note_str["replace"](/[0-9/]/g, "");
+                  var n_note_str = my_note_str_r + getDurStrByNoteDur(bf_dur, sym["my_ulen"]);
+                  var n_reset_str = "z," + getDurStrByNoteDur(af_dur, sym["my_ulen"]);
+                  var abc_content = $("#source")["val"]();
+                  var n_abc_content = abc_content["substring"](0, sym["istart"]) + n_note_str + n_reset_str + abc_content["substring"](sym["iend"]);
+                  $("#source")["val"](n_abc_content);
+                  doLog();
+                  src_change()
+              }
+          }
+      } else {
+          $(".dotstatus")["removeClass"]("selected");
+          $(this)["addClass"]("selected");
+          dot_selected_value = $(this)["attr"]("value");
+          durSetting = $(".operator_sc.selected.jp_note")["attr"]("dur");
+          if (dot_selected_value == "3/") {
+              durSetting = parseInt(durSetting) * 1.5
+          } else {
+              if (dot_selected_value == "7//") {
+                  durSetting = parseInt(durSetting) * 1.75
+              }
+          }
+          ;dotClick()
+      }
   });
 
   $("#pressVoice").click(function () {

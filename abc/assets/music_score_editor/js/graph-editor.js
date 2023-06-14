@@ -1609,7 +1609,8 @@ function genChordNote(cen, _0x18AEC) {
   _0x18A0B["chordNoteStr"] = _0x18ABF;
   return _0x18A0B;
 }
-function genNoteAndDur(_0x18AEC, cen, _0x1916D, _0x19140, _0x190B9) {
+
+function genNoteAndDur(note_str, cen, _0x1916D, dur_s, is_t) {
   if (!cen || !cen["p_v"]) {
     return;
   }
@@ -1649,10 +1650,10 @@ function genNoteAndDur(_0x18AEC, cen, _0x1916D, _0x19140, _0x190B9) {
     graph_update &&
     midiInStatus == false &&
     !user["pasteNote"] &&
-    !_0x190B9
+    !is_t
   ) {
     _0x18FD8 = "";
-    _0x17AED["noteStr"] = _0x17115["replace"](/[a-gA-G_^=,']*/, _0x18AEC);
+    _0x17AED["noteStr"] = _0x17115["replace"](/[a-gA-G_^=,']*/, note_str);
     _0x17AED["del_s"] = _0x19005;
     _0x17AED["update_dur_s"] = _0x191C7;
     return _0x17AED;
@@ -1660,33 +1661,33 @@ function genNoteAndDur(_0x18AEC, cen, _0x1916D, _0x19140, _0x190B9) {
   var _0x1908C = parseInt(durSetting) + 0;
   var _0x1919A = /([\/0-9]+)/g;
   if (_0x1916D) {
-    durSetting = _0x19140;
+    durSetting = dur_s;
     fixedLen = true;
   }
   if (cen["grace"]) {
     var _0x17115 =
-      _0x18AEC + (!fixedLen ? getLenStr(_0x18BA0, durSetting) : "");
+      note_str + (!fixedLen ? getLenStr(_0x18BA0, durSetting) : "");
     if (user["pasteNote"]) {
-      _0x17115 = _0x18AEC;
+      _0x17115 = note_str;
     }
     _0x17AED["oriNoteStr"] = _0x17115;
     _0x17AED["noteStr"] = _0x17115;
   } else {
     if (cen["in_tuplet"]) {
       var _0x17115 =
-        _0x18AEC +
+        note_str +
         (!fixedLen ? getLenStr(_0x18BA0, cen["dur_orig"]) : "");
       if (user["pasteNote"]) {
-        _0x17115 = _0x18AEC;
+        _0x17115 = note_str;
       }
       _0x17AED["oriNoteStr"] = _0x17115;
       _0x17AED["noteStr"] = _0x17115;
     } else {
       if (_0x18C27 == durSetting) {
         var _0x17115 =
-          _0x18AEC + (!fixedLen ? getLenStr(_0x18BA0, durSetting) : "");
+          note_str + (!fixedLen ? getLenStr(_0x18BA0, durSetting) : "");
         if (user["pasteNote"]) {
-          _0x17115 = _0x18AEC;
+          _0x17115 = note_str;
         } else {
           if (cen["notes"]["length"] > 0) {
             if (
@@ -1804,10 +1805,10 @@ function genNoteAndDur(_0x18AEC, cen, _0x1916D, _0x19140, _0x190B9) {
             }
           }
           var _0x17115 =
-            _0x18AEC +
+            note_str +
             (!fixedLen ? getLenStr(_0x18BA0, durSetting) : "");
           if (user["pasteNote"]) {
-            _0x17115 = _0x18AEC;
+            _0x17115 = note_str;
           }
           _0x17AED["oriNoteStr"] = _0x17115;
           _0x17AED["noteStr"] = _0x18FD8 + _0x17115;
@@ -1859,10 +1860,10 @@ function genNoteAndDur(_0x18AEC, cen, _0x1916D, _0x19140, _0x190B9) {
             _0x19113 += "z," + getLenStr(_0x18BA0, _0x19032);
           }
           var _0x17115 =
-            _0x18AEC +
+            note_str +
             (!fixedLen ? getLenStr(_0x18BA0, durSetting) : "");
           if (user["pasteNote"]) {
-            _0x17115 = _0x18AEC;
+            _0x17115 = note_str;
           }
           _0x17AED["oriNoteStr"] = _0x17115;
           _0x17AED["noteStr"] = _0x18FD8 + _0x17115 + _0x19113;
@@ -1881,6 +1882,7 @@ function genNoteAndDur(_0x18AEC, cen, _0x1916D, _0x19140, _0x190B9) {
   }
   return _0x17AED;
 }
+
 function genRestStrByDur(_0x18BA0, _0x18C27, _0x1970D) {
   return "z," + getDurStrByNoteDur(_0x18C27, _0x18BA0);
   if (1 == 1) {
@@ -1957,19 +1959,21 @@ function getLenStr(_0x18BA0, _0x1881C) {
   }
   return getDurStrByNoteDur(_0x1881C, _0x18BA0);
 }
-function replaceNote(_0x1B279, istart, iend, _0x18C54) {
+function replaceNote(source_seleter, istart, iend, g_note_obj) {
+  console.log('replaceNote', source_seleter, istart, iend, g_note_obj);
+  console.log(update_note_istart);
   if (update_note_istart < istart || update_note_istart > iend) {
     update_note_istart = -1;
   }
-  var _0x17115 = _0x18C54["noteStr"];
-  var abc_content = $("#" + _0x1B279)["val"]();
-  var _0x19005 = _0x18C54["del_s"];
-  var _0x1B2A6 = _0x18C54["update_dur_s"];
-  var _0x1B1F2 = "";
-  var _0x1B2D3 = "";
-  if (_0x19005["length"] > 0) {
-    for (var i = _0x19005["length"] - 1; i >= 0; i--) {
-      var sym_data = _0x19005[i];
+  var noteStr = g_note_obj["noteStr"];
+  var abc_content = $("#" + source_seleter)["val"]();
+  var del_s = g_note_obj["del_s"];
+  var update_dur_s = g_note_obj["update_dur_s"];
+  var update_sel_note_str = "";
+  var update_near_note_str = "";
+  if (del_s["length"] > 0) {
+    for (var i = del_s["length"] - 1; i >= 0; i--) {
+      var sym_data = del_s[i];
       if (sym_data["type"] == 8) {
         if (
           graphEditor["pianoImpro"] &&
@@ -1982,44 +1986,49 @@ function replaceNote(_0x1B279, istart, iend, _0x18C54) {
         }
       }
     }
-    _0x19005["forEach"](function (sym_data) {
+    del_s["forEach"](function (sym_data) {
       if (sym_data["type"] == 0) {
-        _0x1B1F2 = abc_content["substring"](
+        update_sel_note_str = abc_content["substring"](
           sym_data["istart"],
           sym_data["iend"]
         );
         if (abc_content["substr"](sym_data["iend"], 1) == "$") {
-          _0x1B1F2 += "$";
+          update_sel_note_str += "$";
         }
       }
       iend = sym_data["iend"];
     });
   }
-  if (_0x1B2A6 != null) {
-    iend = _0x1B2A6["iend"];
+  if (update_dur_s != null) {
+    iend = update_dur_s["iend"];
   }
-  if (_0x1B1F2 != "" && _0x18C54["dur_nodeline_behind"]) {
-    var _0x1A13F = syms[istart]["my_wmeasure"];
-    _0x17115 = getNoteStr_(_0x1A13F, _0x18C54);
-    _0x1B2D3 =
-      _0x18C54["note"] +
-      getLenStr(_0x18C54["ulen"], _0x18C54["dur_nodeline_behind"]);
-    if (_0x1B2A6 != null) {
-      _0x1B2D3 += _0x1B2A6["restStr"];
+  // console.log(noteStr);
+  if (update_sel_note_str != "" && g_note_obj["dur_nodeline_behind"]) {
+    var my_wmeasure = syms[istart]["my_wmeasure"];
+    noteStr = getNoteStr_(my_wmeasure, g_note_obj);
+    update_near_note_str =
+      g_note_obj["note"] +
+      getLenStr(g_note_obj["ulen"], g_note_obj["dur_nodeline_behind"]);
+    if (update_dur_s != null) {
+      update_near_note_str += update_dur_s["restStr"];
     }
   } else {
-    if (_0x1B2A6 != null) {
-      _0x1B2D3 += _0x1B2A6["restStr"];
+    if (update_dur_s != null) {
+      update_near_note_str += update_dur_s["restStr"];
     }
   }
+  // console.log(noteStr);
+  // console.log(noteStr, update_sel_note_str, update_near_note_str);
   abc_content =
     abc_content["substr"](0, istart) +
-    _0x17115 +
-    _0x1B1F2 +
-    _0x1B2D3 +
+    noteStr +
+    update_sel_note_str +
+    update_near_note_str +
     abc_content["substr"](iend);
+    // console.log(abc_content);
   abc_content = replaceBlankLine(abc_content);
-  $("#" + _0x1B279)["val"](abc_content);
+  // console.log(abc_content);
+  $("#" + source_seleter)["val"](abc_content);
   doLog();
   if (musicType == 2) {
     hasTempo = false;
@@ -2040,19 +2049,19 @@ function replaceNote(_0x1B279, istart, iend, _0x18C54) {
     }, 100);
   }
   if (user["midiInput"]) {
-    var _0x1B21F = $("svg ." + istart);
-    if (_0x1B21F["length"] > 0) {
-      _0x1B21F[0]["scrollIntoView"]();
+    var near_note_obj = $("svg ." + istart);
+    if (near_note_obj["length"] > 0) {
+      near_note_obj[0]["scrollIntoView"]();
     }
   }
   if ($("#micInput")["hasClass"]("menu-pressed")) {
-    var _0x1B24C = syms[istart];
-    if (_0x1B24C) {
+    var n_istart = syms[istart];
+    if (n_istart) {
       console["log"]("micInput:", istart);
-      var _0x1B21F = $("svg ." + _0x1B24C["istart"] + "[x]");
-      if (_0x1B21F["length"] > 0) {
+      var near_note_obj = $("svg ." + n_istart["istart"] + "[x]");
+      if (near_note_obj["length"] > 0) {
         var _0x16008 =
-          parseInt($($(_0x1B21F)[0])["attr"]("x")) * scale;
+          parseInt($($(near_note_obj)[0])["attr"]("x")) * scale;
         var _0x1770F = $(".right-top-content")["width"]();
         if (_0x16008 > _0x1770F / 2) {
           $(".right-top-content")
@@ -2066,7 +2075,7 @@ function replaceNote(_0x1B279, istart, iend, _0x18C54) {
     }
   }
   if (
-    _0x1B2A6 != null &&
+    update_dur_s != null &&
     graphEditor["pianoImpro"] &&
     typeof graphEditor["pianoImpro"]["noteUpdate"] == "function"
   ) {
@@ -2074,52 +2083,57 @@ function replaceNote(_0x1B279, istart, iend, _0x18C54) {
       return;
     }
     var ts_next = syms[istart]["next"];
-    var _0x15C84 = 20;
-    while (ts_next && _0x15C84 > 0) {
+    var i = 20;
+    while (ts_next && i > 0) {
       if (ts_next["type"] == 10) {
         graphEditor["pianoImpro"]["noteUpdate"](ts_next["istart"]);
       } else {
         if (ts_next["type"] == 0) {
           ts_next = null;
-          _0x15C84 = 0;
+          i = 0;
           break;
         }
       }
       ts_next = ts_next["next"];
-      _0x15C84--;
+      i--;
     }
   }
 }
-function getNoteStr_(_0x1A13F, _0x18C54) {
-  var _0x18A65 = _0x18C54["note_dur"] - _0x18C54["dur_nodeline_behind"];
-  var _0x19875 = new Array();
-  while (_0x18A65 > _0x1A13F) {
+
+function getNoteStr_(my_wmeasure, g_note_obj) {
+  // console.log('getNoteStr_', my_wmeasure, g_note_obj);
+  var dur = g_note_obj["note_dur"] - g_note_obj["dur_nodeline_behind"];
+  var note_arr = new Array();
+  while (dur > my_wmeasure) {
     var ac_abc_content =
-      _0x18C54["note"] +
-      getLenStr(_0x18C54["ulen"], _0x1A13F) +
+      g_note_obj["note"] +
+      getLenStr(g_note_obj["ulen"], my_wmeasure) +
       "- ";
-    _0x19875["push"](ac_abc_content);
-    _0x18A65 = _0x18A65 - _0x1A13F;
+      note_arr.push(ac_abc_content);
+    dur = dur - my_wmeasure;
   }
-  if (_0x18A65 > 0) {
+  // console.log(note_arr);
+  if (dur > 0) {
     var ac_abc_content =
-      _0x18C54["note"] +
-      getLenStr(_0x18C54["ulen"], _0x18A65) +
+      g_note_obj["note"] +
+      getLenStr(g_note_obj["ulen"], dur) +
       "- ";
-    _0x19875["push"](ac_abc_content);
+      note_arr.push(ac_abc_content);
   }
+  // console.log(note_arr);
   var new_content = "";
-  if (_0x19875["length"] > 0) {
-    for (var i = _0x19875["length"]; i > 0; i--) {
+  if (note_arr.length > 0) {
+    for (var i = note_arr.length; i > 0; i--) {
       if (i > 1) {
-        new_content += _0x19875[i - 1] + "|";
+        new_content += note_arr[i - 1] + "|";
       } else {
-        new_content += _0x19875[i - 1];
+        new_content += note_arr[i - 1];
       }
     }
   }
   return new_content;
 }
+
 function getArrSum(_0x19875, _0x18D35) {
   var _0x198A2 = 0;
   for (var i = 0; i < _0x18D35; i++) {
@@ -5076,12 +5090,12 @@ function graphMouseUpHandle(_0x16062) {
       var _0x18C81 = getNewNote(cen);
       console["log"]("noteobj:", _0x18C81["note"]);
       var _0x18AEC = _0x18C81["note"];
-      var _0x18C54 = genNoteAndDur(_0x18AEC, cen);
-      _0x18C54["note"] = _0x18AEC;
+      var g_note_obj = genNoteAndDur(_0x18AEC, cen);
+      g_note_obj["note"] = _0x18AEC;
       update_note_istart = istart;
       update_note_index = 0;
       console["log"]("2:graphMouseMoveHandle-start:", new Date()["getTime"]());
-      replaceNote("source", cen["istart"], cen["iend"], _0x18C54);
+      replaceNote("source", cen["istart"], cen["iend"], g_note_obj);
     } else {
       var _0x1846B = $(select_note_info["click_obj"])["attr"](
         "update_index"
@@ -5750,8 +5764,8 @@ function genNoteDeco(val, insert_content, position, type) {
   }
   var abc_content = $("#source")["val"]();
   if (position == "rhythm") {
-    var _0x18C54 = genNoteAndDur(val, cen, true, 384);
-    replaceNote("source", cen["istart"], cen["iend"], _0x18C54);
+    var g_note_obj = genNoteAndDur(val, cen, true, 384);
+    replaceNote("source", cen["istart"], cen["iend"], g_note_obj);
     return;
   }
   if (val["indexOf"]("[K:") == 0 && cen["type"] == 1) {
@@ -5879,6 +5893,8 @@ function genNoteDeco(val, insert_content, position, type) {
   // 连音线
   var _0x195FF = /\((\d)/;
   if (_0x195FF["test"](val)) {
+    liaison(val)
+    return;
     var _0x17D09 = val["match"](_0x195FF);
     var _0x18BCD = _0x17D09[1];
     console["log"](cen);

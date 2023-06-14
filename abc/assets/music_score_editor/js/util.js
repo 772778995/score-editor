@@ -5547,6 +5547,7 @@ function get(flag) {
 }
 
 function calNodeLen(nodestr) {
+  console.log('calNodeLen');
   try {
     var len = 0;
     nodestr = nodestr
@@ -5601,6 +5602,7 @@ function replaceDivide(str) {
 }
 // 计算小节内和弦的长度:这里解析[d3f3]中的长度
 function calNodeLen_HX(nodestr) {
+  console.log('calNodeLen_HX');
   //	var L = $("#L").val().split("/")[1];
   //	var M = $("#M").val().split("/")[1];
   var L = get("L:").split("/")[1];
@@ -5644,6 +5646,7 @@ function calNodeLen_HX(nodestr) {
 }
 // 计算小节内连音的长度（3eee这样算一拍(不管是节拍是多少，都算一拍，所以这里算法要根据L来转换)
 function calNodeLen_LY(nodestr) {
+  console.log('calNodeLen_LY');
   try {
     var L = get("L:").split("/")[1];
     var M = get("M:").split("/")[1];
@@ -5657,7 +5660,7 @@ function calNodeLen_LY(nodestr) {
       for (var i = 0; i < notes.length; i++) {
         var str = notes[i].match(pattern2);
         if (str != null) {
-          // console.log("ly_str:"+str)
+          console.log("ly_str:", str)
           var reg1 = /\((\d)/;
           var lyvals = str[0].match(reg1);
           var n = -1;
@@ -5674,13 +5677,23 @@ function calNodeLen_LY(nodestr) {
             if (nums != null) {
               ly_len += parseInt(nums[0]);
             } else {
-              ly_len++;
+              // 连音时值计算
+              if(n==2){
+                ly_len += 3/2;
+              }else if(n==4){
+                ly_len += 3/2;
+              }else if(n==5 || n==6 || n==7){
+                ly_len += 2;
+              }else{
+                ly_len++;
+              }
             }
           }
           nodestr = nodestr.replace(str[0], "");
         }
       }
     }
+    console.log(ly_len, L, M);
     return (ly_len * L) / M + "|" + nodestr;
   } catch (e) {
     console.log(e);
@@ -5688,6 +5701,7 @@ function calNodeLen_LY(nodestr) {
 }
 // 计算小节内普通音符的长度
 function calNodeLen_PT(nodestr) {
+  console.log('calNodeLen_PT');
   //去掉倚音，倚音不计入时长
   nodestr = nodestr.replace(/\{.[^\{]*\}/g, "");
   var L = get("L:").split("/")[1];
@@ -8942,6 +8956,7 @@ function showProperties(type, e, clickObj) {
           var remainDur = sDur - matchDur;
           var r = remainDur / matchDur;
           if (r == 0.5) {
+            console.log('dot click');
             $(".dotstatus[value='3/']").click();
           } else if (r == 0.75) {
             $(".dotstatus[value='7//']").click();
