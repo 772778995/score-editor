@@ -8097,13 +8097,14 @@ function editCurrNoteLyric() {
   createLyricEditor();
 }
 function editorCurrNoteAnnot() {
+  console.log('editorCurrNoteAnnot');
   hiddenMenu();
-  var _0x16797 = $(".selected_text[type*='HD'],.selected_text[type^='r']");
-  if (_0x16797["length"] == 0) {
+  var selected_text = $(".selected_text[type*='HD'],.selected_text[type^='r'], ._select-note[type='splnum_note'], ._select-note[type='splnum_rest']");
+  if (selected_text["length"] == 0) {
     window["top"]["swAutoAlert"]("\u672a\u9009\u4e2d\u97f3\u7b26");
     return;
   }
-  var istart = $(_0x16797)["attr"]("istart");
+  var istart = $(selected_text)["attr"]("istart");
   editorAnnot(istart);
 }
 function getPathInfo(ac_abc_content) {

@@ -6751,7 +6751,7 @@
     </div>
 
     <!-- 注释编辑 -->
-    <!-- <div
+    <div
       class="modal fade"
       id="ZS_EDIT_div"
       tabindex="-1"
@@ -6759,8 +6759,14 @@
       aria-labelledby="ZS_EDIT_divLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog" role="document">
-        <div class="modal-content" style="width: 400px; height: 350px">
+      <div class="modal-dialog" role="document" style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        ">
+        <div class="modal-content" style="width: 400px; height: auto;">
           <div class="modal-header">
             <h5 class="modal-title" id="ZS_EDIT_divLabel">编辑文字</h5>
             <button
@@ -6774,61 +6780,31 @@
           </div>
           <div class="modal-body">
             <input type="hidden" id="zsistart" />
-            <!== 这里是内容 start ==>
-            <!== <input type="text"  class="comm comm-short comm-center" style="width:180px;" id="zsInput" > ==>
-            <textarea
-              rows=""
-              cols=""
-              id="zsInput"
-              style="width: 280px"
-            ></textarea
+            <!-- 这里是内容 start -->
+            <!-- <input type="text"  class="comm comm-short comm-center" style="width:180px;" id="zsInput" > -->
+            <textarea rows="" cols="" id="zsInput" style="width: 100%;resize: none;border: 1px solid #ccc;border-radius: 5px;" ></textarea
             ><br />
-            字体大小：<input
-              type="number"
-              step="1"
-              min="10"
-              max="100"
-              value="14"
-              class="comm comm-short comm-center"
-              style="width: 80px"
-              id="annofontsize"
-            />
-            <br />
-            字体类型：<input
-              type="radio"
-              name="fonttype"
-              id="fonttype1"
-              value=""
-              checked="checked"
-            /><label for="fonttype1">普通字体</label>
-            <input
-              type="radio"
-              name="fonttype"
-              id="fonttype2"
-              value="∆"
-            /><label for="fonttype2">美术字体</label>
-            <br />
-            显示位置：<input
-              type="radio"
-              name="zspos"
-              id="zsup"
-              value="^"
-              checked="checked"
-            /><label for="zsup">上</label>
-            <input type="radio" name="zspos" id="zsdown" value="_" /><label
-              for="zsdown"
-              >下</label
-            >
-            <!== <br>
-      	  		 位置调整：
-						<a style="cursor: pointer;" href="javascript:setGchPos('down')">&#8595;</a>&nbsp;
-						<a style="cursor: pointer;" href="javascript:setGchPos('up')">&#8593;</a>&nbsp;
-						<a style="cursor: pointer;" href="javascript:setGchPos('left')">&larr;</a>&nbsp;
-						<a style="cursor: pointer;" href="javascript:setGchPos('right')">&rarr;</a>&nbsp; ==>
-            <!== 这里是内容 end ==>
-            <input type="hidden" id="gchcoor" value="" />
-            <input type="hidden" id="xoffset" value="" />
-            <input type="hidden" id="yoffset" value="" />
+
+            <div style="display: none;">
+                字体大小：<input type="number" step="1" min="10" max="100" value="14" class="comm comm-short comm-center" style="width: 80px" id="annofontsize" />
+                <br />
+                字体类型：<input type="radio" name="fonttype" id="fonttype1" value="" checked="checked" /><label for="fonttype1">普通字体</label>
+                <input type="radio" name="fonttype" id="fonttype2" value="∆" /><label for="fonttype2">美术字体</label>
+                <br />
+                显示位置：<input type="radio" name="zspos" id="zsup" value="^" checked="checked" /><label for="zsup">上</label>
+                <input type="radio" name="zspos" id="zsdown" value="_" /><label for="zsdown" >下</label>
+              <!-- <br>
+                位置调整：
+              <a style="cursor: pointer;" href="javascript:setGchPos('down')">&#8595;</a>&nbsp;
+              <a style="cursor: pointer;" href="javascript:setGchPos('up')">&#8593;</a>&nbsp;
+              <a style="cursor: pointer;" href="javascript:setGchPos('left')">&larr;</a>&nbsp;
+              <a style="cursor: pointer;" href="javascript:setGchPos('right')">&rarr;</a>&nbsp; -->
+              <!-- 这里是内容 end -->
+              <input type="hidden" id="gchcoor" value="" />
+              <input type="hidden" id="xoffset" value="" />
+              <input type="hidden" id="yoffset" value="" />
+            </div>
+            
             <div class="modal-footer">
               <button
                 type="button"
@@ -6842,7 +6818,7 @@
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
 
     <!-- 选择强弱模式 -->
     <div

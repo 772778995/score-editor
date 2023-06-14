@@ -5991,6 +5991,11 @@ var content_vue = new Vue({
           disabled: !isSelectNote,
           fn: () => createLyricEditor(),
         },
+        {
+          title: "添加术语",
+          disabled: !isSelectNote,
+          fn: () => editorCurrNoteAnnot(),
+        },
         { type: "line" },
         {
           title: "移高八度",
