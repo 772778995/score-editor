@@ -280,43 +280,7 @@
       .beatNote-item:hover {
         background: #B2C7D9;
       }
-      .loadingSeven{
-        width: 80px;
-        height: 40px;
-        margin: 0 auto;
-        margin-top:100px;
-      }
-      .loadingSeven span{
-          display: inline-block;
-          width: 8px;
-          height: 100%;
-          border-radius: 4px;
-          background: lightgreen;
-          -webkit-animation: loadsaven 1.04s ease infinite;
-      }
-      @-webkit-keyframes loadsaven{
-          0%,100%{
-              height: 40px;
-              background: lightgreen;
-          }
-          50%{
-              height: 60px;
-              margin-top: -20px;
-              background: lightblue;
-          }
-      }
-      .loadingSeven span:nth-child(2){
-          -webkit-animation-delay:0.13s;
-      }
-      .loadingSeven span:nth-child(3){
-          -webkit-animation-delay:0.26s;
-      }
-      .loadingSeven span:nth-child(4){
-          -webkit-animation-delay:0.39s;
-      }
-      .loadingSeven span:nth-child(5){
-          -webkit-animation-delay:0.52s;
-      }
+
       * {
         user-select: none;
       }
@@ -486,27 +450,66 @@
       .theme-blue-bg {
         background-color: #B5C5D3;
       }
+
+      /* loading */
+      .loading_con .logo_icon{
+        width: 140px;
+      }
+      .loadingSeven{
+        width: 180px;
+        height: 40px;
+        margin: 0 auto;
+        margin-top: 5px;
+      }
+      .progress {
+        width: 100%;
+        height: 15px;
+        position: relative;
+        background-color: #ddd;
+        border-radius: 5px;
+        overflow: hidden;
+        font-size: 10px;
+        line-height: 1.2;
+      }
+      .progress-bar {
+        background-color: #FF5E2A;
+        width: 0%;
+        height: 15px;
+        line-height: 10px;
+        position: absolute;
+        text-align: center;
+        color: white;
+        transition: all 0.2s;
+      }
+      .progress-text{
+        position: absolute;
+        right: 5px;
+      }
     </style>
     <title>创编制谱系统</title>
   </head>
   <body>
-    <div id="loadingSeven" class="w-screen h-screen fixed items-center flex flex-col justify-center duration-300 filter" style="z-index: 9999999; background: #f5f5f6;">
+    <div id="loadingSeven" class="w-screen h-screen fixed items-center flex flex-col justify-center duration-300 filter loading_con" style="z-index: 9999999; background: #f5f5f6;">
+      <img class="logo_icon" src="assets/music_score_editor/images/logo.png">
       <div class="loadingSeven">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
+        <div id="progress" class="progress">
+          <div id="progress-bar" class="progress-bar" style="width: 0%;"></div>
+          <div id="progress-text" class="progress-text"></div>
+        </div>
       </div>
-      <div class="pr-2 mt-2 text-xl"><span id="loadNum">0</span>%</div>
+      <div class="pr-2 mt-2 text-xl">加载中…</div>
+      <div class="pr-2 mt-2 text-xl" style="display: none;"><span id="loadNum">0</span>%</div>
+      
       <script>
         (() => {
           const loadNumEl = document.querySelector('#loadNum')
-          let num = 95
+          var progress_bar = document.querySelector('#progress-bar')
+          let num = 90
           const loadTimer = setInterval(() => {
             if (num < 100) {
-              num += +(100 - num) / 3
+              num += +(100 - num) / 2
               loadNumEl.innerText = num.toFixed(2)
+              progress_bar.style.width = num.toFixed(2) + '%';
               if (num.toFixed(2) >= 100) {
                 clearInterval(loadTimer)
                 $('#loadingSeven').fadeOut(200, () => {
