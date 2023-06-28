@@ -3575,7 +3575,7 @@ var content_vue = new Vue({
           rows: "2",
           rowBars: "4",
         },
-        previewUrl: "assets/music_score_editor/preview.html?v=1.0.1",
+        previewUrl: "assets/music_score_editor/preview.html?v=1.0.2",
       },
       toolList: [
         {
@@ -6736,8 +6736,10 @@ function leftPanelClick(obj, isCurrOpenState, closeCb, openCb) {
     $(".bottom-box").css("left", 0);
     if($("#noteInput").length && $("#noteInput").css("left")){
       var left = $("#noteInput").css("left").replace("px", "");
-      if (-left > 3905 - $(window).width()) {
-        left = -(3905 - $(window).width());
+      var keyboardWidth = 3905;
+      // var keyboardWidth = 3380;
+      if (-left > keyboardWidth - $(window).width()) {
+        left = -(keyboardWidth - $(window).width());
         $("#noteInput").css("left", left + "px");
       }
     }
@@ -6746,12 +6748,10 @@ function leftPanelClick(obj, isCurrOpenState, closeCb, openCb) {
     // 当前收起状态
     $(obj).attr("src", "assets/music_score_editor/images/left.png");
     $(".body-left").css({
-      // width: "220px",
-      // "min-width": "220px",
       width: "330px",
       "min-width": "330px",
     });
-    $(".bottom-box").css("left", "220px");
+    $(".bottom-box").css("left", "330px");
     return typeof openCb == "function" && openCb();
   }
 }

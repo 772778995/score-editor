@@ -1194,8 +1194,10 @@ $(document).ready(function () {
     // 判断左边列表是否收起 indexOf > -1 为展开 反之为收起
 
     // var indexOf = $(".left-show-img").attr("src").indexOf("left");
-    if (-newleft > 3905 - $("#noteInput").width()) {
-      newleft = -(3905 - $("#noteInput").width());
+    var keyboardWidth = 3905;
+    // var keyboardWidth = 3380;
+    if (-newleft > keyboardWidth - $("#noteInput").width()) {
+      newleft = -(keyboardWidth - $("#noteInput").width());
     }
     $("#noteInput").css("left", newleft + "px");
   });
@@ -4915,6 +4917,7 @@ function writeNumStaff(transport) {
     var note = getNoteByKey(group, index);
     var i = findIndexByNote(note);
     var numStaff = findNumStaffByIndex(i - transport);
+    // console.log(numStaff);
     // 音符个数
     var noteCount = numStaff.split(":").length;
     var pattern = /(\,)|(\')/g;
@@ -4951,6 +4954,116 @@ function writeNumStaff(transport) {
       }
       str += "</div>";
     } else if (noteCount > 1) {
+      if (type == "b") {
+        // 低音区
+        // 整体白键偏上
+        if (n <= 2) {
+          str = "<div class='key-note-white'>";
+        } else {
+          // 点点超过2个的再做偏移
+          str = "<div class='key-note-white white-top'>";
+        }
+        var r = "";
+        var d = "";
+        if (numStaff.split(":")[0].indexOf("^^") > -1) {
+          r = "note-rise2";
+        } else if (numStaff.split(":")[0].indexOf("^") > -1) {
+          r = "note-rise";
+        }
+        if (numStaff.split(":")[1].indexOf("__") > -1) {
+          d = "note-down2";
+        } else if (numStaff.split(":")[1].indexOf("_") > -1) {
+          d = "note-down";
+        }
+        // 打点个数
+        var num1Length = 0;
+        if (numStaff.split(":")[0].match(pattern) != null) {
+          num1Length = numStaff.split(":")[0].match(pattern).length;
+        }
+        var num2Length = 0;
+        if (numStaff.split(":")[1].match(pattern) != null) {
+          num2Length = numStaff.split(":")[1].match(pattern).length;
+        }
+        if(!r){
+          str +=
+            "<div class='key-note-white-mid key-note-val' val=\"" +
+            numStaff.split(":")[0] +
+            '">' +
+            num.split(":")[0] +
+            "<i class='" +
+            r +
+            "' /><i class='dot-b-" +
+            num1Length +
+            "'/></div>";
+        }
+        if(!d){
+          str +=
+            "<div class='key-note-white-mid key-note-val' val=\"" +
+            numStaff.split(":")[1] +
+            '">' +
+            num.split(":")[1] +
+            "<i class='" +
+            d +
+            "' /><i class='dot-b-" +
+            num2Length +
+            "' /></div>";
+        }
+      } else {
+        if (n <= 2) {
+          str = "<div class='key-note-white'>";
+        } else {
+          // 点点超过2个的再做偏移
+          str = "<div class='key-note-white white-bottom'>";
+        }
+        var r = "";
+        var d = "";
+        if (numStaff.split(":")[0].indexOf("^^") > -1) {
+          r = "note-rise2";
+        } else if (numStaff.split(":")[0].indexOf("^") > -1) {
+          r = "note-rise";
+        }
+        if (numStaff.split(":")[1].indexOf("__") > -1) {
+          d = "note-down2";
+        } else if (numStaff.split(":")[1].indexOf("_") > -1) {
+          d = "note-down";
+        }
+        // 打点个数
+        var num1Length = 0;
+        if (numStaff.split(":")[0].match(pattern) != null) {
+          num1Length = numStaff.split(":")[0].match(pattern).length;
+        }
+        var num2Length = 0;
+        if (numStaff.split(":")[1].match(pattern) != null) {
+          num2Length = numStaff.split(":")[1].match(pattern).length;
+        }
+        if(!r){
+          str +=
+            "<div class='key-note-white-mid key-note-val' val=\"" +
+            numStaff.split(":")[0] +
+            '">' +
+            num.split(":")[0] +
+            "<i class='" +
+            r +
+            "' /><i class='dot-t-" +
+            num1Length +
+            "' /></div>";
+        }
+        if(!d){
+          str +=
+            "<div class='key-note-white-mid key-note-val' val=\"" +
+            numStaff.split(":")[1] +
+            '">' +
+            num.split(":")[1] +
+            "<i class='" +
+            d +
+            "' /><i class='dot-t-" +
+            num2Length +
+            "' /></div>";
+        }
+      }
+
+      /* ----------- */
+      /*
       if (type == "b") {
         // 低音区
         // 整体白键偏上
@@ -5050,6 +5163,9 @@ function writeNumStaff(transport) {
           num2Length +
           "' /></div>";
       }
+      */
+      /* ------------------ */
+
     }
 
     str += "</div>";

@@ -1387,7 +1387,7 @@ function findNumStaffByIndex(index) {
 			}
 		}
 	}
-	return "";
+	return index==1?"1,,,,":"";
 }
 // 根据索引号找到对应的音符(降号)
 function findNoteByIndex_D(index) {

@@ -78,20 +78,22 @@
     <meta charset="utf-8" />
     <!-- 让部分国产浏览器默认采用高速模式渲染页面，兼容模式（即 IE 内核）和高速模式（即 webkit 内核） -->
     <meta name="renderer" content="webkit" />
-    <meta
-      name="viewport"
-      content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
-    />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+
     <link rel="stylesheet" href="assets/music_score_editor/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="assets/music_score_editor/css/abc.css?v=1.0.1" />
-    <link rel="stylesheet" href="assets/music_score_editor/css/abc_ug.css?v=1.0.1" />
+    <link rel="stylesheet" href="assets/music_score_editor/css/abc.css?v=1.0.2" />
+
+    <link rel="stylesheet" href="assets/music_score_editor/css/global_content.css?v=1.0.2" />
+
+    <link rel="stylesheet" type="text/css" href="assets/music_score_editor/keyboard/css/piano_keyboard.css?v=1.0.2" />
+
     <link href="assets/music_score_editor/css/tailwindcss.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="assets/music_score_editor/css/icons/icons.css">
     <link rel="stylesheet" href="assets/music_score_editor/css/icons/k.css">
-    <link rel="stylesheet" type="text/css" href="assets/music_score_editor/nf/css/piano.css?v=1.0.1" />
-    <link rel="stylesheet" type="text/css" href="assets/music_score_editor/sweetalert/sweetalert.css?v=1.0.1" />
+
+    <link rel="stylesheet" type="text/css" href="assets/music_score_editor/sweetalert/sweetalert.css?v=1.0.2" />
     <link href="assets/music_score_editor/js/edit-1.css" rel="stylesheet" type="text/css" />
 
     <script src="assets/music_score_editor/js/jquery.min.js"></script>
@@ -99,13 +101,13 @@
     <script src="assets/music_score_editor/menu/jquery.contextMenu.js"></script>
     <script src="assets/music_score_editor/menu/jquery.ui.position.js"></script>
     <script src="assets/music_score_editor/js/xml2abc.js"></script>
-    <script src="assets/music_score_editor/js/drag.js?v=1.0.1"></script>
-    <script src="assets/music_score_editor/js/main.js?v=1.0.1"></script>
-    <script src="assets/music_score_editor/js/xml2abcutil.js?v=1.0.1"></script>
+    <script src="assets/music_score_editor/js/drag.js?v=1.0.2"></script>
+    <script src="assets/music_score_editor/js/main.js?v=1.0.2"></script>
+    <script src="assets/music_score_editor/js/xml2abcutil.js?v=1.0.2"></script>
     <script src="assets/music_score_editor/js/FileSaver.min.js"></script>
 
     <!-- 字体css -->
-    <link rel="stylesheet" href="assets/music_score_editor/css/font/font.css?v=1.0.1"/>
+    <link rel="stylesheet" href="assets/music_score_editor/css/font/font.css?v=1.0.2"/>
 
     <style type="text/css">
       .drag-note-img, [type="slur"][recttype="movedragger"] {
@@ -325,35 +327,7 @@
         padding-left: 5px;
         padding-right: 5px;
       }
-      .pianoKeyboard .keyRow.white .key {
-        background: url("assets/music_score_editor/images/keyboard/keyboard_white.png") !important;
-        background-size: 100% 100% !important;
-      }
-      #scoreEditorPianoKeyboard {
-        background-color: #000 !important;
-      }
-      .pianoKeyboard .keyRow.white .key.selected {
-        background: url("assets/music_score_editor/images/keyboard/keyboard_white_press.png") !important;
-      }
-      .pianoKeyboard .keyRow.black .key {
-        background: url("assets/music_score_editor/images/keyboard/keyboard_black.png") !important;
-        background-size: 100% 100% !important;
-        border: none;
-        height: 100px;
-      }
-      .pianoKeyboard .keyRow.black .key:hover {
-        height: 100px;
-        border: none !important;
-        box-shadow: none;
-      }
-      .pianoKeyboard .keyRow.black .key.chord,
-      .pianoKeyboard .keyRow.black .key.selected {
-        width: 45px;
-        height: 100px;
-        background: url("assets/music_score_editor/images/keyboard/keyboard_black_press.png") !important;
-        background-size: 100% 100% !important;
-        box-shadow: none;
-      }
+
       .pgt {
         margin-left: 2px;
         margin-right: -6px;
@@ -1207,7 +1181,7 @@
                 <div style="position: absolute; left: 180px; top: 5px">
                   <iframe
                     id="pdfPreview"
-                    src="assets/music_score_editor/pdf_preview.html?v=1.0.1"
+                    src="assets/music_score_editor/pdf_preview.html?v=1.0.2"
                     style="width: 1200px; height: 600px"
                   ></iframe>
                 </div>
@@ -1337,7 +1311,7 @@
                 <div style="position: absolute; left: 180px; top: 5px">
                   <iframe
                     id="imgPreviewIframe"
-                    src="assets/music_score_editor/img_preview.html?v=1.0.1"
+                    src="assets/music_score_editor/img_preview.html?v=1.0.2"
                     style="width: 1200px; height: 600px"
                   ></iframe>
                 </div>
@@ -3155,10 +3129,7 @@
       <!-- ------------------------------顶部导航菜单-------------------------------->
 
       <!-- 底部琴键 -->
-      <div
-        class="bottom-box"
-        :class="{'bottom-box-hide': !keyboardShow, 'bottom-box-style-2': headerInBottom}"
-      >
+      <div class="bottom-box" :class="{'bottom-box-hide': !keyboardShow, 'bottom-box-style-2': headerInBottom}" >
         <!-- 音程尺 -->
         <div class="tone-ruler ruler">
           <div class="ruler-border"></div>
@@ -3228,10 +3199,12 @@
         />
         <div class="keyboard-box keyboard-up">
           <div class="keyboard-bar">
-            <span class="keyboard-lbl">虚拟键盘</span>
+            <span class="keyboard-lbl">&nbsp;</span>
             <span class="close piano-close" title="关闭"></span>
             <span class="minimize" title="最小化"></span>
             <span class="restore hide" title="还原"></span>
+            <span class="scroll_right" id="scrollRight" title="右移"></span>
+            <span class="scroll_left" id="scrollLeft" title="左移"></span>
           </div>
           <div
             id="scoreEditorPianoKeyboardContainer"
@@ -3245,7 +3218,9 @@
               <div id="noteInput" class="pianoKeyboard" style="left: -868px">
                 <div id="pianoKeysWhite" class="keyRow white">
                   <div group="C0">
-                    <div class="key" style="left: 0px">大二</div>
+                    <div class="key" style="left: 0px">
+                      <!-- 大二 -->
+                    </div>
                     <div class="key" style="left: 62px"></div>
                     <div class="key" style="left: 124px"></div>
                     <div class="key" style="left: 186px"></div>
@@ -3254,7 +3229,9 @@
                     <div class="key" style="left: 372px"></div>
                   </div>
                   <div group="C1">
-                    <div class="key" style="left: 434px">大一</div>
+                    <div class="key" style="left: 434px">
+                      <!-- 大一 -->
+                    </div>
                     <div class="key" style="left: 496px"></div>
                     <div class="key" style="left: 558px"></div>
                     <div class="key" style="left: 620px"></div>
@@ -3263,7 +3240,9 @@
                     <div class="key" style="left: 806px"></div>
                   </div>
                   <div group="C2">
-                    <div class="key" style="left: 868px">大字</div>
+                    <div class="key" style="left: 868px">
+                      <!-- 大字 -->
+                    </div>
                     <div class="key" style="left: 930px"></div>
                     <div class="key" style="left: 992px"></div>
                     <div class="key" style="left: 1054px"></div>
@@ -3272,7 +3251,9 @@
                     <div class="key" style="left: 1240px"></div>
                   </div>
                   <div group="C3">
-                    <div class="key" style="left: 1302px">小字</div>
+                    <div class="key" style="left: 1302px">
+                      <!-- 小字 -->
+                    </div>
                     <div class="key" style="left: 1364px"></div>
                     <div class="key" style="left: 1426px"></div>
                     <div class="key" style="left: 1488px">
@@ -3283,7 +3264,9 @@
                     <div class="key" style="left: 1674px"></div>
                   </div>
                   <div group="C4" class="group-active">
-                    <div class="key" style="left: 1736px">中央C</div>
+                    <div class="key" style="left: 1736px">
+                      <!-- 中央C -->
+                    </div>
                     <div class="key" style="left: 1798px"></div>
                     <div class="key" style="left: 1860px"></div>
                     <div class="key" style="left: 1922px"></div>
@@ -3294,7 +3277,9 @@
                     <div class="key" style="left: 2108px"></div>
                   </div>
                   <div group="C5">
-                    <div class="key" style="left: 2170px">小二</div>
+                    <div class="key" style="left: 2170px">
+                      <!-- 小二 -->
+                    </div>
                     <div class="key" style="left: 2232px"></div>
                     <div class="key" style="left: 2294px"></div>
                     <div class="key" style="left: 2356px"></div>
@@ -3303,7 +3288,9 @@
                     <div class="key" style="left: 2542px"></div>
                   </div>
                   <div group="C6">
-                    <div class="key" style="left: 2604px">小三</div>
+                    <div class="key" style="left: 2604px">
+                      <!-- 小三 -->
+                    </div>
                     <div class="key" style="left: 2666px"></div>
                     <div class="key" style="left: 2728px"></div>
                     <div class="key" style="left: 2790px"></div>
@@ -3312,7 +3299,9 @@
                     <div class="key" style="left: 2976px"></div>
                   </div>
                   <div group="C7">
-                    <div class="key" style="left: 3038px">小四</div>
+                    <div class="key" style="left: 3038px">
+                      <!-- 小四 -->
+                    </div>
                     <div class="key" style="left: 3100px"></div>
                     <div class="key" style="left: 3162px"></div>
                     <div class="key" style="left: 3224px"></div>
@@ -3321,7 +3310,9 @@
                     <div class="key" style="left: 3410px"></div>
                   </div>
                   <div group="C8">
-                    <div class="key" style="left: 3472px">小五</div>
+                    <div class="key" style="left: 3472px">
+                      <!-- 小五 -->
+                    </div>
                     <div class="key" style="left: 3534px"></div>
                     <div class="key" style="left: 3596px"></div>
                     <div class="key" style="left: 3658px"></div>
@@ -3396,8 +3387,8 @@
                   </div>
                 </div>
               </div>
-              <div class="pianoKeyboardSlider right" id="scrollRight"></div>
-              <div class="pianoKeyboardSlider left" id="scrollLeft"></div>
+              <!-- <div class="pianoKeyboardSlider right" id="scrollRight"></div>
+              <div class="pianoKeyboardSlider left" id="scrollLeft"></div> -->
             </div>
           </div>
         </div>
@@ -6518,7 +6509,7 @@
           <div class="modal-body">
             <!-- 这里是内容 start -->
             <iframe
-              src="assets/music_score_editor/rhythm.html?v=1.0.1"
+              src="assets/music_score_editor/rhythm.html?v=1.0.2"
               style="
                 width: 100%;
                 height: 440px;
@@ -7011,7 +7002,7 @@
           <div class="modal-body">
             <iframe
               id="staffListIframe"
-              src="assets/music_score_editor/stafflist.html?v=1.0.1"
+              src="assets/music_score_editor/stafflist.html?v=1.0.2"
               style="width: 955px; height: 555px; border: 0px"
             >
             </iframe>
@@ -7161,9 +7152,9 @@
       </div>
     </form>
     <!-- <audio id="low" src="data:audio/mp3;base64,SUQzAwAAAAAAFgAAAAAAAAAAAAAAAAAAAAAAAPwDUAX/+5DAAAAAAAEuAAAAIAAAJcAAAAS0BLEAACQAAAAW////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////RVWP//P/+6DAwQAvoAEuAAAAIQ6qYwgBIbGc+jfod84GL+ifOj3CcV9S/8JX/v/Tvf/3zCV+pZ/vpXoZSV4uen/N6V/LuAoHlX8JRBnlu4dh+SH9kChAeKiR2ySNrV/yIiFhwMDAE93dz+KU1///6atAee1b3vv/En08r548SPijIrGSaSJPZWUeQHW4dFYyeGxp9D37JEVjJEgesA5yDl7Q9Px7w47crFAXxCFBENMW8TANQhFkPOdC38Q5zLYlYaCMSjBBJYiEo43vvKjeRoqnLePWLmW866Jq5bCcE4LgrC4KZnRAkgOQbgdDQxl4YkWqjncy/wGfV739KUpe9//////SlNfMNXq9Xv7+97+jxWKxkfsaHmmaZ1qOPR+/HqIyhQQyRKYmQMstBLNNspoAQCzAVAAMRIAgwyjKFOJSYTwLgIAANE4cQ0jy54kwRSxIcwYwwjDEBQaZUYe+5st+nTZjYwgBMNCYYAABpEKmbyOY9Es5Yr23BXe3Nf62jCYDMFhFDlclksiFEUActwLBwDARSkwGJTKYlMOkMxEKTHI9p7XPl+2HO9SxwHANZxjsVmCgCgOMMBAx6AwABKnd6/LB1Gmx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imJi5COJN3rJRJJpJBqAKDYnHy4+vAZKoasmK3qsu2Sk1bWZ6cOnnrUeegX/+5DAqwAYwaNZjOHtsvizqLWHsbSrd2n7Np/rakXH34fH2TNS7SNpVbLfWfOVipb0IglnLTMzMzMlYnfMzMzOwHzPALaDLLJ//+MiUGSKYMlq3iaSIZ62BlBwnGac11mRlSwXYrpkh06lQ1EIezWsf0R9Gxm24NfltiMW9erp3XXsNNbsoWtu1pm2Q6+SRUVra8o64aBY65Va/iw5N+XFV+Ba48oPjvUYK15JA9YgWHipvDLf+EwLryhGFRCOxCD4cCkPf///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+6DAroAwKUkfjD0NgGoM46QxFSD////////////////////////////////////////////////quipoAA2PqyhBKtKX1KZ8MHmyt/6gKHegeFj/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+5DA2wAoYAEuAAAAIAAAJcAAAAT//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+5DA/4AxgAEuAAAAIAAAJcAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=" preload="auto" controls="controls" hidden="true"></audio>
-<audio id="mid" src="data:audio/mp3;base64,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RZPJTtRSDiIVZa1hL6RNutJkXbXVOp+65ZUcfr9YU8JPJVIw1a14Uu5EtCS8arge4tkZHoxDUYryQIXAenU1t6pXEVXq5VLtCTuiqU9IZLWQu5wquEstamMBtPB8W5mRChOZmU7ApVC9P1Tr6hf/+6DAr4AcSaNZrr3ts480avW3vbY1hXk5yiFOjFNCV61BVzWrX15IqmbzqbkIWo+HFXJeztXqBTqvGoDaxvKw1yhSuhRmt3IX5giYS+IDG7ncNv1nDtKnYh0T5KMuFo9NN6tU0eHOkhOyHw6twWoX53IbXsDgTlW/J2koJJKdkjcjaSgGDy4ZhZKSZwRVlgrYq/iz5W97I4nI5aJ4AsAZCdw3h8IYchwQWFWKw6GRwhravfrGX6fV7Oz3oizTOtzeKBCEITSL0wKgkFxM3GRREJFjnSeJaCRTdUSy38bZgZnaG+Vik4VB9ueHiwsLGm2zhZhqvbJb6+iGdr9RvJDhWvfagRHDvNWOGHFFbvnjGVbTvn9Grp31dZxxe/i5YwxRi2Ii5TYX0MvHDkOiWUx1XKi+IfoapEQDTgNE6S4RC8ZGe6ICyNE+JcJLJoAKbckbkbScdFaJiWTEMZFal00rDWdLqjbDWcs5BqTaEkGoNRFPUwTASAkJJ7AShKEo+9k6EonH3snJJEkSnySBEDpNdaMjESRJPaGQlCUJS2hKEoShKPoSSJRaXetMTESSa9VaYk09xolGJitq0ZGRkZdY6JROPrrTkyMnq1ZOT13WVpie1ouXLVtesuMjpdNly572TExJROXNnJiSSaidOSaDVTEw0SiSexWOicfLnjlYCQ7bkIgg1erayUH/+5DAxwAaBaNXrb2Ns0W0ajWGMbaqm2nT5jT6pgSHbarWBCBs/0J9cCltbZIX0qLBFkg4SDJmOjTDUtZExGd/HUaAIW0crUcRN/5W/1KVtAwo//Xhqq+1X/jL6qpUKx/1ebHxv6vs1WZqR+zQ/DCjDNs1X9wI+UBASPpN66qTGFARP///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+6DAvAA23VMljBRtoAAAJcAAAAT///////////////////////////////////////////////////////////////////////////////////7//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+5DA2wAoYAEuAAAAIAAAJcAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=" preload="auto" controls="controls" hidden="true"></audio>
-<audio id="high" src="data:audio/mp3;base64,SUQzAwAAAAAAFgAAAAAAAAAAAAAAAGhiAAAAAAQF6QT/+6DAAAAF8AEuAAAAIBYAItAAAAT///////////////////////////////////////////////////////////////AAIAAHl7QEsQAAGwAAAClmqZVt+q1xWF29IBQKCcVto20c6gr1Gr3973vDZImve9/6Up9fd8R7+kNjV7kfghYSMQ8esW8I+A7gCcA7ATAbguBkRP5Hivj0gPHkTV1AyavmRWOJKwHQBYBUCaD0D0CEApAVAGMNWIeLmQs03M/B6AM4N8caF2YHjI83DvfFIDyJfGKUgPE4aA9Yt4asTchaFzsCGKOPv0p87owPHk0N/HgIeh6vZ379vT5pi2CGCaD0GgoJmNXqBWKyI8pRgiQFY8pSkCGGAHh7QeiIqFCCyAygyi6XU2nE43GnXLzBAIIMvInow4b7DfCGvcdTQxSAOjDjB3MKsGUwdwumov2YBwFgcBYYCIBpaFiD8GMcbzBQEjljDk4cgRvlll1qQ9DudJYsJBm84aADZmnKrILJOzD+Syf6dExnFGgEHPgB5QdtGzMsblLMsb+XAdQWEDSgNQg61w5OAS2LNSEoUDRVt2MNw/VjbKAcO7SgjBnsYOotMKYl1WbUAgJkHaSMbzlmPQxhGcFFhEjWGGGAMZRBfAEhF6k15ewAVAVDXcDPvwJ+HH3geksLfaCqdIBkc+8AOgQQGE3/+5DA2wAZbYsXNJeADVTB6b89kAAdFRc0ABmQGWaSuWsrYASDTaMAOO4QuUTkjsc7Uwww/8DSEOsEwHgOAAt2yWFkTECIpw9T3n7LZRMEDpgv0jyw2HC6z1OmgrKKeE/hz////////////////+XJN/////////////////a18I2SSSWiSSVVaarvzIbXiNEcRIw0xbjMZHMCg9Jm0g9GASBWYBQChgXAnGACAsFATAwHNmDLmCXV0uKYgFF6GPQVEwnnQC1CckIB8vTXPWFzurIXiWrEVVGuH1UsPnzeh4keOmoDJcemZ3dxyjpgg0dvkJZWGNCapdTOG0qnKEN3n3kKjOLiVYzHXX5ssufEVtUresgQ0ujsvMT2seMJkzzxJLRmnaHcOx/WNM/ZRpZjbObvEIeVlrkYyOUp0zVbYrHY+xWry87LfzkCy66qxQ020poo/EbJP////oUhJk2222124WBUwWCMyQDs6weY19HIx1KgaBWYLzsqbsyNdb9Ztdr1FegcwjdeKXB+oZdtmdqtmfvmRWO29hVj86VYgZL/+6DAkIAbcZdPmeYAA2Ozqze68AStqrSiddfbVFhw3ket4DUZT5ndIU+VTuIrIjjFiMkVsVUU5iXqpRVoqYsE/NR2VSwrrZJIKtaXA/LR4eVKunj1enbo92eGjkwjJ2RXqRbZ7yP5FIpo0Czelo3YnI9lWsOKgxFycMFRMCsOpGqrakUkpyOn7AqE2/23rCvbmXTY1tUdYyzK3/C7cvlxamaCxZo80qdADRCc1221116jTLg4PzglszKsBjAUIBoWG5lQBH8a9guPlCB74ymtbWsx2IQNXj5adWM0h8cvHdERmVT0m0PCydmaEJ81XcetsHyhGnUGopHwrrENk5Eip42OqkdlrXEWhMCa5GTH68zIvkBEhno+iLDyel0JVFUrHSerKGlRWgORLHAPUw02D8gFckkAknFCcOJmOv5LYZUYjnIS4P6XB5XVjWHx87Pa9qJp6ontA1QyqcPemiJQ9HCKsRYSiSin0K6SetbZSlYl3NTM3QKDX//Su2qVA4IDpkYMzgwvcJGiZRRfljK2JdHYYHWNp/mmdqlQCv5+dssmI5JzA8KpPi1TccsTD+fC49WQE8+fVMs7CqEWejg1I1gOdkXDtWt7NBTSUYmZnzHSKGR38zarUsqV+rJSDeSCtK5VaUima3rawRoakw+qysUWJeA4tk8F8tvWKzKhj6HdJYSmG+NBgPL/+5DAsIAZrZ9XrrGNoyOz6qXGPbYMaL6aYJ4FPudTRNP8eSXFceHDVK6UW6WzQv1rIpQ2NMvLWnMwItLLvZ/ufv2tPIUkEATGMsAEAJOSNyNpJreTCLQnd9mAAA5RMla5aJ/FbFTL9lkDms0PT9lmdnU4sEkBVzKVXxWhdJZLxmG+VchZvqxyJudIi47dnggSdlhV2kgyxTlSzS6hLo1jpb1IoHNRTqJUHS1nqdZ+PDtMVVkkbC7GcdMy/EOqiKc37E5l+TJ4R0JVSFrLM+TuFVc60MWoyayuT0S8ZMP8IxR+fGlimlCN4hZw1lUsSOxsBdoJ9IQ/HkgFKnlg+EXKsvdV0nUdZTxkWoV0sK/H+XdE5GxYvrPFWcpJfSSyuEzpLQDracbgkySTvEfRRJbltktkbdKA48JgMMnWGIUIlOQaSshSZd1TplbTYxByJbarlsbO+Tp7JldsDJHaEuq4KhbZ1665VjWzv2WChgt53k1OBWxU6W82lyUKcQ9drCiVcQtskcsJvLCcMN4ZZymGYijhnM8WVYP5UQEmJqkVEXn/+6DAqwAcNaNTrj3ts7M0azXHvbaRpYHFIJ4vzVcnMVGHehjMf5sRlM3MyrTjCxNLdZsqe6UOVhO9a3lwfqmDAolFeq2b5jQH+12yJuCyssK2T+SSFRzVxhjjKpHUgPtvl2oi3FvNwlDKXlkKpwS7ZYhKqd3MoxUGeB7HqcI8zMXLKfBykLYTYW08rR/gKJKcsjkjaSgGAaAMEBQ3vHxZeQ8JEWDFX3sXAh51JIK4QgggR8cY6yBs9mGOySqtD3NRp+OzzqxDFArGWqvT62Ww6C+HQdCcVCwXx0qf50vJliwohWPZ+S7n8PvIDp/vK05PMCQugE5NEhpmKSsPDhg8YO0P1t6UscNn5/do3TmbcU2xfJ+9dhhZ0UEHRVtaClHDyJ6OFU/aa98voa+8L9mJNHnf+WxUUhYIlhILg+rBcJ8BbLiJ+ZiFxHcL6ChEcnqak8ruiG8IYmnZYJJTckkkjbbkSQRGaQSnnA2CkWC4Nxa8w5YzEoel22VFQJAkCQJAGAEBoEhSKRShZjGREFQRACAEAIAQRBEUkRMiRNdCQkIWBIEhUGiYmRIs9LIhUFgSBIKilCKRShypRiqQiklIRSKSImRSl7iQiomCwBgBACAECQqQoRShgiFQqCwpBEEQyKSUlJUMtiqKRSCIIgiKg0iRComaWmiRIhUTIkQqERCKRSSinJURClD/+5DAvgAZmaNZrj2Ns1Iz6zWUpbehFJKKSUhQxbirVlJhULAkPSFRE/NIiZWOURCoEmYikU+yUqKWAFfqVVVVnZEYgKDN6MiMXs9CPzYi2MMQ8+0nsAkVdTVoatQVatL5FCqzkYCo1/yxN/4kJ5FsZXi68K73WN6hPn2/b//1rjO//B1/WFv/wre3t8W35Xudb/tmv8F7h9bL17a1vizFG/gxa/5gxd/4fQn1rf+FG8GLW3+Xsz61lMorp1Uyoa4K574TGJKXm3///yujSOplrWGFSFa46YnH////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+6DAswA0maEXLKXtgAAAJcAAAAT///////////////////////////////////////////////////////////////////////////////////z//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+5DA2wAoYAEuAAAAIAAAJcAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=" preload="auto" controls="controls" hidden="true"></audio>
- -->
+    <audio id="mid" src="data:audio/mp3;base64,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RZPJTtRSDiIVZa1hL6RNutJkXbXVOp+65ZUcfr9YU8JPJVIw1a14Uu5EtCS8arge4tkZHoxDUYryQIXAenU1t6pXEVXq5VLtCTuiqU9IZLWQu5wquEstamMBtPB8W5mRChOZmU7ApVC9P1Tr6hf/+6DAr4AcSaNZrr3ts480avW3vbY1hXk5yiFOjFNCV61BVzWrX15IqmbzqbkIWo+HFXJeztXqBTqvGoDaxvKw1yhSuhRmt3IX5giYS+IDG7ncNv1nDtKnYh0T5KMuFo9NN6tU0eHOkhOyHw6twWoX53IbXsDgTlW/J2koJJKdkjcjaSgGDy4ZhZKSZwRVlgrYq/iz5W97I4nI5aJ4AsAZCdw3h8IYchwQWFWKw6GRwhravfrGX6fV7Oz3oizTOtzeKBCEITSL0wKgkFxM3GRREJFjnSeJaCRTdUSy38bZgZnaG+Vik4VB9ueHiwsLGm2zhZhqvbJb6+iGdr9RvJDhWvfagRHDvNWOGHFFbvnjGVbTvn9Grp31dZxxe/i5YwxRi2Ii5TYX0MvHDkOiWUx1XKi+IfoapEQDTgNE6S4RC8ZGe6ICyNE+JcJLJoAKbckbkbScdFaJiWTEMZFal00rDWdLqjbDWcs5BqTaEkGoNRFPUwTASAkJJ7AShKEo+9k6EonH3snJJEkSnySBEDpNdaMjESRJPaGQlCUJS2hKEoShKPoSSJRaXetMTESSa9VaYk09xolGJitq0ZGRkZdY6JROPrrTkyMnq1ZOT13WVpie1ouXLVtesuMjpdNly572TExJROXNnJiSSaidOSaDVTEw0SiSexWOicfLnjlYCQ7bkIgg1erayUH/+5DAxwAaBaNXrb2Ns0W0ajWGMbaqm2nT5jT6pgSHbarWBCBs/0J9cCltbZIX0qLBFkg4SDJmOjTDUtZExGd/HUaAIW0crUcRN/5W/1KVtAwo//Xhqq+1X/jL6qpUKx/1ebHxv6vs1WZqR+zQ/DCjDNs1X9wI+UBASPpN66qTGFARP///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+6DAvAA23VMljBRtoAAAJcAAAAT///////////////////////////////////////////////////////////////////////////////////7//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+5DA2wAoYAEuAAAAIAAAJcAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=" preload="auto" controls="controls" hidden="true"></audio>
+    <audio id="high" src="data:audio/mp3;base64,SUQzAwAAAAAAFgAAAAAAAAAAAAAAAGhiAAAAAAQF6QT/+6DAAAAF8AEuAAAAIBYAItAAAAT///////////////////////////////////////////////////////////////AAIAAHl7QEsQAAGwAAAClmqZVt+q1xWF29IBQKCcVto20c6gr1Gr3973vDZImve9/6Up9fd8R7+kNjV7kfghYSMQ8esW8I+A7gCcA7ATAbguBkRP5Hivj0gPHkTV1AyavmRWOJKwHQBYBUCaD0D0CEApAVAGMNWIeLmQs03M/B6AM4N8caF2YHjI83DvfFIDyJfGKUgPE4aA9Yt4asTchaFzsCGKOPv0p87owPHk0N/HgIeh6vZ379vT5pi2CGCaD0GgoJmNXqBWKyI8pRgiQFY8pSkCGGAHh7QeiIqFCCyAygyi6XU2nE43GnXLzBAIIMvInow4b7DfCGvcdTQxSAOjDjB3MKsGUwdwumov2YBwFgcBYYCIBpaFiD8GMcbzBQEjljDk4cgRvlll1qQ9DudJYsJBm84aADZmnKrILJOzD+Syf6dExnFGgEHPgB5QdtGzMsblLMsb+XAdQWEDSgNQg61w5OAS2LNSEoUDRVt2MNw/VjbKAcO7SgjBnsYOotMKYl1WbUAgJkHaSMbzlmPQxhGcFFhEjWGGGAMZRBfAEhF6k15ewAVAVDXcDPvwJ+HH3geksLfaCqdIBkc+8AOgQQGE3/+5DA2wAZbYsXNJeADVTB6b89kAAdFRc0ABmQGWaSuWsrYASDTaMAOO4QuUTkjsc7Uwww/8DSEOsEwHgOAAt2yWFkTECIpw9T3n7LZRMEDpgv0jyw2HC6z1OmgrKKeE/hz////////////////+XJN/////////////////a18I2SSSWiSSVVaarvzIbXiNEcRIw0xbjMZHMCg9Jm0g9GASBWYBQChgXAnGACAsFATAwHNmDLmCXV0uKYgFF6GPQVEwnnQC1CckIB8vTXPWFzurIXiWrEVVGuH1UsPnzeh4keOmoDJcemZ3dxyjpgg0dvkJZWGNCapdTOG0qnKEN3n3kKjOLiVYzHXX5ssufEVtUresgQ0ujsvMT2seMJkzzxJLRmnaHcOx/WNM/ZRpZjbObvEIeVlrkYyOUp0zVbYrHY+xWry87LfzkCy66qxQ020poo/EbJP////oUhJk2222124WBUwWCMyQDs6weY19HIx1KgaBWYLzsqbsyNdb9Ztdr1FegcwjdeKXB+oZdtmdqtmfvmRWO29hVj86VYgZL/+6DAkIAbcZdPmeYAA2Ozqze68AStqrSiddfbVFhw3ket4DUZT5ndIU+VTuIrIjjFiMkVsVUU5iXqpRVoqYsE/NR2VSwrrZJIKtaXA/LR4eVKunj1enbo92eGjkwjJ2RXqRbZ7yP5FIpo0Czelo3YnI9lWsOKgxFycMFRMCsOpGqrakUkpyOn7AqE2/23rCvbmXTY1tUdYyzK3/C7cvlxamaCxZo80qdADRCc1221116jTLg4PzglszKsBjAUIBoWG5lQBH8a9guPlCB74ymtbWsx2IQNXj5adWM0h8cvHdERmVT0m0PCydmaEJ81XcetsHyhGnUGopHwrrENk5Eip42OqkdlrXEWhMCa5GTH68zIvkBEhno+iLDyel0JVFUrHSerKGlRWgORLHAPUw02D8gFckkAknFCcOJmOv5LYZUYjnIS4P6XB5XVjWHx87Pa9qJp6ontA1QyqcPemiJQ9HCKsRYSiSin0K6SetbZSlYl3NTM3QKDX//Su2qVA4IDpkYMzgwvcJGiZRRfljK2JdHYYHWNp/mmdqlQCv5+dssmI5JzA8KpPi1TccsTD+fC49WQE8+fVMs7CqEWejg1I1gOdkXDtWt7NBTSUYmZnzHSKGR38zarUsqV+rJSDeSCtK5VaUima3rawRoakw+qysUWJeA4tk8F8tvWKzKhj6HdJYSmG+NBgPL/+5DAsIAZrZ9XrrGNoyOz6qXGPbYMaL6aYJ4FPudTRNP8eSXFceHDVK6UW6WzQv1rIpQ2NMvLWnMwItLLvZ/ufv2tPIUkEATGMsAEAJOSNyNpJreTCLQnd9mAAA5RMla5aJ/FbFTL9lkDms0PT9lmdnU4sEkBVzKVXxWhdJZLxmG+VchZvqxyJudIi47dnggSdlhV2kgyxTlSzS6hLo1jpb1IoHNRTqJUHS1nqdZ+PDtMVVkkbC7GcdMy/EOqiKc37E5l+TJ4R0JVSFrLM+TuFVc60MWoyayuT0S8ZMP8IxR+fGlimlCN4hZw1lUsSOxsBdoJ9IQ/HkgFKnlg+EXKsvdV0nUdZTxkWoV0sK/H+XdE5GxYvrPFWcpJfSSyuEzpLQDracbgkySTvEfRRJbltktkbdKA48JgMMnWGIUIlOQaSshSZd1TplbTYxByJbarlsbO+Tp7JldsDJHaEuq4KhbZ1665VjWzv2WChgt53k1OBWxU6W82lyUKcQ9drCiVcQtskcsJvLCcMN4ZZymGYijhnM8WVYP5UQEmJqkVEXn/+6DAqwAcNaNTrj3ts7M0azXHvbaRpYHFIJ4vzVcnMVGHehjMf5sRlM3MyrTjCxNLdZsqe6UOVhO9a3lwfqmDAolFeq2b5jQH+12yJuCyssK2T+SSFRzVxhjjKpHUgPtvl2oi3FvNwlDKXlkKpwS7ZYhKqd3MoxUGeB7HqcI8zMXLKfBykLYTYW08rR/gKJKcsjkjaSgGAaAMEBQ3vHxZeQ8JEWDFX3sXAh51JIK4QgggR8cY6yBs9mGOySqtD3NRp+OzzqxDFArGWqvT62Ww6C+HQdCcVCwXx0qf50vJliwohWPZ+S7n8PvIDp/vK05PMCQugE5NEhpmKSsPDhg8YO0P1t6UscNn5/do3TmbcU2xfJ+9dhhZ0UEHRVtaClHDyJ6OFU/aa98voa+8L9mJNHnf+WxUUhYIlhILg+rBcJ8BbLiJ+ZiFxHcL6ChEcnqak8ruiG8IYmnZYJJTckkkjbbkSQRGaQSnnA2CkWC4Nxa8w5YzEoel22VFQJAkCQJAGAEBoEhSKRShZjGREFQRACAEAIAQRBEUkRMiRNdCQkIWBIEhUGiYmRIs9LIhUFgSBIKilCKRShypRiqQiklIRSKSImRSl7iQiomCwBgBACAECQqQoRShgiFQqCwpBEEQyKSUlJUMtiqKRSCIIgiKg0iRComaWmiRIhUTIkQqERCKRSSinJURClD/+5DAvgAZmaNZrj2Ns1Iz6zWUpbehFJKKSUhQxbirVlJhULAkPSFRE/NIiZWOURCoEmYikU+yUqKWAFfqVVVVnZEYgKDN6MiMXs9CPzYi2MMQ8+0nsAkVdTVoatQVatL5FCqzkYCo1/yxN/4kJ5FsZXi68K73WN6hPn2/b//1rjO//B1/WFv/wre3t8W35Xudb/tmv8F7h9bL17a1vizFG/gxa/5gxd/4fQn1rf+FG8GLW3+Xsz61lMorp1Uyoa4K574TGJKXm3///yujSOplrWGFSFa46YnH////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+6DAswA0maEXLKXtgAAAJcAAAAT///////////////////////////////////////////////////////////////////////////////////z//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+5DA2wAoYAEuAAAAIAAAJcAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=" preload="auto" controls="controls" hidden="true"></audio>
+    -->
     <canvas class="visualizer" style="display: none"></canvas>
     <div
       id="source_float_div"
@@ -7267,39 +7258,41 @@
     <script src="assets/music_score_editor/js/element-ui.js"></script>
     <script src="assets/music_score_editor/js/popper.min.js"></script>
     <script src="assets/music_score_editor/js/bootstrap.min.js"></script>
-    <script src="assets/music_score_editor/sweetalert/sweetalert.min.js?v=1.0.1"></script>
-    <script src="assets/music_score_editor/sweetalert/sweetalert.ext.js?v=1.0.1"></script>
+    <script src="assets/music_score_editor/sweetalert/sweetalert.min.js?v=1.0.2"></script>
+    <script src="assets/music_score_editor/sweetalert/sweetalert.ext.js?v=1.0.2"></script>
     <script src="assets/music_score_editor/js/abc2web.js"></script>
-    <script src="assets/music_score_editor/js/util.js?v=1.0.1" type="text/javascript"></script>
+    <script src="assets/music_score_editor/js/util.js?v=1.0.2" type="text/javascript"></script>
     
     <!-- 框选 -->
-    <script src="assets/music_score_editor/js/abc_select.js?v=1.0.1" type="text/javascript"></script>
+    <script src="assets/music_score_editor/js/abc_select.js?v=1.0.2" type="text/javascript"></script>
     <!-- 上传组件 begin -->
-    <script src="assets/music_score_editor/js/vue-upload-component.js?v=1.0.1"></script>
+    <script src="assets/music_score_editor/js/vue-upload-component.js?v=1.0.2"></script>
     <!-- 上传组件 end -->
     <script type="text/javascript" src="assets/music_score_editor/musicform/js/controller.js"></script>
-    <script src="assets/music_score_editor/js/abc_menu_config.js?v=1.0.1"></script>
-    <script src="assets/music_score_editor/js/pop.js?v=1.0.1"></script>
-    <script src="assets/music_score_editor/js/piano.js?v=1.0.1" type="text/javascript"></script>
+    <script src="assets/music_score_editor/js/abc_menu_config.js?v=1.0.2"></script>
+    <script src="assets/music_score_editor/js/pop.js?v=1.0.2"></script>
+
+    <script src="assets/music_score_editor/js/piano.js?v=1.0.2" type="text/javascript"></script>
+
     <script src="assets/music_score_editor/js/interact.min.js"></script>
-    <script src="assets/music_score_editor/js/staff2num-splnum.js?v=1.0.1" type="text/javascript"></script>
-    <script src="assets/music_score_editor/js/edit-1-splnum.js?v=1.0.1" onload="setAbcPlayWay(1, true)" type="text/javascript"></script>
+    <script src="assets/music_score_editor/js/staff2num-splnum.js?v=1.0.2" type="text/javascript"></script>
+    <script src="assets/music_score_editor/js/edit-1-splnum.js?v=1.0.2" onload="setAbcPlayWay(1, true)" type="text/javascript"></script>
     <script src="assets/music_score_editor/js/panzoom.min.js"></script>
-    <script src="assets/music_score_editor/js/abc2svg-1-splnum.js?v=1.0.1" type="text/javascript"></script>
+    <script src="assets/music_score_editor/js/abc2svg-1-splnum.js?v=1.0.2" type="text/javascript"></script>
     <script src="assets/music_score_editor/js/notes.js" type="text/javascript"></script>
-    <script src="assets/music_score_editor/js/saveSvgAsPng.js?v=1.0.1"></script>
-    <script src="assets/music_score_editor/js/webmidi-editor.js?v=1.0.1"></script>
+    <script src="assets/music_score_editor/js/saveSvgAsPng.js?v=1.0.2"></script>
+    <script src="assets/music_score_editor/js/webmidi-editor.js?v=1.0.2"></script>
     <script src="assets/music_score_editor/js/staff.js"></script>
-    <script src="assets/music_score_editor/js/myabc_editor.js?v=1.0.1"></script>
-    <script src="assets/music_score_editor/js/abc-editor.js?v=1.0.1"></script>
-    <script src="assets/music_score_editor/js/voicePart.js?v=1.0.1"></script>
+    <script src="assets/music_score_editor/js/myabc_editor.js?v=1.0.2"></script>
+    <script src="assets/music_score_editor/js/abc-editor.js?v=1.0.2"></script>
+    <script src="assets/music_score_editor/js/voicePart.js?v=1.0.2"></script>
     <script src="assets/music_score_editor/js/jscolor/jscolor.js"></script>
     <script src="assets/music_score_editor/js/canvg.js"></script>
     <script src="assets/music_score_editor/js/jspdf/jsPdf.debug.js"></script>
     <script src="assets/music_score_editor/js/html2canvas.js"></script>
-    <script src="assets/music_score_editor/js/graph-editor.js?v=1.0.1"></script>
-    <script src="assets/music_score_editor/js/piano_improvisation.js?v=1.0.1"></script>
-    <script src="assets/music_score_editor/js/myabc_plus.js?v=1.0.1"></script>
+    <script src="assets/music_score_editor/js/graph-editor.js?v=1.0.2"></script>
+    <script src="assets/music_score_editor/js/piano_improvisation.js?v=1.0.2"></script>
+    <script src="assets/music_score_editor/js/myabc_plus.js?v=1.0.2"></script>
     <script src="assets/music_score_editor/js/sing_visual_ug.js"></script>
     <!-- 颜色选择器组件 -->
     <script src="assets/music_score_editor/spectrum-2.0.8/spectrum.min.js"></script>
@@ -7334,10 +7327,7 @@
     <script type="text/javascript" src="assets/music_score_editor/js/base64.js"></script>
     <script type="text/javascript" src="assets/music_score_editor/js/plupload.full.min.js"></script>
     <script type="text/javascript" src="assets/music_score_editor/js/upload.js"></script>
-    
     <!-- <script src="soundfont-player-master/dist/soundfont-player.js"></script> -->
     
-
-
   </body>
 </html>

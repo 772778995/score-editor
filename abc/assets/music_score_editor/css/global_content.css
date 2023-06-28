@@ -1,20 +1,20 @@
-/* æ–°æ ·å¼ --- beg */
+/*  --- beg */
 .scroll{
 	overflow: auto;
 }
 .hide{
 	display: none !important;
 }
-.scroll::-webkit-scrollbar {/*æ»šåŠ¨æ¡æ•´ä½“æ ·å¼*/
-     width: 6px;     /*é«˜å®½åˆ†åˆ«å¯¹åº”æ¨ªç«–æ»šåŠ¨æ¡çš„å°ºå¯¸*/
+.scroll::-webkit-scrollbar {/**/
+     width: 6px;     /* */
      height: 6px;
  }
- .scroll::-webkit-scrollbar-thumb {/*æ»šåŠ¨æ¡é‡Œé¢å°æ–¹å—*/
+ .scroll::-webkit-scrollbar-thumb {/* */
      border-radius: 5px;
      -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
      background: rgba(0,0,0,0.2);
  }
- .scroll::-webkit-scrollbar-track {/*æ»šåŠ¨æ¡é‡Œé¢è½¨é“*/
+ .scroll::-webkit-scrollbar-track {/* */
      -webkit-box-shadow: inset 0 0 5px #fff;
      border-radius: 5;
      background:rgba(0,0,0,0.2);
@@ -352,61 +352,17 @@
 	background:none;
 }
 
-.keyboard-bar{
-    width: 100%;
-	height: 30px;
-    border-top-right-radius: 5px;
-    border-top-left-radius: 5px;
-    background-color: #fff;
-    position: absolute;
-    top: -30px;
-    border: 1px solid #ddd;
-    border-bottom: none;
-    box-sizing: border-box;
-}
-.keyboard-bar span{
-	display: inline-block;	
-}
-.keyboard-bar span{
-	line-height: 30px;
-	padding-left: 10px;
-	font-size: 14px;
-	color: #a0a0a0;
-}
-.keyboard-bar .minimize,
-.keyboard-bar .restore,
-.keyboard-bar .close{
-	width: 30px;
-	height: 30px;
-	float:right;
-}
-
-.keyboard-bar .minimize{
-	background: url("../images/icon_minimize.png") no-repeat center center;
-		background-size: 15px;
-}
-
-.keyboard-bar .restore{
-	background: url("../images/icon_restore.png") no-repeat center center;
-		background-size: 15px;
-}
-
-.keyboard-bar .close{
-	background: url("../images/icon_close.png") no-repeat center center;
-	background-size: 15px;
-	position: static;
-}
-
-.keyboard-bar .minimize:active,
-.keyboard-bar .restore:active{
-	background-color: #F1F3F0;
-}
+/* keyboard */
 
 .right-bottom{
 	padding-bottom: 30px;
 }
 
-/* æ–°æ ·å¼ --- end */
+.key-note-black{
+	display: none;
+}
+
+/* --- end */
 .save-server{
 border: 1px solid #999;
 }
