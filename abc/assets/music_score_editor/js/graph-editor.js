@@ -7560,7 +7560,7 @@ function genBarDeco(val, insert_content, position, type, index) {
     if (index == 0) {
       var M_val = val;
       M_val = M_val["replace"](/[\[\]]/g, "")["replace"](/M:/, "")["replace"](/\s/g, "");
-      console.log('genBarDeco', M_val, $("#M_type").val());
+      // console.log('genBarDeco', M_val, $("#M_type").val());
       $("#M_type").val("1");
       if (M_val == "C|") {
         M_val = "2/2";
@@ -7649,17 +7649,17 @@ function genBarDeco(val, insert_content, position, type, index) {
     $("#K")["change"]();
     return;
   }
-  var _0x18957 = $("svg[type='rectbar']");
+  var rectbar = $("svg[type='rectbar']");
   var abc_content = $("#source")["val"]();
   if (position == "preReplace" || position == "preInsert") {
     index--;
   }
-  if (_0x18957["length"] > 0) {
+  if (rectbar["length"] > 0) {
     var LinesInfo = getNodesInfo(abc_content);
     var new_content = "";
     for (
-      var i = 0, _0x1881C = LinesInfo["length"];
-      i < _0x1881C;
+      var i = 0;
+      i < LinesInfo.length;
       i++
     ) {
       var LineInfo = LinesInfo[i];
@@ -7669,12 +7669,12 @@ function genBarDeco(val, insert_content, position, type, index) {
       if (LineInfo["type"] == "note") {
         var _0x18876 = false;
         for (
-          var _0x15D0B = 0;
-          _0x15D0B < LineInfo["nodes"]["length"];
-          _0x15D0B++
+          var j = 0;
+          j < LineInfo["nodes"]["length"];
+          j++
         ) {
-          // 这，就是调号！
-          var nodeInfo = LineInfo["nodes"][_0x15D0B];
+          // 这就是调号
+          var nodeInfo = LineInfo["nodes"][j];
           if (nodeInfo["nodeIndex"] == index) {
             _0x18876 = true;
             if (position == "afterReplace" || position == "preReplace") {

@@ -7130,7 +7130,7 @@ function getNodesInfo(content) {
   var lines = getLinesInfo(content);
   var startFlag = false; //标记开始谱子内容
   var nodeBarReg =
-    /(\|[1-9\.]+)|(\|\[[1-9\.]+)|(:\|\|:)|(:\|:)|(:\|)|(::)|(\|:)|(\|\|)|(\|\])|(\|)/g;
+    /(\.\|)|(\|[1-9\.]+)|(\|\[[1-9\.]+)|(:\|\|:)|(:\|:)|(:\|)|(::)|(\|:)|(\|\|)|(\|\])|(\|)/g;
   var nodeBarRegOther = /(\|)/g;
   var reg = null;
   var nodeIndex = 0;
@@ -7177,6 +7177,7 @@ function getNodesInfo(content) {
         nodeObj.nodeStr = lineStr.substring(lastIndex, node.index) + node[0];
         if (
           nodeObj.nodeStr.trim() == "|" ||
+          nodeObj.nodeStr.trim() == ".|" ||
           nodeObj.nodeStr.trim() == "||" ||
           nodeObj.nodeStr.trim() == "|:" ||
           nodeObj.nodeStr.trim() == ":|" ||

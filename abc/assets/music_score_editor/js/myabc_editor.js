@@ -6968,6 +6968,7 @@ function bindAllEvent() {
           // 小节线
           if (
             selectText == "|" ||
+            selectText == ".|" ||
             selectText == "|:" ||
             selectText == ":|" ||
             selectText == ":||:" ||
