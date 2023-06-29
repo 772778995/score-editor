@@ -2337,7 +2337,7 @@ var showSplNumber = function(_0x6E73, _0x6DAF, _0x6DE0, _0x6F06, _0x6F37, _0x6ED
                 _0x8414 = parseInt(_0x859C["crdHei"] / (chordHei - 4))
             }
         };
-        console.log('drawAllBar:', _0x7DF4["bar_type"], splSy(_0x887B), _0x831F, _0x8350, chordHei * _0x8414, _0x7DF4);
+        // console.log('drawAllBar:', _0x7DF4["bar_type"], splSy(_0x887B), _0x831F, _0x8350, chordHei * _0x8414, _0x7DF4);
         drawAllBar(_0x7DF4["bar_type"], splSy(_0x887B), _0x831F, _0x8350, chordHei * _0x8414, _0x7DF4);
         beamIns["refreshBeat"]();
         return

@@ -4099,34 +4099,6 @@ var content_vue = new Vue({
               title: "连线",
               fn: lineTo
             },
-            {
-              url: "assets/music_score_editor/img/notepanel/linemark (11).png",
-              value: "!rit!",
-              title: "渐慢",
-              class: "cmenu",
-              position: "before",
-            },
-            {
-              url: "assets/music_score_editor/img/notepanel/linemark (12).png",
-              value: "!accel!",
-              title: "渐快",
-              class: "cmenu",
-              position: "before",
-            },
-            {
-              url: "assets/music_score_editor/img/notepanel/linemark (13).png",
-              value: "!cresc.!",
-              title: "渐强",
-              class: "cmenu",
-              position: "before",
-            },
-            {
-              url: "assets/music_score_editor/img/notepanel/linemark (14).png",
-              value: "!dim.!",
-              title: "渐弱",
-              class: "cmenu",
-              position: "before",
-            },
           ],
           isShow: !0,
         },
@@ -4490,15 +4462,7 @@ var content_vue = new Vue({
               value: ".",
               class: "cmenu",
               position: "before",
-              fn: () => {
-                const info = getSelectAbcCodeInfo()
-                if (!info) return
-                const { head, tail, txt } = info
-                keepSelectNote(() => {
-                  $('#source').val(`${head.replace(/\.$/, '')}.${txt}${tail}`)
-                  abc_change()
-                })
-              },
+              fn: () => changeAbc((txt) => `.${txt}`),
             },
             {
               title: '重音',
@@ -4685,6 +4649,58 @@ var content_vue = new Vue({
               class: "opacity-0 pointer-events-none h-full",
             },
           ],
+        },
+        {
+          canClick: false,
+          code: "others_symbol_series",
+          cols: 3,
+          name: "其他符号",
+          imgList: [
+            {
+              url: "assets/music_score_editor/img/notepanel/other (5).png",
+              value: "!cresc.!",
+              title: "渐强",
+              class: "cmenu",
+              position: "before",
+            },
+            {
+              url: "assets/music_score_editor/img/notepanel/other (4).png",
+              value: "!dim.!",
+              title: "渐弱",
+              class: "cmenu",
+              position: "before",
+            },
+            {
+              url: "assets/music_score_editor/img/notepanel/other (3).png",
+              value: "!rit!",
+              title: "渐慢",
+              class: "cmenu",
+              position: "before",
+            },
+            {
+              url: "assets/music_score_editor/img/notepanel/other (2).png",
+              value: "!accel!",
+              title: "渐快",
+              class: "cmenu",
+              position: "before",
+            },
+            {
+              url: "assets/music_score_editor/img/notepanel/other (0).png",
+              value: "!lb!",
+              title: "",
+              class: "cmenu",
+              position: "before",
+            },
+            {
+              url: "assets/music_score_editor/img/notepanel/other (1).png",
+              value: "!rbl!",
+              title: "",
+              class: "cmenu",
+              position: "before",
+            },
+          ],
+          isShow: !1,
+          isExpand: !1,
         },
       ],
       foldLine: {
@@ -5822,7 +5838,7 @@ var content_vue = new Vue({
         Numpad0: 15,
         NumpadDecimal: 16,
       }[code];
-      console.log(123123);
+      console.log('emitNumKeybordFn', code);
       if (i === undefined) return;
       const { page } = this.m.numberKeypad;
       let key = "staffList";
@@ -6265,19 +6281,77 @@ var content_vue = new Vue({
           this.m.newScore.scoreOpts[key] = scoreOpts[key];
         }
       }
-
+      // 
+      var d = { ...this.m.newScore.scoreOpts };
+      if(d.musicType=='easy'){
+        if(d.rows>4){
+          d.rows = 4;
+        }
+        if(d.rowBars>4){
+          d.rows = 4;
+        }
+      }else{
+        if(d.rows>4){
+          d.rows = 4;
+        }
+        if(d.rowBars>15){
+          d.rows = 15;
+        }
+      }
       this.$refs.previewIframeRef?.contentWindow.postMessage(
-        this.m.newScore.scoreOpts,
+        d,
         "*"
       );
     },
     "m.newScore.scoreOpts": {
       handler(val) {
-        this.$refs.previewIframeRef?.contentWindow.postMessage(val, "*");
+        var d = { ...val };
+        if(d.musicType=='easy'){
+          if(d.rows>4){
+            d.rows = 4;
+          }
+          if(d.rowBars>4){
+            d.rows = 4;
+          }
+        }else{
+          if(d.rows>4){
+            d.rows = 4;
+          }
+          if(d.rowBars>15){
+            d.rows = 15;
+          }
+        }
+        this.$refs.previewIframeRef?.contentWindow.postMessage(d, "*");
       },
       deep: true,
     },
+    "m.newScore.scoreOpts.rows"(num) {
+      if(num>30){
+        alert('行数最大30');
+        setTimeout(()=>{
+          this.m.newScore.scoreOpts.rows = 30;
+        }, 200);
+      }
+      if(num<1){
+        alert('行数最小1');
+        setTimeout(()=>{
+          this.m.newScore.scoreOpts.rows = 1;
+        }, 200);
+      }
+    },
     "m.newScore.scoreOpts.rowBars"(num) {
+      if(num>88){
+        alert('小节最大88行');
+        setTimeout(()=>{
+          this.m.newScore.scoreOpts.rowBars = 88;
+        }, 200);
+      }
+      if(num<1){
+        alert('小节最小1行');
+        setTimeout(()=>{
+          this.m.newScore.scoreOpts.rowBars = 1;
+        }, 200);
+      }
       this.m.foldLine.line = num;
     },
     'm.foldLine.show'(show) {
