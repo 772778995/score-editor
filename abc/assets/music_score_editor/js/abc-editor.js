@@ -7030,10 +7030,12 @@ const getBarList = ({ index: vocalIndex, barListStr, start: vocalStart }) => {
     isExtend: true,
     change: getChangeStrFn(lastMeterStrStart, lastMeterStrEnd),
   };
+  // console.log('barList barListStr', barListStr);
   const barList = barListStr
     .match(/[^\|]+(?:\|\||\|\]|:\|\|:|:\||\|)\$*/g)
     .map((barStr) => {
-      const barLineStr = barStr.match(/\|\||\|\]|:\|\|:|:\||\|/)[0];
+      // console.log('barList barStr', barStr);
+      const barLineStr = barStr.match(/\|\||\|\]|:\|\|:|:\||\||\.\|/)[0];
       barStr = barStr.replace(/\|\||\|\]|:\|\|:|:\||\|/, '')
       const barStrStart = barListStr.indexOf(barStr) + vocalStart;
       const barStrEnd = barStrStart + barStr.length
@@ -7074,7 +7076,7 @@ const getBarList = ({ index: vocalIndex, barListStr, start: vocalStart }) => {
       //   return str;
       // };
 
-      barListStr = barListStr.replace(barStr, "操".repeat(barStr.length));
+      // barListStr = barListStr.replace(barStr, "操".repeat(barStr.length));
       return {
         vocalIndex,
         barStr,
@@ -7086,6 +7088,7 @@ const getBarList = ({ index: vocalIndex, barListStr, start: vocalStart }) => {
         isBr: barStr.includes("$"),
       };
     });
+    // console.log('barList', barList);
   return barList;
 };
 

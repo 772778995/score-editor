@@ -688,8 +688,8 @@ function drawAllBar(_0x6FFB, _0x7431, _0x831F, _0x8350, _0x6CEB, _0x6D7E) {
     var _0x948A = 0,
         _0x9428 = 24,
         _0x9459 = 0;
-    if ("|" == _0x6FFB || "||" == _0x6FFB || /\|\d/g ["test"](_0x6FFB)) {
-        drawIns["drawBar"](_0x7431, _0x831F, _0x8350, 1.8, _0x6CEB);
+    if ("|" == _0x6FFB || ".|" == _0x6FFB ||  "||" == _0x6FFB || /\|\d/g ["test"](_0x6FFB)) {
+        drawIns["drawBar"](_0x7431, _0x831F, _0x8350, 1.8, _0x6CEB, ".|" == _0x6FFB);
         if (singleline && bar_visible[_0x6D7E["st"]] == 1 && bar_visible[_0x6D7E["st"]] < max_st_nodenum) {
             var _0x94BB = _0x6D7E["ts_prev"];
             var _0x94EC = 0;
@@ -1106,10 +1106,10 @@ DrawUtil["prototype"] = {
         abc["out_svg"]("d=\"m1,1 c" + ("b" == _0x6E73 ? -1 : 1) + "," + _0x73CF + " 1," + _0x73CF + " " + ("b" == _0x6E73 ? -_0x739E + 2 : _0x739E) + "," + _0x73CF + "\"/>");
         abc["out_svg"]("</g>")
     },
-    drawBar: function(_0x7431, _0x6F06, _0x6F37, _0x7400, _0x6CEB) {
-        abc["out_svg"]("<path class=\"splnum stroke\" transform=\"translate(0," + _0x7431 + ")\" stroke-width=\"" + _0x7400 + "\"");
-        abc["out_svg"](" d=\"m" + _0x6F06 + "," + (_0x6F37 + bar_height - (bar_height - 24) * 0.5) + "v-" + (bar_height + (_0x6CEB || 0)) + "\"/>");
-        splBarHeight = bar_height + (_0x6CEB || 0)
+    drawBar: function(y, x2, y2, w, h, d) {
+        abc["out_svg"]("<path class=\"splnum stroke\" transform=\"translate(0," + y + ")\" " + (d?"stroke-dasharray=\"5,5\"":"") + " stroke-width=\"" + w + "\"");
+        abc["out_svg"](" d=\"m" + x2 + "," + (y2 + bar_height - (bar_height - 24) * 0.5) + "v-" + (bar_height + (h || 0)) + "\"/>");
+        splBarHeight = bar_height + (h || 0)
     },
     drawBracket: function(_0x7431, _0x6F06, _0x6F37, _0x6CEB) {
         abc["out_svg"]("<path type=\"bracket\"  transform=\"translate(0," + _0x7431 + ")\" class=\"fill\"\x0A\x09d=\"m" + _0x6F06["toFixed"](2) + " " + _0x6F37["toFixed"](2) + "\x0A\x09c10.5 1 12 -4.5 12 -3.5c0 1 -3.5 5.5 -8.5 5.5\x0A\x09v" + _0x6CEB["toFixed"](2) + "\x0A\x09c5 0 8.5 4.5 8.5 5.5c0 1 -1.5 -4.5 -12 -3.5\"/>\x0A")
@@ -2337,6 +2337,7 @@ var showSplNumber = function(_0x6E73, _0x6DAF, _0x6DE0, _0x6F06, _0x6F37, _0x6ED
                 _0x8414 = parseInt(_0x859C["crdHei"] / (chordHei - 4))
             }
         };
+        console.log('drawAllBar:', _0x7DF4["bar_type"], splSy(_0x887B), _0x831F, _0x8350, chordHei * _0x8414, _0x7DF4);
         drawAllBar(_0x7DF4["bar_type"], splSy(_0x887B), _0x831F, _0x8350, chordHei * _0x8414, _0x7DF4);
         beamIns["refreshBeat"]();
         return

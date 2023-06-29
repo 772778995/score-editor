@@ -3890,6 +3890,7 @@ abc2svg = {
       return bar_type;
     }
     function draw_bar(s, bot, h) {
+      // console.log('draw_bar', s);
       var i,
         s2,
         yb,
@@ -14466,6 +14467,10 @@ abc2svg = {
         glovar.new_nbar = 0;
       }
       bar_type = line.char();
+      // console.log('bar_type', line, bar_type, line.buffer[line.index-1]);
+      if(line.index-1 > -1 && typeof line.buffer[line.index-1] != 'undefined' && line.buffer[line.index-1]=='.'){
+        c = bar_type + '.'; // 小节虚线
+      }
       while (1) {
         c = line.next_char();
         switch (c) {
