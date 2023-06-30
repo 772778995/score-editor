@@ -1300,6 +1300,9 @@ function svgMouseDown(_0x93C6) {
   if (graph_update) {
     graphMouseDownHandle(_0x93C6);
     if ($(".selected_text")["length"] > 0 || $(".selected_path")["length"] > 0) {
+      console.log('点中音符')
+      console.log('停止播放')
+      mystop(); // 停止播放
       if (musicType == 2) {
         var _0x8786 = getSelectText("source");
         if (_0x8786 == "") {
