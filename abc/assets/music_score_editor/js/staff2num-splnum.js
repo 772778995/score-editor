@@ -1186,10 +1186,10 @@ DrawUtil["prototype"] = {
                 if (_0x7588[_0x6D1C]["name"] == "dot") {
                     var _0x78C9 = new Object();
                     _0x78C9["func"] = 0;
-                    _0x78C9["glyph"] = "wedge";
+                    _0x78C9["glyph"] = 'dot'; // "wedge";
                     _0x78C9["h"] = 7;
-                    _0x78C9["name"] = "wedge";
-                    _0x78C9["wl"] = 3;
+                    _0x78C9["name"] = 'dot'; // "wedge";
+                    _0x78C9["wl"] = 10; // 3;
                     _0x78C9["wr"] = 3;
                     xygl(_0x761B + _0x78C9["wl"] / 2, _0x6F37 - abc["sh"](_0x77D4), _0x78C9, 1, null, _0x6D7E);
                     return

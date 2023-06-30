@@ -4825,13 +4825,17 @@ function delSelectDeco() {
             var istart = $(selectDecoInfo)["attr"]("istart");
             var sym_data = syms[istart];
             if (sym_data) {
-              var dd = getA_ddInfo(sym_data, type);
-              console.log(dd, istart);
+              if(type=='dot'){
+                var dd = [sym_data['curr_dd']];
+              }else{
+                var dd = getA_ddInfo(sym_data, type);
+              }
+              // console.log(dd, istart, type);
               if (dd["length"] > 0) {
                 var d = dd[0];
                 // abc_content_temp_p1 = abc_content["substring"](0, d["istart"]) + abc_content["substring"](d["iend"]);
                 abc_content_temp_p1 = abc_content["substring"](0, istart-(d["iend"]-d["istart"])) + abc_content["substring"](istart);
-                console.log(abc_content_temp_p1);
+                // console.log(abc_content_temp_p1);
                 abc_content_temp_p1 = delDecoPosInfo(abc_content_temp_p1, syms[istart], type);
               }
             }
