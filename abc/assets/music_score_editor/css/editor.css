@@ -1922,9 +1922,6 @@ label.file-uploads{
   transform: translate(-50%, -50%);
 }
 
-/*
-	file ç»„ä»¶
-*/
 /* #target:not(.caonina) {
 	cursor: default !important;
 } */
@@ -1935,4 +1932,8 @@ label.file-uploads{
 
 #target.cbe:not(.caonima) {
 	cursor: url("../img/blue.png"), auto !important;
+}
+
+.t_key_box .absolute {
+	width: 100%;
 }
