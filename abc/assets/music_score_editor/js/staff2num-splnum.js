@@ -2473,6 +2473,7 @@ function getDimOrCrescMatch() {
             for (var _0x6D1C = 0; _0x6D1C < _0x7588["length"]; _0x6D1C++) {
                 var _0xABB3 = _0x7588[_0x6D1C];
                 if (_0xABB3["glyph"] == "dim" || _0xABB3["glyph"] == "cresc") {
+                    console.log('crescword:: ');
                     var _0x9333 = new Object();
                     if (_0xABB3["dd_en"]) {
                         _0x9333["type"] = _0xABB3["glyph"];

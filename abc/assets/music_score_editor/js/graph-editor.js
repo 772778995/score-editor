@@ -2728,6 +2728,7 @@ function findNearObjByType(_0x16062, _0x1792B, _0x16008, _0x16035, _0x1862D) {
   return _0x17B1A;
 }
 function findNearDeco(_0x16062, _0x1792B, _0x16008, _0x16035) {
+  console.log('findNearDeco');
   var _0x17B1A = false;
   $(_0x1792B)
     ["find"]("[cat='decos']")
@@ -2754,6 +2755,8 @@ function findNearDeco(_0x16062, _0x1792B, _0x16008, _0x16035) {
             (musicType == 2 && type == "snap") ||
             (musicType == 2 && type == "trl") ||
             (musicType == 2 && type == "rit") ||
+            (musicType == 2 && type == "crescword") ||
+            (musicType == 2 && type == "dimword") ||
             (musicType == 2 && type == "accel") ||
             (musicType == 2 && type == "sphr") ||
             (musicType == 2 && type == "kew1") ||
