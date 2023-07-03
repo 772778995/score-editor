@@ -3544,6 +3544,7 @@ var content_vue = new Vue({
           .map((v, i) => ({ txt: i + 1 + "", val: i + 1 + "" })),
         isBeatNoteList2Show: false,
         beatNoteList2: ["2", "4", "8", "16"].map((i) => ({ txt: i, val: i })),
+        beatNoteList3: ["2", "4", "8", "16"].map((i) => ({ txt: i + '分音符', val: i })),
         speedNoteList: [
           { val: "4/4", img: "assets/music_score_editor/img/note1.png" },
           { val: "2/4", img: "assets/music_score_editor/img/note2.png" },

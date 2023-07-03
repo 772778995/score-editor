@@ -998,7 +998,7 @@ function findNearInfo(argAAA, argBBB, argCCC) {
     }
   }
   if (dragObj != null) {
-    console["log"]($(dragObj)["attr"]("type"));
+    // console["log"]($(dragObj)["attr"]("type"));
     if ($(dragObj)["attr"]("type") == "linkclef") {
       return;
     }

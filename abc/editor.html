@@ -890,10 +890,10 @@
                 </div>
               </div>
               <div class="items-center flex duration-300 mt-4" :class="{ 'pointer-events-none opacity-50': !m.newScore.scoreOpts.isWeak }">
-                <div>时值：</div>
-                <number-input v-model="m.newScore.scoreOpts.weakBarTop" :min="1" style="width: 64px; height: 28px;"></number-input>
+                <select-input v-model="m.newScore.scoreOpts.weakBarBot" :list="m.newScore.beatNoteList3" style="width: 118px; height: 28px; z-index: 52;"></select-input>
                 <div class="mx-1.5">/</div>
-                <select-input v-model="m.newScore.scoreOpts.weakBarBot" :list="m.newScore.beatNoteList2" style="width: 64px; height: 28px; z-index: 52;"></select-input>
+                <number-input v-model="m.newScore.scoreOpts.weakBarTop" :min="1" style="width: 64px; height: 28px;"></number-input>
+                <div style="margin-left: 3px;">个</div>
               </div>
             </div>
 
@@ -3765,7 +3765,7 @@
 							<span>同步钢琴键盘时值</span>
 						</div> -->
                 <div :style="{
-                  padding: `${m.panzoom.scale / 100 * 40}px 0px`,
+                  padding: `${m.panzoom.scale / 100 * 40}px 0px ${m.panzoom.scale / 100 * 210}px 0px`,
                   transform: `scale(${m.panzoom.scale / 100})`,
                   transformOrigin: '330px top',
                   minWidth: '95vw',
