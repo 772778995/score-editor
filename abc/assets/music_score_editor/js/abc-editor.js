@@ -527,6 +527,9 @@ function up8() {
   //选中的是小节()
   if (selectedBars.length > 0) {
     var handleGraphEditor = upDownKeyWord(12);
+    setTimeout(()=>{
+      content_vue.changeNumKeypadSelect();
+    }, 200);
     if (handleGraphEditor) {
       return false;
     }
@@ -535,12 +538,18 @@ function up8() {
   //选中的是单个音符
   if ($(".selected_text").length > 0 || $(".select_text_g").length > 0) {
     var handleGraphEditor = upDownKeyWord(12);
+    setTimeout(()=>{
+      content_vue.changeNumKeypadSelect();
+    }, 200);
     if (handleGraphEditor) {
       return false;
     }
     return;
   }
   staffUp8("source");
+  setTimeout(()=>{
+    content_vue.changeNumKeypadSelect();
+  }, 200);
 }
 
 function down8() {
@@ -548,6 +557,9 @@ function down8() {
   //选中的是小节()
   if (selectedBars.length > 0) {
     var handleGraphEditor = upDownKeyWord(-12);
+    setTimeout(()=>{
+      content_vue.changeNumKeypadSelect();
+    }, 200);
     if (handleGraphEditor) {
       return false;
     }
@@ -556,12 +568,18 @@ function down8() {
   //选中的是单个音符
   if ($(".selected_text").length > 0 || $(".select_text_g").length > 0) {
     var handleGraphEditor = upDownKeyWord(-12);
+    setTimeout(()=>{
+      content_vue.changeNumKeypadSelect();
+    }, 200);
     if (handleGraphEditor) {
       return false;
     }
     return;
   }
   staffDown8("source");
+  setTimeout(()=>{
+    content_vue.changeNumKeypadSelect();
+  }, 200);
 }
 
 function keepSelectNote(cb) {
@@ -3244,14 +3262,155 @@ var content_vue = new Vue({
               className: "k-e-2",
               url: "assets/music_score_editor/images/rest.png",
               title: "低8度",
-              fn: () => upDownKeyWord(-12),
+              fn: () => {
+                // 音符下加一个点
+                if($(".selected_text").length){
+                  var cen = syms[$(".selected_text").attr("istart")];
+                  console.log('sym', cen);
+                  var content = $("#source").val();
+                  sel_content = content.substring(cen["istart"], cen["iend"]);
+                  console.log('sel_content', sel_content);
+                  var t = 200;
+                  if(sel_content){
+                    if(sel_content.match(/^[A-G]$/g)){
+                      console.log('1');
+                      upDownKeyWord(-12);
+                    }else if(sel_content.match(/^[a-g]$/g)){
+                      console.log('2');
+                      upDownKeyWord(-12);
+                      setTimeout(()=>{
+                        upDownKeyWord(-12);
+                      },100);
+                      t += 100;
+                    }else if(sel_content.match(/^[A-G]/g)){
+                      console.log('3');
+                      var s =  sel_content.split(',').length;
+                      console.log(s);
+                      if(s-1){
+                        if(s==2){
+                          upDownKeyWord(12); // 取消下加点
+                        }else{
+                          for(var i=0; i<s-2; i++){
+                            setTimeout(()=>{
+                              upDownKeyWord(12);
+                            },100*i);
+                          }
+                          t += 100*i;
+                        }
+                      }else{
+                        s =  sel_content.split("'").length;
+                        if(s-1){
+                          for(var i=0; i<s; i++){
+                            setTimeout(()=>{
+                              upDownKeyWord(-12);
+                            },100*i);
+                          }
+                          t += 100*i;
+                        }
+                      }
+                    }else if(sel_content.match(/^[a-g]/g)){
+                      console.log('4');
+                      var s =  sel_content.split(',').length;
+                      if(s-1){
+                        if(s==3){
+                          upDownKeyWord(12); // 取消下加点
+                        }else{
+                          for(var i=0; i<s-3; i++){
+                            setTimeout(()=>{
+                              upDownKeyWord(12);
+                            }, 200*i);
+                          }
+                          t += 200*i;
+                        }
+                      }else{
+                        s =  sel_content.split("'").length;
+                        if(s-1){
+                          for(var i=0; i<s+1; i++){
+                            setTimeout(()=>{
+                              upDownKeyWord(-12);
+                            },200*i);
+                          }
+                          t += 200*i;
+                        }
+                      }
+                    }
+                    setTimeout(()=>{
+                      content_vue.changeNumKeypadSelect()
+                    }, t);
+                  }
+                }
+              },
               isSelect: false,
             },
             {
               className: "k-e-3",
               url: "assets/music_score_editor/images/rest.png",
               title: "高8度",
-              fn: () => upDownKeyWord(12),
+              fn: () => {
+                // 音符上加一个点
+                if($(".selected_text").length){
+                  var cen = syms[$(".selected_text").attr("istart")];
+                  console.log('sym', cen);
+                  var content = $("#source").val();
+                  sel_content = content.substring(cen["istart"], cen["iend"]);
+                  console.log('sel_content', sel_content);
+                  var t = 200;
+                  if(sel_content){
+                    if(sel_content.match(/^[A-G]$/g)){
+                      upDownKeyWord(12);
+                    }else if(sel_content.match(/^[a-g]$/g)){
+                      upDownKeyWord(-12); // 取消上加点
+                    }else if(sel_content.match(/^[A-G]/g)){
+                      var s =  sel_content.split(',').length;
+                      if(s-1){
+                        for(var i=0; i<s; i++){
+                          setTimeout(()=>{
+                            upDownKeyWord(12);
+                          },100*i);
+                        }
+                        t += 100*i;
+                      }else{
+                        s =  sel_content.split("'").length;
+                        if(s-1){
+                          if(s-1==1){
+                            upDownKeyWord(-12); // 取消上加点
+                          }else{
+                            for(var i=0; i<s-2; i++){
+                              setTimeout(()=>{
+                                upDownKeyWord(-12);
+                              },100*i);
+                            }
+                            t += 100*i;
+                          }
+                        }
+                      }
+                    }else if(sel_content.match(/^[a-g]/g)){
+                      var s =  sel_content.split(',').length;
+                      if(s-1){
+                        for(var i=0; i<s-1; i++){
+                          setTimeout(()=>{
+                            upDownKeyWord(12);
+                          },100*i);
+                        }
+                        t += 100*i;
+                      }else{
+                        s =  sel_content.split("'").length;
+                        if(s-1){
+                          for(var i=0; i<s-1; i++){
+                            setTimeout(()=>{
+                              upDownKeyWord(-12);
+                            },100*i);
+                          }
+                          t += 100*i;
+                        }
+                      }
+                    }
+                    setTimeout(()=>{
+                      content_vue.changeNumKeypadSelect()
+                    }, t);
+                  }
+                }
+              },
               isSelect: false,
             },
             {},
@@ -5849,12 +6008,43 @@ var content_vue = new Vue({
       if (selector) keepSelectNote(() => $(selector).click());
     },
     changeNumKeypadSelect() {
+      console.log('changeNumKeypadSelect::');
+      var selectNote =  this.getSelectedNote();
+      // console.log('selectNote', selectNote);
+      var sel_content ='';
+      if (selectNote) {
+        var cen = syms[$(selectNote).attr("istart")];
+        console.log('sym', cen);
+        var content = $("#source").val();
+        sel_content = content.substring(cen["istart"], cen["iend"]);
+        console.log('sel_content', sel_content);
+      }
       const { page } = this.m.numberKeypad;
       let key = "staffList";
       if (scoreOpts.musicType === "easy") key = "easyList";
       const list = this.m.numberKeypad[key][page];
       setTimeout(() => {
         list.forEach((item, i) => {
+          // console.log(item);
+          if(item.className=='k-e-2' && sel_content){
+            // 降8度，简谱下带点音符
+            if(sel_content.match(/[A-G],{1}$/g)){
+              item.isSelect = true;
+              return;
+            }else{
+              item.isSelect = false;
+              return;
+            }
+          }else if(item.className=='k-e-3' && sel_content){
+            // 升8度，简谱上带点音符
+            if(sel_content.match(/^[a-g]$|[A-G]'{1}$/g)){
+              item.isSelect = true;
+              return;
+            }else{
+              item.isSelect = false;
+              return;
+            }
+          }
           if (item.updateIsSelect) return item.updateIsSelect();
           if (!item.selector) return;
           item.isSelect = $(item.selector).hasClass("selected");
