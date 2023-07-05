@@ -17554,7 +17554,7 @@ abc2svg = {
         return;
       } else if (str.indexOf("image:") == 0) {
         //用户自定义图片
-        //            	<image xlink:href="/Content/img/logo.svg" src="/Content/img/logo.png" width="118" height="42" />
+        // <image xlink:href="/Content/img/logo.svg" src="/Content/img/logo.png" width="118" height="42" />
         var imgReg = /\.(jpg|png)/;
         if (!imgReg.test(str)) {
           str = str + ".png";

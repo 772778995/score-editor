@@ -464,7 +464,7 @@
   </head>
   <body>
     <div id="loadingSeven" class="w-screen h-screen fixed items-center flex flex-col justify-center duration-300 filter loading_con" style="z-index: 9999999; background: #f5f5f6;">
-      <img class="logo_icon" src="assets/music_score_editor/images/logo.png">
+      <img class="logo_icon" src="assets/music_score_editor/images/logo.gif">
       <div class="loadingSeven">
         <div id="progress" class="progress">
           <div id="progress-bar" class="progress-bar" style="width: 0%;"></div>
@@ -476,6 +476,10 @@
       
       <script>
         (() => {
+          var pageLoaded = false;
+          $(function(){
+            pageLoaded = true;
+          });
           const loadNumEl = document.querySelector('#loadNum')
           var progress_bar = document.querySelector('#progress-bar')
           let num = 90
@@ -485,10 +489,15 @@
               loadNumEl.innerText = num.toFixed(2)
               progress_bar.style.width = num.toFixed(2) + '%';
               if (num.toFixed(2) >= 100) {
-                clearInterval(loadTimer)
-                $('#loadingSeven').fadeOut(200, () => {
-                  // $('#loadingSeven').remove()
-                })
+                clearInterval(loadTimer);
+                var ct = setInterval(() => {
+                  if(pageLoaded){
+                    clearInterval(ct);
+                    $('#loadingSeven').fadeOut(200, () => {
+                      // $('#loadingSeven').remove()
+                    })
+                  }
+                },100);
               }
             }
           }, 1)
