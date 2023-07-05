@@ -18,11 +18,11 @@ function loadXml (data) {
     var errtxt = res[1]; abcText = res[0];
     if (errtxt) errtxt += '\n';
     //修改谱子宽度
-//    if(location.href.indexOf("ixzds.com")>-1){
-//    	abcText = abcText.replace(/%%pagewidth.*\n/,"%%pagewidth 300\n");
-//	}else if(location.href.indexOf("xmajd.cn")>-1){
-//		abcText = abcText.replace(/%%pagewidth.*\n/,"%%pagewidth 1024\n");
-//	}
+    // if(location.href.indexOf(".com")>-1){
+   	//     abcText = abcText.replace(/%%pagewidth.*\n/,"%%pagewidth 300\n");
+	// }else if(location.href.indexOf(".cn")>-1){
+	// 	abcText = abcText.replace(/%%pagewidth.*\n/,"%%pagewidth 1024\n");
+	// }
     abcText = abcText.replace(/%%pagewidth.*\n/,"%%pagewidth 1000\n");
     abcText = abcText.replace(/%%leftmargin.*\n/,"%%leftmargin 2\n");
     abcText = abcText.replace(/%%rightmargin .*\n/,"%%rightmargin 10\n");

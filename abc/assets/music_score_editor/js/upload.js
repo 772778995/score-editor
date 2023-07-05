@@ -1,8 +1,177 @@
-/***************************************************************************/
-/*                                                                         */
-/*  This obfuscated code was created by Javascript Obfuscator Free Version.*/
-/*  Javascript Obfuscator Free Version can be downloaded here              */
-/*  http://javascriptobfuscator.com                                        */
-/*                                                                         */
-/***************************************************************************/
-var _$_82e7=["https://cyydl.oss-cn-shenzhen.aliyuncs.com","","parse","2099-01-01T12:00:00.000Z","content-length-range","myradio","getElementsByName","length","checked","value","dirname","getElementById","options","isUseDefaultPath","files/","getFullYear","/","getMonth","getDate","indexOf","random_string","log","ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678","random","floor","charAt","pwd",".","lastIndexOf","substring","local_name","${filename}","replace","200","assign","setOption","startCb","function","start","html5,flash,silverlight,html4","selectfiles","container","lib/plupload-2.1.2/js/Moxie.swf","lib/plupload-2.1.2/js/Moxie.xap","http://oss.aliyuncs.com","innerHTML","ossfile","onclick","postfiles","PostInit","FilesAdded","isUploadNow","<div id=\"","id","\">","name"," (","size","formatSize",")<b style=\"display:inherit;\"></b>","<div class=\"progress\"><div class=\"progress-bar\" style=\"width: 0%\"></div></div>","</div>","each","BeforeUpload","path","https://ossfile.ixzds.com/","progressCb","b","getElementsByTagName","<span>","percent","%</span>","div","width","style","px","aria-valuenow","setAttribute","status","\u4e0a\u4f20\u6210\u529f","sucessCb","response","failCb","\x0AError xml:","createTextNode","appendChild","console","Uploader","prototype","stringify","encode","B8AF6VmQ43QO6Hl6","EdpVswzSMV82I2EDtl4KG8J52hgzbF","SHA1","HMAC","bytesToBase64","util","init"];host= _$_82e7[0];g_dirname= _$_82e7[1];g_object_name= _$_82e7[1];g_object_name_type= _$_82e7[1];now= timestamp= Date[_$_82e7[2]]( new Date())/ 1000;var policyText={"expiration":_$_82e7[3],"conditions":[[_$_82e7[4],0,1048576000]]};function check_object_radio(){var _0x24C8E=document[_$_82e7[6]](_$_82e7[5]);for(var _0x24C6F=0;_0x24C6F< _0x24C8E[_$_82e7[7]];_0x24C6F++){if(_0x24C8E[_0x24C6F][_$_82e7[8]]){g_object_name_type= _0x24C8E[_0x24C6F][_$_82e7[9]];break}}}function get_dirname(){var _0x24CAD= new Date();dir= document[_$_82e7[11]](_$_82e7[10])[_$_82e7[9]];if(uploader[_$_82e7[12]]&& uploader[_$_82e7[12]][_$_82e7[13]]){dir= _$_82e7[14]+ _0x24CAD[_$_82e7[15]]()+ _$_82e7[16]+ (_0x24CAD[_$_82e7[17]]()+ 1)+ _$_82e7[16]+ _0x24CAD[_$_82e7[18]]()};if(dir!= _$_82e7[1]&& dir[_$_82e7[19]](_$_82e7[16])!= dir[_$_82e7[7]]- 1){dir= dir+ _$_82e7[16]};g_dirname= dir}function random_string(_0x24CEB){console[_$_82e7[21]](_$_82e7[20]);　　len= _0x24CEB|| 32;var _0x24CCC=_$_82e7[22];var _0x24D0A=_0x24CCC[_$_82e7[7]];var _0x24D29=_$_82e7[1];for(var _0x24C6F=0;_0x24C6F< _0x24CEB;_0x24C6F++){_0x24D29+= _0x24CCC[_$_82e7[25]](Math[_$_82e7[24]](Math[_$_82e7[23]]()* _0x24D0A))};console[_$_82e7[21]](_$_82e7[26],_0x24D29);return _0x24D29}function get_suffix(_0x24C50){pos= _0x24C50[_$_82e7[28]](_$_82e7[27]);suffix= _$_82e7[1];if(pos!=  -1){suffix= _0x24C50[_$_82e7[29]](pos)};return suffix}function calculate_object_name(_0x24C50){if(g_object_name_type== _$_82e7[30]){g_object_name+= _0x24C50}else {suffix= get_suffix(_0x24C50);g_object_name= g_dirname+ random_string(10)+ suffix};return _$_82e7[1]}function get_uploaded_object_name(_0x24C50){if(g_object_name_type== _$_82e7[30]){tmp_name= g_object_name;tmp_name= tmp_name[_$_82e7[32]](_$_82e7[31],_0x24C50);return tmp_name}else {return g_object_name}}function set_upload_param(_0x24B77,_0x24C50,_0x24D67,_0x24D48){g_object_name= g_dirname;if(_0x24C50!= _$_82e7[1]){suffix= get_suffix(_0x24C50);calculate_object_name(_0x24C50)};new_multipart_params= {'key':g_object_name,'policy':policyBase64,'OSSAccessKeyId':accessid,'success_action_status':_$_82e7[33],'signature':signature};if(_0x24D48){new_multipart_params= Object[_$_82e7[34]](new_multipart_params,_0x24D48)};_0x24B77[_$_82e7[35]]({'url':host,'multipart_params':new_multipart_params});if(_0x24B77[_$_82e7[12]]&& _0x24B77[_$_82e7[12]][_$_82e7[36]]&&  typeof _0x24B77[_$_82e7[12]][_$_82e7[36]]== _$_82e7[37]){_0x24B77[_$_82e7[12]][_$_82e7[36]]()};_0x24B77[_$_82e7[38]]()}var uploader= new plupload[_$_82e7[87]]({runtimes:_$_82e7[39],browse_button:_$_82e7[40],container:document[_$_82e7[11]](_$_82e7[41]),flash_swf_url:_$_82e7[42],silverlight_xap_url:_$_82e7[43],url:_$_82e7[44],init:{PostInit:function(){document[_$_82e7[11]](_$_82e7[46])[_$_82e7[45]]= _$_82e7[1];document[_$_82e7[11]](_$_82e7[48])[_$_82e7[47]]= function(){console[_$_82e7[21]](_$_82e7[49]);set_upload_param(uploader,_$_82e7[1],false);return false}},FilesAdded:function(_0x24B77,_0x24B58){console[_$_82e7[21]](_$_82e7[50]);if(uploader[_$_82e7[12]]&& uploader[_$_82e7[12]][_$_82e7[51]]){set_upload_param(uploader,_$_82e7[1],false)};plupload[_$_82e7[62]](_0x24B58,function(_0x24B96){document[_$_82e7[11]](_$_82e7[46])[_$_82e7[45]]+= _$_82e7[52]+ _0x24B96[_$_82e7[53]]+ _$_82e7[54]+ _0x24B96[_$_82e7[55]]+ _$_82e7[56]+ plupload[_$_82e7[58]](_0x24B96[_$_82e7[57]])+ _$_82e7[59]+ _$_82e7[60]+ _$_82e7[61]})},BeforeUpload:function(_0x24B77,_0x24B96){console[_$_82e7[21]](_$_82e7[63]);check_object_radio();get_dirname();set_upload_param(_0x24B77,_0x24B96[_$_82e7[55]],true);_0x24B96[_$_82e7[64]]= _$_82e7[65]+ g_object_name},UploadProgress:function(_0x24B77,_0x24B96){if(uploader[_$_82e7[12]]&& uploader[_$_82e7[12]][_$_82e7[66]]&&  typeof uploader[_$_82e7[12]][_$_82e7[66]]== _$_82e7[37]){uploader[_$_82e7[12]][_$_82e7[66]](_0x24B77,_0x24B96)};var _0x24BB5=document[_$_82e7[11]](_0x24B96[_$_82e7[53]]);_0x24BB5[_$_82e7[68]](_$_82e7[67])[0][_$_82e7[45]]= _$_82e7[69]+ _0x24B96[_$_82e7[70]]+ _$_82e7[71];var _0x24BD4=_0x24BB5[_$_82e7[68]](_$_82e7[72])[0];var _0x24BF3=_0x24BD4[_$_82e7[68]](_$_82e7[72])[0];_0x24BF3[_$_82e7[74]][_$_82e7[73]]= 2* _0x24B96[_$_82e7[70]]+ _$_82e7[75];_0x24BF3[_$_82e7[77]](_$_82e7[76],_0x24B96[_$_82e7[70]])},FileUploaded:function(_0x24B77,_0x24B96,_0x24C12){if(_0x24C12[_$_82e7[78]]== 200){document[_$_82e7[11]](_0x24B96[_$_82e7[53]])[_$_82e7[68]](_$_82e7[67])[0][_$_82e7[45]]= _$_82e7[79];if(uploader[_$_82e7[12]]&& uploader[_$_82e7[12]][_$_82e7[80]]&&  typeof uploader[_$_82e7[12]][_$_82e7[80]]== _$_82e7[37]){uploader[_$_82e7[12]][_$_82e7[80]](_0x24B77,_0x24B96,_0x24C12)}}else {document[_$_82e7[11]](_0x24B96[_$_82e7[53]])[_$_82e7[68]](_$_82e7[67])[0][_$_82e7[45]]= _0x24C12[_$_82e7[81]];if(uploader[_$_82e7[12]]&& uploader[_$_82e7[12]][_$_82e7[82]]&&  typeof uploader[_$_82e7[12]][_$_82e7[82]]== _$_82e7[37]){uploader[_$_82e7[12]][_$_82e7[82]](_0x24B77,_0x24B96,_0x24C12)}}},Error:function(_0x24B77,_0x24C31){document[_$_82e7[11]](_$_82e7[86])[_$_82e7[85]](document[_$_82e7[84]](_$_82e7[83]+ _0x24C31[_$_82e7[81]]));if(uploader[_$_82e7[12]]&& uploader[_$_82e7[12]][_$_82e7[82]]&&  typeof uploader[_$_82e7[12]][_$_82e7[82]]== _$_82e7[37]){uploader[_$_82e7[12]][_$_82e7[82]](_0x24B77,_0x24C31)}}}});uploader[_$_82e7[88]]= {constructor:this,options:{isUploadNow:false,progressCb:function(){},startCb:function(){},sucessCb:function(){},failCb:function(){}}};var policyBase64=Base64[_$_82e7[90]](JSON[_$_82e7[89]](policyText));message= policyBase64;accessid= _$_82e7[91];accesskey= _$_82e7[92];var bytes=Crypto[_$_82e7[94]](Crypto[_$_82e7[93]],message,accesskey,{asBytes:true});var signature=Crypto[_$_82e7[96]][_$_82e7[95]](bytes);uploader[_$_82e7[97]]()
+/* upload */
+
+host = "/file/";
+g_dirname = "";
+g_object_name = "";
+g_object_name_type = "";
+now = timestamp = Date["parse"](new Date()) / 1000;
+var policyText = {
+    "expiration": "2099-01-01T12:00:00.000Z",
+    "conditions": [["content-length-range", 0, 1048576000]]
+};
+function check_object_radio() {
+    var _0x24C8E = document["getElementsByName"]("myradio");
+    for (var _0x24C6F = 0; _0x24C6F < _0x24C8E["length"]; _0x24C6F++) {
+        if (_0x24C8E[_0x24C6F]["checked"]) {
+            g_object_name_type = _0x24C8E[_0x24C6F]["value"];
+            break
+        }
+    }
+}
+function get_dirname() {
+    var _0x24CAD = new Date();
+    dir = document["getElementById"]("dirname")["value"];
+    if (uploader["options"] && uploader["options"]["isUseDefaultPath"]) {
+        dir = "files/" + _0x24CAD["getFullYear"]() + "/" + (_0x24CAD["getMonth"]() + 1) + "/" + _0x24CAD["getDate"]()
+    }
+    ;if (dir != "" && dir["indexOf"]("/") != dir["length"] - 1) {
+        dir = dir + "/"
+    }
+    ;g_dirname = dir
+}
+function random_string(_0x24CEB) {
+    console["log"]("random_string");
+    len = _0x24CEB || 32;
+    var _0x24CCC = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678";
+    var _0x24D0A = _0x24CCC["length"];
+    var _0x24D29 = "";
+    for (var _0x24C6F = 0; _0x24C6F < _0x24CEB; _0x24C6F++) {
+        _0x24D29 += _0x24CCC["charAt"](Math["floor"](Math["random"]() * _0x24D0A))
+    }
+    ;console["log"]("pwd", _0x24D29);
+    return _0x24D29
+}
+function get_suffix(_0x24C50) {
+    pos = _0x24C50["lastIndexOf"](".");
+    suffix = "";
+    if (pos != -1) {
+        suffix = _0x24C50["substring"](pos)
+    }
+    ;return suffix
+}
+function calculate_object_name(_0x24C50) {
+    if (g_object_name_type == "local_name") {
+        g_object_name += _0x24C50
+    } else {
+        suffix = get_suffix(_0x24C50);
+        g_object_name = g_dirname + random_string(10) + suffix
+    }
+    ;return ""
+}
+function get_uploaded_object_name(_0x24C50) {
+    if (g_object_name_type == "local_name") {
+        tmp_name = g_object_name;
+        tmp_name = tmp_name["replace"]("${filename}", _0x24C50);
+        return tmp_name
+    } else {
+        return g_object_name
+    }
+}
+function set_upload_param(_0x24B77, _0x24C50, _0x24D67, _0x24D48) {
+    g_object_name = g_dirname;
+    if (_0x24C50 != "") {
+        suffix = get_suffix(_0x24C50);
+        calculate_object_name(_0x24C50)
+    }
+    ;new_multipart_params = {
+        'key': g_object_name,
+        'policy': policyBase64,
+        'OSSAccessKeyId': accessid,
+        'success_action_status': "200",
+        'signature': signature
+    };
+    if (_0x24D48) {
+        new_multipart_params = Object["assign"](new_multipart_params, _0x24D48)
+    }
+    ;_0x24B77["setOption"]({
+        'url': host,
+        'multipart_params': new_multipart_params
+    });
+    if (_0x24B77["options"] && _0x24B77["options"]["startCb"] && typeof _0x24B77["options"]["startCb"] == "function") {
+        _0x24B77["options"]["startCb"]()
+    }
+    ;_0x24B77["start"]()
+}
+var uploader = new plupload["Uploader"]({
+    runtimes: "html5,flash,silverlight,html4",
+    browse_button: "selectfiles",
+    container: document["getElementById"]("container"),
+    flash_swf_url: "lib/plupload-2.1.2/js/Moxie.swf",
+    silverlight_xap_url: "lib/plupload-2.1.2/js/Moxie.xap",
+    url: "http://oss.aliyuncs.com", // 阿里云 OSS
+    init: {
+        PostInit: function() {
+            document["getElementById"]("ossfile")["innerHTML"] = "";
+            document["getElementById"]("postfiles")["onclick"] = function() {
+                console["log"]("PostInit");
+                set_upload_param(uploader, "", false);
+                return false
+            }
+        },
+        FilesAdded: function(_0x24B77, _0x24B58) {
+            console["log"]("FilesAdded");
+            if (uploader["options"] && uploader["options"]["isUploadNow"]) {
+                set_upload_param(uploader, "", false)
+            }
+            ;plupload["each"](_0x24B58, function(_0x24B96) {
+                document["getElementById"]("ossfile")["innerHTML"] += "<div id=\"" + _0x24B96["id"] + "\">" + _0x24B96["name"] + " (" + plupload["formatSize"](_0x24B96["size"]) + ")<b style=\"display:inherit;\"></b>" + "<div class=\"progress\"><div class=\"progress-bar\" style=\"width: 0%\"></div></div>" + "</div>"
+            })
+        },
+        BeforeUpload: function(_0x24B77, _0x24B96) {
+            console["log"]("BeforeUpload");
+            check_object_radio();
+            get_dirname();
+            set_upload_param(_0x24B77, _0x24B96["name"], true);
+            _0x24B96["path"] = "/" + g_object_name
+        },
+        UploadProgress: function(_0x24B77, _0x24B96) {
+            if (uploader["options"] && uploader["options"]["progressCb"] && typeof uploader["options"]["progressCb"] == "function") {
+                uploader["options"]["progressCb"](_0x24B77, _0x24B96)
+            }
+            ;var _0x24BB5 = document["getElementById"](_0x24B96["id"]);
+            _0x24BB5["getElementsByTagName"]("b")[0]["innerHTML"] = "<span>" + _0x24B96["percent"] + "%</span>";
+            var _0x24BD4 = _0x24BB5["getElementsByTagName"]("div")[0];
+            var _0x24BF3 = _0x24BD4["getElementsByTagName"]("div")[0];
+            _0x24BF3["style"]["width"] = 2 * _0x24B96["percent"] + "px";
+            _0x24BF3["setAttribute"]("aria-valuenow", _0x24B96["percent"])
+        },
+        FileUploaded: function(_0x24B77, _0x24B96, _0x24C12) {
+            if (_0x24C12["status"] == 200) {
+                document["getElementById"](_0x24B96["id"])["getElementsByTagName"]("b")[0]["innerHTML"] = "\u4e0a\u4f20\u6210\u529f";
+                if (uploader["options"] && uploader["options"]["sucessCb"] && typeof uploader["options"]["sucessCb"] == "function") {
+                    uploader["options"]["sucessCb"](_0x24B77, _0x24B96, _0x24C12)
+                }
+            } else {
+                document["getElementById"](_0x24B96["id"])["getElementsByTagName"]("b")[0]["innerHTML"] = _0x24C12["response"];
+                if (uploader["options"] && uploader["options"]["failCb"] && typeof uploader["options"]["failCb"] == "function") {
+                    uploader["options"]["failCb"](_0x24B77, _0x24B96, _0x24C12)
+                }
+            }
+        },
+        Error: function(_0x24B77, _0x24C31) {
+            document["getElementById"]("console")["appendChild"](document["createTextNode"]("\x0AError xml:" + _0x24C31["response"]));
+            if (uploader["options"] && uploader["options"]["failCb"] && typeof uploader["options"]["failCb"] == "function") {
+                uploader["options"]["failCb"](_0x24B77, _0x24C31)
+            }
+        }
+    }
+});
+uploader["prototype"] = {
+    constructor: this,
+    options: {
+        isUploadNow: false,
+        progressCb: function() {},
+        startCb: function() {},
+        sucessCb: function() {},
+        failCb: function() {}
+    }
+};
+var policyBase64 = Base64["encode"](JSON["stringify"](policyText));
+message = policyBase64;
+accessid = "B8AF6VmQ43QO6Hl6";
+accesskey = "EdpVswzSMV82I2EDtl4KG8J52hgzbF";
+var bytes = Crypto["HMAC"](Crypto["SHA1"], message, accesskey, {
+    asBytes: true
+});
+var signature = Crypto["util"]["bytesToBase64"](bytes);
+uploader["init"]()

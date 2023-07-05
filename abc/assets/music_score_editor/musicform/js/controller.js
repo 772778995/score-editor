@@ -405,7 +405,7 @@ function buildPlatUrl(url) {
 	return url;
 }
 function getFile(groupid, callback) {
-	// C.FILE_VIEW_URL = 'http://file.ixzds.com/file/view/';
+	// C.FILE_VIEW_URL = '/file/view/';
 	var url = file_server_url + "/view/" + groupid;
 	req(url,{}, function(res) {
 		if (res) {
@@ -518,8 +518,8 @@ function getFileData() {
 		files : [], // 控件中的上传文件列表
 		fileData : {
 			groupid : '',
-			orgcode :  'imusic',
-			appid : 'imusic',
+			orgcode :  'mp',
+			appid : 'mp',
 			dir_str : '',
 			filecategory : ''
 		}
@@ -540,7 +540,6 @@ function submitFile(newFile, oldFile, showFiles, callback) {
 		if (newFile.xhr) {
 			if (newFile.xhr.status == 200) {
 				// 成功将文件传至服务器
-				// "{"attachid":"170ef598b7de4bc3bacd2b9512c83320","code":1,"msg":"上传成功1个文件!","path":"http://csfile.ixzds.com/testfile/2018/08/22/4ed85015ab74485c9baf507b0a77f711.jpg"}"
 				var json = JSON.parse(newFile.xhr.responseText);
 				if (json.code == 0) {
 					callback(1, newFile.xhr.responseText);

@@ -3735,7 +3735,7 @@ var content_vue = new Vue({
           rows: "2",
           rowBars: "4",
         },
-        previewUrl: "assets/music_score_editor/preview.html?v=1.0.2",
+        previewUrl: "assets/music_score_editor/preview.html?v=1.0.5",
       },
       toolList: [
         {

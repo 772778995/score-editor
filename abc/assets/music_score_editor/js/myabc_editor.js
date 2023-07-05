@@ -1728,11 +1728,11 @@ $(document).ready(function () {
   $("#source").focus();
   $("#source").blur();
 
-  if (location.href.indexOf("ixzds.com") > -1) {
+  if (location.href.indexOf(".com") > -1) {
     // changeMode('mobile',false);
     //changeMode('compute',false);
-  } else if (location.href.indexOf("xmajd.cn") > -1) {
-    changeMode("compute", false);
+  } else if (location.href.indexOf(".cn") > -1) {
+    // changeMode("compute", false);
   }
   user.findPosition = findPosition;
   user.lightoperator = lightoperator;
@@ -1950,26 +1950,14 @@ $(document).ready(function () {
   $("li[data-code='help']").click(function () {
     if (content_vue.isExe || isAndroid == "1") {
       window.open(
-        // "know_teac_preview.html?IS_KNOW_PREVIEW=1&QUERY_BY_COURSE=1&USER_TYPE=teac&COURSE_ID=CO391c1eab9f0f4c209700f74f9163bf&KNOWLEDGE_ID=COd96dd3217acb4f41a9cbf31940a458&TITLE=创编制谱系统操作手册&ORGCODE=O925d16073b134a43850fef2871d26fb",
         "know_teac_preview.html",
         "创编制谱系统操作手册"
       );
-      //有时候top.host取值不正确
-      //			var helpUrl = top.host+"imusic/pages/course/know_teac_preview.html?IS_KNOW_PREVIEW=1&QUERY_BY_COURSE=1&USER_TYPE=teac&COURSE_ID=CO391c1eab9f0f4c209700f74f9163bf&KNOWLEDGE_ID=COd96dd3217acb4f41a9cbf31940a458&TITLE=创编制谱系统操作手册";
-      //			$("#helpframe").attr("src",helpUrl);
-      //
-      //			$("#Help_div .modal-content").width($(window).width()-200).height($(window).height()-100);
-      //			$("#Help_div .modal-content").css("left",($(window).width()-$("#Help_div .modal-content").width())/2);
-      //			$("#helpframe").css("width",$("#Help_div .modal-content").width()-20).css("height",$("#Help_div .modal-content").height()-50);
-      //			$("#Help_div").modal();
     } else {
       window.open(
-        // "know_teac_preview.html?IS_KNOW_PREVIEW=1&QUERY_BY_COURSE=1&USER_TYPE=teac&COURSE_ID=CO391c1eab9f0f4c209700f74f9163bf&KNOWLEDGE_ID=COd96dd3217acb4f41a9cbf31940a458&TITLE=创编制谱系统操作手册&ORGCODE=O925d16073b134a43850fef2871d26fb",
         "know_teac_preview.html",
         "创编制谱系统操作手册"
       );
-      //			$("#helpframe").attr("src","https://yysykt.ixzds.com/imusic/imusic/pages/course/know_teac_preview.html?IS_KNOW_PREVIEW=1&QUERY_BY_COURSE=1&USER_TYPE=teac&COURSE_ID=CO391c1eab9f0f4c209700f74f9163bf&KNOWLEDGE_ID=COd96dd3217acb4f41a9cbf31940a458&TITLE=创编制谱系统操作手册");
-      //			$("#Help_div").modal();
     }
   });
   //快捷键
@@ -1984,7 +1972,6 @@ $(document).ready(function () {
   //论坛
   $("li[data-code='bbs']").click(function () {
     console.log("快捷键说明");
-    // window.open("http://bbs.ixzds.com");
     window.open("bbs.html");
   });
 
@@ -3207,7 +3194,7 @@ function postmidifile() {
   var pathName = window.document.location.pathname;
   var projectName = pathName.substring(0, pathName.substr(1).indexOf("/") + 1);
   $.ajax({
-    url: "https://abc.ixzds.com/abc/midi2abc",
+    url: "/abc/midi2abc",
     dataType: "json",
     type: "POST",
     async: false,
@@ -3728,17 +3715,17 @@ function loadFileByGroupid() {
               async: true,
               success: function (data) {
                 if (data != "") {
-                  if (location.href.indexOf("ixzds.com") > -1) {
-                    //					    				if(data.indexOf("pagewidth")<0){
-                    //					    					data = "%%pagewidth " + mobilPageWidth + "\n" + data;
-                    //					    				}
-                    //					    				changeMode('mobile',false);
+                  if (location.href.indexOf(".com") > -1) {
+                    // if(data.indexOf("pagewidth")<0){
+                    //   data = "%%pagewidth " + mobilPageWidth + "\n" + data;
+                    // }
+                    // changeMode('mobile',false);
                     // changeMode('compute',false);
-                  } else if (location.href.indexOf("xmajd.cn") > -1) {
-                    if (data.indexOf("pagewidth") < 0) {
-                      data = "%%pagewidth " + computerPageWidth + "\n" + data;
-                    }
-                    changeMode("compute", false);
+                  } else if (location.href.indexOf(".cn") > -1) {
+                    // if (data.indexOf("pagewidth") < 0) {
+                    //   data = "%%pagewidth " + computerPageWidth + "\n" + data;
+                    // }
+                    // changeMode("compute", false);
                   }
                   if (data.indexOf("%%leftmargin") < 0) {
                     data = "%%leftmargin 2\n" + data;

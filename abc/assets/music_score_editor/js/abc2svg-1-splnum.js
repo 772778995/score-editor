@@ -141,7 +141,7 @@ var dragNumNoteFlag = false; //是否有拖动简谱音符（上下拖动）
 if (window.navigator.onLine) {
   appname = "/abc/";
 }
-var imusicurl = "/assets/"; //这里是定义自定义图片的路径，如果是外网的则固定用这个路径 ，如果是内网的，则使用空，内网默认为/ixzdscommon/assets/....png,这里需要注意，每次发布到学校的版本，需要把服务器上的assets目录的内容导到本地
+var assets_url = "/assets/";
 var localurl = location.host;
 
 var source_val = ""; //source的值
@@ -158,7 +158,7 @@ function isContainIP(ip) {
 
 if (isContainIP(localurl) || localurl.indexOf("localhost") > -1) {
   //本地地址
-  imusicurl = "/assets/";
+  assets_url = "/assets/";
 }
 
 var cmFontSize = 14; //唱名字体大小要随着scale的变化而变化
@@ -8369,7 +8369,7 @@ abc2svg = {
       parse = parse_sav;
       include--;
     }
-    //标题超链接格式%%title-url(http://www.ixzds.com)
+    //标题超链接格式%%title-url 
     function handleUrl(content) {
       var tUrlPattern = /%%T-url\((.*)\)/;
       //标题超链接
@@ -17599,7 +17599,7 @@ abc2svg = {
           } else {
             output +=
               '<image preserveAspectRatio="none" xlink:href="' +
-              imusicurl +
+              assets_url +
               str.replace("image:", "") +
               '" width="' +
               picW +
@@ -17644,7 +17644,7 @@ abc2svg = {
         } else {
           output +=
             '<image xlink:href="' +
-            imusicurl +
+            assets_url +
             str.replace("image:", "") +
             '" style="width:' +
             25 * size +
@@ -19459,7 +19459,7 @@ abc2svg = {
         '<circle id="stc_blank" class="fill" style="opacity:0;" cx="0" cy="-1" r="1.2"/>', //新增的add by hxs
       kew1:
         '<image id="kew1" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'kew/kew1.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19467,7 +19467,7 @@ abc2svg = {
         '"/>',
       kews1:
         '<image id="kews1" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'kew/kews1.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19475,7 +19475,7 @@ abc2svg = {
         '"/>',
       kew2:
         '<image id="kew2" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'kew/kew2.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19483,7 +19483,7 @@ abc2svg = {
         '"/>',
       kewb2:
         '<image id="kewb2" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'kew/kewb2.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19491,7 +19491,7 @@ abc2svg = {
         '"/>',
       kews2:
         '<image id="kews2" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'kew/kews2.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19499,7 +19499,7 @@ abc2svg = {
         '"/>',
       kew3:
         '<image id="kew3" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'kew/kew3.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19507,7 +19507,7 @@ abc2svg = {
         '"/>',
       kewb3:
         '<image id="kewb3" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'kew/kewb3.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19515,7 +19515,7 @@ abc2svg = {
         '"/>',
       kew4:
         '<image id="kew4" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'kew/kew4.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19523,7 +19523,7 @@ abc2svg = {
         '"/>',
       kews4:
         '<image id="kews4" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'kew/kews4.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19531,7 +19531,7 @@ abc2svg = {
         '"/>',
       kew5:
         '<image id="kew5" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'kew/kew5.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19539,7 +19539,7 @@ abc2svg = {
         '"/>',
       kewb5:
         '<image id="kewb5" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'kew/kewb5.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19547,7 +19547,7 @@ abc2svg = {
         '"/>',
       kews5:
         '<image id="kews5" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'kew/kews5.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19555,7 +19555,7 @@ abc2svg = {
         '"/>',
       kew6:
         '<image id="kew6" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'kew/kew6.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19563,7 +19563,7 @@ abc2svg = {
         '"/>',
       kewb6:
         '<image id="kewb6" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'kew/kewb6.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19571,7 +19571,7 @@ abc2svg = {
         '"/>',
       kews6:
         '<image id="kews6" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'kew/kews6.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19579,7 +19579,7 @@ abc2svg = {
         '"/>',
       kew7:
         '<image id="kew7" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'kew/kew7.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19587,7 +19587,7 @@ abc2svg = {
         '"/>',
       kewb7:
         '<image id="kewb7" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'kew/kewb7.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19595,7 +19595,7 @@ abc2svg = {
         '"/>',
       kew8:
         '<image id="kew8" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'kew/kew8.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19604,7 +19604,7 @@ abc2svg = {
 
       inst_lingu:
         '<image id="inst_lingu" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'inst/lingu.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19612,7 +19612,7 @@ abc2svg = {
         '"/>', //铃鼓
       inst_shanjt:
         '<image id="inst_shanjt" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'inst/shanjt.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19620,7 +19620,7 @@ abc2svg = {
         '"/>', //三角铁
       inst_xiangb:
         '<image id="inst_xiangb" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'inst/xiangb.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19628,7 +19628,7 @@ abc2svg = {
         '"/>', //响板
       inst_pengl:
         '<image id="inst_pengl" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'inst/pengl.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19636,7 +19636,7 @@ abc2svg = {
         '"/>', //碰铃
       inst_shuanxt:
         '<image id="inst_shuanxt" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'inst/shuanxt.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19644,7 +19644,7 @@ abc2svg = {
         '"/>', //双响筒
       inst_shac:
         '<image id="inst_shac" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'inst/shac.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19652,7 +19652,7 @@ abc2svg = {
         '"/>', //沙锤
       inst_xiaojg:
         '<image id="inst_xiaojg" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'inst/xiaojg.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19660,7 +19660,7 @@ abc2svg = {
         '"/>', //小军鼓
       inst_shoul:
         '<image id="inst_shoul" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'inst/shoul.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19668,7 +19668,7 @@ abc2svg = {
         '"/>', //手铃
       inst_feizg:
         '<image id="inst_feizg" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'inst/feizg.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19676,7 +19676,7 @@ abc2svg = {
         '"/>', //非洲鼓
       inst_shuanglin:
         '<image id="inst_shuanglin" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'inst/shuanglin.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19684,7 +19684,7 @@ abc2svg = {
         '"/>', //双铃
       inst_xiangzhan:
         '<image id="inst_xiangzhan" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'inst/xiangzhan.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19692,7 +19692,7 @@ abc2svg = {
         '"/>', //响盏
       inst_xiaojiao:
         '<image id="inst_xiaojiao" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'inst/xiaojiao.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19700,7 +19700,7 @@ abc2svg = {
         '"/>', //小叫
       inst_xiaojiaoxiaoluo:
         '<image id="inst_xiaojiaoxiaoluo" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'inst/xiaojiaoxiaoluo.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19708,7 +19708,7 @@ abc2svg = {
         '"/>', //小叫
       inst_yaoling:
         '<image id="inst_yaoling" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'inst/yaoling.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19716,7 +19716,7 @@ abc2svg = {
         '"/>', //小叫
       inst_wamt:
         '<image id="inst_wamt" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'inst/wamt.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19724,7 +19724,7 @@ abc2svg = {
         '"/>', //小叫
       inst_bo:
         '<image id="inst_bo" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'inst/bo.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19732,7 +19732,7 @@ abc2svg = {
         '"/>', //小叫
       inst_daluo:
         '<image id="inst_daluo" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'inst/daluo.png"  width="' +
         40 * cfmt.kewsize +
         '" height="' +
@@ -19741,7 +19741,7 @@ abc2svg = {
 
       img:
         '<image id="img_myimgid" x="-18" y="-45" xlink:href="' +
-        imusicurl +
+        assets_url +
         'myimgid.png"  height="' +
         40 * cfmt.kewsize +
         '"/>',
@@ -23198,7 +23198,7 @@ abc2svg = {
                 rep_dtime = 0;
                 bar_rep = bar_num;
               } else {
-                //if (!cfmt.contbarnb) bar_num = bar_rep;//这句话不知道什么逻辑，如果有这句话，会导致有分段反复的时候my_bar_num计算有误，先去掉https://abc.ixzds.com/abc/editor.html?appid=imusic&groupid=514782fd182c4e82bbe0d329255f32eb&dir_str=yyrjb302%2F1.1&cbtype=reset&TMP=1666340531337&IS_EXE=0&person_name=ix%E7%AE%A1%E7%90%86%E5%91%98&person_id=P85b46d84718e4252953&is_music_library=1&TITLE=%E5%94%B1%E6%AD%8C%EF%BC%9A%E5%A4%AA%E9%98%B3%E5%87%BA%E6%9D%A5%E4%BA%86
+                //if (!cfmt.contbarnb) bar_num = bar_rep; // 影响 my_bar_num
                 if (rep_dtime) {
                   if (cfmt.contbarnb) bar_num--;
                   bar_time = tim + rep_dtime;

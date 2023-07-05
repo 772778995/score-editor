@@ -20,7 +20,7 @@ window.alert = function(msg, callback) {
 	}
 }
 function cb(){
-	console.log("1111111111111111111")
+	console.log("111")
 	var content = $("#source").val();
 	var userHost = window.location.href;
 	var url = "/abc/problemFeedback?time="+Date.parse(new Date());
