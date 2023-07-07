@@ -3735,7 +3735,7 @@ var content_vue = new Vue({
           rows: "2",
           rowBars: "4",
         },
-        previewUrl: "assets/music_score_editor/preview.html?v=1.0.5",
+        previewUrl: "assets/music_score_editor/preview.html?v=1.0.6",
       },
       toolList: [
         {
@@ -6474,19 +6474,52 @@ var content_vue = new Vue({
       }
       // 
       var d = { ...this.m.newScore.scoreOpts };
+      if(d.rows>30){
+        setTimeout(()=>{
+          this.m.newScore.scoreOpts.rows = 30;
+        }, 200);
+      }
+      if(d.rows<1){
+        d.rows = 1;
+        setTimeout(()=>{
+          this.m.newScore.scoreOpts.rows = 1;
+        }, 200);
+      }
+      if(d.rowBars<1){
+        d.rowBars = 1;
+        setTimeout(()=>{
+          this.m.newScore.scoreOpts.rowBars = 1;
+        }, 200);
+      }
       if(d.musicType=='easy'){
         if(d.rows>4){
           d.rows = 4;
         }
-        if(d.rowBars>4){
-          d.rows = 4;
+        if(d.rowBars>6){
+          d.rowBars = 6;
+          setTimeout(()=>{
+            this.m.newScore.scoreOpts.rowBars = 6;
+          }, 200);
         }
       }else{
-        if(d.rows>4){
-          d.rows = 4;
+        if(d.musicType=='four'){
+          if(d.rows>1){
+            d.rows = 1;
+          }
+        }else if(d.musicType=='big'){
+          if(d.rows>2){
+            d.rows = 2;
+          }
+        }else{
+          if(d.rows>4){
+            d.rows = 4;
+          }
         }
-        if(d.rowBars>15){
-          d.rows = 15;
+        if(d.rowBars>7){
+          d.rowBars = 7;
+          setTimeout(()=>{
+            this.m.newScore.scoreOpts.rowBars = 7;
+          }, 200);
         }
       }
       this.$refs.previewIframeRef?.contentWindow.postMessage(
@@ -6497,19 +6530,64 @@ var content_vue = new Vue({
     "m.newScore.scoreOpts": {
       handler(val) {
         var d = { ...val };
+        // if(d.rowBars>88){
+        //   alert('小节最大88行');
+        //   setTimeout(()=>{
+        //     this.m.newScore.scoreOpts.rowBars = 88;
+        //   }, 200);
+        // }
+        // console.log('d.musicType', d.musicType);
+        if(d.rows>30){
+          alert('至多30行');
+          setTimeout(()=>{
+            this.m.newScore.scoreOpts.rows = 30;
+          }, 200);
+        }
+        if(d.rows<1){
+          alert('至少1行');
+          d.rows = 1;
+          setTimeout(()=>{
+            this.m.newScore.scoreOpts.rows = 1;
+          }, 200);
+        }
+        if(d.rowBars<1){
+          d.rowBars = 1;
+          alert('至少1小节/行');
+          setTimeout(()=>{
+            this.m.newScore.scoreOpts.rowBars = 1;
+          }, 200);
+        }
         if(d.musicType=='easy'){
           if(d.rows>4){
             d.rows = 4;
           }
-          if(d.rowBars>4){
-            d.rows = 4;
+          if(d.rowBars>6){
+            d.rowBars = 6;
+            alert('简谱最大6小节/行');
+            setTimeout(()=>{
+              this.m.newScore.scoreOpts.rowBars = 6;
+            }, 200);
           }
         }else{
-          if(d.rows>4){
-            d.rows = 4;
+          if(d.musicType=='four'){
+            if(d.rows>1){
+              d.rows = 1;
+            }
+          }else if(d.musicType=='big'){
+            if(d.rows>2){
+              d.rows = 2;
+            }
+          }else{
+            if(d.rows>4){
+              d.rows = 4;
+            }
           }
-          if(d.rowBars>15){
-            d.rows = 15;
+          if(d.rowBars>7){
+            d.rowBars = 7;
+            alert('五线谱最大7小节/行');
+            setTimeout(()=>{
+              this.m.newScore.scoreOpts.rowBars = 7;
+            }, 200);
           }
         }
         this.$refs.previewIframeRef?.contentWindow.postMessage(d, "*");
@@ -6517,32 +6595,9 @@ var content_vue = new Vue({
       deep: true,
     },
     "m.newScore.scoreOpts.rows"(num) {
-      if(num>30){
-        alert('行数最大30');
-        setTimeout(()=>{
-          this.m.newScore.scoreOpts.rows = 30;
-        }, 200);
-      }
-      if(num<1){
-        alert('行数最小1');
-        setTimeout(()=>{
-          this.m.newScore.scoreOpts.rows = 1;
-        }, 200);
-      }
+      
     },
     "m.newScore.scoreOpts.rowBars"(num) {
-      if(num>88){
-        alert('小节最大88行');
-        setTimeout(()=>{
-          this.m.newScore.scoreOpts.rowBars = 88;
-        }, 200);
-      }
-      if(num<1){
-        alert('小节最小1行');
-        setTimeout(()=>{
-          this.m.newScore.scoreOpts.rowBars = 1;
-        }, 200);
-      }
       this.m.foldLine.line = num;
     },
     'm.foldLine.show'(show) {
