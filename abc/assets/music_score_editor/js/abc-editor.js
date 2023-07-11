@@ -6372,7 +6372,7 @@ var content_vue = new Vue({
           this.m.editor.lyricIndex = 0
           return
         }
-        if (!this.m.editor.val) {
+        if (!this.m.editor.val && type!='lyricist' && type!='compose' && type!='subTitle') {
           return alert({
             title: '标题',
             subTitle: '副标题',
