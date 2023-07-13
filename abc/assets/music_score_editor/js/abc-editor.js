@@ -3735,7 +3735,7 @@ var content_vue = new Vue({
           rows: "2",
           rowBars: "4",
         },
-        previewUrl: "assets/music_score_editor/preview.html?v=1.0.6",
+        previewUrl: "assets/music_score_editor/preview.html?v=1.0.7",
       },
       toolList: [
         {
@@ -6112,8 +6112,25 @@ var content_vue = new Vue({
       this.m.ctxMenu.copyBarInfo = copyNodeInfo;
       this.m.ctxMenu.isShow = true;
     },
-    createNewScore() {
+    createNewScore(e, f) {
       // console.log('createNewScore', this.m.newScore.scoreOpts);
+      if(!f && (!this.m.newScore.scoreOpts.subTitle || !this.m.newScore.scoreOpts.compose || !this.m.newScore.scoreOpts.lyricist)){
+        var t_arr = [];
+        if(!this.m.newScore.scoreOpts.subTitle){
+          t_arr.push('副标题');
+        }
+        if(!this.m.newScore.scoreOpts.compose){
+          t_arr.push('曲作者');
+        }
+        if(!this.m.newScore.scoreOpts.lyricist){
+          t_arr.push('词作者');
+        }
+        var that = this;
+        confirm_box(t_arr.join('、') + '是否确认为空？', '提示', function(){
+          that.createNewScore(e, true);
+        });
+        return;
+      }
       this.m.newScore.scoreOpts.subTitle = this.m.newScore.scoreOpts.subTitle?this.m.newScore.scoreOpts.subTitle:' ';
       this.m.newScore.scoreOpts.compose = this.m.newScore.scoreOpts.compose?this.m.newScore.scoreOpts.compose:' ';
       this.m.newScore.scoreOpts.lyricist = this.m.newScore.scoreOpts.lyricist?this.m.newScore.scoreOpts.lyricist:'&emsp;';

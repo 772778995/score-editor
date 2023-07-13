@@ -1937,3 +1937,103 @@ label.file-uploads{
 .t_key_box .absolute {
 	width: 100%;
 }
+
+/* confirm container */
+.confirm_con{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 99999;
+    background: rgba(255, 255, 255, 0.3);
+    display: none;
+}
+.c_tb{
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+.c_cell{
+    display: table-cell;
+    vertical-align: middle;
+}
+.confirm_box{
+    width: 450px;
+    margin: auto;
+    max-width: 100%;
+    max-height: 600px;
+    box-shadow: 0px 0px 10px 0px #ccc;
+    background-color: #FFFFFF;
+    position: relative;
+    border-radius: 6px;
+}
+.confirm_head{
+    background-color: #F6F6F6;
+    position: relative;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+.confirm_title{
+    padding: 5px 28px 5px 10px;
+    font-size: 22px;
+    font-weight: bold;
+    line-height: 1.5;
+}
+.error .confirm_title{
+    color: #C05E5E;
+}
+.close_btn{
+    display: inline-block;
+    padding: 10px 10px;
+    background-size: 16px auto;
+    background-repeat: no-repeat;
+    background-image: url(../img/close.png);
+    position: absolute;
+    right: 2px;
+    top: 8px;
+    cursor: pointer;
+}
+.confirm_body{
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    overflow: auto;
+    min-height: 120px;
+    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 19px;
+}
+.confirm_footer{
+    text-align: center;
+    height: 50px;
+}
+.ok_btn{
+    display: inline-block;
+    background-color: #0E518F;
+    color: #fff;
+    padding: 5px 18px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+.cancel_btn{
+    display: inline-block;
+    background-color: #EAEAEA;
+    color: #636363;
+    padding: 5px 18px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 5px;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+.confirm_footer .cancel_btn{
+    margin-right: 115px;
+}
+/* confirm container end -- */

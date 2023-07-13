@@ -60,3 +60,39 @@ $(function(){
 		});
 	}
 	
+// 确认是否执行弹出框
+function confirm_box(msg, title, cb_ok, cb_cancel, ok_btn, cl_btn){
+    if(typeof title=='string'){
+        $('#confirm_con .confirm_title').html(title?title:'提示');
+    }
+    $('#confirm_con .confirm_body').html(msg?msg:'');
+    $('#confirm_con').fadeIn();
+    var cb_ok_fn;
+    var cb_cancel_fn;
+    if(typeof title=='function'){
+        cb_ok_fn = title;
+        if(typeof cb_ok=='function'){
+            cb_cancel_fn = cb_ok;
+        }
+    }else{
+        if(typeof cb_ok=='function'){
+            cb_ok_fn = cb_ok;
+        }
+        if(typeof cb_cancel=='function'){
+            cb_cancel_fn = cb_cancel;
+        }
+    }
+    $('#confirm_con .ok_btn').off('click').on('click', function(){
+        $('#confirm_con').fadeOut();
+        if(typeof cb_ok_fn=='function'){
+            cb_ok_fn();
+        }
+    }).html(ok_btn?ok_btn:'确定');
+    $('#confirm_con .cancel_btn, #confirm_con .close_btn').off('click').on('click', function(){
+        $('#confirm_con').fadeOut();
+        if(typeof cb_cancel_fn=='function'){
+            cb_cancel_fn();
+        }
+    });
+    $('#confirm_con .cancel_btn').html(cl_btn?cl_btn:'取消');
+}
