@@ -1951,12 +1951,12 @@ $(document).ready(function () {
     if (content_vue.isExe || isAndroid == "1") {
       window.open(
         "know_teac_preview.html",
-        "创编制谱系统操作手册"
+        "乐谱创作系统操作手册"
       );
     } else {
       window.open(
         "know_teac_preview.html",
-        "创编制谱系统操作手册"
+        "乐谱创作系统操作手册"
       );
     }
   });
