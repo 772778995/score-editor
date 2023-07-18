@@ -1653,6 +1653,7 @@ $(document).ready(function () {
 
   //符点选中状态，修复附点
   $(".dotstatus").click(function () {
+    console.log('dotstatus 附点');
       if(window.dotstatus_setting){
         return;
       }
@@ -1691,9 +1692,9 @@ $(document).ready(function () {
                   var my_note_str_r = my_note_str["replace"](/[0-9/]/g, "");
                   var n_note_str = my_note_str_r + getDurStrByNoteDur(bf_dur, sym["my_ulen"]);
                   var n_reset_str = "z," + getDurStrByNoteDur(af_dur, sym["my_ulen"]);
-                  var abc_content = $("#source")["val"]();
+                  var abc_content = $("#source").val();
                   var n_abc_content = abc_content["substring"](0, sym["istart"]) + n_note_str + n_reset_str + abc_content["substring"](sym["iend"]);
-                  $("#source")["val"](n_abc_content);
+                  $("#source").val(n_abc_content);
                   doLog();
                   src_change()
               }

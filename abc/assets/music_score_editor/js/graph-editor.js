@@ -5779,13 +5779,14 @@ function moveDeco(_0x16062) {
 var lastMidiReplaceNoteIstart = -1;
 var lastMidiReplaceNoteV = -1;
 var midiInStatus = false;
-function updateNextNote(_0x1C16A, _0x1B13E, chordInput, _0x1C197) {
-  console.log('updateNextNote:', _0x1C16A, _0x1B13E, chordInput, _0x1C197);
-  if (!graph_update && _0x1C16A !== 'z') {
+function updateNextNote(inputNote, noteIndex, chordInput, _0x1C197) {
+  console.log('updateNextNote:', inputNote, noteIndex, chordInput, _0x1C197);
+  if (!graph_update && inputNote !== 'z') {
     return;
   }
-  console["log"]("notestr:", _0x1C16A);
+  console["log"]("notestr:", inputNote);
   var _0x1C21E = $(".selected_text")["length"];
+  console.log('updateNextNote dragSplNum', dragSplNum);
   if (dragSplNum) {
     _0x1C21E = 1;
   }
@@ -5854,11 +5855,11 @@ function updateNextNote(_0x1C16A, _0x1B13E, chordInput, _0x1C197) {
         "istart"
       );
       if (dragSplNum) {
-        _0x1C1F1 = _0x1B13E;
+        _0x1C1F1 = noteIndex;
       }
     }
     if (_0x1C1F1 === -1) {
-      console["log"]("\u6ca1\u6709\u4e86----");
+      console["log"]("----");
       if (
         graphEditor["pianoImpro"] &&
         graphEditor["pianoImpro"]["isOpen"]
@@ -5867,8 +5868,8 @@ function updateNextNote(_0x1C16A, _0x1B13E, chordInput, _0x1C197) {
       }
       appendNodes(1);
       setTimeout(function () {
-        console.log('updateNextNote', _0x1C16A, _0x1B13E);
-        updateNextNote(_0x1C16A, _0x1B13E);
+        console.log('updateNextNote', inputNote, noteIndex);
+        updateNextNote(inputNote, noteIndex);
       }, 500);
       midiInStatus = false;
       return;
@@ -5877,12 +5878,12 @@ function updateNextNote(_0x1C16A, _0x1B13E, chordInput, _0x1C197) {
     if (sym_data) {
       lastMidiReplaceNoteIstart = _0x1C1F1;
       lastMidiReplaceNoteV = sym_data["v"];
-      var _0x18C54 = genNoteAndDur(_0x1C16A, sym_data);
+      var _0x18C54 = genNoteAndDur(inputNote, sym_data);
       console["log"]("noteInfo:", _0x18C54);
       if (_0x18C54["noteStr"]["startWith"](" ")) {
         lastMidiReplaceNoteIstart++;
       }
-      _0x18C54["note"] = _0x1C16A;
+      _0x18C54["note"] = inputNote;
       var _0x18BFA = _0x18C54["noteStr"];
       midiInStatus = false;
       if (sym_data["type"] == 10) {
@@ -5899,7 +5900,7 @@ function updateNextNote(_0x1C16A, _0x1B13E, chordInput, _0x1C197) {
             _0x18C27 += sym_data["tie_s"]["dur"];
           }
           if (_0x18C27 == durSetting) {
-            var _0x18A0B = genChordNote(sym_data, _0x1C16A, durSetting);
+            var _0x18A0B = genChordNote(sym_data, inputNote, durSetting);
             if (
               rest_status == "" &&
               chordNote == "" &&
@@ -5964,8 +5965,8 @@ function updateNextNote(_0x1C16A, _0x1B13E, chordInput, _0x1C197) {
       }
     }
   } else {
-    console["log"]("\u6ca1\u6709\u9009\u4e2d\u97f3\u7b26");
-    window["top"]["alert"]("\u8bf7\u9009\u4e2d1\u4e2a\u97f3\u7b26\u5f00\u59cb\u8f93\u5165");
+    console.log('没有选中音符');
+    window.top.alert('请选中1个音符开始输入');
   }
   return _0x1C1F1;
 }
