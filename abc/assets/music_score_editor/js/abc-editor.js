@@ -7464,7 +7464,7 @@ const getVocalList = () => {
       item.prev = barList[i - 1] || null;
       return item
     })
-    abcCode = abcCode.replace(vocalStr, "操".repeat(vocalStr.length));
+    // abcCode = abcCode.replace(vocalStr, "操".repeat(vocalStr.length));
     return vocal;
   });
   return vocalList;
