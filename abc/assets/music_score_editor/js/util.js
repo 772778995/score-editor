@@ -6187,7 +6187,7 @@ function handleNumPress(e, editorType) {
               }
             }
             autoNodeLine();
-            //abc_change();
+            abc_change();
             $("#source").focus();
             break;
           }

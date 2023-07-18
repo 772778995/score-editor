@@ -515,6 +515,7 @@ function pitchPs(_0x74F5, _0xBCED, _0x6E73) {
 }
 
 function drawPitch(_0x792B, _0x6D7E) {
+    console.log('drawPitch', _0x792B, _0x6D7E);
     var _0x6ED5 = _0x792B["sw"][0],
         _0x6CEB = _0x792B["sw"][1];
     var _0x9984 = getPitchSym(_0x792B["simpleNum"]);
@@ -925,32 +926,32 @@ function eightDegreesChange(_0x7DC3, _0x8040) {
     return _0x8040
 }
 
-function getSplnum2note(_0x6FFB, _0x6E73, _0x8104, _0x7DC3, _0x6D7E) {
+function getSplnum2note(noteStr, type, noteInfo, abcContent, cen) {
     var _0x8040 = null,
-        _0x800F = null;
-    if (_0x6E73 != "rest" && isFixedMode == 0) {
-        _0x800F = getToneMark(_0x7DC3, _0x8104["key"], true);
-        _0x6FFB = eightDegreesChange(_0x7DC3, getNote(_0x6FFB));
-        _0x8040 = getSimpleNameByKAndStaff(_0x800F, getNote(_0x6FFB), _0x7DC3, _0x6D7E["st"], _0x6D7E["istart"]);
+        K = null;
+    if (type != "rest" && isFixedMode == 0) {
+        K = getToneMark(abcContent, noteInfo["key"], true);
+        noteStr = eightDegreesChange(abcContent, getNote(noteStr));
+        _0x8040 = getSimpleNameByKAndStaff2(K, getNote(noteStr), abcContent, cen["st"], cen["istart"]);
         if (!_0x8040) {
             _0x8040 = "X"
         }
     } else {
-        _0x8040 = note2number(_0x6FFB)
+        _0x8040 = note2number(noteStr)
     };
-    if (isRhythm(_0x6D7E)) {
+    if (isRhythm(cen)) {
         _0x8040 = _0x8040["replace"](/\d/, "X")
     };
-    if (_0x6D7E["a_stk"] && _0x6D7E["a_stk"]["length"]) {
-        if (_0x6D7E["a_stk"][0]["t"] && _0x6D7E["a_stk"][0]["t"] != "{" && _0x6D7E["a_stk"][0]["t"] != "}") {
-            _0x8040 = _0x8040["replace"](/\d|X/g, _0x6D7E["a_stk"][0]["t"])
+    if (cen["a_stk"] && cen["a_stk"]["length"]) {
+        if (cen["a_stk"][0]["t"] && cen["a_stk"][0]["t"] != "{" && cen["a_stk"][0]["t"] != "}") {
+            _0x8040 = _0x8040["replace"](/\d|X/g, cen["a_stk"][0]["t"])
         }
     };
-    var _0xB07C = _0x6FFB["replaceAll"]("/", "")["replaceAll"](",", "")["replaceAll"]("\'", "");
+    var _0xB07C = noteStr["replaceAll"]("/", "")["replaceAll"](",", "")["replaceAll"]("\'", "");
     if (abc["isExtendChar"](_0xB07C)) {
         _0x8040 = _0x8040["replace"](/\d/, abc["getExtendObject"](_0xB07C)["show_char"])
     };
-    if (eq("140,141", _0x6D7E["p_v"]["instr"])) {
+    if (eq("140,141", cen["p_v"]["instr"])) {
         _0x8040 = _0x8040["replace"](/\d/, "X")
     };
     return _0x8040
@@ -975,9 +976,11 @@ DrawUtil["prototype"] = {
         }
     },
     drawSharpSign: function(_0x6FFB, _0x6F06, _0x6F37) {
+        // console.log('drawSharpSign', _0x6FFB, _0x6F06, _0x6F37);
         if (_0x6FFB["match"](/\^+|\_+|=/)) {
             var _0x6FCA = "";
             var _0x6F99 = _0x6FFB["match"](/\^+|\_+|=/)[0]["replace"](/\^+|\_+|=/g, function(_0x6F06) {
+                // console.log('drawSharpSign s', _0x6F06);
                 switch (_0x6F06) {
                     case "^^":
                         _0x6FCA = "acc1";
@@ -990,7 +993,10 @@ DrawUtil["prototype"] = {
                         return "\u266e";
                     case "_":
                         _0x6FCA = "acc-1";
-                        return "\u266d"
+                        return "\u266d";
+                    case "__":
+                        _0x6FCA = "acc-2";
+                        return "&#x1d12b;"; // "𝄫";
                 };
                 return "&#x1d12b;"
             });

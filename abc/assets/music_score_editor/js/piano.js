@@ -1304,6 +1304,180 @@ function getSimpleNameByKAndStaff(K, note, abcString, st) {
 	return numNote;
 }
 
+// 获取五线谱的音符移调后简谱的音2
+function getSimpleNameByKAndStaff2(K, note, abcString, st) {
+	// X'=>x
+	note = note.replace(/([A-Z])\'/g, function($1) {
+		// console.log("X'=>x================",arguments)
+		if ($1) {
+			return $1.replaceAll("\'", '').toLowerCase();
+		}
+		;
+	});
+	// x,=>X
+	note = note.replace(/([a-z]),/g, function($1) {
+		// console.log('x,=>X================',arguments)
+		if ($1) {
+			return $1.replaceAll(",", '').toUpperCase();
+		}
+	})
+	var oldNote = note;
+	var numArr = sd.Simple2Staff.SimpleValue;
+	var indexArr = sd.Simple2Staff.index;
+	// C4音索引
+	var index = -1;
+	// 对应简谱的索引
+	var numIndex = -1;
+	// 是否需要添加还原符号
+	var isNeedAdd = false;
+	var islower = false;
+
+	// 1.先找到C4区域的索引号，然后再根据实际情况取实际索引值
+	var mode = getfindObjbyArr(K);
+	if (!mode) {
+		return 0;
+	}
+
+	// 首调唱名法默认下行显示（小字一组）
+	var staff = mode.STAFF;
+	// %%voicedosetting 1:C=lower,1:D=lower
+	// voicedosetting 优先使用
+	var commCharacter = "%%voicedosetting";// （多声部的首调唱名高八度或低八度的设置）
+	if(abcString.indexOf(commCharacter) == -1){
+		 commCharacter = "%%keydefined"; // （单声部的首调唱名高八度或低八度的设置）
+	}
+	var cstComm = abcString.match(new RegExp(commCharacter + "\s*.*(?=\\n)"));
+	// 如果为空且Bb 或者 不为空且为%%lower，则显示小字组
+	if (cstComm) {
+		////%%keydefined\s*/g
+		cstComm = cstComm[0].replace(new RegExp(commCharacter + "\s*"), '').replace(/\s*/g, '');
+		var keydefined = cstComm.split(',').find(function(curValue, index) {
+			if(commCharacter == "%%voicedosetting" && st !== undefined ){
+				return new RegExp((st + 1) + ":" + K).test((st + 1) + ":" + curValue);
+			}else{
+				return new RegExp(K).test(curValue);
+			}
+		})
+		// 获取某个声部的首调唱名高八度或低八度的设置
+		if(keydefined && keydefined.split(":").length > 1 && st + 1 == keydefined.split(":")[0]){
+			keydefined = keydefined.split(":")[1];
+		}
+		if (keydefined && /lower/g.test(keydefined)) {
+			// 上行显示
+			staff = mode.STAFF_LOWER;
+			islower = true;
+		}
+	}
+
+	// if((!cstComm && 'Bb' == K) || (cstComm && /%%lower/.test(cstComm[0]))){
+	// staff = mode.STAFF_LOWER;
+	// }
+
+	numIndex = getfindIndexbyArr(staff, note);
+
+	// 如果找不到带有还原符号的音符，那么脱掉还原符继续找
+	if (numIndex == -1 && /\=/g.test(note)) {
+		numIndex = getfindIndexbyArr(staff, note.replace(/\=/g, ""));
+		isNeedAdd = true;
+	}
+
+	// 继续寻找是不是调式特有的音
+	if (numIndex == -1) {
+		var modeNote = getModeChangeNote(K);
+		if (modeNote.val && modeNote.val.toUpperCase().indexOf(note.toUpperCase().replace(/\'|\,/g, '')) > -1) {
+			// 特殊音符没有升降号，去掉升降后面的程序有处理
+			note = getNoteByKeySign(K, note);
+			if(note){
+				note = note.replace(/[_=^]*/g,'');
+			}
+			numIndex = getfindIndexbyArr(staff, note);
+			// 找不到的都加还原记号
+			note = "=" + note;
+			isNeedAdd = true;
+		}
+	}
+	
+
+	if (numIndex == -1) {
+		// var s = abc.getCurS();
+		// abc.error(1, {
+		// fname : s.fname,
+		// istart : s.istart
+		// }, "" + K + "调的$1找不到对应简谱的音", note);
+		return;
+	}
+
+	// 找不到，默认为0，方便解决
+	var numNote = 0;
+
+	if (numIndex > -1) {
+		numNote = numArr[numIndex].replace(/b/g, '_').replace(/#/g, '^');
+	}
+
+	if (/\=/g.test(note) && isNeedAdd && numIndex > -1) {
+		numNote = "=" + numNote;
+	}
+
+	// 当前的音
+	curnote = staff[numIndex];
+	// 计算高低音的圆点数，原始音的索引
+	var noteIndex = findIndexByNote(note);
+	// C4区的索引
+	var index = findIndexByNote(curnote);
+
+	// console.log('========// C4区的索引============', K)
+	// console.log("原始音：",note);
+	// console.log("当前音：",curnote);
+
+	// console.log('==========C4音索引==========', index)
+	// console.log('==========原始音索引==========', noteIndex, note)
+	if ('Bb' == K) {
+		// noteIndex += 12;
+	}
+
+	var dValue = noteIndex - index;
+	// 对重降C进行回复12
+	if(note.indexOf('__C')>-1){
+		console.log('getSimpleNameByKAndStaff note', note, dValue);
+		dValue += 12;
+	}
+	// console.log('==========原音与C4音的差值==========', dValue)
+
+	if (dValue > 0) {
+		// 高音区
+		for (var i = 0; i < parseInt(dValue / 12); i++) {
+			numNote += "'";
+		}
+	} else {
+		// 低音区
+		for (var i = 0; i < parseInt(Math.abs(dValue) / 12); i++) {
+			numNote += ",";
+		}
+	}
+	// 如果出现调式中的特殊音，那么升降号与五线谱一致
+//	console.log('note:', note, 'number:', numNote )
+
+	
+//	var speMode = sd.KeySignature.find(item => item.key == K);
+//	if(speMode && speMode.val){
+//		var oriNote = oldNote.replace(/[_=^]*/g,'');
+//		// 检索特殊音组，是否存在
+//		if(speMode.val.toLowerCase().indexOf(oriNote.toLowerCase()) > -1){
+//			if(!findPrevModeSameNoteBybar(abcString, istart, oriNote)){
+//				// 如果小节开头未出现同音的变化音，那么返回原来的结果
+//				return numNote;
+//			}
+//			// 五线谱音符的升降号
+//			var oriChangeSign = oldNote.match(/[_=^]*/g);
+//			if(oriChangeSign){
+//				// 如果存在就换成五线谱的升降号
+//				numNote = oriChangeSign[0] + numNote.replace(/[_=^]*/g,'');
+//			}
+//		}
+//	}
+	return numNote;
+}
+
 function findPrevModeSameNoteBybar(abcString, istart, note){
 	var tmpNoteStr = '';
 	if(abcString.lastIndexOf('\|') > -1){
