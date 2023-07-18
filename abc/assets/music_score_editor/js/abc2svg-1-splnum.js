@@ -3921,6 +3921,9 @@ abc2svg = {
           }
         }
       }
+      if(bar_type==':][:'){
+        bar_type = ':|]|:'; // 开始-反复记号显示更新
+      }
       for (i = bar_type.length; --i >= 0; ) {
         switch (bar_type[i]) {
           case "|":

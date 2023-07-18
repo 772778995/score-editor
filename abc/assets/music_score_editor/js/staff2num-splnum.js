@@ -729,11 +729,12 @@ function drawAllBar(_0x6FFB, _0x7431, _0x831F, _0x8350, _0x6CEB, _0x6D7E) {
     };
     if (":||:" == _0x6FFB || "::" == _0x6FFB || ":][:" == _0x6FFB) {
         abc["out_svg"]("<use transform=\"translate(0," + _0x7431 + ")\"  x=\"" + (_0x831F - 4) + "\"  y=\"" + (_0x8350 + 24) + "\" xlink:href=\"#rdots\"></use>");
-        drawIns["drawBar"](_0x7431, _0x831F, _0x8350, 3, _0x6CEB);
-        drawIns["drawBar"](_0x7431, _0x831F + 5, _0x8350, 3, _0x6CEB);
-        abc["out_svg"]("<use transform=\"translate(0," + _0x7431 + ")\"  x=\"" + (_0x831F + 9) + "\"  y=\"" + (_0x8350 + 24) + "\" xlink:href=\"#rdots\"></use>");
-        _0x948A = 1 + 3 + 3 + 1;
-        _0x9459 = _0x831F - 4
+        drawIns["drawBar"](_0x7431, _0x831F, _0x8350, 1, _0x6CEB);
+        drawIns["drawBar"](_0x7431, _0x831F + 4, _0x8350, 3, _0x6CEB);
+        drawIns["drawBar"](_0x7431, _0x831F + 5 + 3, _0x8350, 1, _0x6CEB);
+        abc["out_svg"]("<use transform=\"translate(0," + _0x7431 + ")\"  x=\"" + (_0x831F + 9 + 3) + "\"  y=\"" + (_0x8350 + 24) + "\" xlink:href=\"#rdots\"></use>");
+        _0x948A = 1 + 3 + 3 + 1 + 8;
+        _0x9459 = _0x831F - 4 + 1
     };
     drawIns["drawRect"](_0x9459["toFixed"](2) - 6, _0x7431 + _0x8350 - (bar_height - 24) * 0.5, _0x948A + 10, bar_height, -1)
 }
