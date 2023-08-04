@@ -246,6 +246,11 @@
 	height: 100%;
 	position: relative;
 }
+.shabi-content::-webkit-scrollbar{
+	/* background: red; */
+	display: none;
+}
+
 .right-top-content,
 .right-top{
 	/* background-color: #ddd; */
