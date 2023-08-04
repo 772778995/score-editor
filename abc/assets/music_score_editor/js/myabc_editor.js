@@ -67,6 +67,32 @@ const speedTxtList = [
   { val: "208", txt: "Prestissimo", title: '最急板' },
 ];
 
+/** 表情术语列表 */
+const faceTxtList = [
+  { txt: "Accarezzevole", title: '深情地' },
+  { txt: "Amoroso", title: '柔情地' },
+  { txt: "Appassionato", title: '热情地' },
+  { txt: "Buffo", title: '滑稽地' },
+  { txt: "Cantabile", title: '如歌地' },
+  { txt: "Dolce", title: '柔和、甜美地' },
+  { txt: "Elegante", title: '优美的、高雅的' },
+  { txt: "Grandioso", title: '雄伟地' },
+  { txt: "Leggiero", title: '轻巧、轻快地' },
+  { txt: "Misterioso", title: '神秘地' },
+  { txt: "Vivace", title: '活泼、敏捷' },
+  { txt: "Amabile", title: '愉快地' },
+  { txt: "Animato", title: '活泼地' },
+  { txt: "Brillante", title: '辉煌地' },
+  { txt: "Brioso", title: '朝气蓬勃' },
+  { txt: "Con grazio", title: '优美地' },
+  { txt: "Dolente", title: '哀伤地' },
+  { txt: "Giocoso", title: '诙谐地' },
+  { txt: "Lagrimoso", title: '哭泣地' },
+  { txt: "Maestoso", title: '宏伟、庄重地' },
+  { txt: "Quieto", title: '平静地' },
+  { txt: "Vivo", title: '活泼、敏捷' },
+]
+
 /** @type {ScoreOpts} */
 const defaultScoreOpts = {
   title: "标题",
