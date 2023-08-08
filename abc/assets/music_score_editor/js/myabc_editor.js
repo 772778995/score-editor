@@ -52,7 +52,7 @@ var clipdataContent = "";
 
 /** 速度文本列表 */
 const speedTxtList = [
-  { val: "40", txt: "Grave", title: '庒板' },
+  { val: "40", txt: "Grave", title: '庄板' },
   { val: "46", txt: "Largo", title: '广板' },
   { val: "52", txt: "Lento", title: '慢板' },
   { val: "56", txt: "Adagio", title: '柔板' },
