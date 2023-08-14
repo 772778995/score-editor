@@ -8,6 +8,7 @@
         set() { return () => {} }
       });
       window.AE = {
+        // api_url: 'https://dev2.midiplusedu.com/api',
         api_url: '{{$api_url}}',
         base_url: '{{$base_url}}',
         file_url: '{{$file_url}}'
@@ -923,7 +924,12 @@
                   />
                   <div>速度文本：</div>
                 </div>
-                <select-input v-model="m.newScore.scoreOpts.speedText" :list="m.newScore.speedTxtList" style="height: 28px;" :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.speedType === 'sign' }"></select-input>
+                <select-input
+                  v-model="m.newScore.scoreOpts.speedText"
+                  :list="speedTxtOptsList"
+                  style="height: 28px;"
+                  :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.speedType === 'sign' }">
+                </select-input>
               </div>
               <div class="flex items-center" style="margin-top: 10px;">
                 <div class="flex items-center h-full cursor-pointer" @click="m.newScore.scoreOpts.speedType = 'sign'">
@@ -3583,7 +3589,7 @@
                     >
                       <template v-if="model.code === 'speedTerm'">
                         <div
-                          v-for="(item) in model.speedList"
+                          v-for="(item) in speedTxtListPanel"
                           :key="item.val"
                           class="flex items-center justify-center h-8 text-sm font-normal"
                           style="margin-left: -2px; margin-top: -2px; border: 1px solid #E6E6E6; transform: translate(1px, 1px);"

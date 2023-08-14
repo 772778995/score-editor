@@ -211,41 +211,41 @@ const initNewScoreOpts = {
 function createMusicNextEvent() {
   console.log(this.content_vue.m.toolList[9], '==+++')
   this.content_vue.m.newScore.scoreOptsShow = true
-  this.content_vue.m.newScore.speedTxtList = speedTxtList.map((item) => {
-    let obj
-    if (this.content_vue.m.newScore.scoreOpts.musicType == 'easy') {
-      obj = {
-        val: item.title,
-        txt: item.title,
-      }
-      this.content_vue.m.newScore.scoreOpts.speedText = "中板"
-    } else {
-      obj = {
-        val: item.txt,
-        txt: item.txt,
-      }
-    }
-    return obj
-  })
-  this.content_vue.m.toolList.forEach((item)=>{
-    if (item.name == '速度术语') {
-      item.speedList = speedTxtList.map((el)=>{
-        if (this.content_vue.m.newScore.scoreOpts.musicType == 'easy') {
-          return {
-            title: el.txt,
-            txt: el.title,
-            val: el.val
-          }
-        } else {
-          return {
-            title: el.title,
-            txt: el.txt,
-            val: el.val
-          }
-        }
-      })
-    }
-  })
+  // this.content_vue.m.newScore.speedTxtList = speedTxtList.map((item) => {
+  //   let obj
+  //   if (this.content_vue.m.newScore.scoreOpts.musicType == 'easy') {
+  //     obj = {
+  //       val: item.title,
+  //       txt: item.title,
+  //     }
+  //     this.content_vue.m.newScore.scoreOpts.speedText = "中板"
+  //   } else {
+  //     obj = {
+  //       val: item.txt,
+  //       txt: item.txt,
+  //     }
+  //   }
+  //   return obj
+  // })
+  // this.content_vue.m.toolList.forEach((item)=>{
+  //   if (item.name == '速度术语') {
+  //     item.speedList = speedTxtList.map((el)=>{
+  //       if (this.content_vue.m.newScore.scoreOpts.musicType == 'easy') {
+  //         return {
+  //           title: el.txt,
+  //           txt: el.title,
+  //           val: el.val
+  //         }
+  //       } else {
+  //         return {
+  //           title: el.title,
+  //           txt: el.txt,
+  //           val: el.val
+  //         }
+  //       }
+  //     })
+  //   }
+  // })
 }
 
 function liaison(val) {
@@ -3714,6 +3714,7 @@ var content_vue = new Vue({
         speedTxtList: speedTxtList.map((item) => ({
           val: item.txt,
           txt: item.txt,
+          type: item.type
         })),
         scoreOpts: {
           title: "",
@@ -6179,6 +6180,19 @@ var content_vue = new Vue({
     },
   },
   computed: {
+    speedTxtOptsList() {
+      if (this.m.newScore.scoreOpts.musicType === 'easy') {
+        const list = this.m.newScore.speedTxtList.filter(item => item.type === 'easy')
+        this.m.newScore.scoreOpts.speedText = '中板'
+        return list
+      }
+      this.m.newScore.scoreOpts.speedText = 'Moderato'
+      return this.m.newScore.speedTxtList.filter(item => item.type !== 'easy')
+    },
+    speedTxtListPanel() {
+      if (this.m.scoreOpts.musicType !== 'easy') return this.m.newScore.speedTxtList.filter(item => item.type !== 'easy')
+      return this.m.newScore.speedTxtList.filter(item => item.type === 'easy')
+    },
     getMenuTxt() {
       return this.m.menuList[this.m.menuIndex]?.txt;
     },
