@@ -6,6 +6,11 @@ const updateLastSelect = () => {
     $(`text[type='note'][istart='${istart}']`)[0].classList.add('selected_text')
     window.lastIstart = null
   }
+  const abcVal = $('#source').val()
+  if (abcVal.match('V:1 treble nm="P1"\n')) {
+    $('#source').val(abcVal.replace('V:1 treble nm="P1"\n', ''))
+    abc_change()
+  }
 }
 
 const asyncRect = () => {
