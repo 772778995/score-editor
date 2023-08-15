@@ -6754,7 +6754,7 @@ function genBarDeco(val, insert_content, position, type, index) {
         LineInfo["nodes"][0]["nodeIndex"] == 0
       ) {
         lineStr = lineStr
-          .replace(/^(\!coda\!)|(\!segno\!)/, '')
+          .replace(/^(\!coda\!)|(\!segno\!)|(\|:)/, '')
         lineStr = val + lineStr
       }
       new_content += lineStr + "\x0A";
