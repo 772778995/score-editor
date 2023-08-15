@@ -29,18 +29,19 @@ function loadXml (data) {
     abcText = abcText.replace(/%%scale .*\n/,"");
     const titleMatch = abcText.match(/T:\s?.+/g)
     if (!titleMatch) {
-        abcText = abcText.replace(/M:\s*\d+\/\d+/, s => `${s}\nT:标题\nT:副标题\n`)
+        abcText = abcText.replace(/M:\s*\d+\/\d+/, s => `${s}\nT:标题\nT:\n`)
     } else if (titleMatch.length === 1) {
-        abcText = abcText.replace(/T:\s?.+/, s => `${s}\nT:副标题\n`)
+        abcText = abcText.replace(/T:\s?.+/, s => `${s}\nT:\n`)
     }
     const authorMatch = abcText.match(/C:\s?.+/g)
     if (!authorMatch) {
-        abcText = abcText.replace(/M:\s*\d+\/\d+/, s => `${s}\nC:曲作者\nC:词作者\n`)
+        abcText = abcText.replace(/M:\s*\d+\/\d+/, s => `${s}\nC:\nC:\n`)
     } else if (authorMatch.length === 1) {
-        abcText = abcText.replace(/C:\s?.+/, s => `${s}\nC:词作者\n`)
+        abcText = abcText.replace(/C:\s?.+/, s => `${s}\nC:\n`)
     }
     const speedMatch = abcText.match(/Q:\s?.+/g)
     if (!speedMatch) {
+        content_vue.m.scoreOpts.speedType = 'none'
         abcText = abcText.replace(/M:\s*\d+\/\d+/, s => `${s}\nQ:1/4=88\n`)
     }
 
