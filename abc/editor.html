@@ -916,6 +916,16 @@
             <div class="relative rounded" style="padding: 10px 18px;">
               <div class="blue-title" style="margin-bottom: 16px;">速度</div>
               <div class="flex items-center ">
+                <div class="flex items-center h-full cursor-pointer mb-2" @click="m.newScore.scoreOpts.speedType = 'none'">
+                  <img
+                    :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.speedType === 'none' ? '1' : '2'}.png`"
+                    class="cursor-pointer mr-2"
+                    @click="m.newScore.scoreOpts.speedType = 'txt'"
+                  />
+                  <div>无速度</div>
+                </div>
+              </div>
+              <div class="flex items-center ">
                 <div class="flex items-center h-full cursor-pointer" @click="m.newScore.scoreOpts.speedType = 'txt'">
                   <img
                     :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.speedType === 'txt' ? '1' : '2'}.png`"
@@ -928,7 +938,7 @@
                   v-model="m.newScore.scoreOpts.speedText"
                   :list="speedTxtOptsList"
                   style="height: 28px;"
-                  :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.speedType === 'sign' }">
+                  :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.speedType !== 'txt' }">
                 </select-input>
               </div>
               <div class="flex items-center" style="margin-top: 10px;">
@@ -3603,7 +3613,7 @@
                           {{ item.txt }}
                         </div>
                       </template>
-                      <template v-else="model.code === 'emoTerm'">
+                      <template v-else-if="model.code === 'emoTerm'">
                         <div
                           v-for="(item) in m.scoreOpts.musicType === 'easy' ? easyEmoTxtList : staffEmoTxtList"
                           :key="item.txt"

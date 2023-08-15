@@ -6380,6 +6380,10 @@ var content_vue = new Vue({
     },
 
     // ———————————————————————————————————————— 分割线 __watch ————————————————————————————————————————
+    'm.newScore.scoreOpts.speedType'(type) {
+      if (type !== 'none') return
+      this.m.newScore.scoreOpts.speedNum = '88'
+    },
     'm.panzoom.scale'(scale) {
       if (scale >= 150) this.m.panzoom.scale = 150
       if (scale <= 50) this.m.panzoom.scale = 50
