@@ -3603,6 +3603,18 @@
                           {{ item.txt }}
                         </div>
                       </template>
+                      <template v-else="model.code === 'emoTerm'">
+                        <div
+                          v-for="(item) in m.scoreOpts.musicType === 'easy' ? easyEmoTxtList : staffEmoTxtList"
+                          :key="item.txt"
+                          class="flex items-center justify-center h-8 text-sm font-normal"
+                          style="margin-left: -2px; margin-top: -2px; border: 1px solid #E6E6E6; transform: translate(1px, 1px);"
+                          :title="item.title"
+                          @click="setEmoTxt(item.txt)"
+                        >
+                          {{ item.txt }}
+                        </div>
+                      </template>
                       <template v-else>
                         <div
                           v-for="(tImg, idx) in model.imgList"

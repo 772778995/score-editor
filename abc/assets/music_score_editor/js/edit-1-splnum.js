@@ -7,10 +7,16 @@ const updateLastSelect = () => {
     window.lastIstart = null
   }
   const abcVal = $('#source').val()
+  // @filter 过滤 P1
   if (abcVal.match('V:1 treble nm="P1"\n')) {
     $('#source').val(abcVal.replace('V:1 treble nm="P1"\n', ''))
     abc_change()
   }
+  // @filter 修正简谱表情术语坐标
+  $('[type="zs"]').css({
+    transform: `translateY(${content_vue.m.scoreOpts.musicType === 'easy' ? '-5px' : '0'})`
+  })
+  console.log($('[type="zs"]'))
 }
 
 const asyncRect = () => {
@@ -3162,6 +3168,11 @@ function getGchCoorInfo(_0x6C89) {
     $("#gchcoor")["val"](_0xA872);
   }
   return _0x6C89;
+}
+const setEmoTxt = (txt) => {
+  $("#zsistart")["val"]($($('[type="note"],[type="rest"],[type="splnum_rest"]')[0]).attr('istart'))
+  $("#zsInput")["val"](txt)
+  saveZs()
 }
 function saveZs() {
   var _0x7183 = $("#zsistart")["val"]();

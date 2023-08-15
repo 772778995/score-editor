@@ -1932,6 +1932,55 @@ function changeNumberKeypadIndex(i) {
   content_vue.m.numberKeypad.page = index;
 }
 
+const staffEmoTxtList = [
+  { txt: "Accarezzevole" },
+  { txt: "Amoroso" },
+  { txt: "Appassionato" },
+  { txt: "Buffo" },
+  { txt: "Cantabile" },
+  { txt: "Dolce" },
+  { txt: "Elegante" },
+  { txt: "Grandioso" },
+  { txt: "Leggiero" },
+  { txt: "Misterioso" },
+  { txt: "Vivace" },
+  { txt: "Amabile" },
+  { txt: "Animato" },
+  { txt: "Brillante" },
+  { txt: "Brioso" },
+  { txt: "Con grazio" },
+  { txt: "Dolente" },
+  { txt: "Giocoso" },
+  { txt: "Lagrimoso" },
+  { txt: "Maestoso" },
+  { txt: "Quieto" },
+  { txt: "Vivo" }
+]
+const easyEmoTxtList = [
+  { txt: "深情地" },
+  { txt: "柔情地" },
+  { txt: "热情地" },
+  { txt: "滑稽地" },
+  { txt: "如歌地" },
+  { txt: "柔和、甜美地" },
+  { txt: "优美的、高雅的" },
+  { txt: "雄伟地" },
+  { txt: "轻巧、轻快地" },
+  { txt: "神秘地" },
+  { txt: "活泼、敏捷" },
+  { txt: "愉快地" },
+  { txt: "活泼地" },
+  { txt: "辉煌地" },
+  { txt: "朝气蓬勃" },
+  { txt: "优美地" },
+  { txt: "哀伤地" },
+  { txt: "诙谐地" },
+  { txt: "哭泣地" },
+  { txt: "宏伟、庄重地" },
+  { txt: "平静地" },
+  { txt: "活泼、敏捷" }
+]
+
 var content_vue = new Vue({
   el: "#content",
   data: {
@@ -4863,6 +4912,11 @@ var content_vue = new Vue({
           isShow: !1,
           isExpand: !1,
         },
+        {
+          code: "emoTerm",
+          name: "表情术语",
+          cols: 2
+        }
       ],
       foldLine: {
         toolShow: false,
