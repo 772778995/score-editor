@@ -6,6 +6,17 @@ const updateLastSelect = () => {
     $(`text[type='note'][istart='${istart}']`)[0].classList.add('selected_text')
     window.lastIstart = null
   }
+  const abcVal = $('#source').val()
+  // @filter 过滤 P1
+  if (abcVal.match('V:1 treble nm="P1"\n')) {
+    $('#source').val(abcVal.replace('V:1 treble nm="P1"\n', ''))
+    abc_change()
+  }
+  // @filter 修正简谱表情术语坐标
+  $('[type="zs"]').css({
+    transform: `translateY(${content_vue.m.scoreOpts.musicType === 'easy' ? '-5px' : '0'})`
+  })
+  console.log($('[type="zs"]'))
 }
 
 const asyncRect = () => {
@@ -2887,12 +2898,13 @@ function renderSuccess() {
       const className = el.attr('class')
       content_vue.m.editor.val = el.text()
       if (className === 'f1') type = 'title'
-      else if (className === 'f2') type = 'subTitle'
-      else if (className === 'f3') {
-        const index = el.index()
+      else if (className === 'f3' || el.attr('type') === 'composer') {
+        let index = el.index()
+        if (className === 'f2') index ++
         if (index === 2) type = 'compose'
         else if (index === 3) type = 'lyricist'
       }
+      else if (className === 'f2') type = 'subTitle'
       content_vue.m.editor.type = type
     })
     var $events = $("svg text[type='title']")["data"]("events");
@@ -3156,6 +3168,11 @@ function getGchCoorInfo(_0x6C89) {
     $("#gchcoor")["val"](_0xA872);
   }
   return _0x6C89;
+}
+const setEmoTxt = (txt) => {
+  $("#zsistart")["val"]($($('[type="note"],[type="rest"],[type="splnum_rest"]')[0]).attr('istart'))
+  $("#zsInput")["val"](txt)
+  saveZs()
 }
 function saveZs() {
   var _0x7183 = $("#zsistart")["val"]();

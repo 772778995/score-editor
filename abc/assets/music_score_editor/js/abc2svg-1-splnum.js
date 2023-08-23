@@ -22343,6 +22343,9 @@ abc2svg = {
       if (content_vue.m.scoreOpts.speedType === "txt") {
         s.tempo_str = `<tspan>${content_vue.m.scoreOpts.speedText}</tspan>`;
       }
+      else if (content_vue.m.scoreOpts.speedType === "none") {
+        s.tempo_str = `<tspan></tspan>`
+      }
       w += cwidf(" ") * (str.length - 1);
       s.tempo_wh = [w, 13.0];
       if (dy) s.tempo_dy = dy;

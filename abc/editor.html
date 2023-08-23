@@ -8,6 +8,7 @@
         set() { return () => {} }
       });
       window.AE = {
+        // api_url: 'https://dev2.midiplusedu.com/api',
         api_url: '{{$api_url}}',
         base_url: '{{$base_url}}',
         file_url: '{{$file_url}}'
@@ -915,6 +916,16 @@
             <div class="relative rounded" style="padding: 10px 18px;">
               <div class="blue-title" style="margin-bottom: 16px;">速度</div>
               <div class="flex items-center ">
+                <div class="flex items-center h-full cursor-pointer mb-2" @click="m.newScore.scoreOpts.speedType = 'none'">
+                  <img
+                    :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.speedType === 'none' ? '1' : '2'}.png`"
+                    class="cursor-pointer mr-2"
+                    @click="m.newScore.scoreOpts.speedType = 'txt'"
+                  />
+                  <div>无速度</div>
+                </div>
+              </div>
+              <div class="flex items-center ">
                 <div class="flex items-center h-full cursor-pointer" @click="m.newScore.scoreOpts.speedType = 'txt'">
                   <img
                     :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.speedType === 'txt' ? '1' : '2'}.png`"
@@ -923,7 +934,12 @@
                   />
                   <div>速度文本：</div>
                 </div>
-                <select-input v-model="m.newScore.scoreOpts.speedText" :list="m.newScore.speedTxtList" style="height: 28px;" :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.speedType === 'sign' }"></select-input>
+                <select-input
+                  v-model="m.newScore.scoreOpts.speedText"
+                  :list="speedTxtOptsList"
+                  style="height: 28px;"
+                  :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.speedType !== 'txt' }">
+                </select-input>
               </div>
               <div class="flex items-center" style="margin-top: 10px;">
                 <div class="flex items-center h-full cursor-pointer" @click="m.newScore.scoreOpts.speedType = 'sign'">
@@ -3584,7 +3600,7 @@
                     >
                       <template v-if="model.code === 'speedTerm'">
                         <div
-                          v-for="(item) in model.speedList"
+                          v-for="(item) in speedTxtListPanel"
                           :key="item.val"
                           class="flex items-center justify-center h-8 text-sm font-normal"
                           style="margin-left: -2px; margin-top: -2px; border: 1px solid #E6E6E6; transform: translate(1px, 1px);"
@@ -3594,6 +3610,18 @@
                             scoreOpts.speedText = item.txt
                             abc_change()
                           }"
+                        >
+                          {{ item.txt }}
+                        </div>
+                      </template>
+                      <template v-else-if="model.code === 'emoTerm'">
+                        <div
+                          v-for="(item) in m.scoreOpts.musicType === 'easy' ? easyEmoTxtList : staffEmoTxtList"
+                          :key="item.txt"
+                          class="flex items-center justify-center h-8 text-sm font-normal"
+                          style="margin-left: -2px; margin-top: -2px; border: 1px solid #E6E6E6; transform: translate(1px, 1px);"
+                          :title="item.title"
+                          @click="setEmoTxt(item.txt)"
                         >
                           {{ item.txt }}
                         </div>

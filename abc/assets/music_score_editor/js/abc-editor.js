@@ -211,41 +211,41 @@ const initNewScoreOpts = {
 function createMusicNextEvent() {
   console.log(this.content_vue.m.toolList[9], '==+++')
   this.content_vue.m.newScore.scoreOptsShow = true
-  this.content_vue.m.newScore.speedTxtList = speedTxtList.map((item) => {
-    let obj
-    if (this.content_vue.m.newScore.scoreOpts.musicType == 'easy') {
-      obj = {
-        val: item.title,
-        txt: item.title,
-      }
-      this.content_vue.m.newScore.scoreOpts.speedText = "中板"
-    } else {
-      obj = {
-        val: item.txt,
-        txt: item.txt,
-      }
-    }
-    return obj
-  })
-  this.content_vue.m.toolList.forEach((item)=>{
-    if (item.name == '速度术语') {
-      item.speedList = speedTxtList.map((el)=>{
-        if (this.content_vue.m.newScore.scoreOpts.musicType == 'easy') {
-          return {
-            title: el.txt,
-            txt: el.title,
-            val: el.val
-          }
-        } else {
-          return {
-            title: el.title,
-            txt: el.txt,
-            val: el.val
-          }
-        }
-      })
-    }
-  })
+  // this.content_vue.m.newScore.speedTxtList = speedTxtList.map((item) => {
+  //   let obj
+  //   if (this.content_vue.m.newScore.scoreOpts.musicType == 'easy') {
+  //     obj = {
+  //       val: item.title,
+  //       txt: item.title,
+  //     }
+  //     this.content_vue.m.newScore.scoreOpts.speedText = "中板"
+  //   } else {
+  //     obj = {
+  //       val: item.txt,
+  //       txt: item.txt,
+  //     }
+  //   }
+  //   return obj
+  // })
+  // this.content_vue.m.toolList.forEach((item)=>{
+  //   if (item.name == '速度术语') {
+  //     item.speedList = speedTxtList.map((el)=>{
+  //       if (this.content_vue.m.newScore.scoreOpts.musicType == 'easy') {
+  //         return {
+  //           title: el.txt,
+  //           txt: el.title,
+  //           val: el.val
+  //         }
+  //       } else {
+  //         return {
+  //           title: el.title,
+  //           txt: el.txt,
+  //           val: el.val
+  //         }
+  //       }
+  //     })
+  //   }
+  // })
 }
 
 function liaison(val) {
@@ -1931,6 +1931,55 @@ function changeNumberKeypadIndex(i) {
   }
   content_vue.m.numberKeypad.page = index;
 }
+
+const staffEmoTxtList = [
+  { txt: "Accarezzevole" },
+  { txt: "Amoroso" },
+  { txt: "Appassionato" },
+  { txt: "Buffo" },
+  { txt: "Cantabile" },
+  { txt: "Dolce" },
+  { txt: "Elegante" },
+  { txt: "Grandioso" },
+  { txt: "Leggiero" },
+  { txt: "Misterioso" },
+  { txt: "Vivace" },
+  { txt: "Amabile" },
+  { txt: "Animato" },
+  { txt: "Brillante" },
+  { txt: "Brioso" },
+  { txt: "Con grazio" },
+  { txt: "Dolente" },
+  { txt: "Giocoso" },
+  { txt: "Lagrimoso" },
+  { txt: "Maestoso" },
+  { txt: "Quieto" },
+  { txt: "Vivo" }
+]
+const easyEmoTxtList = [
+  { txt: "深情地" },
+  { txt: "柔情地" },
+  { txt: "热情地" },
+  { txt: "滑稽地" },
+  { txt: "如歌地" },
+  { txt: "柔和、甜美地" },
+  { txt: "优美的、高雅的" },
+  { txt: "雄伟地" },
+  { txt: "轻巧、轻快地" },
+  { txt: "神秘地" },
+  { txt: "活泼、敏捷" },
+  { txt: "愉快地" },
+  { txt: "活泼地" },
+  { txt: "辉煌地" },
+  { txt: "朝气蓬勃" },
+  { txt: "优美地" },
+  { txt: "哀伤地" },
+  { txt: "诙谐地" },
+  { txt: "哭泣地" },
+  { txt: "宏伟、庄重地" },
+  { txt: "平静地" },
+  { txt: "活泼、敏捷" }
+]
 
 var content_vue = new Vue({
   el: "#content",
@@ -3714,6 +3763,7 @@ var content_vue = new Vue({
         speedTxtList: speedTxtList.map((item) => ({
           val: item.txt,
           txt: item.txt,
+          type: item.type
         })),
         scoreOpts: {
           title: "",
@@ -4862,6 +4912,11 @@ var content_vue = new Vue({
           isShow: !1,
           isExpand: !1,
         },
+        {
+          code: "emoTerm",
+          name: "表情术语",
+          cols: 2
+        }
       ],
       foldLine: {
         toolShow: false,
@@ -6179,6 +6234,19 @@ var content_vue = new Vue({
     },
   },
   computed: {
+    speedTxtOptsList() {
+      if (this.m.newScore.scoreOpts.musicType === 'easy') {
+        const list = this.m.newScore.speedTxtList.filter(item => item.type === 'easy')
+        this.m.newScore.scoreOpts.speedText = '中板'
+        return list
+      }
+      this.m.newScore.scoreOpts.speedText = 'Moderato'
+      return this.m.newScore.speedTxtList.filter(item => item.type !== 'easy')
+    },
+    speedTxtListPanel() {
+      if (this.m.scoreOpts.musicType !== 'easy') return this.m.newScore.speedTxtList.filter(item => item.type !== 'easy')
+      return this.m.newScore.speedTxtList.filter(item => item.type === 'easy')
+    },
     getMenuTxt() {
       return this.m.menuList[this.m.menuIndex]?.txt;
     },
@@ -6312,6 +6380,10 @@ var content_vue = new Vue({
     },
 
     // ———————————————————————————————————————— 分割线 __watch ————————————————————————————————————————
+    'm.newScore.scoreOpts.speedType'(type) {
+      if (type !== 'none') return
+      this.m.newScore.scoreOpts.speedNum = '88'
+    },
     'm.panzoom.scale'(scale) {
       if (scale >= 150) this.m.panzoom.scale = 150
       if (scale <= 50) this.m.panzoom.scale = 50
