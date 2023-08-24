@@ -6168,7 +6168,7 @@ var content_vue = new Vue({
       this.m.ctxMenu.isShow = true;
     },
     createNewScore(e, f) {
-      // console.log('createNewScore', this.m.newScore.scoreOpts);
+      console.log('createNewScore', this.m.newScore.scoreOpts);
       if(!f && (!this.m.newScore.scoreOpts.subTitle || !this.m.newScore.scoreOpts.compose || !this.m.newScore.scoreOpts.lyricist)){
         var t_arr = [];
         if(!this.m.newScore.scoreOpts.subTitle){

@@ -151,13 +151,69 @@ function initScore(scoreOpts) {
   abc_change();
 }
 
+
+const getKeySignCode = (sign) => {
+  var code = 'C=higher';
+  switch (sign) {
+    case 'C':
+      code = 'C=higher';
+      break;
+    case 'D':
+      code = 'D=higher';
+      break;
+    case 'E':
+      code = 'E=higher';
+      break;
+    case 'F':
+      code = 'F=higher';
+      break;
+    case 'G':
+      code = 'G=lower';
+      break;
+    case 'A':
+      code = 'A=lower';
+      break;
+    case 'B':
+      code = 'B=lower';
+      break;
+    case 'Cb':
+      code = 'Cb=higher';
+      break;
+    case 'C#':
+      code = 'C#=higher';
+      break;
+    case 'Db':
+      code = 'Db=higher';
+      break;
+    case 'Eb':
+      code = 'Eb=higher';
+      break;
+    case 'F#':
+      code = 'F#=higher';
+      break;
+    case 'Gb':
+      code = 'Gb=lower';
+      break;
+    case 'Ab':
+      code = 'Ab=lower';
+      break;
+    case 'Bb':
+      code = 'Bb=lower';
+      break;
+    default:
+      code = 'C=higher';
+      break;
+  }
+  return code;
+}
+
 /**
  * 
  * @param {ScoreOpts} opts 
  */
 const getAbcHeadCode = (opts) => `%%staffsep 60
 %%sysstaffsep 60
-%%keydefined C=higher
+%%keydefined ${getKeySignCode(opts.keySign)}
 %%contbarnb 1
 %%leftmargin 20
 %%rightmargin ${opts.musicType === 'four' ? '20' : opts.musicType === 'easy' ? '50' : '10'}
@@ -1164,7 +1220,10 @@ $(document).ready(function () {
         lowerOrHigher,
         currKey
       );
+      console.log('source::', currKey);
+      console.log('INPUT NOTE::', val);
       val = getNoteByKeySign(currKey, val);
+      console.log('INPUT NOTE:::', val);
       currJpVal = "";
       var suffix = getSuffix();
       if (insert) {
@@ -1523,6 +1582,7 @@ $(document).ready(function () {
       if (e.keyCode >= 48 && e.keyCode <= 55) {
         if (!$(".lyric").hasClass("menu-pressed")) {
           //排除歌词处理编辑状态
+          console.log("handleNumPress");
           handleNumPress(e, "editor");
           return false;
         }
@@ -1536,8 +1596,9 @@ $(document).ready(function () {
       // if(e.keyCode==110){
       // 	$(".dotstatus[value='3/']").click();
       // }
-
+      
       var pianoKeys = sd.KeyBoard;
+      console.log('pianoKeys:', pianoKeys);
       var vals;
       for (var i = 0; i < pianoKeys.length; i++) {
         if (pianoKeys[i].group == current_group) {
@@ -7229,7 +7290,7 @@ function bindAllEvent() {
           var content = $("#source").val();
           var noteStr = content.substring(s.istart, s.iend);
           noteStr = noteStr.replace(/[\d\/]/g, "");
-          console.log('updateNextNote:', noteStr, s.istart);
+          console.log('updateNextNote::', noteStr, s.istart);
           updateNextNote(noteStr, s.istart, false, true);
         }
       }

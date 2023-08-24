@@ -5976,6 +5976,7 @@ function doLog() {
 }
 //字母输入,e为事件，editorType为输入界面类型(old,editor)
 function handleKeyPress(e, editorType) {
+  console.log('handleKeyPress', e, editorType);
   if (e.ctrlKey || e.shiftKey || e.aliKey) return;
   if (e.keyCode >= 65 && e.keyCode <= 71) {
     var keyArr = ["A", "B", "C", "D", "E", "F", "G"];
@@ -6066,6 +6067,33 @@ function handleKeyPress(e, editorType) {
                   }
                   console.log('octave_str', istart, mid, octave, octave_str);
 
+                  var keyObj = getStaffKey();
+                  if(keyObj.value=='G' || keyObj.value=='Gb'){
+                    if(vals[j]=='G' || vals[j]=='A' || vals[j]=='B'){
+                      octave_str += ",";
+                    }
+                  }else if(keyObj.value=='A' || keyObj.value=='Ab'){
+                    if(vals[j]=='A' || vals[j]=='B'){
+                      octave_str += ",";
+                    }
+                  }else if(keyObj.value=='B' || keyObj.value=='Bb'){
+                    if(vals[j]=='B'){
+                      octave_str += ",";
+                    }
+                  }else if(keyObj.value=='D' || keyObj.value=='Db'){
+                    if(vals[j]=='C'){
+                      octave_str += "'";
+                    }
+                  }else if(keyObj.value=='E' || keyObj.value=='Eb'){
+                    if(vals[j]=='C' || vals[j]=='D'){
+                      octave_str += "'";
+                    }
+                  }else if(keyObj.value=='F' || keyObj.value=='F#'){
+                    if(vals[j]=='C' || vals[j]=='D' || vals[j]=='E'){
+                      octave_str += "'";
+                    }
+                  }
+
                   updateNextNote(vals[j]+octave_str, -1);
                 }else{
                   if(staff_str=='bass'){
@@ -6099,6 +6127,7 @@ function handleKeyPress(e, editorType) {
 }
 //处理数字键的输入事件,e为事件，editorType为输入界面类型(old,editor)
 function handleNumPress(e, editorType) {
+  console.log('handleNumPress', e, editorType);
   if (e.ctrlKey || e.shiftKey || e.aliKey) return;
   if (e.keyCode == 96 || e.keyCode == 48) {
     //处理输入0的情况
@@ -6149,7 +6178,7 @@ function handleNumPress(e, editorType) {
     }
   }
 
-  //	console.log("press:",note);
+  console.log("press:", note);
   play_note(noteSeq, durSetting);
 
   var notestr = "CDEFGAB";
@@ -6172,11 +6201,19 @@ function handleNumPress(e, editorType) {
         for (var j = 0; j < vals.length; j++) {
           if (vals[j].toUpperCase().indexOf(keyValue.toUpperCase()) > -1) {
             if (editorType == "editor") {
-              // 获取当前谱号
+              var staff_str = getNearStaffInfo();
+              if(staff_str=='bass'){
+                updateNextNote(vals[j]+',', -1, pressShiftKey || chordInput);
+                return;
+              }
+              var keyObj = getStaffKey();
+              if(keyObj.value=='Bb' || keyObj.value=='G' || keyObj.value=='Gb' || keyObj.value=='A' || keyObj.value=='Ab' || keyObj.value=='B'){
+                note += ',';
+              }
 
+              console.log('updateNextNote', note, keyObj, pressShiftKey, chordInput);
               //updateNextNote(vals[j],-1);//这样会输入选中的那个区域的，比如G调会变成1234567为GABCDEF
               updateNextNote(note, -1, pressShiftKey || chordInput); //这样的输入比较合理，比如G调1234567分别为GABcdef
-              console.log('updateNextNote', note, -1, pressShiftKey || chordInput);
               return;
             } else {
               var selectText = getSelectText("source");
