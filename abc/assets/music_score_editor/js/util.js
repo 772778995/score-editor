@@ -6008,102 +6008,8 @@ function handleKeyPress(e, editorType) {
               //播放
               play_note(noteSeq, durSetting);
               if (editorType == "editor") {
-                console.log('input: ', vals[j]);
-                var staff_str = getNearStaffInfo();
-                console.log('staff_str', staff_str);
-                var octave = 0; // 中央C所在八度为 0;
-                if($('.selected_text').length){
-                  var istart = $('.selected_text').eq($('.selected_text').length-1).attr('istart');
-                  if($('.selected_text').eq($('.selected_text').length-1).prev().attr('type')=='note'){
-                    var istart = $('.selected_text').eq($('.selected_text').length-1).prev().attr('istart');
-                    var mid = syms[istart].notes[0].midi;
-                    // var my_key = syms[istart].my_key;
-                    var keys = 'CDEFGAB';
-                    var midis = [60, 62, 64, 65, 67, 69, 71];
-                    var m_ind = keys.indexOf(vals[j]);
-                    
-                    if(mid>=72){
-                      for(var i=72; i<=108; i+=12){
-                        octave += 1;
-                        if(mid>=i && mid<i+12){
-                          break;
-                        }
-                      }
-                    }else if(mid<60){
-                      for(var i=59; i>=21; i-=12){
-                        octave -= 1;
-                        if(mid<=i && mid>i-12){
-                          break;
-                        }
-                      }
-                    }
-                    for(var i in midis){
-                      midis[i] = midis[i]+octave*12;
-                    }
-                    var m_mid = midis[m_ind];
-                    console.log('m_mid:', m_mid, mid, octave);
-                    if(m_mid-mid>6){
-                      octave -= 1;
-                    }else if(m_mid-mid<-6){
-                      octave += 1;
-                    }
-                  }else{
-                    if(staff_str=='bass'){
-                      console.log('updateNextNote', vals[j], -1);
-                      updateNextNote(vals[j]+',', -1);
-                      return;
-                    }
-                  }
-
-                  var octave_str = '';
-                  if(octave>0){
-                    for(var i=1; i<=octave; i++){
-                      octave_str += "'";
-                    }
-                  }else if(octave<0){
-                    for(var i=-1; i>=octave; i--){
-                      octave_str += ",";
-                    }
-                  }
-                  console.log('octave_str', istart, mid, octave, octave_str);
-
-                  var keyObj = getStaffKey();
-                  if(keyObj.value=='G' || keyObj.value=='Gb'){
-                    if(vals[j]=='G' || vals[j]=='A' || vals[j]=='B'){
-                      octave_str += ",";
-                    }
-                  }else if(keyObj.value=='A' || keyObj.value=='Ab'){
-                    if(vals[j]=='A' || vals[j]=='B'){
-                      octave_str += ",";
-                    }
-                  }else if(keyObj.value=='B' || keyObj.value=='Bb'){
-                    if(vals[j]=='B'){
-                      octave_str += ",";
-                    }
-                  }else if(keyObj.value=='D' || keyObj.value=='Db'){
-                    if(vals[j]=='C'){
-                      octave_str += "'";
-                    }
-                  }else if(keyObj.value=='E' || keyObj.value=='Eb'){
-                    if(vals[j]=='C' || vals[j]=='D'){
-                      octave_str += "'";
-                    }
-                  }else if(keyObj.value=='F' || keyObj.value=='F#'){
-                    if(vals[j]=='C' || vals[j]=='D' || vals[j]=='E'){
-                      octave_str += "'";
-                    }
-                  }
-
-                  updateNextNote(vals[j]+octave_str, -1);
-                }else{
-                  if(staff_str=='bass'){
-                    console.log('updateNextNote', vals[j], -1);
-                    updateNextNote(vals[j]+',', -1);
-                  }else{
-                    console.log('updateNextNote', vals[j], -1);
-                    updateNextNote(vals[j], -1);
-                  }
-                }
+                var new_note_str = inputNoteBuild(vals[j]);
+                updateNextNote(new_note_str, -1);
                 return;
               } else {
                 var selectText = getSelectText("source");
@@ -6201,19 +6107,12 @@ function handleNumPress(e, editorType) {
         for (var j = 0; j < vals.length; j++) {
           if (vals[j].toUpperCase().indexOf(keyValue.toUpperCase()) > -1) {
             if (editorType == "editor") {
-              var staff_str = getNearStaffInfo();
-              if(staff_str=='bass'){
-                updateNextNote(vals[j]+',', -1, pressShiftKey || chordInput);
-                return;
-              }
-              var keyObj = getStaffKey();
-              if(keyObj.value=='Bb' || keyObj.value=='G' || keyObj.value=='Gb' || keyObj.value=='A' || keyObj.value=='Ab' || keyObj.value=='B'){
-                note += ',';
-              }
+              var note_str = inputNoteBuild2(note);
+              console.log('note_str', note_str);
 
-              console.log('updateNextNote', note, keyObj, pressShiftKey, chordInput);
-              //updateNextNote(vals[j],-1);//这样会输入选中的那个区域的，比如G调会变成1234567为GABCDEF
-              updateNextNote(note, -1, pressShiftKey || chordInput); //这样的输入比较合理，比如G调1234567分别为GABcdef
+              console.log('updateNextNote', note_str, pressShiftKey, chordInput);
+              //updateNextNote(vals[j],-1); //这样会输入选中的那个区域的，比如G调会变成1234567为GABCDEF
+              updateNextNote(note_str, -1, pressShiftKey || chordInput); //这样的输入比较合理，比如G调1234567分别为GABcdef
               return;
             } else {
               var selectText = getSelectText("source");
@@ -6233,6 +6132,167 @@ function handleNumPress(e, editorType) {
     }
   }
 }
+
+function inputNoteBuild(note_str){
+  console.log('input: ', note_str);
+  var staff_str = getNearStaffInfo();
+  console.log('staff_str', staff_str);
+  var octave = 0; // 中央C所在八度为 0;
+  var octave_str = '';
+  // scoreOpts
+  console.log('scoreOpts::', scoreOpts);
+  if(typeof scoreOpts!='undefined' && scoreOpts.musicType=='easy'){
+    // 简谱
+    var keyObj = getStaffKey();
+    if(keyObj.value=='G' || keyObj.value=='Gb'){
+      if(note_str=='G' || note_str=='A' || note_str=='B'){
+        // octave_str += ",";
+        octave -= 1;
+      }
+    }else if(keyObj.value=='A' || keyObj.value=='Ab'){
+      if(note_str=='A' || note_str=='B'){
+        // octave_str += ",";
+        octave -= 1;
+      }
+    }else if(keyObj.value=='B' || keyObj.value=='Bb'){
+      if(note_str=='B'){
+        // octave_str += ",";
+        octave -= 1;
+      }
+    }else if(keyObj.value=='D' || keyObj.value=='Db'){
+      if(note_str=='C'){
+        // octave_str += "'";
+        octave += 1;
+      }
+    }else if(keyObj.value=='E' || keyObj.value=='Eb'){
+      if(note_str=='C' || note_str=='D'){
+        // octave_str += "'";
+        octave += 1;
+      }
+    }else if(keyObj.value=='F' || keyObj.value=='F#'){
+      if(note_str=='C' || note_str=='D' || note_str=='E'){
+        // octave_str += "'";
+        octave += 1;
+      }
+    }
+
+  }
+
+  if($('.selected_text').length){
+    console.log('selected_text:有选择音符');
+    if(typeof scoreOpts!='undefined' && scoreOpts.musicType=='easy'){
+      // 简谱
+    }else{
+      // 五线谱
+      var istart = $('.selected_text').eq($('.selected_text').length-1).attr('istart');
+      if($('.selected_text').eq($('.selected_text').length-1).prev().attr('type')=='note'){
+        // 就近音符输入（支持五线谱）
+        var istart = $('.selected_text').eq($('.selected_text').length-1).prev().attr('istart');
+        var mid = syms[istart].notes[0].midi;
+        // var my_key = syms[istart].my_key;
+        var keys = 'CDEFGAB';
+        var midis = [60, 62, 64, 65, 67, 69, 71];
+        var m_ind = keys.indexOf(note_str);
+        if(mid>=72){
+          for(var i=72; i<=108; i+=12){
+            octave += 1;
+            if(mid>=i && mid<i+12){
+              break;
+            }
+          }
+        }else if(mid<60){
+          for(var i=59; i>=21; i-=12){
+            octave -= 1;
+            if(mid<=i && mid>i-12){
+              break;
+            }
+          }
+        }
+        for(var i in midis){
+          midis[i] = midis[i]+octave*12;
+        }
+        var m_mid = midis[m_ind];
+        console.log('m_mid:', m_mid, mid, octave);
+        if(m_mid-mid>6){
+          octave -= 1;
+        }else if(m_mid-mid<-6){
+          octave += 1;
+        }
+      }else{
+        if(staff_str=='bass'){
+          console.log('note_str', note_str+',');
+          return note_str+',';
+        }
+      }
+
+    }
+
+    console.log('octave_str', istart, mid, octave, octave_str);
+
+    if(octave>0){
+      for(var i=1; i<=octave; i++){
+        octave_str += "'";
+      }
+    }else if(octave<0){
+      for(var i=-1; i>=octave; i--){
+        octave_str += ",";
+      }
+    }
+
+    console.log('note_str', note_str+octave_str);
+    return note_str+octave_str;
+  }else{
+    console.log('selected_text:无选择音符');
+    if(typeof scoreOpts!='undefined' && scoreOpts.musicType=='easy'){
+      // 简谱
+      console.log('note_str', note_str+octave_str);
+      return note_str+octave_str;
+    }else{
+      // 五线谱
+      if(staff_str=='bass'){
+        console.log('note_str', note_str+',');
+        return note_str+',';
+      }else{
+        console.log('note_str', note_str);
+        return note_str;
+      }
+    }
+  }
+}
+
+function inputNoteBuild2(note_str){
+  var staff_str = getNearStaffInfo();
+  console.log('staff_str', staff_str);
+  var octave = 0; // 中央C所在八度为 0;
+  var octave_str = '';
+  // scoreOpts
+  console.log('scoreOpts::', scoreOpts);
+  if(typeof scoreOpts!='undefined' && scoreOpts.musicType=='easy'){
+    var keyObj = getStaffKey();
+    if(keyObj.value=='Bb' || keyObj.value=='G' || keyObj.value=='Gb' || keyObj.value=='A' || keyObj.value=='Ab' || keyObj.value=='B'){
+      octave -= 1;
+    }
+  }
+
+  if(staff_str=='bass'){
+    octave -= 1;
+  }
+
+  if(octave>0){
+    for(var k=1; k<=octave; k++){
+      octave_str += "'";
+    }
+  }else if(octave<0){
+    for(var k=-1; k>=octave; k--){
+      octave_str += ",";
+    }
+  }
+
+  var note_str = note_str+octave_str;
+  console.log('note_str', note_str);
+  return note_str;
+}
+
 /**
  * 验证abc语法
  * @returns
