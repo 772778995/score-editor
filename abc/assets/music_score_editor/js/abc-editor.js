@@ -3152,7 +3152,7 @@ var content_vue = new Vue({
               className: "k-5-26",
               isKeepSelect: true,
               title: "倚音",
-              fn: () => changeAbc((txt) => `{b}${txt}`),
+              fn: () => changeAbc((txt) => `{${txt}}${txt}`),
               isSelect: false,
             },
             {
@@ -3160,7 +3160,7 @@ var content_vue = new Vue({
               isKeepSelect: true,
               className: "k-5-27",
               title: "单短倚音",
-              fn: () => changeAbc((txt) => `{/b}${txt}`),
+              fn: () => changeAbc((txt) => `{/${txt}}${txt}`),
               isSelect: false,
             },
             {
@@ -3168,7 +3168,7 @@ var content_vue = new Vue({
               className: "k-5-28",
               isKeepSelect: true,
               title: "短倚音",
-              fn: () => changeAbc((txt) => `{gg}${txt}`),
+              fn: () => changeAbc((txt) => `{${txt}${txt}}${txt}`),
               isSelect: false,
             },
             {
@@ -3624,7 +3624,7 @@ var content_vue = new Vue({
               url: "assets/music_score_editor/images/yy2.png",
               isKeepSelect: true,
               title: "倚音",
-              fn: () => changeAbc((txt) => `{b}${txt}`),
+              fn: () => changeAbc((txt) => `{${txt}}${txt}`),
               isSelect: false,
             },
             {
@@ -3648,7 +3648,7 @@ var content_vue = new Vue({
               url: "assets/music_score_editor/images/yy1.png",
               isKeepSelect: true,
               title: "倚音",
-              fn: () => changeAbc((txt) => `{gg}${txt}`),
+              fn: () => changeAbc((txt) => `{${txt}${txt}}${txt}`),
               isSelect: false,
             },
             {
@@ -4903,10 +4903,10 @@ var content_vue = new Vue({
             },
             {
               url: "assets/music_score_editor/img/notepanel/other (1).png",
-              value: "!rbl!",
+              value: "!rbr!", // "!rbl!",
               title: "",
               class: "cmenu",
-              position: "after",
+              position: "before",
             },
           ],
           isShow: !1,
