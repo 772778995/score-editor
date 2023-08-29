@@ -4,6 +4,8 @@
   "description": "",
   "main": "tailwind.config.js",
   "scripts": {
+    "dev": "node app.js",
+    "build": "gulp",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -19,8 +21,15 @@
     "@types/jquery": "^3.5.16",
     "@types/vue": "^1.0.30",
     "clean-css": "^5.3.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-smushit": "^1.2.0",
+    "gulp-uglify": "^3.0.2",
+    "gulp-useref": "^5.0.0",
     "html-minifier": "^4.0.0",
     "html-minifier-terser": "^7.1.0",
+    "mime": "^3.0.0",
     "terser": "^5.16.5",
     "uglify-js": "^3.17.4"
   }
