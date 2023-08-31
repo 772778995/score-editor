@@ -3,7 +3,8 @@ tailwind.config.js
 test.html
 your-graph-editor.test.js
 yourabc_plus.test.js
-package.json
+package-lock.json
+yarn.lock
 dist/
 test.js
 #.vscode/launch.json
