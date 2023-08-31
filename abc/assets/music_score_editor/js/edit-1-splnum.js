@@ -2095,7 +2095,7 @@ function edit_init() {
     setsel(0, selx_sav[0]);
     setsel(1, selx_sav[1]);
   };
-  abc2svg["loadjs"]("drawpath.js?v=1.0.8");
+  abc2svg["loadjs"]("drawpath.js?v=1.0.9");
   if (
     window["AudioContext"] ||
     window["webkitAudioContext"] ||
@@ -2114,7 +2114,7 @@ function edit_init() {
     if (_0x9C01) {
       play["abcplay"] = AbcPlay({ onend: endplay, onnote: notehlight });
     } else {
-      abc2svg["loadjs"]("play-1.js?v=1.0.8", function () {
+      abc2svg["loadjs"]("play-1.js?v=1.0.9", function () {
         play["abcplay"] = AbcPlay({ onend: endplay, onnote: notehlight });
       });
     }
