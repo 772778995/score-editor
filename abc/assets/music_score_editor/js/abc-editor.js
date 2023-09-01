@@ -14,6 +14,11 @@ const AbcType = Object.freeze({
   Bar: 0
 })
 
+window.AbcEditor = {
+  bottom_octave: false, // 底8度，简谱下加点
+  top_octave: false, // 高8度，简谱上加点
+}
+
 window.addEventListener('mousewheel', e => {
   if (event.ctrlKey === true || event.metaKey) {
     event.preventDefault();
@@ -3312,6 +3317,7 @@ var content_vue = new Vue({
               url: "assets/music_score_editor/images/rest.png",
               title: "低8度",
               fn: () => {
+                console.log('点击下加点');
                 // 音符下加一个点
                 if($(".selected_text").length){
                   var cen = syms[$(".selected_text").attr("istart")];
@@ -3382,12 +3388,21 @@ var content_vue = new Vue({
                           t += 200*i;
                         }
                       }
+                    }else{
+                      // window.AbcEditor.bottom_octave = true;
                     }
                     setTimeout(()=>{
                       content_vue.changeNumKeypadSelect()
                     }, t);
+                  }else{
+                    // window.AbcEditor.bottom_octave = true;
                   }
+                }else{
+                  // window.AbcEditor.bottom_octave = true;
                 }
+                // setTimeout(()=>{
+                //   content_vue.changeNumKeypadSelect()
+                // }, t);
               },
               isSelect: false,
             },
@@ -6082,6 +6097,7 @@ var content_vue = new Vue({
         list.forEach((item, i) => {
           // console.log(item);
           if(item.className=='k-e-2' && sel_content){
+            // window.AbcEditor.bottom_octave
             // 降8度，简谱下带点音符
             if(sel_content.match(/[A-G],{1}$/g)){
               item.isSelect = true;
@@ -6091,6 +6107,7 @@ var content_vue = new Vue({
               return;
             }
           }else if(item.className=='k-e-3' && sel_content){
+            // window.AbcEditor.top_octave
             // 升8度，简谱上带点音符
             if(sel_content.match(/^[a-g]$|[A-G]'{1}$/g)){
               item.isSelect = true;

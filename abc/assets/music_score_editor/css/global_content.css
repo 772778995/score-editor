@@ -363,10 +363,12 @@
 	padding-bottom: 30px;
 }
 
-.key-note-black{
+/* .key-note-black{
 	display: none;
+} */
+.pianoKeyboard .key-note-black .key-note-val{
+	color: #fff;
 }
-
 /* --- end */
 .save-server{
 border: 1px solid #999;

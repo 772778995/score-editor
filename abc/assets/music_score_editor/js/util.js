@@ -6133,6 +6133,7 @@ function handleNumPress(e, editorType) {
   }
 }
 
+// 字母输入音符 A~G
 function inputNoteBuild(note_str){
   console.log('input: ', note_str);
   var staff_str = getNearStaffInfo();
@@ -6260,6 +6261,7 @@ function inputNoteBuild(note_str){
   }
 }
 
+// 数字输入音符 1~7
 function inputNoteBuild2(note_str){
   var staff_str = getNearStaffInfo();
   console.log('staff_str', staff_str);
@@ -6278,6 +6280,14 @@ function inputNoteBuild2(note_str){
     octave -= 1;
   }
 
+  // if(window.AbcEditor.bottom_octave){
+  //   // 底8度
+  //   octave -= 1;
+  // }else if(window.AbcEditor.top_octave){
+  //   // 高8度
+  //   octave += 1;
+  // }
+
   if(octave>0){
     for(var k=1; k<=octave; k++){
       octave_str += "'";
@@ -6290,6 +6300,7 @@ function inputNoteBuild2(note_str){
 
   var note_str = note_str+octave_str;
   console.log('note_str', note_str);
+
   return note_str;
 }
 
