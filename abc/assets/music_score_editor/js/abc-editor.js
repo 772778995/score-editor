@@ -3099,7 +3099,13 @@ var content_vue = new Vue({
               fn: lineTo,
               isSelect: false,
             },
-            {},
+            {
+              className: "k-5-20",
+              isKeepSelect: true,
+              title: "同音连线",
+              fn: () => changeAbc((txt) => `${txt}-`),
+              isSelect: false,
+            },
             {
               url: "assets/music_score_editor/images/other3.png",
               className: "k-5-22",
@@ -3690,7 +3696,13 @@ var content_vue = new Vue({
               isSelect: false,
             },
             {},
-            {},
+            {
+              className: "k-e-30",
+              isKeepSelect: true,
+              title: "同音连线",
+              fn: () => changeAbc((txt) => `${txt}-`),
+              isSelect: false,
+            },
           ],
         ],
       },
@@ -4323,6 +4335,13 @@ var content_vue = new Vue({
               class: "slur cmenu",
               title: "连线",
               fn: lineTo
+            },
+            {
+              title: '同音连线',
+              url: "assets/music_score_editor/img/notepanel/linemark (10).png",
+              value: "-",
+              class: "cmenu",
+              position: "after",
             },
           ],
           isShow: !0,
