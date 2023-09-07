@@ -3163,7 +3163,7 @@ var content_vue = new Vue({
               className: "k-5-26",
               isKeepSelect: true,
               title: "倚音",
-              fn: () => changeAbc((txt) => `{${txt}}${txt}`),
+              fn: () => changeAbc((txt) => `{${txt.match(/[A-G]/)[0]}}}${txt}`), // 8分音符倚音
               isSelect: false,
             },
             {
@@ -3171,7 +3171,7 @@ var content_vue = new Vue({
               isKeepSelect: true,
               className: "k-5-27",
               title: "单短倚音",
-              fn: () => changeAbc((txt) => `{/${txt}}${txt}`),
+              fn: () => changeAbc((txt) => `{/${txt.match(/[A-G]/)[0]}}}${txt}`), // 8分音符短倚音
               isSelect: false,
             },
             {
@@ -3179,7 +3179,7 @@ var content_vue = new Vue({
               className: "k-5-28",
               isKeepSelect: true,
               title: "短倚音",
-              fn: () => changeAbc((txt) => `{${txt}${txt}}${txt}`),
+              fn: () => changeAbc((txt) => `{${txt.match(/[A-G]/)[0]}${txt.match(/[A-G]/)[0]}}${txt}`), // 16分音符短倚音,不过可能是bug要用8分去标识
               isSelect: false,
             },
             {
@@ -3644,8 +3644,8 @@ var content_vue = new Vue({
               className: "k-e-26",
               url: "assets/music_score_editor/images/yy2.png",
               isKeepSelect: true,
-              title: "倚音",
-              fn: () => changeAbc((txt) => `{${txt}}${txt}`),
+              title: "8分音符倚音",
+              fn: () => changeAbc((txt) => `{${txt.match(/[A-G]/)[0]}}${txt}`), // 8分音符
               isSelect: false,
             },
             {
@@ -3668,8 +3668,8 @@ var content_vue = new Vue({
               className: "k-e-29",
               url: "assets/music_score_editor/images/yy1.png",
               isKeepSelect: true,
-              title: "倚音",
-              fn: () => changeAbc((txt) => `{${txt}${txt}}${txt}`),
+              title: "16分音符倚音",
+              fn: () => changeAbc((txt) => `{${txt.match(/[A-G]/)[0]}/}${txt}`),  // 16分音符
               isSelect: false,
             },
             {
