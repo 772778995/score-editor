@@ -369,6 +369,20 @@
 .pianoKeyboard .key-note-black .key-note-val{
 	color: #fff;
 }
+/* 隐藏升降调 */
+.pianoKeyboard .key-note-black .key-note-val[val^="_"],
+.pianoKeyboard .key-note-black .key-note-val[val^="^"]
+{
+	display: none;
+}
+.pianoKeyboard .key-note-black .key-note-black-top,
+.pianoKeyboard .key-note-black .key-note-black-mid
+{
+	top: auto;
+    bottom: 35px;
+    font-size: 14px;
+    line-height: 26px;
+}
 /* --- end */
 .save-server{
 border: 1px solid #999;

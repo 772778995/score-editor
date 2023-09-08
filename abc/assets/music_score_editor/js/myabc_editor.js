@@ -823,6 +823,7 @@ $(document).ready(function () {
   pagewidth = ($(window).width() - $(".left-box").width() - 50) / 37.8;
   $(window).resize();
   var level = 0;
+  console.log('pianoKey:::');
   $("#pianoKeysWhite .key").each(function (idx, val) {
     // console.log("level:"+parseInt(level++/7));
     var group = $(this).parent().attr("group");
@@ -4996,6 +4997,7 @@ function changeMode(val, remove) {
  * 在键盘上打上简谱 transport 转调偏移量
  */
 function writeNumStaff(transport) {
+  console.log('writeNumStaff::', transport);
   $(".key-note-white").remove();
   $("#pianoKeysWhite .key").each(function (idx, val) {
     var group = $(this).parent().attr("group");
@@ -5003,7 +5005,7 @@ function writeNumStaff(transport) {
     var note = getNoteByKey(group, index);
     var i = findIndexByNote(note);
     var numStaff = findNumStaffByIndex(i - transport);
-    // console.log(numStaff);
+    console.log('numStaff', group, index, i, i - transport, note, numStaff);
     // 音符个数
     var noteCount = numStaff.split(":").length;
     var pattern = /(\,)|(\')/g;

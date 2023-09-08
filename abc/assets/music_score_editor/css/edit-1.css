@@ -134,9 +134,8 @@ rect.abcr.selected_text[type="bar"] {
 .lyric tspan{
 	font-size: 13px;
 }
-
-/* beg create by lhj 20201113 */		
-/* å’Œå¼¦æ ·å¼ */		
+		
+/* */		
 .hx3,.hx3-46,.hx3-6, .hx7,.hx7-56,.hx7-34,.hx7-2 {
 	position: relative;
 	font-size: 18px;
@@ -144,7 +143,7 @@ rect.abcr.selected_text[type="bar"] {
 	display: inline-block;
 	margin-right: 20px;
  }
- /* ä¸‰å’Œå¼¦ ç¬¬äºŒè½¬ä½  */
+ /* */
  .hx3-46:BEFORE {
 	content: '6';
 	position: absolute;
@@ -159,7 +158,7 @@ rect.abcr.selected_text[type="bar"] {
 	bottom: -.5em;
 	right:  -.8em;
 }
- /* ä¸‰å’Œå¼¦ ç¬¬ä¸€è½¬ä½  */
+ /* */
  .hx3-6:AFTER {
 	content: '6';
 	position: absolute;
@@ -167,7 +166,7 @@ rect.abcr.selected_text[type="bar"] {
 	bottom: -.5em;
 	right:  -.8em;
 }
- /* ä¸ƒå’Œå¼¦ åŽŸä½  */
+ /* */
  .hx7:AFTER {
 	content: '7';
 	position: absolute;
@@ -175,7 +174,7 @@ rect.abcr.selected_text[type="bar"] {
 	bottom: -.5em;
 	right:  -.8em;
 }
- /* ä¸ƒå’Œå¼¦ ç¬¬ä¸€è½¬ä½   */
+ /* */
  .hx7-56:BEFORE {
 	content: '6';
 	position: absolute;
@@ -190,7 +189,7 @@ rect.abcr.selected_text[type="bar"] {
 	bottom: -.5em;
 	right:  -.8em;
 }
- /* ä¸ƒå’Œå¼¦ ç¬¬ä¸€è½¬ä½    */
+ /* */
  .hx7-34:BEFORE {
 	content: '4';
 	position: absolute;
@@ -205,7 +204,7 @@ rect.abcr.selected_text[type="bar"] {
 	bottom: -.5em;
 	right:  -.8em;
 }
- /* ä¸ƒå’Œå¼¦ ç¬¬ä¸‰è½¬ä½  */
+ /* */
  .hx7-2:AFTER {
 	content: '2';
 	position: absolute;
@@ -213,32 +212,22 @@ rect.abcr.selected_text[type="bar"] {
 	bottom: -.5em;
 	right:  -.8em;
 }
-/*ä¸‹æ ‡*/
+/* */
 .hx-sub{
 	font-size: .4em;
     transform: translateY(0.5em) scale(0.8);
     display: inline-block;
 }
-/*ä¸Šæ ‡*/
+/* */
 .hx-up{
     font-size: .4em;
     transform: translateY(-0.5em) scale(0.8);
     display: inline-block;
 }
-/* å’Œå¼¦æ ·å¼ end*/		
+/* end*/		
 
-/* 
-html ç”¨æ³•
-<span class="hx3">â… </span><!-- ä¸‰å’Œå¼¦åŽŸä½ ï¼ˆä¸‰å’Œå¼¦ï¼‰-->
-<span class="hx3-6">â… </span><!-- ä¸‰å’Œå¼¦ç¬¬ä¸€è½¬ä½ï¼ˆå…­å’Œå¼¦ï¼‰ -->
-<span class="hx3-46">â… </span><!-- ä¸‰å’Œå¼¦ç¬¬äºŒè½¬ä½ï¼ˆå››å…­å’Œå¼¦ï¼‰ -->
-<span class="hx7">â… </span><!-- ä¸ƒå’Œå¼¦åŽŸä½ï¼ˆä¸ƒå’Œå¼¦ï¼‰ -->
-<span class="hx7-56">â… </span><!-- ä¸ƒå’Œå¼¦ç¬¬ä¸€è½¬ä½ ï¼ˆäº”å…­å’Œå¼¦ï¼‰-->
-<span class="hx7-34">â… </span><!-- ä¸ƒå’Œå¼¦ç¬¬äºŒè½¬ä½ï¼ˆä¸‰å››å’Œå¼¦ï¼‰ -->
-<span class="hx7-2">â… </span><!-- ä¸ƒå’Œå¼¦ç¬¬ä¸‰è½¬ä½ï¼ˆäºŒå’Œå¼¦ï¼‰ --> 
-*/
 
-/*  end create by lhj 20201113 */
+/*  */
 .js-click{
 	cursor: pointer;
 }
