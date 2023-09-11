@@ -1009,6 +1009,7 @@ ul, li{ padding:0; margin:0; list-style:none; display: inline-block; }
 	border-radius: 50px;
 	left: 50%;
 	margin-left: -1.5px;
+	box-sizing: inherit;
 }
 
 .dot-t-4, .dot-t-5{

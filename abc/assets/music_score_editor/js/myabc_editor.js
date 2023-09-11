@@ -4527,6 +4527,7 @@ function testRender() {
 
 // 转调，shift=CD（从C转为D）
 function changeZKey() {
+  console.log('changeZKey::');
   var key = $(".zkey .selected").attr("value");
   var new_key = $(".zkey .selected").text();
   // var kPattern = /K:.*/;
@@ -5728,6 +5729,7 @@ function reloadStaff(groupid) {
 
 // 改变音高
 function changeYG(key, radioName) {
+  console.log('changeYG::', key, radioName);
   if (!radioName || radioName == null) {
     radioName = "doPos";
   }
@@ -5779,6 +5781,7 @@ function changeYG(key, radioName) {
 }
 
 function changePianoBoard(sourceid, key) {
+  console.log('changePianoBoard::');
   var pattern = /%%keydefined\s(.*)\n/;
   var content = $("#" + sourceid).val();
   var matchs = content.match(pattern);

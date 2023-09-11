@@ -2204,6 +2204,7 @@ function getLastM(sourceid) {
  * @returns
  */
 function getFreCharge(oldKey, newKey, lowerOrHigher) {
+  console.log('getFreCharge:', oldKey, newKey, lowerOrHigher);
   var json;
   if ("higher" == lowerOrHigher) {
     // do在小字一组
@@ -2227,7 +2228,8 @@ function getFreCharge(oldKey, newKey, lowerOrHigher) {
   } else if ("lower" == lowerOrHigher) {
     // do在小字组
     json = {
-      C: 12,
+      // C: 12,
+      C: 0,
       G: -5,
       D: -10,
       A: -3,
@@ -2267,15 +2269,19 @@ function getFreCharge(oldKey, newKey, lowerOrHigher) {
   var num = 0;
   for (key in json) {
     if (oldKey == key) {
+      console.log('getFreCharge key:', key);
       num = json[key] * -1;
+      console.log('getFreCharge num:', num);
     }
   }
   //非C大调
   if (newKey != "C") {
     num += json[newKey];
   }
+  console.log('getFreCharge num:', num);
   return num;
 }
+
 //播放过程中临时移调
 function changePlayingKey(key) {
   var oriKey = $("#K").val();
