@@ -376,6 +376,7 @@
 	display: none;
 }
 .pianoKeyboard .key-note-black .key-note-black-top,
+.pianoKeyboard .key-note-black .key-note-black-bottom,
 .pianoKeyboard .key-note-black .key-note-black-mid
 {
 	top: auto;
