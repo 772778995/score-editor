@@ -6163,7 +6163,11 @@ var content_vue = new Vue({
       });
     },
     initCtxMenu() {
-      this.m.ctxMenu.isShow = false;
+      if($('#shortcut_menu').is(':visible') && $('#shortcut_menu input').is(':focus')){
+        
+      }else{
+        this.m.ctxMenu.isShow = false;
+      }
     },
     initPanZoom() {
       /** @type { HTMLElement } */
