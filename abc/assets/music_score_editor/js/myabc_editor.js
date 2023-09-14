@@ -1086,12 +1086,24 @@ $(document).ready(function () {
             content.substring(s.iend);
         } else if (s.notes && s.notes.length == 1) {
           //选中的是单音符
-          cenStr = cenStr.replace(/[\^\_\=]/g, "");
-          content =
-            content.substring(0, s.istart) +
-            val +
-            cenStr +
-            content.substring(s.iend);
+          // console.log('升降号选择的音符：', cenStr, val);
+          var m = cenStr.match(/[\^\_\=]/g);
+          var n = val.match(/[\^\_\=]/g);
+          if(n && m && m.length==n.length && n[0]==m[0]){
+            // 取消升降、还原号
+            cenStr = cenStr.replace(/[\^\_\=]/g, "");
+            content =
+              content.substring(0, s.istart) +
+              cenStr +
+              content.substring(s.iend);
+          }else{
+            cenStr = cenStr.replace(/[\^\_\=]/g, "");
+            content =
+              content.substring(0, s.istart) +
+              val +
+              cenStr +
+              content.substring(s.iend);
+          }
         }
 
         $("#source").val(content);
@@ -5006,7 +5018,7 @@ function writeNumStaff(transport) {
     var note = getNoteByKey(group, index);
     var i = findIndexByNote(note);
     var numStaff = findNumStaffByIndex(i - transport);
-    console.log('numStaff', group, index, i, i - transport, note, numStaff);
+    // console.log('numStaff', group, index, i, i - transport, note, numStaff);
     // 音符个数
     var noteCount = numStaff.split(":").length;
     var pattern = /(\,)|(\')/g;
