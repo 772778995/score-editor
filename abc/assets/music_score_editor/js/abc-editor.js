@@ -40,8 +40,12 @@ const changeSaveToList = debounce(async () => {
 }, 500)
 
 function changeSelectNoteStyle() {
+  console.log('changeSelectNoteStyle');
   $("._select-note").removeClass("_select-note");
-  const selectNote = $(".selected_text")[0];
+  // console.log($(".selected_text").length);
+  // const selectNote = $(".selected_text")[0];
+  const selectNote = $(".selected_text")[$(".selected_text").length-1];
+  // console.log(selectNote);
   if (selectNote) {
     const istart = selectNote.getAttribute("istart");
     $(`[istart=${istart}]`).addClass("_select-note");
@@ -4766,6 +4770,22 @@ var content_vue = new Vue({
                 const { head, tail, txt } = info
                 keepSelectNote(() => {
                   $('#source').val(`${head.replace(/\!wedge\!$/, '')}!wedge!${txt}${tail}`)
+                  abc_change()
+                })
+              },
+            },
+            {
+              title: '换气',
+              url: "assets/music_score_editor/img/notepanel/playMark (6).png",
+              value: "!upb!",
+              class: "cmenu",
+              position: "before",
+              fn: () => {
+                const info = getSelectAbcCodeInfo()
+                if (!info) return
+                const { head, tail, txt } = info
+                keepSelectNote(() => {
+                  $('#source').val(`${head.replace(/\!upb\!$/, '')}!upb!${txt}${tail}`)
                   abc_change()
                 })
               },
