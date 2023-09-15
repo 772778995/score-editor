@@ -731,6 +731,57 @@ function svgMouseDown(_0x93C6) {
 
   if (graph_update) {
     graphMouseDownHandle(_0x93C6);
+
+    // 选择音符回显
+    if ($(".selected_text").length > 0){
+      var selectNote =   $(".selected_text")[0];
+      var sel_content ='';
+      if (selectNote) {
+        var cen = syms[$(selectNote).attr("istart")];
+        console.log('sym', cen);
+        var content = $("#source").val();
+        sel_content = content.substring(cen["istart"], cen["iend"]);
+        console.log('sel_content', sel_content);
+      }
+      // 选择休止符回显
+      if(sel_content.match(/z/)){
+        switch(calNodeLen_PT(sel_content)){
+          case 8:
+          // 全分音符
+          $('.operator_sc.jp_note[value="1/1"]').click();
+          break;
+          case 4:
+          // 2分音符
+          $('.operator_sc.jp_note[value="1/2"]').click();
+          break;
+          case 2:
+          // 4分音符
+          $('.operator_sc.jp_note[value="1/4"]').click();
+          break;
+          case 1:
+          // 8分音符
+          $('.operator_sc.jp_note[value="1/8"]').click();
+          break;
+          case 0.5:
+          // 16分音符
+          $('.operator_sc.jp_note[value="1/16"]').click();
+          break;
+          case 0.25:
+          // 32分音符
+          $('.operator_sc.jp_note[value="1/32"]').click();
+          break;
+          case 0.125:
+          // 64分音符
+          $('.operator_sc.jp_note[value="1/64"]').click();
+          break;
+          case 0.125:
+          // 64分音符
+          $('.operator_sc.jp_note[value="1/64"]').click();
+          break;
+        }
+      }
+    }
+
     if ($(".selected_text")["length"] > 0 || $(".selected_path")["length"] > 0) {
       console.log('点中音符')
       console.log('停止播放')

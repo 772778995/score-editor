@@ -6132,7 +6132,7 @@ var content_vue = new Vue({
       let key = "staffList";
       if (scoreOpts.musicType === "easy") key = "easyList";
       const list = this.m.numberKeypad[key][page];
-      setTimeout(() => {
+      // setTimeout(() => {
         list.forEach((item, i) => {
           // console.log(item);
           if(item.className=='k-e-2' && sel_content){
@@ -6160,7 +6160,7 @@ var content_vue = new Vue({
           if (!item.selector) return;
           item.isSelect = $(item.selector).hasClass("selected");
         });
-      });
+      // });
     },
     initCtxMenu() {
       if($('#shortcut_menu').is(':visible') && $('#shortcut_menu input').is(':focus')){
