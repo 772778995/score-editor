@@ -7283,6 +7283,7 @@ function bindAllEvent() {
   $(".operator_sc")
     .off("click")
     .on("click", function () {
+      console.log('operator_sc: 改变音符长度');
       $(this).parent().children().removeClass("selected");
       restoreRest();
       restoreChord();
@@ -7319,6 +7320,7 @@ function bindAllEvent() {
         isChord = true;
       }
       if (selectText != "") {
+        console.log('selectText:', selectText);
         var r_notes = selectText.replaceAll(pattern, "");
         // 根据当前选中的长度和L的值换算
         // var notes = getNotes(selectText);

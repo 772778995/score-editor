@@ -3776,7 +3776,7 @@ function xdtest() {
 function dotClick() {
   console.log('dotClick');
   var sel_note_obj = $(".selected_text");
-  if (sel_note_obj["length"] > 0) {
+  if (sel_note_obj.length > 0) {
     var istart = $(sel_note_obj)["attr"]("istart");
     cen = syms[istart];
     var abc_content = $("#source")["val"]();
@@ -3784,7 +3784,7 @@ function dotClick() {
     var note_arr = sel_abc_content.match(/[A-Ga-gz]{1,}/g);
     var note_str = "";
     if (note_arr != null) {
-      for (var i = 0; i < note_arr["length"]; i++) {
+      for (var i = 0; i < note_arr.length; i++) {
         note_str += note_arr[i];
       }
     }
