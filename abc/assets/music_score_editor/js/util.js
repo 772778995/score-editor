@@ -6101,6 +6101,8 @@ function handleNumPress(e, editorType) {
   if (!current_group) {
     current_group = "C4";
   }
+  // TODO: 以下可能要对 val 进行去高低音和临时转调号
+  console.log('current_group', current_group, notestr, val.replace(/_|\^|\/|\,|\'/g, ''));
   if (notestr.indexOf(val) > -1) {
     var keyValue = val;
     var pianoKeys = sd.KeyBoardStand;
@@ -6110,6 +6112,7 @@ function handleNumPress(e, editorType) {
       var group = pianoKeys[i].group;
       if (current_group == group) {
         vals = pianoKeys[i].val;
+        console.log('vals', vals);
         for (var j = 0; j < vals.length; j++) {
           if (vals[j].toUpperCase().indexOf(keyValue.toUpperCase()) > -1) {
             if (editorType == "editor") {
