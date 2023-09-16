@@ -515,7 +515,7 @@ function pitchPs(_0x74F5, _0xBCED, _0x6E73) {
 }
 
 function drawPitch(_0x792B, _0x6D7E) {
-    console.log('drawPitch', _0x792B, _0x6D7E);
+    // console.log('drawPitch', _0x792B, _0x6D7E);
     var _0x6ED5 = _0x792B["sw"][0],
         _0x6CEB = _0x792B["sw"][1];
     var _0x9984 = getPitchSym(_0x792B["simpleNum"]);
@@ -928,34 +928,36 @@ function eightDegreesChange(_0x7DC3, _0x8040) {
 }
 
 function getSplnum2note(noteStr, type, noteInfo, abcContent, cen) {
-    var _0x8040 = null,
+    // console.log('getSplnum2note:', noteStr, type, noteInfo, 'abcContent', cen);
+    var simple_name = null,
         K = null;
     if (type != "rest" && isFixedMode == 0) {
         K = getToneMark(abcContent, noteInfo["key"], true);
         noteStr = eightDegreesChange(abcContent, getNote(noteStr));
-        _0x8040 = getSimpleNameByKAndStaff2(K, getNote(noteStr), abcContent, cen["st"], cen["istart"]);
-        if (!_0x8040) {
-            _0x8040 = "X"
+        simple_name = getSimpleNameByKAndStaff2(K, getNote(noteStr), abcContent, cen["st"], cen["istart"]);
+        console.log('getSplnum2note simple_name:', simple_name);
+        if (!simple_name) {
+            simple_name = "X"
         }
     } else {
-        _0x8040 = note2number(noteStr)
+        simple_name = note2number(noteStr)
     };
     if (isRhythm(cen)) {
-        _0x8040 = _0x8040["replace"](/\d/, "X")
+        simple_name = simple_name["replace"](/\d/, "X")
     };
     if (cen["a_stk"] && cen["a_stk"]["length"]) {
         if (cen["a_stk"][0]["t"] && cen["a_stk"][0]["t"] != "{" && cen["a_stk"][0]["t"] != "}") {
-            _0x8040 = _0x8040["replace"](/\d|X/g, cen["a_stk"][0]["t"])
+            simple_name = simple_name["replace"](/\d|X/g, cen["a_stk"][0]["t"])
         }
     };
-    var _0xB07C = noteStr["replaceAll"]("/", "")["replaceAll"](",", "")["replaceAll"]("\'", "");
-    if (abc["isExtendChar"](_0xB07C)) {
-        _0x8040 = _0x8040["replace"](/\d/, abc["getExtendObject"](_0xB07C)["show_char"])
+    var n_noteStr = noteStr["replaceAll"]("/", "")["replaceAll"](",", "")["replaceAll"]("\'", "");
+    if (abc["isExtendChar"](n_noteStr)) {
+        simple_name = simple_name["replace"](/\d/, abc["getExtendObject"](n_noteStr)["show_char"])
     };
     if (eq("140,141", cen["p_v"]["instr"])) {
-        _0x8040 = _0x8040["replace"](/\d/, "X")
+        simple_name = simple_name["replace"](/\d/, "X")
     };
-    return _0x8040
+    return simple_name
 }
 var DrawUtil = function() {};
 DrawUtil["prototype"] = {
