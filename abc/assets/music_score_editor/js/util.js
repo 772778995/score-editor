@@ -6103,8 +6103,9 @@ function handleNumPress(e, editorType) {
   }
   // TODO: 以下可能要对 val 进行去高低音和临时转调号
   console.log('current_group', current_group, notestr, val.replace(/_|\^|\/|\,|\'/g, ''));
-  if (notestr.indexOf(val) > -1) {
-    var keyValue = val;
+  // if (notestr.indexOf(val) > -1) {
+  if (notestr.indexOf(val.replace(/_|\^|\/|\,|\'/g, '')) > -1) {
+    var keyValue = val.replace(/_|\^|\/|\,|\'/g, '');
     var pianoKeys = sd.KeyBoardStand;
     var vals;
     var groups = sd.KeyBoardStand.group;
@@ -6280,7 +6281,8 @@ function inputNoteBuild2(note_str){
   console.log('scoreOpts::', scoreOpts);
   if(typeof scoreOpts!='undefined' && scoreOpts.musicType=='easy'){
     var keyObj = getStaffKey();
-    if(keyObj.value=='Bb' || keyObj.value=='G' || keyObj.value=='Gb' || keyObj.value=='A' || keyObj.value=='Ab' || keyObj.value=='B'){
+    // if(keyObj.value=='Bb' || keyObj.value=='G' || keyObj.value=='Gb' || keyObj.value=='A' || keyObj.value=='Ab' || keyObj.value=='B'){
+    if(keyObj.value=='Bb' || keyObj.value=='Gb' || keyObj.value=='A' || keyObj.value=='Ab' || keyObj.value=='B'){
       octave -= 1;
     }
   }

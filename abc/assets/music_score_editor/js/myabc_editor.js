@@ -1086,10 +1086,31 @@ $(document).ready(function () {
             content.substring(s.iend);
         } else if (s.notes && s.notes.length == 1) {
           //选中的是单音符
-          // console.log('升降号选择的音符：', cenStr, val);
+          // 获取当前谱调号
+          var matchs = content.match(/K\:(.*)/);
+          var key = 'C';
+          if (matchs != null) {
+            key = matchs[1].replace(/\s/g, "");
+          }
+          if(key=='G' && cenStr.match(/^[f|F]/g)){
+            var Lstr = content.substring(s.istart-2, s.istart);
+            if(Lstr=='=^'){
+              cenStr = '=^' + cenStr;
+            }
+          }
+          console.log('升降号选择的音符：', cenStr, val, key);
           var m = cenStr.match(/[\^\_\=]/g);
           var n = val.match(/[\^\_\=]/g);
-          if(n && m && m.length==n.length && n[0]==m[0]){
+          // 是否取消升降、还原号
+          var isCancelStatus = false;
+          if(key=='G' && (cenStr.match(/f|F/g) || cenStr.match(/\^[G|g]/g))){
+            isCancelStatus = false;
+          }else if(n && m && m.length==n.length && n[0]==m[0]){
+            isCancelStatus = true;
+          }
+          console.log('isCancelStatus', isCancelStatus);
+
+          if(isCancelStatus){
             // 取消升降、还原号
             cenStr = cenStr.replace(/[\^\_\=]/g, "");
             content =
@@ -1097,7 +1118,128 @@ $(document).ready(function () {
               cenStr +
               content.substring(s.iend);
           }else{
+            if(!cenStr.match(/[A-Ga-g]/g)){
+              window.alert("请选取一个非休止符音符");
+              return;
+            }
+            
+            if(key=='G'){
+              if(cenStr.match(/^\^[f|F]/g)){
+                console.log('G:', '7');
+                // 7
+                switch(val) {
+                  case '^':
+                    val = '^^'; // G 调 #7 修复
+                    break;
+                  case '^^':
+                    val = '^'; // ##7
+                    cenStr = cenStr.replace(/[F]/g, "G,").replace(/[f]/g, "G");
+                    break;
+                  case '_':
+                    val = ''; // b7
+                    break;
+                  case '__':
+                    val = '_'; // bb7
+                    break;
+                }
+              }else if(cenStr.match(/^\^\^[f|F]/g)){
+                console.log('G:', '#7');
+                // #7
+                switch(val) {
+                  case '^':
+                    val = '^'; // 取消 # = 7
+                    break;
+                  case '^^':
+                    val = '^'; // ##7
+                    cenStr = cenStr.replace(/[F]/g, "G,").replace(/[f]/g, "G");
+                    break;
+                  case '_':
+                    val = ''; // b7
+                    break;
+                  case '__':
+                    val = '_'; // bb7
+                    break;
+                }
+              }else if(cenStr.match(/^[f|F]/g)){
+                console.log('G:', 'b7');
+                // b7
+                switch(val) {
+                  case '^':
+                    val = '^^'; // #7
+                    break;
+                  case '^^':
+                    val = '^'; // ##7
+                    cenStr = cenStr.replace(/[F]/g, "G,").replace(/[f]/g, "G,");
+                    break;
+                  case '_':
+                    val = '^'; // 取消b = 7
+                    break;
+                  case '__':
+                    val = '_'; // bb7
+                    break;
+                }
+              }else if(cenStr.match(/^\=[f|F]/g)){
+                console.log('G:', '=7');
+                // =7
+                switch(val) {
+                  case '^':
+                    val = '^^'; // #7
+                    break;
+                  case '^^':
+                    val = '^'; // ##7
+                    cenStr = cenStr.replace(/[F]/g, "G,").replace(/[f]/g, "G");
+                    break;
+                  case '=':
+                    val = '^'; // 取消= = 7
+                    break;
+                  case '_':
+                    val = ''; // 取消b = 7
+                    break;
+                  case '__':
+                    val = '_'; // bb7
+                    break;
+                }
+              }else if(cenStr.match(/^\_[f|F]/g)){
+                console.log('G:', 'bb7');
+                // bb7
+                switch(val) {
+                  case '^':
+                    val = '^^'; // #7
+                    break;
+                  case '^^':
+                    val = '^'; // ##7
+                    cenStr = cenStr.replace(/[F]/g, "G,").replace(/[f]/g, "G");
+                    break;
+                  case '_':
+                    val = ''; // b7
+                    break;
+                  case '__':
+                    val = '^'; // 取消bb = 7
+                    break;
+                }
+              }else if(cenStr.match(/^\^[G|g]/g)){
+                console.log('G:', '##7');
+                // ##7
+                cenStr = cenStr.replace(/[G]/g, "f").replace(/[g]/g, "f");
+                switch(val) {
+                  case '^':
+                    val = '^^'; // #7
+                    break;
+                  case '^^':
+                    val = '^'; // 取消## = 7
+                    break;
+                  case '_':
+                    val = ''; // b7
+                    break;
+                  case '__':
+                    val = '_'; // bb7
+                    break;
+                }
+              }
+            }
             cenStr = cenStr.replace(/[\^\_\=]/g, "");
+            console.log('key:', key, cenStr, val);
+            
             content =
               content.substring(0, s.istart) +
               val +

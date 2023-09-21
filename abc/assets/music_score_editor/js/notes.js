@@ -195,6 +195,7 @@ function getNumStaffByKey(group, index) {
 }
 // 根据不同的声调取不同的音符，如G大调时，弹奏F，应该显示在谱子上为“=F”,如果弹奏"^F"显示F
 function getNoteByKeySign(key, note) {
+	console.log('getNoteByKeySign:', key, note);
 	// 与当前音符在同一小节内的的有有升降符、还原符的音符
 	var barlineNotes = getNotesByBarLine();
 
