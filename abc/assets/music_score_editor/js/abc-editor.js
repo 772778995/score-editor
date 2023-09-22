@@ -169,6 +169,7 @@ const saveScore = async (isSaveAs = false) => {
       },
       abc_json_val: abcVal,
       music_type: scoreOpts.musicType,
+      is_public: Number(content_vue.m.saveToScore.is_public)?1:0,
     }
   }
 
@@ -2928,6 +2929,7 @@ var content_vue = new Vue({
       saveToScore: {
         isShow: false,
         title: '',
+        is_public: 0,
         repeatList: [],
         isFoucs: false
       },

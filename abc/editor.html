@@ -86,6 +86,7 @@
     <link rel="icon" type="image/svg" href="assets/music_score_editor/images/logo.svg">
 
     <link rel="stylesheet" href="assets/music_score_editor/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/music_score_editor/css/element-ui.css">
     <link rel="stylesheet" href="assets/music_score_editor/css/editor.css?v=1.0.9" />
 
     <link rel="stylesheet" href="assets/music_score_editor/css/global_content.css?v=1.0.9" />
@@ -619,7 +620,20 @@
                   <div v-for="item in m.saveToScore.repeatList" style="padding: 4px 8px; max-height: 400px; overflow-y: auto;">{{ item }}</div>
                 </div>
               </div>
-            </div> 
+            </div>
+
+            <div class="flex items-center" style="margin-top: 10px;">
+              <div class="flex-shrink-0">查看权限</div>
+              <div class="ml-3 flex-1 relative">
+                <div style="margin-top: 10px;">
+                  <el-radio-group v-model="m.saveToScore.is_public">
+                    <el-radio-button :label="1" :value="1">公开谱例</el-radio-button>
+                    <el-radio-button :label="0" :value="0">私有谱例</el-radio-button>
+                  </el-radio-group>
+                </div>
+                
+              </div>
+            </div>
 
             <div class="mt-20 flex justify-center">
               <div class="_btn _border" @click="m.saveToScore.isShow = false">取消</div>
@@ -7313,7 +7327,7 @@
       // 默认钢琴按键不播abc
       var noteOnVol = false;
     </script>
-    <link rel="stylesheet" href="assets/music_score_editor/css/element-ui.css">
+    
     <script src="assets/music_score_editor/js/vue.min.js"></script>
     <script src="assets/music_score_editor/components/NumberInput.js"></script>
     <script src="assets/music_score_editor/components/SelectInput.js"></script>

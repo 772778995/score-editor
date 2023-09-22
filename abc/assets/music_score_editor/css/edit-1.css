@@ -242,3 +242,11 @@ rect.abcr.selected_text[type="bar"] {
  	border-radius: 5px;
  	border: 1px solid transparent;
  }
+
+ .el-radio-button__orig-radio:checked+.el-radio-button__inner {
+    color: #FFF;
+    background-color: #25649e;
+    border-color: #25649e;
+    -webkit-box-shadow: -1px 0 0 0 #25649e;
+    box-shadow: -1px 0 0 0 #25649e;
+}
