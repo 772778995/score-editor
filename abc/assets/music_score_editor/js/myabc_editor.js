@@ -1105,6 +1105,8 @@ $(document).ready(function () {
           var isCancelStatus = false;
           if(key=='G' && (cenStr.match(/f|F/g) || cenStr.match(/\^[G|g]/g))){
             isCancelStatus = false;
+          }else if(key=='D'){
+            isCancelStatus = false;
           }else if(n && m && m.length==n.length && n[0]==m[0]){
             isCancelStatus = true;
           }
@@ -1236,7 +1238,79 @@ $(document).ready(function () {
                     break;
                 }
               }
+
+            }else if(key=='D'){
+              var note_str = cenStr.replace(/[\d\/]/g, "");
+              var s_notes = findSimpleNotesByNote(key, note_str);
+              var s_note = '';
+              if(s_notes.length){
+                s_note = s_notes[0];
+                if(s_notes.length==2){
+                  var s_note = s_notes[0];
+                  if(s_notes[0].length>s_notes[1].length){
+                    s_note = s_notes[1];
+                  }
+                }
+              }
+              console.log('s_note:', s_note);
+              var sl_str = '';
+              switch(val) {
+                case '^':
+                  sl_str = '#';
+                  break;
+                case '^^':
+                  sl_str = '##';
+                  break;
+                case '_':
+                  sl_str = 'b';
+                  break;
+                case '__':
+                  sl_str = 'bb';
+                  break;
+              }
+              var s_arr = s_note.match(/\#/g);
+              var l_arr = s_note.match(/b/g);
+              var n_note = '';
+              if(sl_str=='#'){
+                if(s_arr && s_arr.length==1){
+                  // 取消 #
+                  n_note = findNoteBySimpleNote(s_note.replace(/[\#\=b]/g, ""));
+                }else{
+                  n_note = findNoteBySimpleNote(s_note.replace(/[\#\=b]/g, "#"));
+                }
+              }else if(sl_str=='##'){
+                if(s_arr && s_arr.length==2){
+                  // 取消 ##
+                  n_note = findNoteBySimpleNote(s_note.replace(/[\#\=b]/g, ""));
+                }else{
+                  n_note = findNoteBySimpleNote(s_note.replace(/[\#\=b]/g, "##"));
+                }
+              }else if(sl_str=='b'){
+                if(l_arr && l_arr.length==1){
+                  // 取消 b
+                  n_note = findNoteBySimpleNote(s_note.replace(/[\#\=b]/g, ""));
+                }else{
+                  n_note = findNoteBySimpleNote(s_note.replace(/[\#\=b]/g, "b"));
+                }
+              }else if(sl_str=='bb'){
+                if(l_arr && l_arr.length==2){
+                  // 取消 bb
+                  n_note = findNoteBySimpleNote(s_note.replace(/[\#\=b]/g, ""));
+                }else{
+                  n_note = findNoteBySimpleNote(s_note.replace(/[\#\=b]/g, "bb"));
+                }
+              }else{
+                // 还原
+                if(!s_arr && !l_arr){
+                  // 取消还原
+                  n_note = findNoteBySimpleNote(s_note.replace(/[\#\=b]/g, ""));
+                }
+              }
+              // 
+
+
             }
+
             cenStr = cenStr.replace(/[\^\_\=]/g, "");
             console.log('key:', key, cenStr, val);
             

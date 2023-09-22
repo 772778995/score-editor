@@ -622,9 +622,9 @@ var sd = {
 		}, {
 			"K" : "D",
 			"index" : [ 61, 62, 62, 63, 63, 63, 64, 64, 64, 65, 65, 65, 66, 66, 66, 67, 67, 67, 68, 68, 68, 69, 69, 69, 70, 70, 71, 71, 71, 72, 72, 72, 73, 73, 74 ],
-			"STAFF" : [ "_D", "D", "__E", "^D", "^D", "_E", "^^D", "E", "_F", "^E", "=F", "__G", "^^E", "F", "_G", "^^F", "G", "__A", "^G", "^G", "_A", "^^G", "A", "__B", "^A", "_B", "^^A", "B", "_c", "^B", "=c", "__D", "^^B", "c", "^^c" ],
+			"STAFF" : [ "_D", "D", "__E", "^D", "^D", "_E", "^^D", "E", "_F", "^E", "=F", "__G", "^^E", "^F", "_G", "^^F", "G", "__A", "^G", "^G", "_A", "^^G", "A", "__B", "^A", "_B", "^^A", "B", "_c", "^b", "=c", "__d", "^^b", "^c", "^^c" ],
 			"index_lower" : [ 49, 50, 50, 51, 51, 51, 52, 52, 52, 53, 53, 53, 54, 54, 54, 55, 55, 55, 56, 56, 56, 57, 57, 57, 58, 58, 59, 59, 59, 60, 60, 60, 61, 61, 62 ],
-			"STAFF_LOWER" : [ "_D,", "D,", "__E,", "^D", "^D,", "_E,", "^^D,", "E,", "_F,", "^E,", "=F,", "__G,", "^^E,", "F,", "_G,", "^^F,", "G,", "__A,", "^G,", "^G,", "_A,", "^^G,", "A,", "__B,", "^A,", "_B,", "^^A,", "B,", "_C", "^B,", "=C", "__D,", "^^B,", "C", "^^C" ]
+			"STAFF_LOWER" : [ "_D,", "D,", "__E,", "^D,", "^D,", "_E,", "^^D,", "E，", "_F，", "^E，", "=F，", "__G，", "^^E，", "^F，", "_G，", "^^F,", "G,", "__A,", "^G,", "^G,", "_A,", "^^G,", "A,", "__B,", "^A,", "_B,", "^^A,", "B,", "_C", "^B,", "=C", "__D", "^^B", "^C", "^^C" ]
 		}, {
 			"K" : "A",
 			// "index":[ 56, 57, 57, 58, 58, 58, 59, 59, 59, 60, 60, 60, 61, 61, 61, 62, 62, 62, 63, 63, 63, 64, 64, 64, 65, 65, 66, 66, 66, 67, 67, 67, 68, 68, 69],
@@ -1027,6 +1027,44 @@ function getChordValue(category,chord,level,key){
 		return "";
 	}
 }
+
+// ABC 音符转简谱对照
+function findSimpleNotesByNote(K, note){
+	var arr = sd.Simple2Staff.StaffValue;
+	var s_notes = [];
+	for (var i = 0; i < arr.length; i++) {
+		var obj = arr[i];
+		if (obj.K == K) {
+			var staffs = obj.STAFF;
+			for (var j = 0; j < staffs.length; j++) {
+				var n = staffs[j];
+				if (n.toLowerCase().replaceAll(",", "").replaceAll("'", "") == note.toLowerCase().replaceAll(",", "").replaceAll("'", "")) {
+					s_notes.push(sd.Simple2Staff.SimpleValue[j])
+				}
+			}
+		}
+	}
+	return s_notes;
+}
+
+// 通过 ABC 找对照的五线谱
+function findNoteBySimpleNote(K, note){
+	var s_index = sd.Simple2Staff.SimpleValue.indexOf(note);
+	if(s_index===-1){
+		return '';
+	}
+	var arr = sd.Simple2Staff.StaffValue;
+	var s_note = '';
+	for (var i = 0; i < arr.length; i++) {
+		var obj = arr[i];
+		if (obj.K == K) {
+			s_note = obj.STAFF['s_index'];
+			break;
+		}
+	}
+	return s_note;
+}
+
 // 根据调号和音符取得索引号（在StaffValue中）
 function findIndexByKAndStaff(K, note) {
 	var arr = sd.Simple2Staff.StaffValue;
@@ -1452,7 +1490,7 @@ function getSimpleNameByKAndStaff2(K, note, abcString, st) {
 		// noteIndex += 12;
 	}
 	if (K=='G') {
-		noteIndex -= 12;
+		noteIndex -= 12; // G调输入MIDI调整8度
 	}
 
 	var dValue = noteIndex - index;
