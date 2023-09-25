@@ -727,6 +727,12 @@ function svgMouseDown(_0x93C6) {
   ) {
     return;
   }
+  if($(_0x93C6["target"])["attr"]("type")=='zs'){
+    $('.selected_text').removeClass('selected_text');
+    $('._select-note').removeClass('_select-note');
+    $(_0x93C6["target"]).dbclick();
+    return;
+  }
   console["log"]("-----svgMouseDown");
 
   if (graph_update) {
@@ -3112,7 +3118,7 @@ function renderSuccess() {
   }
 }
 function editorAnnot(_0x6DAF) {
-  console["log"]("editorAnnot----------");
+  console["log"]("editorAnnot----------", _0x6DAF);
   if (!user["editorAnnot"]) {
     return;
   }
@@ -3150,29 +3156,29 @@ function editorAnnot(_0x6DAF) {
   $("#zsistart")["val"](_0x6DAF);
   var _0x6D7E = syms[_0x6DAF];
   var _0x9EAF = _0x6D7E["a_gch"];
-  var _0x6C89 = "";
+  var text = "";
   var _0x9F73 = "";
   var _0x9E4D = "";
   if (_0x9EAF) {
     for (var _0x6D1C = 0; _0x6D1C < _0x9EAF["length"]; _0x6D1C++) {
-      _0x6C89 += _0x9EAF[_0x6D1C]["text"];
+      text += _0x9EAF[_0x6D1C]["text"];
       _0x9F73 = _0x9EAF[_0x6D1C]["type"];
       _0x9E4D = _0x9EAF[_0x6D1C]["fonttype"];
       if (_0x6D1C != _0x9EAF["length"] - 1) {
-        _0x6C89 += "\x0A";
+        text += "\n";
       }
     }
   }
-  if (_0x6C89["indexOf"]("[font-size:") > -1) {
-    var _0x7AE4 = /\[(font-size:.*)\]/["exec"](_0x6C89);
+  if (text["indexOf"]("[font-size:") > -1) {
+    var _0x7AE4 = /\[(font-size:.*)\]/["exec"](text);
     var _0x9E7E = "";
     if (_0x7AE4 != null) {
-      _0x9E7E = /\[font-size:(.*)\]/["exec"](_0x6C89)[1];
-      _0x6C89 = _0x6C89["replace"](/\[(font-size:.*)\]/, "");
+      _0x9E7E = /\[font-size:(.*)\]/["exec"](text)[1];
+      text = text["replace"](/\[(font-size:.*)\]/, "");
     }
-    _0x6C89 = _0x6C89["replace"](/\[(font-size:.*)\]/, "");
+    text = text["replace"](/\[(font-size:.*)\]/, "");
   }
-  _0x6C89 = getGchCoorInfo(_0x6C89);
+  text = getGchCoorInfo(text);
   if (_0x9E7E && _0x9E7E != "") {
     $("#annofontsize")["val"](_0x9E7E);
   }
@@ -3185,7 +3191,7 @@ function editorAnnot(_0x6DAF) {
   } else {
     $("input[name='fonttype'][value='']")["prop"]("checked", "checked");
   }
-  $("#zsInput")["val"](_0x6C89);
+  $("#zsInput")["val"](text);
   var _0x7183 = _0x6D7E["istart"];
   $("text[type='zs'][istart='" + _0x7183 + "']")["addClass"]("selected_text");
   $("#ZS_EDIT_div .modal-content")["css"](
@@ -3194,31 +3200,31 @@ function editorAnnot(_0x6DAF) {
   );
   $("#ZS_EDIT_div")["modal"]();
 }
-function getGchCoorInfo(_0x6C89) {
+function getGchCoorInfo(text) {
   var _0xA872 = "";
   $("#xoffset")["val"]("");
   $("#yoffset")["val"]("");
   $("#gchcoor")["val"]("");
-  if (xcoorGchReg["test"](_0x6C89) || ycoorGchReg["test"](_0x6C89)) {
-    var _0xAC77 = xcoorGchReg["exec"](_0x6C89);
-    var _0xACD9 = ycoorGchReg["exec"](_0x6C89);
+  if (xcoorGchReg["test"](text) || ycoorGchReg["test"](text)) {
+    var _0xAC77 = xcoorGchReg["exec"](text);
+    var _0xACD9 = ycoorGchReg["exec"](text);
     var _0xACA8 = 0;
     var _0xAD0A = 0;
     if (_0xAC77 != null) {
       _0xA872 = _0xAC77[0];
       _0xACA8 = parseInt(_0xAC77[1]);
       $("#xoffset")["val"](_0xACA8);
-      _0x6C89 = _0x6C89["replace"](xcoorGchReg, "");
+      text = text["replace"](xcoorGchReg, "");
     }
     if (_0xACD9 != null) {
       _0xA872 = _0xACD9[0];
       _0xAD0A = parseInt(_0xACD9[1]);
       $("#yoffset")["val"](_0xAD0A);
-      _0x6C89 = _0x6C89["replace"](ycoorGchReg, "");
+      text = text["replace"](ycoorGchReg, "");
     }
     $("#gchcoor")["val"](_0xA872);
   }
-  return _0x6C89;
+  return text;
 }
 const setEmoTxt = (txt) => {
   $("#zsistart")["val"]($($('[type="note"],[type="rest"],[type="splnum_rest"]')[0]).attr('istart'))
@@ -3226,42 +3232,44 @@ const setEmoTxt = (txt) => {
   saveZs()
 }
 function saveZs() {
-  var _0x7183 = $("#zsistart")["val"]();
-  var _0xA12C = $("#zsInput")["val"]();
-  var _0x9E4D = $("input[name='fonttype']:checked")["val"]();
-  var _0x9F73 = $("input[name='zspos']:checked")["val"]();
-  var _0x9302 = _0xA12C["split"]("\x0A");
-  if (_0x7183 != "") {
-    _0x7183 = parseInt(_0x7183);
-    var _0x6D7E = syms[_0x7183];
-    var _0x6C89 = "";
-    var _0x9E7E = $("#annofontsize")["val"]();
-    var _0xA872 = genGchCoorStr();
-    for (var _0x6D1C = 0; _0x6D1C < _0x9302["length"]; _0x6D1C++) {
-      if (_0x9302[_0x6D1C] != "") {
-        _0x6C89 += '"';
-        _0x6C89 += _0x9F73 + _0x9E4D;
-        if (_0x9E7E != "14") {
-          _0x6C89 += "[font-size:" + _0x9E7E + "]";
+  var zsistart = $("#zsistart")["val"]();
+  var zsInput = $("#zsInput")["val"]();
+  // console.log('zsInput:', zsInput);
+  var fonttype = $("input[name='fonttype']:checked")["val"]();
+  var zspos = $("input[name='zspos']:checked")["val"]();
+  var text = zsInput["split"]("\n");
+  // console.log('text:', text);
+  if (zsistart != "") {
+    zsistart = parseInt(zsistart);
+    var cen = syms[zsistart];
+    var s_text = "";
+    var annofontsize = $("#annofontsize")["val"]();
+    var CoorStr = genGchCoorStr();
+    for (var i = 0; i < text["length"]; i++) {
+      if (text[i] != "") {
+        s_text += '"';
+        s_text += zspos + fonttype;
+        if (annofontsize != "14") {
+          s_text += "[font-size:" + annofontsize + "]";
         }
-        _0x6C89 += _0x9302[_0x6D1C] + _0xA872 + '"';
+        s_text += text[i] + CoorStr + '"';
       }
     }
-    var _0xA18E = $("#source")["val"]();
-    _0xA18E =
-      _0xA18E["substring"](0, _0x6D7E["istart"]) +
-      _0x6C89 +
-      _0xA18E["substring"](_0x6D7E["istart"]);
-    var _0x9EAF = _0x6D7E["a_gch"];
-    if (_0x9EAF != null) {
-      for (var _0x6D1C = _0x9EAF["length"] - 1; _0x6D1C >= 0; _0x6D1C--) {
-        var _0xC7A5 = _0x9EAF[_0x6D1C];
-        _0xA18E =
-          _0xA18E["substring"](0, _0xC7A5["istart"]) +
-          _0xA18E["substring"](_0xC7A5["iend"]);
+    var abc_content = $("#source")["val"]();
+    abc_content =
+    abc_content["substring"](0, cen["istart"]) +
+      s_text +
+      abc_content["substring"](cen["istart"]);
+    var a_gch = cen["a_gch"];
+    if (a_gch != null) {
+      for (var i = a_gch.length - 1; i >= 0; i--) {
+        var g = a_gch[i];
+        abc_content =
+        abc_content["substring"](0, g["istart"]) +
+        abc_content["substring"](g["iend"]);
       }
     }
-    $("#source")["val"](_0xA18E);
+    $("#source")["val"](abc_content);
     src_change();
     doLog();
   }

@@ -1556,7 +1556,8 @@ DrawUtil["prototype"] = {
                         };
                         var _0x7AB3 = "";
                         var _0x7B15 = "";
-                        _0x7AB3 = " onmousemove=\'moveSvgText(event)\' onmousedown=\'mousedownSvgText(event)\' onmouseup=\'mouseupSvgText(event)\' onmouseout=\'mouseoutSvgText(event)\'";
+                        // 移除，术语双击是偏移位置
+                        // _0x7AB3 = " onmousemove=\'moveSvgText(event)\' onmousedown=\'mousedownSvgText(event)\' onmouseup=\'mouseupSvgText(event)\' onmouseout=\'mouseoutSvgText(event)\'";
                         var _0x7A82 = _0x6D7E["a_gch"][_0x6D1C];
                         _0x7B15 += " gch_istart=\"" + _0x7A82["istart"] + "\" gch_iend=\"" + _0x7A82["iend"] + "\" ";
                         // abc["out_svg"]("<text ondblclick=\"editorAnnot(" + _0x6D7E["istart"] + ")\" istart=\"" + _0x6D7E["istart"] + "\" type=\"zs\"" + _0x7AB3 + _0x7B15 + " xml:space=\"preserve\" style=\"" + _0x7CCE + "\" x=\"" + splSx(_0x6F06 + _0x7A20[_0x6D1C]["x"]) + "\" y=\"" + _0x6F37 + "\" class=\"" + _0x7B46 + "f" + _0x7A20[_0x6D1C]["font"]["fid"] + "\">" + _0x6C89 + "</text>\x0A")
