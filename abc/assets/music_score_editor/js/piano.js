@@ -1049,7 +1049,8 @@ function findSimpleNotesByNote(K, note){
 
 // 通过 ABC 找对照的五线谱
 function findNoteBySimpleNote(K, note){
-	var s_index = sd.Simple2Staff.SimpleValue.indexOf(note);
+	console.log('findNoteBySimpleNote:', K, note);
+	var s_index = sd.Simple2Staff.SimpleValue.indexOf(note+'');
 	if(s_index===-1){
 		return '';
 	}
@@ -1058,7 +1059,7 @@ function findNoteBySimpleNote(K, note){
 	for (var i = 0; i < arr.length; i++) {
 		var obj = arr[i];
 		if (obj.K == K) {
-			s_note = obj.STAFF['s_index'];
+			s_note = obj.STAFF[s_index];
 			break;
 		}
 	}

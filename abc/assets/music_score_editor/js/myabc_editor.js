@@ -1112,6 +1112,8 @@ $(document).ready(function () {
           }
           console.log('isCancelStatus', isCancelStatus);
 
+          var n_note = ''; // 新音符
+
           if(isCancelStatus){
             // 取消升降、还原号
             cenStr = cenStr.replace(/[\^\_\=]/g, "");
@@ -1270,48 +1272,54 @@ $(document).ready(function () {
               }
               var s_arr = s_note.match(/\#/g);
               var l_arr = s_note.match(/b/g);
-              var n_note = '';
+              
               if(sl_str=='#'){
                 if(s_arr && s_arr.length==1){
                   // 取消 #
-                  n_note = findNoteBySimpleNote(s_note.replace(/[\#\=b]/g, ""));
+                  n_note = findNoteBySimpleNote(key, s_note.replace(/[\#\=b]/g, ""));
                 }else{
-                  n_note = findNoteBySimpleNote(s_note.replace(/[\#\=b]/g, "#"));
+                  n_note = findNoteBySimpleNote(key, '#' + s_note.replace(/[\#\=b]/g, ""));
                 }
               }else if(sl_str=='##'){
                 if(s_arr && s_arr.length==2){
                   // 取消 ##
-                  n_note = findNoteBySimpleNote(s_note.replace(/[\#\=b]/g, ""));
+                  n_note = findNoteBySimpleNote(key, s_note.replace(/[\#\=b]/g, ""));
                 }else{
-                  n_note = findNoteBySimpleNote(s_note.replace(/[\#\=b]/g, "##"));
+                  n_note = findNoteBySimpleNote(key, '##' + s_note.replace(/[\#\=b]/g, ""));
                 }
               }else if(sl_str=='b'){
                 if(l_arr && l_arr.length==1){
                   // 取消 b
-                  n_note = findNoteBySimpleNote(s_note.replace(/[\#\=b]/g, ""));
+                  n_note = findNoteBySimpleNote(key, s_note.replace(/[\#\=b]/g, ""));
                 }else{
-                  n_note = findNoteBySimpleNote(s_note.replace(/[\#\=b]/g, "b"));
+                  n_note = findNoteBySimpleNote(key, 'b' + s_note.replace(/[\#\=b]/g, ""));
                 }
               }else if(sl_str=='bb'){
                 if(l_arr && l_arr.length==2){
                   // 取消 bb
-                  n_note = findNoteBySimpleNote(s_note.replace(/[\#\=b]/g, ""));
+                  n_note = findNoteBySimpleNote(key, s_note.replace(/[\#\=b]/g, ""));
                 }else{
-                  n_note = findNoteBySimpleNote(s_note.replace(/[\#\=b]/g, "bb"));
+                  n_note = findNoteBySimpleNote(key, 'bb' + s_note.replace(/[\#\=b]/g, ""));
                 }
               }else{
                 // 还原
                 if(!s_arr && !l_arr){
                   // 取消还原
-                  n_note = findNoteBySimpleNote(s_note.replace(/[\#\=b]/g, ""));
+                  n_note = findNoteBySimpleNote(key, s_note.replace(/[\#\=b]/g, ""));
                 }
               }
-              // 
-
-
+              
             }
 
             cenStr = cenStr.replace(/[\^\_\=]/g, "");
+
+            // 处理升降符，高低8度 
+            console.log('n_note', n_note);
+            if(n_note){
+              val = '';
+              cenStr = cenStr.replace(/[A-Ga-g]\,*\/*/, n_note);
+            }
+
             console.log('key:', key, cenStr, val);
             
             content =
