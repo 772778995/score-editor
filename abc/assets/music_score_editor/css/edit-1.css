@@ -250,3 +250,6 @@ rect.abcr.selected_text[type="bar"] {
     -webkit-box-shadow: -1px 0 0 0 #25649e;
     box-shadow: -1px 0 0 0 #25649e;
 }
+.items-center .el-radio-button__inner{
+	padding: 12px 35px;
+}
