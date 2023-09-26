@@ -931,26 +931,58 @@ function genVSetting(_0x14CAF) {
   _0x11C11 += "%%vsetting_end\x0A";
   return _0x11C11;
 }
-function genNodesByCount(node_count, _0x14AC5) {
-  if (!_0x14AC5) {
-    var _0x14AC5 = new Object();
-    _0x14AC5["top"] = parseInt($("#M_mol")["val"]());
-    _0x14AC5["bot"] = parseInt($("#M_den")["val"]());
+function genNodesByCount(node_count, beat) {
+  // 通过谱面信息计算
+  var m = get("M:");
+  if(m){
+    var m_arr = m.split("/");
+    if(m_arr.length==2){
+      var top = parseInt(m_arr[0]);
+      var bot = parseInt(m_arr[1]);
+      var L = get("L:");
+      if(L){
+        var Larr = L.split("/");
+        if(Larr.length==2){
+          // var Ltop = parseInt(Larr[0]);
+          var Lbot = parseInt(Larr[1]);
+          var bs = Lbot/bot;
+          var n_str = '';
+          for(var i=0; i<top; i++){
+            n_str += 'z,' + bs;
+          }
+          var nn_str = "";
+          for (var i = 0; i < node_count; i++) {
+            nn_str += " " + n_str + " |";
+          }
+          return nn_str;
+        }
+      }
+    }
   }
-  var _0x14B89 = new Object();
-  _0x14B89["top"] = parseInt(
-    $("#L")["val"]()["split"]("/")[0]
-  );
-  _0x14B89["bot"] = parseInt(
-    $("#L")["val"]()["split"]("/")[1]
-  );
-  var _0x1437F = parseInt(_0x14B89["bot"] / _0x14AC5["bot"]);
-  var _0x14B27 = "z," + _0x1437F * _0x14AC5["top"];
-  var _0x11C11 = "";
-  for (var _0x11901 = 0; _0x11901 < node_count; _0x11901++) {
-    _0x11C11 += " " + _0x14B27 + " |";
+  // 全局设置方式计算
+  if (!beat) {
+    var beat = new Object();
+    beat["top"] = parseInt($("#M_mol").val());
+    beat["bot"] = parseInt($("#M_den").val());
   }
-  return _0x11C11;
+  var note_b = new Object(); // 音符单位
+  note_b["top"] = parseInt(
+    $("#L").val().split("/")[0]
+  );
+  note_b["bot"] = parseInt(
+    $("#L").val().split("/")[1]
+  );
+  var bs = parseInt(note_b["bot"] / beat["bot"]);
+  // var n_str = "z," + bs * beat["top"];
+  var n_str = '';
+  for(var i=0; i<beat["top"]; i++){
+    n_str += 'z,' + bs;
+  }
+  var nn_str = "";
+  for (var i = 0; i < node_count; i++) {
+    nn_str += " " + n_str + " |";
+  }
+  return nn_str;
 }
 function updateStaffProp() {
   var abc_content = $("#source")["val"]();
@@ -963,10 +995,10 @@ function updateStaffProp() {
     src_change();
   }
 }
-function appendNodes(_0x12293) {
+function appendNodes(num) {
   var staff_num = parseInt($("#STAFFNUM")["val"]());
   var abc_content = $("#source")["val"]();
-  var _0x12A3B = genNodesByCount(_0x12293);
+  var _0x12A3B = genNodesByCount(num);
   var _0x11A89 = getLinesInfo(abc_content);
   var _0x12B61 =
     /(\|[1-9\.]+)|(\|\[[1-9\.]+)|(:\|\|:)|(:\|:)|(:\|)|(::)|(\|:)|(\|\|)|(\|\])|(\|)/g;

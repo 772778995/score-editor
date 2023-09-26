@@ -211,7 +211,7 @@ const getKeySignCode = (sign) => {
  * 
  * @param {ScoreOpts} opts 
  */
-const getAbcHeadCode = (opts) => `%%staffsep 90
+const getAbcHeadCode = (opts) => `%%staffsep 110
 %%sysstaffsep 60
 %%keydefined ${getKeySignCode(opts.keySign)}
 %%contbarnb 1
@@ -401,7 +401,7 @@ const getAbcTemplateCode = (opts) =>
   getAbcHeadCode(opts) + getAbcInfoCode(opts) + getAbcContCode(opts);
 
 var headStr =
-  "%%staffsep 90\n%%sysstaffsep 60\n%%keydefined C=higher\n" +
+  "%%staffsep 110\n%%sysstaffsep 60\n%%keydefined C=higher\n" +
   "%%contbarnb 1\n" +
   "%%leftmargin 20\n" +
   "%%rightmargin 10\n" +
@@ -432,7 +432,7 @@ var defstr =
   "z,8|z,8|z,8|z,8|$z,8|z,8|z,8|z,8|%V1line0end";
 // 默认的双谱表
 var defstr2 =
-  "%%staffsep 90\n%%sysstaffsep 60\n%%contbarnb 1\n%%leftmargin 20\n%%rightmargin 10\n%%titlefont Microsoft-YaHei 28\n%%stretchlast 0.7\n%%pos vocal down \nI:abc-charset utf-8\nX: 1\nT: 标题\nC: 作曲\nQ: 1/4=88\nM: 2/4\nL: 1/8\nK: C\n%%MIDI program 0\nV:1 treble\nz\nV:2 bass\nz";
+  "%%staffsep 110\n%%sysstaffsep 60\n%%contbarnb 1\n%%leftmargin 20\n%%rightmargin 10\n%%titlefont Microsoft-YaHei 28\n%%stretchlast 0.7\n%%pos vocal down \nI:abc-charset utf-8\nX: 1\nT: 标题\nC: 作曲\nQ: 1/4=88\nM: 2/4\nL: 1/8\nK: C\n%%MIDI program 0\nV:1 treble\nz\nV:2 bass\nz";
 var staffTypes = {
   treble:
     headStr +
@@ -2115,7 +2115,7 @@ $(document).ready(function () {
     if ($("#fourstaff")[0].checked) {
       var fourSource =
         "%%linebreak $\n" +
-        "%%staffsep 90\n" +
+        "%%staffsep 110\n" +
         "%%sysstaffsep 60\n" +
         "%%keydefined C=higher\n" +
         "%%leftmargin 20\n" +
@@ -8841,20 +8841,25 @@ function delSelectedNode() {
 }
 //插入小节
 function insertNodes(num, isAfter, isFirst) {
+  console.log('insertNodes', num, isAfter, isFirst);
   const barRectEl = $("svg[type='rectnode'],svg[type='rectbar']")
   const barIndex = barRectEl.attr('barIndex') || barRectEl.attr('barindex')
-
+  console.log(barIndex, bar_count);
   if (barIndex >= bar_count) return appendNodes(num);
   if (!isFirst && !content_vue.checkIsSelectBar()) return;
-  for (let i = 1; i <= num; i++) {
-    let yourBarIndex = barIndex
-    if (isAfter) yourBarIndex = +yourBarIndex + 1;
-    if (isFirst) yourBarIndex = 0;
-    if (bar_count === yourBarIndex) {
-      appendNodes(1)
-    } else {
-      insertNodeByIndex(yourBarIndex);
+  if(!isAfter){
+    for (let i = 1; i <= num; i++) {
+      let yourBarIndex = barIndex
+      if (isAfter) yourBarIndex = + yourBarIndex + 1;
+      if (isFirst) yourBarIndex = 0;
+      if (bar_count === yourBarIndex) {
+        appendNodes(1)
+      } else {
+        insertNodeByIndex(yourBarIndex);
+      }
     }
+  }else{
+    appendNodes(num);
   }
   changeLineBars();
 }

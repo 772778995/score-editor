@@ -18,10 +18,10 @@ var chordInput = false;
 var nearDecoNote = null;
 var updateNoteIndexInChord = -1;
 var models = {
-  "Treble Clef": "%%staffsep 90\x0A%%sysstaffsep 60\x0A%%pagewidth 1500\x0A%%contbarnb 1\x0A%%leftmargin 2\x0A%%rightmargin 10\x0A%%titlefont Microsoft-YaHei 28\x0A%%stretchlast 0.7\x0AI:abc-charset utf-8\x0AX: 1\x0AT: \u6807\u9898\x0AC: \u4f5c\u66f2\x0AQ: 1/4=88\x0AM: 4/4\x0AL: 1/8\x0AK: C\x0AV:1 treble\x0A%%MIDI program 0\x0A",
-  "Bass Clef": "%%staffsep 90\x0A%%sysstaffsep 60\x0A%%pagewidth 1500\x0A%%contbarnb 1\x0A%%leftmargin 2\x0A%%rightmargin 10\x0A%%titlefont Microsoft-YaHei 28\x0A%%stretchlast 0.7\x0AI:abc-charset utf-8\x0AX: 1\x0AT: \u6807\u9898\x0AC: \u4f5c\u66f2\x0AQ: 1/4=88\x0AM: 4/4\x0AL: 1/8\x0AK: C\x0AV:1 bass\x0A%%MIDI program 0\x0A",
-  "Grand Clef": "%%staffsep 90\x0A%%sysstaffsep 60\x0A%%contbarnb 1\x0A%%leftmargin 2\x0A%%rightmargin 10\x0A%%titlefont Microsoft-YaHei 28\x0A%%stretchlast 0.7\x0AI:abc-charset utf-8\x0AX: 1\x0AT: \u6807\u9898\x0AC: \u4f5c\u66f2\x0AQ: 1/4=88\x0AM: 4/4\x0AL: 1/8\x0AK: C\x0A%%MIDI program 0\x0AV:1 treble\x0A\x0AV:2 bass\x0A",
-  SATB: "%%staffsep 90\x0A%%sysstaffsep 60\x0A%%contbarnb 1\x0A%%leftmargin 2\x0A%%rightmargin 10\x0A%%titlefont Microsoft-YaHei 28\x0A%%stretchlast 0.7\x0AI:abc-charset utf-8\x0AX: 1\x0AT: \u6807\u9898\x0AC: \u4f5c\u66f2\x0AQ: 1/4=88\x0AM: 4/4\x0AL: 1/8\x0AK: C\x0A%%MIDI program 0\x0AV:1 treble\x0A\x0AV:2 bass\x0A",
+  "Treble Clef": "%%staffsep 110\x0A%%sysstaffsep 60\x0A%%pagewidth 1500\x0A%%contbarnb 1\x0A%%leftmargin 2\x0A%%rightmargin 10\x0A%%titlefont Microsoft-YaHei 28\x0A%%stretchlast 0.7\x0AI:abc-charset utf-8\x0AX: 1\x0AT: \u6807\u9898\x0AC: \u4f5c\u66f2\x0AQ: 1/4=88\x0AM: 4/4\x0AL: 1/8\x0AK: C\x0AV:1 treble\x0A%%MIDI program 0\x0A",
+  "Bass Clef": "%%staffsep 110\x0A%%sysstaffsep 60\x0A%%pagewidth 1500\x0A%%contbarnb 1\x0A%%leftmargin 2\x0A%%rightmargin 10\x0A%%titlefont Microsoft-YaHei 28\x0A%%stretchlast 0.7\x0AI:abc-charset utf-8\x0AX: 1\x0AT: \u6807\u9898\x0AC: \u4f5c\u66f2\x0AQ: 1/4=88\x0AM: 4/4\x0AL: 1/8\x0AK: C\x0AV:1 bass\x0A%%MIDI program 0\x0A",
+  "Grand Clef": "%%staffsep 110\x0A%%sysstaffsep 60\x0A%%contbarnb 1\x0A%%leftmargin 2\x0A%%rightmargin 10\x0A%%titlefont Microsoft-YaHei 28\x0A%%stretchlast 0.7\x0AI:abc-charset utf-8\x0AX: 1\x0AT: \u6807\u9898\x0AC: \u4f5c\u66f2\x0AQ: 1/4=88\x0AM: 4/4\x0AL: 1/8\x0AK: C\x0A%%MIDI program 0\x0AV:1 treble\x0A\x0AV:2 bass\x0A",
+  SATB: "%%staffsep 110\x0A%%sysstaffsep 60\x0A%%contbarnb 1\x0A%%leftmargin 2\x0A%%rightmargin 10\x0A%%titlefont Microsoft-YaHei 28\x0A%%stretchlast 0.7\x0AI:abc-charset utf-8\x0AX: 1\x0AT: \u6807\u9898\x0AC: \u4f5c\u66f2\x0AQ: 1/4=88\x0AM: 4/4\x0AL: 1/8\x0AK: C\x0A%%MIDI program 0\x0AV:1 treble\x0A\x0AV:2 bass\x0A",
 };
 var deco_params = {
   jr: { start: "!>(!", end: "!>)!" },
