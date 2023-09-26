@@ -1105,7 +1105,7 @@ $(document).ready(function () {
           var isCancelStatus = false;
           if(key=='G' && (cenStr.match(/f|F/g) || cenStr.match(/\^[G|g]/g))){
             isCancelStatus = false;
-          }else if(key=='D'){
+          }else if(key=='D' || key!='C'){
             isCancelStatus = false;
           }else if(n && m && m.length==n.length && n[0]==m[0]){
             isCancelStatus = true;
@@ -1241,7 +1241,7 @@ $(document).ready(function () {
                 }
               }
 
-            }else if(key=='D'){
+            }else if(key=='D' || key!='C'){
               var note_str = cenStr.replace(/[\d\/]/g, "");
               var s_notes = findSimpleNotesByNote(key, note_str);
               var s_note = '';
@@ -1306,6 +1306,8 @@ $(document).ready(function () {
                 if(!s_arr && !l_arr){
                   // 取消还原
                   n_note = findNoteBySimpleNote(key, s_note.replace(/[\#\=b]/g, ""));
+                }else{
+                  n_note = findNoteBySimpleNote(key, s_note.replace(/[\#\=b]/g, "="));
                 }
               }
               

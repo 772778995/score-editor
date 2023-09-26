@@ -6282,9 +6282,8 @@ function inputNoteBuild2(note_str){
   if(typeof scoreOpts!='undefined' && scoreOpts.musicType=='easy'){
     var keyObj = getStaffKey();
     // if(keyObj.value=='Bb' || keyObj.value=='G' || keyObj.value=='Gb' || keyObj.value=='A' || keyObj.value=='Ab' || keyObj.value=='B'){
-    if(keyObj.value=='Bb' || keyObj.value=='Gb' || keyObj.value=='A' || keyObj.value=='Ab' || keyObj.value=='B'){
-      octave -= 1;
-    }
+    //   octave -= 1;
+    // }
   }
 
   if(staff_str=='bass'){
