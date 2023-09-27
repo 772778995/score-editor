@@ -132,6 +132,10 @@
         pointer-events: auto;
         opacity: 1;
       }
+      .addBar-box .addBar:hover, .addBar-box .addBar:focus {
+        pointer-events: auto;
+        opacity: 1;
+      }
       .num-key {
         background: #B5C5D3;
         min-width: 36px;
@@ -3704,7 +3708,7 @@
                 { 'pointer-events-none text-gray-400 cursor-default': item.disabled }
               ]"
               style="padding: 4px 9px; font-size: 12px;"
-              @click="item.fn && item.fn() | item.title === '添加小节' || (m.ctxMenu.isShow = false)"
+              @click="item.fn && item.fn() | item.title === '添加小节' | item.title ==='修改小节时值' || (m.ctxMenu.isShow = false)"
             >
               <div>{{ item.title }}</div>
               <div v-if="item.subTitle" style="color: #767676;">{{ item.subTitle }}</div>
@@ -3728,6 +3732,51 @@
                     <number-input v-model="m.addBar.after" :min="1" class="ml-2" style="width: 64px"></number-input>
                     <div class="mx-2">小节</div>
                     <img src="assets/music_score_editor/img/gou.png" class="cursor-pointer" @click="insertNodes(m.addBar.after, true) | (m.ctxMenu.isShow = false)">
+                  </div>
+                </div>
+              </template>
+              <template v-else-if="item.title === '修改小节时值'">
+                <img src="assets/music_score_editor/img/arrow_down.png" class="transform -rotate-90 w-2 h-1" >
+                <div
+                  class="absolute addBar duration-300 right-0 top-0 transform cursor-default translate-x-full bg-white rounded-sm pointer-events-none opacity-0"
+                  style="box-shadow: 0px 4px 30px 0px rgba(3,35,63,0.28); width: 220px; padding: 6px 10px"
+                  @click.stop
+                >
+                  <div class="items-center flex">
+                    <number-input v-model="m.scoreNodeData.weakBarTop" :min="1" style="width: 64px; height: 28px;"></number-input>
+                    <div style="margin-left: 3px;">个</div>
+                    <div class="mx-1.5">/</div>
+                    <input type="hidden" id="barTimeTop" oldval="4" value="4" >
+                    <input type="hidden" id="barTimeBot" oldval="4" value="4" >
+                    
+                    <div class="rounded flex h-6" style="border: 1px solid rgb(217, 217, 217);height: 28px;margin-right: 10px;">
+                        <select style="display: none;" v-model="m.scoreNodeData.weakBarBot" placeholder="请选择音符">
+                          <option
+                            v-for="item in m.newScore.beatNoteList3"
+                            :key="item.val"
+                            :label="item.txt"
+                            :value="item.val">
+                            {{ item.txt }}
+                          </option>
+                        </select>
+
+                        <div v-for="item in m.newScore.beatNoteList3" :key="item.val" v-if="item.val==m.scoreNodeData.weakBarBot" style="padding: 5px 5px;">
+                          {{ item.txt }}
+                        </div>
+
+                        <div class="flex flex-col h-full">
+                            <div @click="weakBarBotEdit(true)" class="flex-1 w-5 flex justify-center items-center cursor-pointer hover:bg-gray-200 duration-300"
+                                style="border-left: 1px solid rgb(217, 217, 217);">
+                                <img src="assets/music_score_editor/img/arrow_down.png" class="transform -rotate-180">
+                            </div>
+                            <div @click="weakBarBotEdit(false)" class="flex-1 w-5 flex justify-center items-center cursor-pointer hover:bg-gray-200 duration-300"
+                                style="border-top: 1px solid rgb(217, 217, 217); border-left: 1px solid rgb(217, 217, 217);">
+                                <img src="assets/music_score_editor/img/arrow_down.png">
+                            </div>
+                        </div>
+                    </div>
+
+                    <img src="assets/music_score_editor/img/gou.png" class="cursor-pointer" @click="changeNodeDur() | (m.ctxMenu.isShow = false)">
                   </div>
                 </div>
               </template>

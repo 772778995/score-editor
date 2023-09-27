@@ -4023,3 +4023,134 @@ function source_float_change() {
   $("#source")["val"]($("#source_float")["val"]());
   abc_change();
 }
+// 修改小节时值
+function changeNodeDur() {
+  var old_top = parseInt($("#barTimeTop").attr("oldval"));
+  var old_bot = parseInt($("#barTimeBot").attr("oldval"));
+  var new_top = parseInt($("#barTimeTop").val());
+  $("#barTimeTop").attr("oldval", new_top);
+  var new_bot = parseInt($("#barTimeBot").val());
+  $("#barTimeBot").attr("oldval", new_bot);
+  var d = new_top / new_bot - old_top / old_bot;
+  var node_em = $("svg[type=\'rectnode\'],svg[type=\'rectbar\']");
+  console.log('changeNodeDur:', new_top, new_bot, old_top, old_bot, $(node_em[0]));
+  if (node_em.length > 0) {
+    var abc_content = $("#source").val();
+    var barIndex = $(node_em[0]).attr("barIndex");
+    if (!barIndex) {
+        barIndex = $(node_em[0]).attr("barindex");
+        if (!barIndex) {
+            return
+        }
+    }
+    var new_abc_content = "";
+    var nodes_info = getNodesInfo(abc_content);
+    for (var i = 0; i < nodes_info.length; i++) {
+        var node_info = nodes_info[i];
+        // var lineStr = node_info["lineStr"];
+        var c_abc_content = "";
+        if (node_info["type"] == "note") {
+            for (var j = 0; j < node_info["nodes"].length; j++) {
+                var c_node = node_info["nodes"][j];
+                if (c_node["nodeIndex"] == barIndex) {
+                    // var nodeStr = c_node["nodeStr"];
+                    if (d > 0) {
+                        var dur_str = getDurStrByNoteDur(1536 * (new_top / new_bot - old_top / old_bot), getNodeFirstNote(c_node)["my_ulen"]);
+                        c_abc_content += c_node["nodeStr"]["replace"](c_node["barLineStr"], "") + " z," + dur_str + c_node["barLineStr"]
+                    } else {
+                        if (d < 0) {
+                            c_abc_content += nodeCut(c_node, d)
+                        }
+                    }
+                } else {
+                    c_abc_content += c_node["nodeStr"]
+                }
+                lastNodeEndSeq = c_node["endSeq"]
+            }
+            c_abc_content += abc_content["substring"](lastNodeEndSeq, node_info["endSeq"]);
+            new_abc_content += c_abc_content + "\x0A"
+        } else {
+            new_abc_content += node_info["lineStr"] + "\x0A"
+        }
+    }
+    new_abc_content = replaceBlankLine(new_abc_content);
+    $("#source").val(new_abc_content);
+    doLog();
+    src_change(function() {
+        var c_node_obj_arr = new Array();
+        var c_node_obj = new Object();
+        c_node_obj["bar_num"] = barIndex;
+        c_node_obj["color"] = "red";
+        c_node_obj["stroke"] = "red";
+        c_node_obj["v"] = 0;
+        c_node_obj_arr["push"](c_node_obj);
+        renderStaffNodeBySt(c_node_obj_arr, "node")
+    });
+    return
+  }
+}
+
+function nodeCut(_0x4D29, _0x56D9) {
+  var _0x4BE9 = $("#source")["val"]();
+  var _0x5B89 = decimalsToFractional(_0x56D9);
+  var _0x6F61 = 1536 * Math["abs"](_0x56D9);
+  console["log"]("dis:", _0x5B89);
+  var _0x6F89 = "";
+  var _0x6F39 = 0;
+  if (_0x56D9 > 0) {
+      var _0x5701 = getDurStrByNoteDur(1536 * (newTop / newBot - oldTop / oldBot), getNodeFirstNote(_0x4D29)["my_ulen"]);
+      _0x6F89 = _0x4D29["nodeStr"]["replace"](_0x4D29["barLineStr"], "") + " z," + _0x5701 + _0x4D29["barLineStr"]
+  } else {
+      if (_0x56D9 < 0) {
+          var _0x6FB1 = _0x4D29["nodeStr"];
+          for (var _0x4C11 = _0x4D29["endSeq"] - 1; _0x4C11 >= _0x4D29["startSeq"]; _0x4C11--) {
+              var _0x5661 = syms[_0x4C11];
+              if (_0x5661) {
+                  if (_0x5661["type"] == 8 || _0x5661["type"] == 10) {
+                      if (_0x5661["dur"] == _0x6F61) {
+                          var _0x5571 = getMinIstart(_0x5661);
+                          var _0x5ED1 = _0x4BE9["substring"](_0x5571, _0x5661["iend"]);
+                          _0x6F89 = replaceLast(_0x6FB1, _0x5ED1, "");
+                          break
+                      } else {
+                          if (_0x5661["dur"] > _0x6F61) {
+                              var _0x5571 = getMinIstart(_0x5661);
+                              var _0x5ED1 = _0x4BE9["substring"](_0x5571, _0x5661["iend"]);
+                              var _0x5701 = getDurStrByNoteDur(_0x5661["dur"] - _0x6F61, getNodeFirstNote(_0x4D29)["my_ulen"]);
+                              _0x6F89 = replaceLast(_0x6FB1, _0x5ED1, "z," + _0x5701);
+                              break
+                          } else {
+                              if (_0x5661["dur"] < _0x6F61) {
+                                  _0x6F61 = _0x6F61 - _0x5661["dur"];
+                                  var _0x5571 = getMinIstart(_0x5661);
+                                  var _0x5ED1 = _0x4BE9["substring"](_0x5571, _0x5661["iend"]);
+                                  _0x6FB1 = replaceLast(_0x6FB1, _0x5ED1, "")
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+      }
+  }
+  ;return _0x6F89
+}
+
+function getMinIstart(_0x5661) {
+  var _0x5571 = _0x5661["istart"];
+  if (_0x5661["a_gch"]) {
+      for (var _0x4C39 = 0; _0x4C39 < _0x5661["a_gch"]["length"]; _0x4C39++) {
+          if (_0x5661["a_gch"][_0x4C39]["istart"] < _0x5571) {
+              _0x5571 = _0x5661["a_gch"][_0x4C39]["istart"]
+          }
+      }
+  }
+  ;if (_0x5661["a_dd"]) {
+      for (var _0x4C39 = 0; _0x4C39 < _0x5661["a_dd"]["length"]; _0x4C39++) {
+          if (_0x5661["a_dd"][_0x4C39]["istart"] < _0x5571) {
+              _0x5571 = _0x5661["a_dd"][_0x4C39]["istart"]
+          }
+      }
+  }
+  ;return _0x5571
+}

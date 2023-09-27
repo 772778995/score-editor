@@ -2913,6 +2913,10 @@ var content_vue = new Vue({
         { txt: "工具" },
         { txt: "视图" },
       ],
+      scoreNodeData: {
+        weakBarTop: "4",
+        weakBarBot: "4",
+      }, 
       myScore: {
         list: [],
         totalPage: 1,
@@ -5304,6 +5308,35 @@ var content_vue = new Vue({
     },
   },
   methods: {
+    weakBarBotEdit(isAdd){
+      var m = this.m;
+      for(var i=0; i<m.newScore.beatNoteList3.length; i++){
+        if(m.newScore.beatNoteList3[i].val==m.scoreNodeData.weakBarBot){
+          break;
+        }
+      }
+      if(isAdd){
+        if(i+1>=m.newScore.beatNoteList3.length){
+          var n = m.newScore.beatNoteList3[0];
+          console.log('n1', n);
+        }else{
+          var n = m.newScore.beatNoteList3[i+1];
+          console.log('n2', n, i+1);
+        }
+      }else{
+        if(i-1<0){
+          var n = m.newScore.beatNoteList3[m.newScore.beatNoteList3.length-1];
+          console.log('n3', n);
+        }else{
+          var n = m.newScore.beatNoteList3[i-1];
+          console.log('n4', n);
+        }
+      }
+      $("#barTimeBot").val(n.val);
+      // $("#barTimeBot").attr("oldval", m.scoreNodeData.weakBarBot);
+      $("#barTimeBot").attr("oldval", n.val);
+      m.scoreNodeData.weakBarBot = n.val;
+    },
     // -------图片上传组件---------
     setFileHtml: function (file) {
       // 根据文件类型，显示不同的对象
@@ -6227,6 +6260,13 @@ var content_vue = new Vue({
       this.m.ctxMenu.isSelectBar = !!this.getSelectedBar();
       this.m.ctxMenu.copyNodeInfo = user.copyNoteInfo;
       this.m.ctxMenu.copyBarInfo = copyNodeInfo;
+      var nDur = getNodeDur();
+      if(nDur.top){
+        this.m.scoreNodeData.weakBarTop = nDur.top;
+      }
+      if(nDur.bot){
+        this.m.scoreNodeData.weakBarBot = nDur.bot;
+      }
       this.m.ctxMenu.isShow = true;
     },
     createNewScore(e, f) {
@@ -6358,7 +6398,9 @@ var content_vue = new Vue({
         {
           title: "修改小节时值",
           disabled: !isSelectBar,
-          // fn: () => (content_vue.m.ctxMenu.addBarShow = !content_vue.m.ctxMenu.addBarShow),
+          fn: () =>
+            (content_vue.m.ctxMenu.addBarShow =
+              !content_vue.m.ctxMenu.addBarShow),
         },
         {
           title: "添加歌词",
@@ -6447,6 +6489,12 @@ var content_vue = new Vue({
     },
 
     // ———————————————————————————————————————— 分割线 __watch ————————————————————————————————————————
+
+    'm.scoreNodeData.weakBarTop'(val, oldval) {
+      console.log('weakBarTop', val, oldval);
+      $("#barTimeTop").val(val);
+      $("#barTimeTop").attr("oldval", val);
+    },
     'm.newScore.scoreOpts.speedType'(type) {
       if (type !== 'none') return
       this.m.newScore.scoreOpts.speedNum = '88'

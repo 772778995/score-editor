@@ -12186,3 +12186,71 @@ function get2N(value) {
   }
   return -1;
 }
+
+function getNodeFirstNote() {
+  for (var i in syms) {
+      var sym = syms[i];
+      if (sym["type"] == 8 || sym["type"] == 10) {
+          return sym
+      }
+  }
+  return null
+}
+
+function getNodeDur() {
+  var barIndex = parseInt($("#nodeMenu")["attr"]("barIndex")) | 0;
+  var NodesInfo = getNodesInfo($("#source")["val"]());
+  var barTimeObj = { top: null, bot: null };
+  for (var i = 0; i < NodesInfo["length"]; i++) {
+      var NodeInfo = NodesInfo[i];
+      if (NodeInfo["type"] == "note") {
+          var nodes = NodeInfo["nodes"];
+          for (var j = 0; j < nodes["length"]; j++) {
+              var c_node = nodes[j];
+              if (c_node["nodeIndex"] == barIndex) {
+                  // var nodeStr = c_node["nodeStr"];
+                  var d = getDurInSection(c_node["startSeq"], c_node["endSeq"]);
+                  var m = getNodeMeter(c_node["startSeq"], c_node["endSeq"]);
+                  barTimeObj = {
+                    'top': d / (1536 / m["bot"]),
+                    'bot': parseInt(m["bot"])
+                  };
+                  $("#barTimeTop")["val"](d / (1536 / m["bot"]));
+                  $("#barTimeTop")["attr"]("oldval", d / (1536 / m["bot"]));
+                  $("#barTimeBot")["val"](m["bot"]);
+                  $("#barTimeBot")["attr"]("oldval", m["bot"]);
+                  break;
+              }
+          }
+      }
+  }
+  return barTimeObj;
+}
+function getDurInSection(_0xA0BC, _0xA02C) {
+  var _0x9DB6 = 0;
+  var _0xA88A = [];
+  for (var _0x9D02 in syms) {
+      if (_0x9D02 >= _0xA0BC && _0x9D02 < _0xA02C) {
+          if (syms[_0x9D02]["type"] == 8 || syms[_0x9D02]["type"] == 10) {
+              if (syms[_0x9D02]["grace"]) {
+                  continue
+              }
+              ;if (_0xA88A["indexOf"](syms[_0x9D02]["istart"]) < 0) {
+                  _0x9DB6 += syms[_0x9D02]["dur_orig"]
+              }
+              ;_0xA88A["push"](syms[_0x9D02]["istart"])
+          }
+      }
+  }
+  ;return _0x9DB6
+}
+function getNodeMeter(_0xA0BC, _0xA02C) {
+  var _0xA6EC = new Object();
+  for (var _0x9D02 in syms) {
+      if (_0x9D02 >= _0xA0BC && _0x9D02 < _0xA02C) {
+          if (syms[_0x9D02]["type"] == 8 || syms[_0x9D02]["type"] == 10) {
+              return syms[_0x9D02]["my_meter"][0]
+          }
+      }
+  }
+}

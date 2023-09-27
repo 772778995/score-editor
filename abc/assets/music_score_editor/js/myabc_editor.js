@@ -2338,7 +2338,9 @@ $(document).ready(function () {
       resizeStaff();
     }
   });
-  initOssUploadSuccessCallback();
+  
+  // 初始化文件上传回调
+  // initOssUploadSuccessCallback();
 
   $("#lyricColor").spectrum({
     showAlpha: false,
