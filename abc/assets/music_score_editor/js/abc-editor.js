@@ -15,8 +15,7 @@ const AbcType = Object.freeze({
 })
 
 window.AbcEditor = {
-  bottom_octave: false, // 底8度，简谱下加点
-  top_octave: false, // 高8度，简谱上加点
+  octave: 0
 }
 
 window.addEventListener('mousewheel', e => {
@@ -3338,87 +3337,37 @@ var content_vue = new Vue({
                 if($(".selected_text").length){
                   var cen = syms[$(".selected_text").attr("istart")];
                   console.log('sym', cen);
+                  if(cen['ctype'] && cen['ctype']=="rest"){
+                    if(window.AbcEditor.octave==-1){
+                      window.AbcEditor.octave = 0;
+                    }else{
+                      window.AbcEditor.octave = -1;
+                    }
+                  }else{
+                    window.AbcEditor.octave = 0;
+                  }
                   var content = $("#source").val();
                   sel_content = content.substring(cen["istart"], cen["iend"]);
-                  console.log('sel_content', sel_content);
+                  // console.log('sel_content', sel_content);
                   var t = 200;
                   if(sel_content){
-                    if(sel_content.match(/^[A-G]$/g)){
-                      console.log('1');
-                      upDownKeyWord(-12);
-                    }else if(sel_content.match(/^[a-g]$/g)){
-                      console.log('2');
-                      upDownKeyWord(-12);
-                      setTimeout(()=>{
-                        upDownKeyWord(-12);
-                      },100);
-                      t += 100;
-                    }else if(sel_content.match(/^[A-G]/g)){
-                      console.log('3');
-                      var s =  sel_content.split(',').length;
-                      console.log(s);
-                      if(s-1){
-                        if(s==2){
-                          upDownKeyWord(12); // 取消下加点
-                        }else{
-                          for(var i=0; i<s-2; i++){
-                            setTimeout(()=>{
-                              upDownKeyWord(12);
-                            },100*i);
-                          }
-                          t += 100*i;
-                        }
-                      }else{
-                        s =  sel_content.split("'").length;
-                        if(s-1){
-                          for(var i=0; i<s; i++){
-                            setTimeout(()=>{
-                              upDownKeyWord(-12);
-                            },100*i);
-                          }
-                          t += 100*i;
-                        }
+                    var o = getOctave(cen);
+                    if(o<-1){
+                      for(var i=0; i>o+1; i--){
+                        upDownKeyWord(12);
                       }
-                    }else if(sel_content.match(/^[a-g]/g)){
-                      console.log('4');
-                      var s =  sel_content.split(',').length;
-                      if(s-1){
-                        if(s==3){
-                          upDownKeyWord(12); // 取消下加点
-                        }else{
-                          for(var i=0; i<s-3; i++){
-                            setTimeout(()=>{
-                              upDownKeyWord(12);
-                            }, 200*i);
-                          }
-                          t += 200*i;
-                        }
-                      }else{
-                        s =  sel_content.split("'").length;
-                        if(s-1){
-                          for(var i=0; i<s+1; i++){
-                            setTimeout(()=>{
-                              upDownKeyWord(-12);
-                            },200*i);
-                          }
-                          t += 200*i;
-                        }
-                      }
+                    }else if(o==-1){
+                      upDownKeyWord(12);
                     }else{
-                      // window.AbcEditor.bottom_octave = true;
+                      for(var i=0; i<o+1; i++){
+                        upDownKeyWord(-12);
+                      }
                     }
                     setTimeout(()=>{
                       content_vue.changeNumKeypadSelect()
                     }, t);
-                  }else{
-                    // window.AbcEditor.bottom_octave = true;
                   }
-                }else{
-                  // window.AbcEditor.bottom_octave = true;
                 }
-                // setTimeout(()=>{
-                //   content_vue.changeNumKeypadSelect()
-                // }, t);
               },
               isSelect: false,
             },
@@ -3431,58 +3380,31 @@ var content_vue = new Vue({
                 if($(".selected_text").length){
                   var cen = syms[$(".selected_text").attr("istart")];
                   console.log('sym', cen);
+                  if(cen['ctype'] && cen['ctype']=="rest"){
+                    if(window.AbcEditor.octave==1){
+                      window.AbcEditor.octave = 0;
+                    }else{
+                      window.AbcEditor.octave = 1;
+                    }
+                  }else{
+                    window.AbcEditor.octave = 0;
+                  }
+                  // console.log(getOctave(cen));
                   var content = $("#source").val();
                   sel_content = content.substring(cen["istart"], cen["iend"]);
-                  console.log('sel_content', sel_content);
+                  // console.log('sel_content', sel_content);
                   var t = 200;
                   if(sel_content){
-                    if(sel_content.match(/^[A-G]$/g)){
-                      upDownKeyWord(12);
-                    }else if(sel_content.match(/^[a-g]$/g)){
-                      upDownKeyWord(-12); // 取消上加点
-                    }else if(sel_content.match(/^[A-G]/g)){
-                      var s =  sel_content.split(',').length;
-                      if(s-1){
-                        for(var i=0; i<s; i++){
-                          setTimeout(()=>{
-                            upDownKeyWord(12);
-                          },100*i);
-                        }
-                        t += 100*i;
-                      }else{
-                        s =  sel_content.split("'").length;
-                        if(s-1){
-                          if(s-1==1){
-                            upDownKeyWord(-12); // 取消上加点
-                          }else{
-                            for(var i=0; i<s-2; i++){
-                              setTimeout(()=>{
-                                upDownKeyWord(-12);
-                              },100*i);
-                            }
-                            t += 100*i;
-                          }
-                        }
+                    var o = getOctave(cen);
+                    if(o>1){
+                      for(var i=0; i<o-1; i++){
+                        upDownKeyWord(-12);
                       }
-                    }else if(sel_content.match(/^[a-g]/g)){
-                      var s =  sel_content.split(',').length;
-                      if(s-1){
-                        for(var i=0; i<s-1; i++){
-                          setTimeout(()=>{
-                            upDownKeyWord(12);
-                          },100*i);
-                        }
-                        t += 100*i;
-                      }else{
-                        s =  sel_content.split("'").length;
-                        if(s-1){
-                          for(var i=0; i<s-1; i++){
-                            setTimeout(()=>{
-                              upDownKeyWord(-12);
-                            },100*i);
-                          }
-                          t += 100*i;
-                        }
+                    }else if(o==1){
+                      upDownKeyWord(-12);
+                    }else{
+                      for(var i=0; i<1-o; i++){
+                        upDownKeyWord(12);
                       }
                     }
                     setTimeout(()=>{
@@ -3822,7 +3744,7 @@ var content_vue = new Vue({
           rows: "2",
           rowBars: "4",
         },
-        previewUrl: "assets/music_score_editor/preview.html?v=1.0.11",
+        previewUrl: "assets/music_score_editor/preview.html?v=1.0.12",
       },
       toolList: [
         {
@@ -5333,8 +5255,6 @@ var content_vue = new Vue({
         }
       }
       $("#barTimeBot").val(n.val);
-      // $("#barTimeBot").attr("oldval", m.scoreNodeData.weakBarBot);
-      $("#barTimeBot").attr("oldval", n.val);
       m.scoreNodeData.weakBarBot = n.val;
     },
     // -------图片上传组件---------
@@ -6171,9 +6091,9 @@ var content_vue = new Vue({
         list.forEach((item, i) => {
           // console.log(item);
           if(item.className=='k-e-2' && sel_content){
-            // window.AbcEditor.bottom_octave
             // 降8度，简谱下带点音符
-            if(sel_content.match(/[A-G],{1}$/g)){
+            getOctave(cen);
+            if(getOctave(cen)==-1 || window.AbcEditor.octave==-1){
               item.isSelect = true;
               return;
             }else{
@@ -6181,9 +6101,8 @@ var content_vue = new Vue({
               return;
             }
           }else if(item.className=='k-e-3' && sel_content){
-            // window.AbcEditor.top_octave
             // 升8度，简谱上带点音符
-            if(sel_content.match(/^[a-g]$|[A-G]'{1}$/g)){
+            if(getOctave(cen)==1 || window.AbcEditor.octave==1){
               item.isSelect = true;
               return;
             }else{
@@ -6241,8 +6160,19 @@ var content_vue = new Vue({
       // })
     },
     getSelectedNote() {
-      if ($(".selected_text").length <= 1) return $(".selected_text")[0];
-      return $(".selected_text");
+      if($(".selected_text").length){
+        setTimeout(function(){
+          if($(".selected_text").length>1){
+            for(var i=0; i<$(".selected_text").length-1; i++){
+              // 移除多余光标
+              $(".selected_text").eq(i).removeClass('_select-note').removeClass('selected_text');
+            }
+          }
+        },200);
+        return $(".selected_text")[$(".selected_text").length-1];
+      }else{
+        return $(".selected_text")
+      }
     },
     getSelectedBar() {
       if ($('svg[type="rectnode"]').length <= 1)
@@ -6263,9 +6193,11 @@ var content_vue = new Vue({
       var nDur = getNodeDur();
       if(nDur.top){
         this.m.scoreNodeData.weakBarTop = nDur.top;
+        $("#barTimeTop").attr("oldval", nDur.top);
       }
       if(nDur.bot){
         this.m.scoreNodeData.weakBarBot = nDur.bot;
+        $("#barTimeBot").attr("oldval", nDur.bot);
       }
       this.m.ctxMenu.isShow = true;
     },
@@ -6493,7 +6425,6 @@ var content_vue = new Vue({
     'm.scoreNodeData.weakBarTop'(val, oldval) {
       console.log('weakBarTop', val, oldval);
       $("#barTimeTop").val(val);
-      $("#barTimeTop").attr("oldval", val);
     },
     'm.newScore.scoreOpts.speedType'(type) {
       if (type !== 'none') return
@@ -6934,9 +6865,19 @@ var content_vue = new Vue({
       if (["TEXTAREA", "INPUT"].includes(e.target.tagName)) return;
       this.emitNumKeybordFn(e.code);
       this.listenKeydown(e);
+      //
+      setTimeout(function(){
+        if($(".selected_text").length>1){
+          for(var i=0; i<$(".selected_text").length-1; i++){
+            // 移除多余光标
+            $(".selected_text").eq(i).removeClass('_select-note').removeClass('selected_text');
+          }
+        }
+      },200);
     });
     this.changeNumKeypadSelect();
     const event = () => {
+      window.AbcEditor.octave = 0;
       this.changeNumKeypadSelect();
       this.initCtxMenu();
       this.changeSelectNote();

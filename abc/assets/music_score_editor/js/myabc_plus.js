@@ -4033,7 +4033,7 @@ function changeNodeDur() {
   $("#barTimeBot").attr("oldval", new_bot);
   var d = new_top / new_bot - old_top / old_bot;
   var node_em = $("svg[type=\'rectnode\'],svg[type=\'rectbar\']");
-  console.log('changeNodeDur:', new_top, new_bot, old_top, old_bot, $(node_em[0]));
+  // console.log('changeNodeDur:', new_top, new_bot, old_top, old_bot, $(node_em[0]));
   if (node_em.length > 0) {
     var abc_content = $("#source").val();
     var barIndex = $(node_em[0]).attr("barIndex");
@@ -4045,6 +4045,7 @@ function changeNodeDur() {
     }
     var new_abc_content = "";
     var nodes_info = getNodesInfo(abc_content);
+    // console.log('nodes_info', nodes_info);
     for (var i = 0; i < nodes_info.length; i++) {
         var node_info = nodes_info[i];
         // var lineStr = node_info["lineStr"];
@@ -4052,18 +4053,20 @@ function changeNodeDur() {
         if (node_info["type"] == "note") {
             for (var j = 0; j < node_info["nodes"].length; j++) {
                 var c_node = node_info["nodes"][j];
-                if (c_node["nodeIndex"] == barIndex) {
-                    // var nodeStr = c_node["nodeStr"];
-                    if (d > 0) {
-                        var dur_str = getDurStrByNoteDur(1536 * (new_top / new_bot - old_top / old_bot), getNodeFirstNote(c_node)["my_ulen"]);
-                        c_abc_content += c_node["nodeStr"]["replace"](c_node["barLineStr"], "") + " z," + dur_str + c_node["barLineStr"]
-                    } else {
-                        if (d < 0) {
-                            c_abc_content += nodeCut(c_node, d)
-                        }
-                    }
+                if (c_node["nodeIndex"] == parseInt(barIndex)) {
+                  // console.log('c_node:', c_node, d);
+                  // var nodeStr = c_node["nodeStr"];
+                  if (d > 0) {
+                      var dur_str = getDurStrByNoteDur(1536 * (new_top / new_bot - old_top / old_bot), getNodeFirstNote(c_node)["my_ulen"]);
+                      c_abc_content += c_node["nodeStr"]["replace"](c_node["barLineStr"], "") + " z," + dur_str + c_node["barLineStr"];
+                      // console.log('c_abc_content1:', c_abc_content);
+                  } else if (d < 0) {
+                      c_abc_content += nodeCut(c_node, d);
+                      // console.log('c_abc_content2:', c_abc_content);
+                  }
+                    
                 } else {
-                    c_abc_content += c_node["nodeStr"]
+                  c_abc_content += c_node["nodeStr"]
                 }
                 lastNodeEndSeq = c_node["endSeq"]
             }

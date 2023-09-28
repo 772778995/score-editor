@@ -1145,6 +1145,43 @@ var new_piano = {
 		} ]
 	}
 };
+
+
+// 通过 key 和 midi 查找简谱音符是否上下加点
+function getOctave(sym){
+	console.log('getOctave:', sym);
+	var K = sym['my_key'];
+	var octave = 0;
+	var Findex = new_piano.Simple2Staff.SimpleValue.indexOf('1');
+	var Lindex = new_piano.Simple2Staff.SimpleValue.indexOf('7');
+	var arr = new_piano.Simple2Staff.StaffValue;
+	var staff = null;
+	for (var i = 0; i < arr.length; i++) {
+		var obj = arr[i];
+		if (obj.K == K) {
+			staff = obj;
+			break;
+		}
+	}
+	if(staff && sym){
+		if(sym['notes'][0]){
+			var midi = sym['notes'][0]['midi'];
+			if(typeof sym['notes'][0]['acc']!='undefined' && sym['notes'][0]['acc']!=3){
+				midi += sym['notes'][0]['acc'];
+			}
+			console.log(midi, staff['index'][Findex]);
+			if(midi<staff['index'][Findex]){
+				// 底
+				octave = -Math.ceil((staff['index'][Findex]-midi)/12);
+			}else if(midi>staff['index'][Lindex]){
+				octave = Math.ceil((midi-staff['index'][Lindex])/12);
+			}
+		}
+	}
+	// console.log('octave', octave);
+	return octave;
+}
+
 // 通过 ABC 找对照的五线谱
 function findNoteBySimpleNote(K, note){
 	console.log('findNoteBySimpleNote:', K, note);

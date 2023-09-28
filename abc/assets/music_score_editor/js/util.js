@@ -6290,13 +6290,13 @@ function inputNoteBuild2(note_str){
     octave -= 1;
   }
 
-  // if(window.AbcEditor.bottom_octave){
-  //   // 底8度
-  //   octave -= 1;
-  // }else if(window.AbcEditor.top_octave){
-  //   // 高8度
-  //   octave += 1;
-  // }
+  if(window.AbcEditor.octave==-1){
+    // 底8度
+    octave -= 1;
+  }else if(window.AbcEditor.octave==1){
+    // 高8度
+    octave += 1;
+  }
 
   if(octave>0){
     for(var k=1; k<=octave; k++){
