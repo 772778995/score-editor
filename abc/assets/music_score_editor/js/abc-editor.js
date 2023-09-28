@@ -6078,10 +6078,12 @@ var content_vue = new Vue({
       var sel_content ='';
       if (selectNote) {
         var cen = syms[$(selectNote).attr("istart")];
-        console.log('sym', cen);
-        var content = $("#source").val();
-        sel_content = content.substring(cen["istart"], cen["iend"]);
-        console.log('sel_content', sel_content);
+        if(cen){
+          console.log('sym', cen);
+          var content = $("#source").val();
+          sel_content = content.substring(cen["istart"], cen["iend"]);
+          console.log('sel_content', sel_content);
+        }
       }
       const { page } = this.m.numberKeypad;
       let key = "staffList";
