@@ -934,6 +934,8 @@ function notehlightCball(i, on) {
 				notehlightCball(-1, true);
 			}, content.puzi.speed * 1000);
 		}
+		// TODO: 不完整结尾，要提前停止计时
+		// 
 		if(content.count == 0){
 			setTimeout(function(){				
 				$('.countdown-box').hide();

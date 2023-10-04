@@ -34,6 +34,10 @@ var clipdataContent = "";
  * @property {boolean} isWeak 是否弱起小节
  * @property {string} weakBarTop 弱起小节分子
  * @property {string} weakBarBot 弱起小节分母
+ * 
+ * @property {boolean} isWeakEnd 是否不完整结尾小节
+ * @property {string} weakEndTop 不完整结尾小节分子
+ * @property {string} weakEndBot 不完整结尾小节分母
  *
  * @property {number} rows 行数
  * @property {number} rowBars 每行小节数
@@ -115,6 +119,10 @@ const defaultScoreOpts = {
   isWeak: false,
   weakBarTop: "1",
   weakBarBot: "4",
+
+  isWeakEnd: false,
+  weakEndTop: "3",
+  weakEndBot: "4",
 
   rows: 2,
   rowBars: 4,
@@ -313,6 +321,26 @@ const getAbcNoteCode = (opts) => {
     restStr += "|";
     noteCode = noteCode.replace(/[^\|]+\|/, restStr);
   }
+  if(opts.isWeakEnd){
+    let num = opts.weakEndTop / opts.weakEndBot;
+    // const e1 = ~~(num / 1)
+    // num = num % 1
+    // const e2 = ~~(num / 0.5)
+    // num = num % 0.5
+    const e4 = ~~(num / 0.25);
+    num = num % 0.25;
+    const e8 = ~~(num / 0.125);
+    num = num % 0.125;
+    const e16 = ~~(num / 0.0625);
+    // let restStr = 'z8'.repeat(e1)
+    // restStr += 'z,4'.repeat(e2)
+    let restStr = "z,2".repeat(e4);
+    restStr += "z,".repeat(e8);
+    restStr += "z,/".repeat(e16);
+    restStr += "|";
+    noteCode = noteCode.replace(/[^\|]+\|$/, restStr);
+  }
+  // console.log('getAbcNoteCode', opts.isWeak, restStr, noteCode);
   return noteCode;
 };
 

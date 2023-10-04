@@ -130,6 +130,7 @@ const saveScore = async (isSaveAs = false) => {
   const isChangeTimeSign = !!abcVal.match(/\$\[M:\s*\d+\/\d+\]/g);
   const isChangeKeySign = !!abcVal.match(/\$\[K:\s*[A-G]\]/g);
   const isUpbeat = scoreOpts.isWeak;
+  const isDownbeat = scoreOpts.isWeakEnd;
   const musicType = scoreOpts.musicType;
   const isHasLyric = !!abcVal.match(/\nw:.+/g);
   const initOpts = content_vue.m.scoreOpts
@@ -161,6 +162,7 @@ const saveScore = async (isSaveAs = false) => {
         isChangeTimeSign,
         isChangeKeySign,
         isUpbeat,
+        isDownbeat,
         musicType,
         isHasLyric,
         initOpts,
@@ -204,6 +206,9 @@ const initNewScoreOpts = {
   isWeak: false,
   weakBarTop: "1",
   weakBarBot: "4",
+  isWeakEnd: false,
+  weakEndTop: "3",
+  weakEndBot: "4",
   keySign: "C",
   beatNote1: "4",
   beatNote2: "4",
@@ -3732,6 +3737,9 @@ var content_vue = new Vue({
           isWeak: false,
           weakBarTop: "1",
           weakBarBot: "4",
+          isWeakEnd: false,
+          weakEndTop: "3",
+          weakEndBot: "4",
           keySign: "C",
           beatNote1: "4",
           beatNote2: "4",
@@ -6593,6 +6601,9 @@ var content_vue = new Vue({
           isWeak: false,
           weakBarTop: "1",
           weakBarBot: "4",
+          isWeakEnd: false,
+          weakEndTop: "3",
+          weakEndBot: "4",
           keySign: "C",
           beatNote1: "4",
           beatNote2: "4",

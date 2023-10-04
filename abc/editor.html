@@ -931,6 +931,23 @@
               </div>
             </div>
 
+            <div class="relative rounded" style="padding: 10px 18px; border-bottom: 2px solid #F5F5F5;">
+              <div class="flex">
+                <div class="flex cursor-pointer" @click="m.newScore.scoreOpts.isWeakEnd = !m.newScore.scoreOpts.isWeakEnd">
+                  <div class="blue-title">
+                    不完全结尾小节
+                    <img :src="`assets/music_score_editor/img/checkbox${m.newScore.scoreOpts.isWeakEnd ? '2' : '1'}.png`">
+                  </div>
+                </div>
+              </div>
+              <div class="items-center flex duration-300 mt-4" :class="{ 'pointer-events-none opacity-50': !m.newScore.scoreOpts.isWeakEnd }">
+                <select-input v-model="m.newScore.scoreOpts.weakEndBot" :list="m.newScore.beatNoteList3" style="width: 118px; height: 28px; z-index: 52;"></select-input>
+                <div class="mx-1.5">/</div>
+                <number-input v-model="m.newScore.scoreOpts.weakEndTop" :min="1" style="width: 64px; height: 28px;"></number-input>
+                <div style="margin-left: 3px;">个</div>
+              </div>
+            </div>
+
             <div class="relative rounded" style="padding: 10px 18px;">
               <div class="blue-title" style="margin-bottom: 16px;">速度</div>
               <div class="flex items-center ">
