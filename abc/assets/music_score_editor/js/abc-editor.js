@@ -7679,6 +7679,41 @@ const setRepeatBracket = (sign) => {
   }
 }
 
+// jquery 事件
+$(function(){ 
+  $(".at_move_box .at_move_box_title").on("mousedown", function (e1) {
+    var _this = $(this).parents(".at_move_box");
+    var oldpageX = e1.pageX;
+    var oldpageY = e1.pageY;
+    var oldLeft = parseInt(_this.css("left"));
+    oldLeft = (!oldLeft && oldLeft!==0)?$('.at_move_box').position().left:oldLeft;
+    var oldTop = parseInt(_this.css("top"));
+    oldTop = (!oldTop && oldTop!==0)?$('.at_move_box').position().top:oldTop;
+    setMoveItemToppest(_this); //置顶
+    $(document).on("mousemove.at_move_box", function (e2) {
+        _this.css("left", e2.pageX - oldpageX + oldLeft + "px");
+        _this.css("top", e2.pageY - oldpageY + oldTop + "px");
+    });
+    $(document).on("mouseup.at_move_box", function (e2) {
+        $(document).off("mousemove.at_move_box");
+        $(document).off("mouseup.at_move_box");
+    });
+  });
+  //置顶窗口方法(多个div窗口重叠时生效)
+  function setMoveItemToppest(_this) {
+    function sortNumber(a, b) { return a - b; }
+    var zIndexArr = [];
+    $(document).find(".at_move_box").each(function () {
+        var zIndex = parseInt($(this).css("z-index"));
+        zIndex = zIndex?zIndex:1;
+        zIndexArr.push(zIndex);
+    });
+    zIndexArr.sort(sortNumber);
+    _this.css("z-index", zIndexArr[zIndexArr.length - 1] + 1);
+  }
+  
+});
+
 /**
  * @typedef {Object} Meter - 节拍
  * @property {string} str - 节拍字符串

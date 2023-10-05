@@ -468,6 +468,10 @@
         position: absolute;
         right: 5px;
       }
+
+      .at_move_box{
+        position: absolute;
+      }
     </style>
     <title>乐谱创作系统</title>
   </head>
@@ -553,10 +557,10 @@
         style="z-index: 9998;"
       >
         <div
-          class="bg-white rounded-xl overflow-hidden"
+          class="bg-white rounded-xl overflow-hidden at_move_box"
           style="box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);"
         >
-          <b class="flex justify-between items-center text-xl" style="padding: 10px 20px; background-color: #F5F5F5;">
+          <b class="flex justify-between items-center text-xl at_move_box_title" style="padding: 10px 20px; background-color: #F5F5F5;">
             <div>新建乐谱</div>
             <img src="assets/music_score_editor/img/close.png" class="cursor-pointer" @click="m.newScore.musicType.show = false"/>
           </b>
@@ -757,8 +761,8 @@
       style="z-index: 9998; margin-top: 5px;"
       :class="{ 'opacity-0 pointer-events-none' : !m.newScore.scoreOptsShow }"
     >
-      <div class="rounded-md overflow-hidden" style="box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);">
-        <b class="flex justify-between items-center text-xl bg-#f5f5f6" style="padding: 10px 20px">
+      <div class="rounded-md overflow-hidden at_move_box" style="box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);">
+        <b class="flex justify-between items-center text-xl bg-#f5f5f6 at_move_box_title" style="padding: 10px 20px">
           <div>新建乐谱</div>
           <img src="assets/music_score_editor/img/close.png" class="cursor-pointer" @click="m.newScore.scoreOptsShow = m.newScore.musicType.show = false"/>
         </b>
