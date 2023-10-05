@@ -253,3 +253,35 @@ rect.abcr.selected_text[type="bar"] {
 .items-center .el-radio-button__inner{
 	padding: 12px 35px;
 }
+
+/* #target .nobrk */
+.target_box{
+	position: absolute;
+	transform-origin: 330px top;
+	min-width: 95vw;
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+#target{
+	position: relative;
+	transform-origin: center top;
+
+	min-height: 880px;
+	background-color: #f5f5f5;
+    margin-bottom: 50px;
+	border-radius: 8px;
+	box-shadow: rgba(0, 22, 41, 0.14) 4px 4px 24px 0px;
+}
+#target svg{
+	background-color: #f5f5f5;
+}
+#target svg:first-child{
+	border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+#target svg:last-child{
+	border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+	margin-bottom: 50px;
+}

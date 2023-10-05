@@ -41,9 +41,10 @@ const _init = async () => {
   changeStaffType(null, content_vue.m.scoreOpts?.musicType === "easy" ? 2 : 0) |
     restoreEditor();
 };
-
+// 创建预留
 const previewScale = () => {
-  const scale = 556 / $('#target').height()
+  // const scale = 556 / $('#target').height()
+  const scale = ($(window).width()-10) / $('#target').width()
   if (scale >= 1) {
     return $('body').css({
       transform: `scale(0.9)`

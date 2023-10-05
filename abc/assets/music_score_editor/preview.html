@@ -115,10 +115,6 @@
     <script src="./js/main.js?v=1.0.12"></script>
     <script src="./js/xml2abcutil.js?v=1.0.12"></script>
     <style type="text/css">
-      *:not(.cao-ni-ma) {
-        user-select: none;
-        overflow: visible !important;
-      }
       /* html body div {
         height: 100% !important;
       } */
@@ -284,6 +280,14 @@
         position: absolute;
         z-index: 3;
         right: 8px;
+      }
+      /* #target */
+      #target{
+        box-shadow: none;
+      }
+      /* 预览禁用滚动条 */
+      #content .right-top-content.w-screen.h-screen{
+        overflow: hidden;
       }
     </style>
     <title>乐谱创作系统</title>
@@ -493,36 +497,36 @@
       </div>
     </div>
 
+    <script>
+      window.alert = () => {}
+    </script>
+    <script src="./js/vue.min.js"></script>
+    <script src="./js/popper.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/abc2web.js?v=1.0.12"></script>
+    <script src="./js/util.js?v=1.0.12" type="text/javascript"></script>
+    
+    <!-- 框选 -->
+    <script src="./js/abc_select.js?v=1.0.12" type="text/javascript"></script>
+    <!-- 上传组件 begin -->
+    <script src="./js/vue-upload-component.js?v=1.0.12"></script>
+    <!-- 上传组件 end -->
+    <script type="text/javascript" src="./musicform/js/controller.js?v=1.0.12"></script>
+    <script src="./js/abc_menu_config.js?v=1.0.12"></script>
+    
+    <script src="./js/staff2num-splnum.js?v=1.0.12" type="text/javascript"></script>
+    <script
+      src="./js/edit-1-splnum.js?v=1.0.12"
+      onload="setAbcPlayWay(1, true)"
+      type="text/javascript"
+    ></script>
+    <script src="./js/abc2svg-1-splnum.js?v=1.0.12" type="text/javascript"></script>
+    <script src="./js/notes.js?v=1.0.12" type="text/javascript"></script>
+    <script src="./js/webmidi-editor.js?v=1.0.12"></script>
+    <script src="./js/staff.js?v=1.0.12"></script>
+    <script src="./js/myabc_editor.js?v=1.0.12"></script>
+    <script src="./js/abc-editor.js?v=1.0.12"></script>
+    <script src="./js/voicePart.js?v=1.0.12"></script>
 
   </body>
 </html>
-<script>
-  window.alert = () => {}
-</script>
-<script src="./js/vue.min.js"></script>
-<script src="./js/popper.min.js"></script>
-<script src="./js/bootstrap.min.js"></script>
-<script src="./js/abc2web.js?v=1.0.12"></script>
-<script src="./js/util.js?v=1.0.12" type="text/javascript"></script>
-
-<!-- 框选 -->
-<script src="./js/abc_select.js?v=1.0.12" type="text/javascript"></script>
-<!-- 上传组件 begin -->
-<script src="./js/vue-upload-component.js?v=1.0.12"></script>
-<!-- 上传组件 end -->
-<script type="text/javascript" src="./musicform/js/controller.js?v=1.0.12"></script>
-<script src="./js/abc_menu_config.js?v=1.0.12"></script>
-
-<script src="./js/staff2num-splnum.js?v=1.0.12" type="text/javascript"></script>
-<script
-  src="./js/edit-1-splnum.js?v=1.0.12"
-  onload="setAbcPlayWay(1, true)"
-  type="text/javascript"
-></script>
-<script src="./js/abc2svg-1-splnum.js?v=1.0.12" type="text/javascript"></script>
-<script src="./js/notes.js?v=1.0.12" type="text/javascript"></script>
-<script src="./js/webmidi-editor.js?v=1.0.12"></script>
-<script src="./js/staff.js?v=1.0.12"></script>
-<script src="./js/myabc_editor.js?v=1.0.12"></script>
-<script src="./js/abc-editor.js?v=1.0.12"></script>
-<script src="./js/voicePart.js?v=1.0.12"></script>

@@ -6706,8 +6706,8 @@ var content_vue = new Vue({
           }, 200);
         }
         if(d.musicType=='easy'){
-          if(d.rows>4){
-            d.rows = 4;
+          if(d.rows>3){
+            d.rows = 3;
           }
           if(d.rowBars>6){
             d.rowBars = 6;
@@ -7711,7 +7711,23 @@ $(function(){
     zIndexArr.sort(sortNumber);
     _this.css("z-index", zIndexArr[zIndexArr.length - 1] + 1);
   }
-  
+  $('#target').on("mousedown", function (e1) {
+    var _this = $(this);
+    var oldpageX = e1.pageX;
+    var oldpageY = e1.pageY;
+    var oldLeft = parseInt(_this.css("left"));
+    oldLeft = (!oldLeft && oldLeft!==0)?$('#target').position().left:oldLeft;
+    var oldTop = parseInt(_this.css("top"));
+    oldTop = (!oldTop && oldTop!==0)?$('#target').position().top:oldTop;
+    $(document).on("mousemove#target", function (e2) {
+        _this.css("left", e2.pageX - oldpageX + oldLeft + "px");
+        _this.css("top", e2.pageY - oldpageY + oldTop + "px");
+    });
+    $(document).on("mouseup#target", function (e2) {
+        $(document).off("mousemove#target");
+        $(document).off("mouseup#target");
+    });
+  });
 });
 
 /**
