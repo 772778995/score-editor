@@ -6535,11 +6535,14 @@ function exportAbc2Pdf(sourceid, toImage) {
   var addPageHeight = false;
   var addPageWidth = false;
   var pageWidthPattern = /%%pagewidth\s*([0-9]*)\n/;
-  var A4PageWidth = "%%pagewidth 690\n";
+  // var A4PageWidth = "%%pagewidth 690\n";
+  var width = 800;
+  var A4PageWidth = `%%pagewidth ${width}\n`;
   var pageWidthMatchs = content.match(pageWidthPattern);
   var pageWidthStr = "";
   var pageWidth = 0;
-  var pageHeight = (690 * 29.7) / 21;
+  // var pageHeight = (690 * 29.7) / 21;
+  var pageHeight = (width * 29.7) / 21;
   if (pageWidthMatchs != null) {
     pageWidthStr = pageWidthMatchs[0];
     pageWidth = pageWidthMatchs[1];
@@ -6551,7 +6554,7 @@ function exportAbc2Pdf(sourceid, toImage) {
     content = A4PageWidth + content;
     addPageWidth = true;
   }
-  var topmargin = $("#pdftopmargin").val();
+  var topmargin = 0; // $("#pdftopmargin").val();
   if (topmargin != "") {
     if (content.indexOf("topmargin") > -1) {
       content = content.replace(
@@ -6562,7 +6565,7 @@ function exportAbc2Pdf(sourceid, toImage) {
       content = "%%topmargin " + (topmargin * dpi) / 2.54 + "\n" + content;
     }
   }
-  var botmargin = $("#pdfbotmargin").val();
+  var botmargin = 0; // $("#pdfbotmargin").val();
   if (botmargin != "") {
     if (content.indexOf("botmargin") > -1) {
       content = content.replace(
@@ -6573,8 +6576,12 @@ function exportAbc2Pdf(sourceid, toImage) {
       content = "%%botmargin " + (topmargin * dpi) / 2.54 + "\n" + content;
     }
   }
-  var leftmargin = $("#pdfleftmargin").val();
-  var rightmargin = $("#pdfrightmargin").val();
+  var leftmargin = 1; // $("#pdfleftmargin").val();
+  var rightmargin = 1; // $("#pdfrightmargin").val();
+  if(content_vue.m.scoreOpts.musicType=='easy'){
+    leftmargin = 0
+    rightmargin = 1.5;
+  }
   if (content.indexOf("%%leftmargin") > -1) {
     content = content.replace(
       /%%leftmargin.*/g,
@@ -6688,7 +6695,6 @@ function exportAbc2Pdf(sourceid, toImage) {
                 // $("#source").val(content_vue.voicePart.abcContent);
                 //								scale = tmp_scale;
                 //								abc_change();
-                console.log(123123123123123);
                 $("#source").val(window.code);
                 setTimeout(function(){
                   abc_change();
