@@ -732,7 +732,8 @@ function svgMouseDown(_0x93C6) {
     $('.selected_text').removeClass('selected_text');
     $('._select-note').removeClass('_select-note');
     if($(_0x93C6["target"]).length && $(_0x93C6["target"]).attr('ondblclick')){
-      $(_0x93C6["target"]).dbclick();
+      // $(_0x93C6["target"]).dbclick();
+      $(_0x93C6["target"]).trigger('dbclick');
       return;
     }
   }
