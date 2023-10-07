@@ -811,6 +811,33 @@ function genChordNote(cen, _0x18AEC) {
   return _0x18A0B;
 }
 
+// 查找小节内前面音符是否存在自定属性
+function checkPrevNoteAttr(sym, attr_arr){
+  var status = false;
+  if(sym){
+    var item = null;
+    for(var i=0; i<attr_arr.length; i++){
+      if(item){
+        if(item[attr_arr[i]]){
+          if(i==attr_arr.length-1){
+            status = true;
+          }
+        }
+      }else{
+        if(sym[attr_arr[i]]){
+          if(i==attr_arr.length-1){
+            status = true;
+          }
+        }
+      }
+    }
+    if(!status && sym['prev'] && (typeof sym['prev']['bar_type']=='undefined' || sym['prev']['bar_type']!='|')){
+      return checkPrevNoteAttr(sym['prev'], attr_arr);
+    }
+  }
+  return status;
+}
+
 function genNoteAndDur(note_str, cen, _0x1916D, dur_s, is_t) {
   console.log('genNoteAndDur:', note_str, cen, _0x1916D, dur_s, is_t);
   if (!cen || !cen["p_v"]) {
@@ -819,14 +846,17 @@ function genNoteAndDur(note_str, cen, _0x1916D, dur_s, is_t) {
   durSetting = durSetting - 0;
   var _0x17AED = new Object();
   var _0x18F7E = 384;
-  var abc_content = $("#source")["val"]();
+  var abc_content = $("#source").val();
   var _0x18FAB = beatSum(cen);
   var _0x18FD8 = "";
-  var _0x17115 = abc_content["substring"](cen["istart"], cen["iend"]);
+  var _0x17115 = abc_content.substring(cen["istart"], cen["iend"]);
   if (_0x18FAB != 0 && parseInt(_0x18FAB) == _0x18FAB) {
-    if (abc_content["substr"](cen["istart"] - 1, 1) != " ") {
-      _0x18FD8 = " ";
-      hasAddBlank = true;
+    if (abc_content.substr(cen["istart"] - 1, 1) != " ") {
+      if(!checkPrevNoteAttr(cen, ['a_gch'])){
+        _0x18FD8 = " ";
+        hasAddBlank = true;
+        console.log('hasAddBlank');
+      }
     }
   }
   var _0x18C27 = cen["dur"];
@@ -855,7 +885,7 @@ function genNoteAndDur(note_str, cen, _0x1916D, dur_s, is_t) {
     !is_t
   ) {
     _0x18FD8 = "";
-    _0x17AED["noteStr"] = _0x17115["replace"](/[a-gA-G_^=,']*/, note_str);
+    _0x17AED["noteStr"] = _0x17115.replace(/[a-gA-G_^=,']*/, note_str);
     _0x17AED["del_s"] = _0x19005;
     _0x17AED["update_dur_s"] = _0x191C7;
     return _0x17AED;
@@ -882,13 +912,14 @@ function genNoteAndDur(note_str, cen, _0x1916D, dur_s, is_t) {
       if (user["pasteNote"]) {
         _0x17115 = note_str;
       }
+      console.log('new noteStr1:', '|'+_0x17115+'|');
       _0x17AED["oriNoteStr"] = _0x17115;
       _0x17AED["noteStr"] = _0x17115;
     } else {
       if (_0x18C27 == durSetting) {
         var _0x17115 =
           note_str + (!fixedLen ? getLenStr(_0x18BA0, durSetting) : "");
-        console.log('new noteStr:', _0x17115);
+        console.log('new noteStr2:', '|'+_0x17115+'|');
         if (user["pasteNote"]) {
           _0x17115 = note_str;
         } else {
@@ -909,13 +940,14 @@ function genNoteAndDur(note_str, cen, _0x1916D, dur_s, is_t) {
                 var _0x1708E = str2notes(
                   _0x190E6["replace"](/[\[\]]/g, "")
                 );
-                console["log"]("\u5f53\u524d\u4fee\u6539\u7684\u97f3\u7b26\u662f\uff1a", _0x1708E[_0x191F4]);
+                console["log"]("当前修改的音符是：", _0x1708E[_0x191F4]);
                 var _0x19221 = _0x1708E[_0x191F4]["note"];
                 _0x17115 = _0x190E6["replace"](_0x19221, _0x17115);
               }
             }
           }
         }
+        console.log('new noteStr3:', '|'+_0x18FD8+'|', '|'+_0x17115+'|');
         _0x17AED["oriNoteStr"] = _0x17115;
         _0x17AED["noteStr"] = _0x18FD8 + _0x17115;
       } else {
@@ -1016,6 +1048,7 @@ function genNoteAndDur(note_str, cen, _0x1916D, dur_s, is_t) {
           }
           _0x17AED["oriNoteStr"] = _0x17115;
           _0x17AED["noteStr"] = _0x18FD8 + _0x17115;
+          console.log('new noteStr4:', '|'+_0x18FD8+'|', '|'+_0x17115+'|');
         } else {
           var _0x19032 = _0x18C27 - durSetting;
           var _0x19113 = "";
@@ -1071,6 +1104,7 @@ function genNoteAndDur(note_str, cen, _0x1916D, dur_s, is_t) {
           }
           _0x17AED["oriNoteStr"] = _0x17115;
           _0x17AED["noteStr"] = _0x18FD8 + _0x17115 + _0x19113;
+          console.log('new noteStr5:', '|'+_0x18FD8+'|', '|'+_0x17115+'|', '|'+_0x19113+'|');
         }
       }
     }
