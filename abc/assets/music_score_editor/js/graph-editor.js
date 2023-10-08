@@ -1864,7 +1864,9 @@ function findNearNote(_0x16062, _0x1792B, _0x16008, _0x16035) {
       clearFocus();
     } else {
       if (type && type == "tempo") {
+        // 选中谱速度
         $(_0x183B7)["find"]("tspan")["addClass"]("selected_text");
+        $(_0x183B7).find("tspan").attr('istart', $(_0x183B7).attr('istart'))
         clearFocus();
         showProperties("tempo", _0x16062);
       } else {
