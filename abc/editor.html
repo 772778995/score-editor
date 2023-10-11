@@ -955,48 +955,91 @@
             <div class="relative rounded" style="padding: 10px 18px;">
               <div class="blue-title" style="margin-bottom: 16px;">速度</div>
               <div class="flex items-center ">
-                <div class="flex items-center h-full cursor-pointer mb-2" @click="m.newScore.scoreOpts.speedType = 'none'">
+                <div class="flex items-center h-full cursor-pointer mb-2" @click="setSpeedType('none')">
                   <img
                     :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.speedType === 'none' ? '1' : '2'}.png`"
                     class="cursor-pointer mr-2"
-                    @click="m.newScore.scoreOpts.speedType = 'txt'"
                   />
                   <div>无速度</div>
                 </div>
               </div>
               <div class="flex items-center ">
-                <div class="flex items-center h-full cursor-pointer" @click="m.newScore.scoreOpts.speedType = 'txt'">
-                  <img
+                <div class="flex items-center h-full cursor-pointer" @click="setSpeedType('txt')">
+                  <img class="cursor-pointer mr-2" :src="`assets/music_score_editor/img/checkbox${(m.newScore.scoreOpts.speedType=='txt' || m.newScore.scoreOpts.speedType=='txt_n_sign') ? '2' : '1'}.png`">
+
+                  <!-- <img
                     :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.speedType === 'txt' ? '1' : '2'}.png`"
                     class="cursor-pointer mr-2"
-                    @click="m.newScore.scoreOpts.speedType = 'txt'"
-                  />
+                  /> -->
                   <div>速度文本：</div>
                 </div>
                 <select-input
                   v-model="m.newScore.scoreOpts.speedText"
                   :list="speedTxtOptsList"
                   style="height: 28px;"
-                  :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.speedType !== 'txt' }">
+                  :class="{ 'opacity-50 pointer-events-none': !(m.newScore.scoreOpts.speedType === 'txt' || m.newScore.scoreOpts.speedType=='txt_n_sign') }">
                 </select-input>
               </div>
               <div class="flex items-center" style="margin-top: 10px;">
-                <div class="flex items-center h-full cursor-pointer" @click="m.newScore.scoreOpts.speedType = 'sign'">
-                  <img
+                <div class="flex items-center h-full cursor-pointer" @click="setSpeedType('sign')">
+                  <img class="cursor-pointer mr-2" :src="`assets/music_score_editor/img/checkbox${(m.newScore.scoreOpts.speedType=='sign' || m.newScore.scoreOpts.speedType=='txt_n_sign') ? '2' : '1'}.png`">
+
+                  <!-- <img
                     :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.speedType === 'sign' ? '1' : '2'}.png`"
                     class="cursor-pointer mr-2"
                     :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.speedType !== 'sign' }"
-                    @click="m.newScore.scoreOpts.speedType = 'sign'"
-                  />
+                  /> -->
                   <div>节拍器标记：</div>
                 </div>
-                <div class="flex h-full items-center" :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.speedType !== 'sign' }">
+                <div class="flex h-full items-center" :class="{ 'opacity-50 pointer-events-none': !(m.newScore.scoreOpts.speedType === 'sign' || m.newScore.scoreOpts.speedType=='txt_n_sign') }">
                   <select-input v-model="m.newScore.scoreOpts.speedNote" :list="m.newScore.speedNoteList" style="height: 28px;"></select-input>
                   <div style="margin: 0 10px;">=</div>
                   <number-input v-model="m.newScore.scoreOpts.speedNum" :min="1" style="width: 64px; height: 28px;"></number-input>
                 </div>
               </div>
             </div>
+
+            <!-- <div class="relative rounded" style="padding: 10px 18px;">
+              <div class="blue-title" style="margin-bottom: 16px;">术语</div>
+              <div class="flex items-center ">
+                <div class="flex items-center h-full cursor-pointer mb-2" @click="setFaceType('none')">
+                  <img
+                    :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.faceType === 'none' ? '1' : '2'}.png`"
+                    class="cursor-pointer mr-2"
+                  />
+                  <div>无术语</div>
+                </div>
+              </div>
+              <div class="flex items-center ">
+                <div class="flex items-center h-full cursor-pointer" @click="setFaceType('txt')">
+                  <img
+                    :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.faceType === 'txt' ? '1' : '2'}.png`"
+                    class="cursor-pointer mr-2"
+                  />
+                  <div>常用术语：</div>
+                </div>
+                <select-input
+                  v-model="m.newScore.scoreOpts.faceText"
+                  :list="(m.newScore.scoreOpts.musicType!=='easy'?staffEmoTxtList:easyEmoTxtList)"
+                  style="height: 28px;"
+                  :width="'165px'"
+                  :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.faceType !== 'txt' }">
+                </select-input>
+              </div>
+              <div class="flex items-center" style="margin-top: 10px;">
+                <div class="flex items-center h-full cursor-pointer" @click="setFaceType('sign')">
+                  <img
+                    :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.faceType === 'sign' ? '1' : '2'}.png`"
+                    class="cursor-pointer mr-2"
+                    :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.faceType !== 'sign' }"
+                  />
+                  <div>其他术语：</div>
+                </div>
+                <div class="flex h-full items-center" :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.faceType !== 'sign' }">
+                  <el-input v-model="m.newScore.scoreOpts.faceText" placeholder="" size="mini"></el-input>
+                </div>
+              </div>
+            </div> -->
           </div>
 
           <div class="flex absolute bottom-0 bg-white z-40" style="right: 10px; width: 481px; padding: 20px 17px 20px 17px;">

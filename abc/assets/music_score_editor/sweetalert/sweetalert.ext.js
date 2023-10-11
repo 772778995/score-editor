@@ -6,15 +6,15 @@ window.alert = function(msg, callback) {
 	$(".stepbtn").remove();
 	if(msg.length>100){
 		
-		swConfirm1("很抱歉，服务器开小差去了", "为了提供更好的操作体验，系统将收集您的谱例信息发送给管理员，点击<发送错误报告>发送，点击<关闭>不发送", cb, "发送错误报告","关闭")
-		var step = '<button class="stepbtn" tabindex="0" style="display: inline-block; box-shadow: none;">退回上一步</button>';
-		if($(".stepbtn").length < 1){
-			$(".sa-button-container").append($(step))
-			$(".stepbtn").click(function(){
-				goback();
-				sweetAlert.close()
-			})
-		}
+		swConfirm1("很抱歉，网络不稳定", "请在网络好的环境试试", cb, null, "关闭")
+		// var step = '<button class="stepbtn" tabindex="0" style="display: inline-block; box-shadow: none;">退回上一步</button>';
+		// if($(".stepbtn").length < 1){
+		// 	$(".sa-button-container").append($(step))
+		// 	$(".stepbtn").click(function(){
+		// 		goback();
+		// 		sweetAlert.close()
+		// 	})
+		// }
 	}else{
 		swAlert(msg);
 	}

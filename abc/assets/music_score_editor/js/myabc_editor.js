@@ -150,6 +150,8 @@ scoreOpts = Object.assign({}, defaultScoreOpts, scoreOpts);
  * @param {ScoreOpts} scoreOpts
  */
 function initScore(scoreOpts) {
+  console.log('initScore');
+  content_vue.getSpeed();
   changeStaffType(null, scoreOpts?.musicType === "easy" ? 2 : 0) |
     restoreEditor();
   for (const k in scoreOpts)

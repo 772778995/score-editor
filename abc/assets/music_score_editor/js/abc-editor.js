@@ -220,6 +220,8 @@ const initNewScoreOpts = {
   speedNum: "88",
   rows: "2",
   rowBars: "4",
+  faceText: "",
+  faceType: "none",
 };
 
 function createMusicNextEvent() {
@@ -3751,6 +3753,8 @@ var content_vue = new Vue({
           speedNum: "88",
           rows: "2",
           rowBars: "4",
+          faceText: "",
+          faceType: "none",
         },
         previewUrl: "assets/music_score_editor/preview.html?v=1.0.12",
       },
@@ -5953,14 +5957,104 @@ var content_vue = new Vue({
     },
 
     // ———————————————————————————————————————— 分割线 __method ————————————————————————————————————————
+    setFaceType(type){
+      console.log('setFaceType', type, this.m.newScore.scoreOpts.faceType);
+      this.m.newScore.scoreOpts.faceType = type;
+      this.m.scoreOpts.faceType = type;
+      this.m.newScore.scoreOpts.faceText = '';
+      this.m.scoreOpts.faceText = '';
+    },
+    setSpeedType(type){
+      console.log('setSpeedType', type, this.m.newScore.scoreOpts.speedType);
+      let o_type =  this.m.newScore.scoreOpts.speedType;
+      if(type!='none'){
+        // none txt sign txt_n_sign
+        if(o_type=='txt_n_sign'){
+          if(type=='txt'){
+            o_type = 'sign';
+          }else{
+            o_type = 'txt';
+          }
+        }else if(o_type=='txt'){
+          if(type=='txt'){
+            o_type = 'none';
+          }else{
+            o_type = 'txt_n_sign';
+          }
+        }else if(o_type=='sign'){
+          if(type=='sign'){
+            o_type = 'none';
+          }else{
+            o_type = 'txt_n_sign';
+          }
+        }else if(o_type=='none'){
+          if(type=='sign'){
+            o_type = 'sign';
+          }else{
+            o_type = 'txt';
+          }
+        }
+      }else{
+        o_type = 'none';
+      }
+      this.m.newScore.scoreOpts.speedType = o_type;
+      this.m.scoreOpts.speedType = o_type;
+    },
     changeSpeed() {
-      if (this.m.scoreOpts.speedType !== 'sign') return
-      let abcCode = $('#source').val()
-      abcCode = abcCode.replace(/(?<=Q:\s+).+/, `${this.m.scoreOpts.speedNote}=${this.m.scoreOpts.speedNum}`)
-      $('#source').val(abcCode)
-      abc_change()
+      console.log('changeSpeed', this.m.scoreOpts.speedType, this.m.newScore.scoreOpts.speedType);
+
+      let o_type = this.m.scoreOpts.speedType;
+      let speedText = this.m.scoreOpts.speedText;
+      let speedNum = this.m.scoreOpts.speedNum;
+      let speedNote = this.m.scoreOpts.speedNote;
+      let abcCode = $('#source').val();
+      if(o_type === 'none'){
+        if(abcCode){
+
+        }
+        switchSpeedShow('hide');
+      }else{
+        switchSpeedShow('show');
+        if(o_type==='txt'){
+          var qdesc = speedText;
+          if (qdesc != "") {
+            qdesc = '"' + qdesc + '"';
+          }
+          var qv = speedNum;
+          var q = speedNote;
+          set("Q:", qdesc + q + "=" + qv);
+          src_change();
+        }else if(o_type==='sign'){
+          var qdesc = speedText;
+          if (qdesc != "") {
+            qdesc = '"' + qdesc + '"';
+          }
+          var qv = speedNum;
+          var q = speedNote;
+          set("Q:", q + "=" + qv);
+          src_change();
+        }else if(o_type==='txt_n_sign'){
+          var qdesc = speedText;
+          if (qdesc != "") {
+            qdesc = '"' + qdesc + '"';
+          }
+          var qv = speedNum;
+          var q = speedNote;
+          set("Q:", qdesc + q + "=" + qv);
+          src_change();
+        }
+      }
+      return;
+      
+
+      // if (this.m.scoreOpts.speedType !== 'sign') return
+      // let abcCode = $('#source').val()
+      // abcCode = abcCode.replace(/(?<=Q:\s+).+/, `${this.m.scoreOpts.speedNote}=${this.m.scoreOpts.speedNum}`)
+      // $('#source').val(abcCode)
+      // abc_change()
     },
     getSpeed() {
+      console.log('getSpeed');
       const [sppedTxt] = $('#source').val().match(/(?<=Q:\s+).+/);
       const [speedNote, speedNum] = sppedTxt.split('=')
       this.m.scoreOpts.speedNote = speedNote
@@ -6545,12 +6639,15 @@ var content_vue = new Vue({
       }
     },
     'm.scoreOpts.speedType'(val) {
+      console.log('m.scoreOpts.speedType');
       this.changeSpeed()
     },
-    'm.scoreOpts.speedNote'() {
+    'm.scoreOpts.speedNote'(val, oval) {
+      console.log('m.scoreOpts.speedNote', val, oval);
       this.changeSpeed()
     },
     'm.scoreOpts.speedNum'() {
+      console.log('m.scoreOpts.speedNum');
       this.changeSpeed()
     },
     "m.key.val"(val) {
@@ -6615,6 +6712,8 @@ var content_vue = new Vue({
           speedNum: "88",
           rows: "2",
           rowBars: "4",
+          faceText: "",
+          faceType: "none",
         };
         for (const key in scoreOpts) {
           this.m.newScore.scoreOpts[key] = scoreOpts[key];
@@ -6895,7 +6994,7 @@ var content_vue = new Vue({
       this.initCtxMenu();
       this.changeSelectNote();
       this.changeSelectBar();
-      this.getSpeed()
+      // this.getSpeed()
       setLyricStyle();
       const rectSelectEl = $('.abcr[style*="fill-opacity: 0.4"]')
       if (rectSelectEl.length) {
