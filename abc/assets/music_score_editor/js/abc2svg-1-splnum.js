@@ -22290,11 +22290,12 @@ abc2svg = {
       set_font("tempo");
       // console.log('tempo_build message', s);
       if (s.tempo_str1) {
-        str.push(s.tempo_str1);
+        // str.push(s.tempo_str1);
+        str.push(`<tspan type="speed_text">${s.tempo_str1}</tspan>`);
         w += strwh(s.tempo_str1)[0];
       }
       if((content_vue.m.scoreOpts.faceType==='txt' || content_vue.m.scoreOpts.faceType==='sign') && content_vue.m.scoreOpts.faceText){
-        str.push(`<tspan>${content_vue.m.scoreOpts.faceText}</tspan>`);
+        str.push(`<tspan type="face_text">${content_vue.m.scoreOpts.faceText}</tspan>`);
       }
       if (s.tempo_notes) {
         dy = ' dy="-.05em"';
@@ -22344,17 +22345,17 @@ abc2svg = {
         w += strwh(s.tempo_str2)[0];
       }
       s.tempo_str = str.join(" ");
-      // 标记速度术语
+      // 标记速度术语、表情术语
       if (content_vue.m.scoreOpts.speedType === "txt") {
-        s.tempo_str = `<tspan>${content_vue.m.scoreOpts.speedText}</tspan>`;
+        s.tempo_str = `<tspan type="speed_text">${content_vue.m.scoreOpts.speedText}</tspan>`;
         if((content_vue.m.scoreOpts.faceType==='txt' || content_vue.m.scoreOpts.faceType==='sign') && content_vue.m.scoreOpts.faceText){
-          s.tempo_str +=`<tspan> ${content_vue.m.scoreOpts.faceText}</tspan>`;
+          s.tempo_str +=`<tspan type="face_text"> ${content_vue.m.scoreOpts.faceText}</tspan>`;
         }
       }
       else if (content_vue.m.scoreOpts.speedType === "none") {
         s.tempo_str = `<tspan></tspan>`
         if((content_vue.m.scoreOpts.faceType==='txt' || content_vue.m.scoreOpts.faceType==='sign') && content_vue.m.scoreOpts.faceText){
-          s.tempo_str +=`<tspan>${content_vue.m.scoreOpts.faceText}</tspan>`;
+          s.tempo_str +=`<tspan type="face_text">${content_vue.m.scoreOpts.faceText}</tspan>`;
         }
       }
       w += cwidf(" ") * (str.length - 1);

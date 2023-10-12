@@ -6056,8 +6056,9 @@ var content_vue = new Vue({
     getSpeed() {
       console.log('getSpeed');
       const [sppedTxt] = $('#source').val().match(/(?<=Q:\s+).+/);
-      const [speedNote, speedNum] = sppedTxt.split('=')
-      this.m.scoreOpts.speedNote = speedNote
+      const [speedNoteStr, speedNum] = sppedTxt.split('=')
+      const speedNumArr = speedNoteStr.split('"')
+      this.m.scoreOpts.speedNote = speedNumArr[speedNumArr.length-1];
       this.m.scoreOpts.speedNum = speedNum
     },
     async updateMyScoreList() {

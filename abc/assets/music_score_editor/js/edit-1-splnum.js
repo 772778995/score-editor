@@ -2954,7 +2954,10 @@ function renderSuccess() {
         top, left, width, height,
         minHeight: '40px'
       }
-
+      console.log('dblclick::', el.attr('type'));
+      if(el.attr('type')=='tempo'){
+        return false;
+      }
       let type = ''
       const className = el.attr('class')
       content_vue.m.editor.val = el.text()
@@ -3122,7 +3125,7 @@ function renderSuccess() {
   }
 }
 function editorAnnot(_0x6DAF) {
-  console["log"]("editorAnnot----------", _0x6DAF);
+  console.log("editorAnnot----------", _0x6DAF);
   if (!user["editorAnnot"]) {
     return;
   }
