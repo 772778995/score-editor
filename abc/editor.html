@@ -999,7 +999,7 @@
               </div>
             </div>
 
-            <!-- <div class="relative rounded" style="padding: 10px 18px;">
+            <div class="relative rounded" style="padding: 10px 18px;">
               <div class="blue-title" style="margin-bottom: 16px;">术语</div>
               <div class="flex items-center ">
                 <div class="flex items-center h-full cursor-pointer mb-2" @click="setFaceType('none')">
@@ -1036,10 +1036,11 @@
                   <div>其他术语：</div>
                 </div>
                 <div class="flex h-full items-center" :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.faceType !== 'sign' }">
-                  <el-input v-model="m.newScore.scoreOpts.faceText" placeholder="" size="mini"></el-input>
+                  <el-input v-if="m.newScore.scoreOpts.faceType === 'sign'" v-model="m.newScore.scoreOpts.faceText" placeholder="" size="mini"></el-input>
+                  <el-input v-else placeholder="" size="mini"></el-input>
                 </div>
               </div>
-            </div> -->
+            </div>
           </div>
 
           <div class="flex absolute bottom-0 bg-white z-40" style="right: 10px; width: 481px; padding: 20px 17px 20px 17px;">

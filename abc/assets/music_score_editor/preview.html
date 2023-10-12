@@ -16,7 +16,9 @@
           // if (flashTimer) clearTimeout(flashTimer)
           // flashTimer = setTimeout(() => {
             for(const k in newScoreOpts) if ([undefined, ''].includes(newScoreOpts[k])) delete newScoreOpts[k]
+            // console.log('message', scoreOpts, defaultScoreOpts, newScoreOpts);
             scoreOpts = Object.assign(scoreOpts, defaultScoreOpts, newScoreOpts)
+            console.log('message', scoreOpts);
             const code = getAbcTemplateCode(scoreOpts)
             $('#source').val(code)
             abc_change()

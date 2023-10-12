@@ -23,8 +23,8 @@ Vue.component("select-input", {
       :style="width?'width:'+width:''"
       @click.stop="showList = !showList"
     >
-      <div v-if="list.find(item => item.val === value)?.txt" class="flex-1">
-        {{ list.find(item => item.val === value)?.txt }}
+      <div v-if="list.find(item => (item.val?item.val:item.txt) === value)?.txt" class="flex-1">
+        {{ list.find(item => (item.val?item.val:item.txt) === value)?.txt }}
       </div>
       <img v-else-if="list.find(item => item.val === value)?.img" class="flex-1" :src="list.find(item => item.val === value)?.img"/>
       <div v-else class="flex-1"></div>
@@ -42,7 +42,7 @@ Vue.component("select-input", {
           class="rounded-sm px-2 py-1 hover:sky-blue-bg duration-300"
           style="min-width: 50px;"
           :style="width?'width:'+width:''"
-          @click="updateValue(item.val)"
+          @click="updateValue(item.val?item.val:item.txt)"
         >
           <div v-if="item.txt">{{ item.txt }}</div>
           <img v-else-if="item.img" :src="item.img" />
@@ -57,6 +57,7 @@ Vue.component("select-input", {
   },
   methods: {
     updateValue(newValue) {
+      console.log(newValue);
       this.$emit("input", newValue);
     },
   },

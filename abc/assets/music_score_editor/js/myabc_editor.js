@@ -132,6 +132,9 @@ const defaultScoreOpts = {
   speedNote: "1/4",
   speedNum: "88",
 
+  faceText: "",
+  faceType: "none",
+
   beatType: "custom",
   beatNote1: "4",
   beatNote2: "4",
@@ -259,9 +262,13 @@ const getBeatNote = (opts) => {
  * @param {ScoreOpts} opts
  */
 const _getSpeed = (opts) => {
+  // console.log('_getSpeed', opts);
   if (opts.speedType === "txt") {
     return `
 Q: 1/4=${speedTxtList.find((item) => item.txt === opts.speedText || item.title === opts.speedText).val}`;
+  }else if (opts.speedType === "txt_n_sign") {
+    return `
+Q: ${(opts.speedText?'"'+opts.speedText+'"':'')}1/4=${opts.speedNum}`;
   }
   if (opts.speedNote && opts.speedNum) {
     return `

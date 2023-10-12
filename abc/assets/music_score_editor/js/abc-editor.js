@@ -5959,10 +5959,10 @@ var content_vue = new Vue({
     // ———————————————————————————————————————— 分割线 __method ————————————————————————————————————————
     setFaceType(type){
       console.log('setFaceType', type, this.m.newScore.scoreOpts.faceType);
-      this.m.newScore.scoreOpts.faceType = type;
-      this.m.scoreOpts.faceType = type;
       this.m.newScore.scoreOpts.faceText = '';
       this.m.scoreOpts.faceText = '';
+      this.m.newScore.scoreOpts.faceType = type;
+      this.m.scoreOpts.faceType = type;
     },
     setSpeedType(type){
       console.log('setSpeedType', type, this.m.newScore.scoreOpts.speedType);
@@ -6837,6 +6837,7 @@ var content_vue = new Vue({
             }, 200);
           }
         }
+        console.log('postMessage', d);
         this.$refs.previewIframeRef?.contentWindow.postMessage(d, "*");
       },
       deep: true,
