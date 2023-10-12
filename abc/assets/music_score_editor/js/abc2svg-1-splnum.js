@@ -22406,7 +22406,7 @@ abc2svg = {
         x = 0;
       }
       output +=
-        '<text type="tempo" istart="' +
+        '<text type="tempo" style="font-family:heiti;font-size:14px;font-weight:normal;" istart="' +
         s.istart +
         '" class="' +
         font_class(gene.curfont) +
