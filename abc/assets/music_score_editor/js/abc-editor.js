@@ -2943,6 +2943,7 @@ var content_vue = new Vue({
         repeatList: [],
         isFoucs: false
       },
+      settingBoxShow: false,
       isMusicNoteShow: false,
       addBar: {
         show: false,
@@ -4732,12 +4733,12 @@ var content_vue = new Vue({
             },
           ],
         },
-        {
-          code: "speedTerm",
-          name: "速度术语",
-          cols: 2,
-          speedList: speedTxtList,
-        },
+        // {
+        //   code: "speedTerm",
+        //   name: "速度术语",
+        //   cols: 2,
+        //   speedList: speedTxtList,
+        // },
         {
           canClick: true,
           code: "repeatAndJump",
@@ -6007,14 +6008,18 @@ var content_vue = new Vue({
       let speedText = this.m.scoreOpts.speedText;
       let speedNum = this.m.scoreOpts.speedNum;
       let speedNote = this.m.scoreOpts.speedNote;
-      let abcCode = $('#source').val();
       if(o_type === 'none'){
-        if(abcCode){
-
+        var qdesc = speedText;
+        if (qdesc != "") {
+          qdesc = '"' + qdesc + '"';
         }
-        switchSpeedShow('hide');
+        var qv = speedNum;
+        var q = speedNote;
+        set("Q:", q + "=" + qv);
+        src_change();
+        // switchSpeedShow('hide');
       }else{
-        switchSpeedShow('show');
+        // switchSpeedShow('show');
         if(o_type==='txt'){
           var qdesc = speedText;
           if (qdesc != "") {
@@ -6046,7 +6051,7 @@ var content_vue = new Vue({
       }
       return;
       
-
+      // let abcCode = $('#source').val();
       // if (this.m.scoreOpts.speedType !== 'sign') return
       // let abcCode = $('#source').val()
       // abcCode = abcCode.replace(/(?<=Q:\s+).+/, `${this.m.scoreOpts.speedNote}=${this.m.scoreOpts.speedNum}`)
@@ -6325,9 +6330,10 @@ var content_vue = new Vue({
         });
         return;
       }
+      this.m.newScore.scoreOpts.title = this.m.newScore.scoreOpts.title?this.m.newScore.scoreOpts.title:'标题';
       this.m.newScore.scoreOpts.subTitle = this.m.newScore.scoreOpts.subTitle?this.m.newScore.scoreOpts.subTitle:' ';
       this.m.newScore.scoreOpts.compose = this.m.newScore.scoreOpts.compose?this.m.newScore.scoreOpts.compose:' ';
-      this.m.newScore.scoreOpts.lyricist = this.m.newScore.scoreOpts.lyricist?this.m.newScore.scoreOpts.lyricist:'&emsp;';
+      this.m.newScore.scoreOpts.lyricist = this.m.newScore.scoreOpts.lyricist?this.m.newScore.scoreOpts.lyricist:' ';
       if (isNewTab) {
         window.open(
           location.href.replace(/\?.+/, "") +
@@ -6639,16 +6645,51 @@ var content_vue = new Vue({
         this.m.editor.lyricIndex = 0
       }
     },
+    // "m.scoreOpts": {
+    //   handler(val) {
+    //     console.log('m.scoreOpts', val);
+    //   },
+    //   deep: true,
+    // },
+    'm.scoreOpts.title'(val) {
+      console.log('m.scoreOpts.title', val, typeof val);
+      set('T:', val);
+      abc_change();
+    },
+    'm.scoreOpts.subTitle'(val) {
+      console.log('m.scoreOpts.subTitle', val, typeof val);
+      setTimeout(()=>{
+        setSecTitle(val)
+      }, 200);
+    },
+    'm.scoreOpts.compose'(val) {
+      set('C:', val);
+      abc_change();
+    },
+    'm.scoreOpts.lyricist'(val) {
+      setCompose(val, 1);
+    },
+    'm.scoreOpts.rowBars'(val) {
+      setBarsPerstaff('source', val)
+    },
+    'm.scoreOpts.speedText'(val) {
+      console.log('m.scoreOpts.speedText');
+      this.changeSpeed()
+    },
     'm.scoreOpts.speedType'(val) {
       console.log('m.scoreOpts.speedType');
       this.changeSpeed()
     },
-    'm.scoreOpts.speedNote'(val, oval) {
-      console.log('m.scoreOpts.speedNote', val, oval);
+    'm.scoreOpts.speedNote'(val) {
+      console.log('m.scoreOpts.speedNote', val);
       this.changeSpeed()
     },
     'm.scoreOpts.speedNum'() {
       console.log('m.scoreOpts.speedNum');
+      this.changeSpeed()
+    },
+    'm.scoreOpts.faceText'() {
+      console.log('m.scoreOpts.faceText');
       this.changeSpeed()
     },
     "m.key.val"(val) {
@@ -6839,6 +6880,9 @@ var content_vue = new Vue({
           }
         }
         console.log('postMessage', d);
+        d.subTitle = d.subTitle?d.subTitle:' ';
+        d.compose = d.compose?d.compose:' ';
+        d.lyricist = d.lyricist?d.lyricist:' ';
         this.$refs.previewIframeRef?.contentWindow.postMessage(d, "*");
       },
       deep: true,

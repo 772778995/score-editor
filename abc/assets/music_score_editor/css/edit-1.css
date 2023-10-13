@@ -285,3 +285,11 @@ rect.abcr.selected_text[type="bar"] {
     border-bottom-right-radius: 8px;
 	margin-bottom: 50px;
 }
+
+/*  */
+.s_title2.el-input--prefix .el-input__inner{
+	padding-left: 45px;
+}
+.s_title3.el-input--prefix .el-input__inner{
+	padding-left: 60px;
+}

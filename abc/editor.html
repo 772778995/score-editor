@@ -599,13 +599,470 @@
         </div>
       </div>
 
+
+      <div
+        class="fixed flex top-0 left-0 duration-300 transform-gpu h-screen w-screen items-center justify-center"
+        style="z-index: 9998; margin-top: 5px;"
+        :class="{ 'opacity-0 pointer-events-none' : !m.newScore.scoreOptsShow }"
+      >
+        <div class="rounded-md overflow-hidden at_move_box" style="box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);">
+          <b class="flex justify-between items-center text-xl bg-#f5f5f6 at_move_box_title" style="padding: 10px 20px">
+            <div>新建乐谱</div>
+            <img src="assets/music_score_editor/img/close.png" class="cursor-pointer" @click="m.newScore.scoreOptsShow = m.newScore.musicType.show = false"/>
+          </b>
+
+          <div class="flex relative" style="height: 857px; background: #B5C5D3;">
+            <div style="width: 712px;padding: 20px;">
+              <iframe
+                ref="previewIframeRef"
+                :src="m.newScore.previewUrl"
+                class="w-full h-full rounded-md border-none"
+              ></iframe>
+            </div>
+
+            <div class="bg-white overflow-y-auto relative" >  <!-- overflow-y-auto -->
+              <div class="rounded" style="padding: 15px 17px; border-bottom: 2px solid #F5F5F5;">
+                <div class="blue-title" style="margin-bottom: 10px;">基本信息</div>
+                <div class="relative" style="margin-bottom: 16px;">
+                  <!-- <div class="input-group">
+                    <input v-model="m.newScore.scoreOpts.title" class="form-control" placeholder="标题"/>
+                  </div> -->
+                  
+                  <el-input v-model="m.newScore.scoreOpts.title" class="s_title2" placeholder="标题">
+                    <span v-if="m.newScore.scoreOpts.title" slot="prefix" class="el-input__icon">标题:</span>
+                  </el-input>
+                </div>
+
+                <el-input v-model="m.newScore.scoreOpts.subTitle" class="s_title3" placeholder="副标题" style="margin-bottom: 16px;">
+                  <span v-if="m.newScore.scoreOpts.subTitle" slot="prefix" class="el-input__icon">副标题:</span>
+                </el-input>
+
+                <div class="flex space-x-4">
+                  <!-- <input v-model="m.newScore.scoreOpts.compose" class="form-control" placeholder="曲作者"/>
+                  <input v-model="m.newScore.scoreOpts.lyricist" class="form-control" placeholder="词作者"/> -->
+
+                  <el-input v-model="m.newScore.scoreOpts.compose" class="s_title3" placeholder="曲作者">
+                    <span v-if="m.newScore.scoreOpts.compose" slot="prefix" class="el-input__icon">曲作者:</span>
+                  </el-input>
+                  <el-input v-model="m.newScore.scoreOpts.lyricist" class="s_title3" placeholder="词作者">
+                    <span v-if="m.newScore.scoreOpts.lyricist" slot="prefix" class="el-input__icon">词作者:</span>
+                  </el-input>
+                </div>
+              </div>
+
+              <div class="relative rounded flex-shrink-0" style="width: 491px; padding: 10px 21px 10px 21px; border-bottom: 2px solid #F5F5F5;">
+                <div class="flex items-center">
+                  <div class="blue-title">调号</div>
+                  <div v-if="m.newScore.scoreOpts.musicType !== 'easy'" class="ml-auto flex justify-center space-x-12 text-#999 relative pb-1" :class="`key-sign-${m.newScore.keySignType}`">
+                    <div class="cursor-pointer" @click="m.newScore.keySignType = 'up'">升记号大调</div>
+                    <div class="cursor-pointer" @click="m.newScore.keySignType = 'down'">降记号大调</div>
+                    <div class="absolute bg-deep-blue w-24 h-1 rounded-full bottom-0 duration-300"></div>
+                  </div>
+                </div>
+                <div v-if="m.newScore.scoreOpts.musicType === 'easy'" class="flex items-center" style="margin-top: 16px;">
+                  <div>简谱：</div>
+                  <div style="margin: 0 13px 0 6px">1=</div>
+                  <select-input v-model="m.newScore.scoreOpts.keySign" :list="m.newScore.keySignEasyList" style="z-index: 51;"></select-input>
+                </div>
+                <div v-else class="mt-4 w-full overflow-hidden">
+                  <div
+                    class="flex duration-300"
+                    :style="{
+                      width: '200%',
+                      transform: `translateX(-${m.newScore.keySignType === 'up' ? 0 : 50}%)`,
+                    }"
+                  >
+                    <div class="w-1/2 grid grid-cols-4 gap-1">
+                      <div
+                        v-for="item in m.newScore.keySignUpList"
+                        :key="item.title"
+                        class="flex justify-center items-center pt-2"
+                      >
+                        <div
+                          class="select-key-sign w-24 h-24 px-2 rounded-md overflow-hidden cursor-pointer justify-center items-center flex flex-col duration-300"
+                          :class="{ 'is-select': m.newScore.scoreOpts.keySign === item.val }"
+                          @click="m.newScore.scoreOpts.keySign = item.val"
+                        >
+                          <img :src="item.img" />
+                          <div class="flex items-center">
+                            <div :style="m.newScore.scoreOpts.keySign === item.val ? 'color: #001F3B' : ''">{{ item.title }}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="w-1/2 grid grid-cols-4 gap-1 items-center">
+                      <div
+                        v-for="item in m.newScore.keySignDownList"
+                        :key="item.title"
+                        class="flex justify-center items-center  pt-2"
+                      >
+                        <div
+                          class="select-key-sign w-24 h-24 px-2 rounded-md overflow-hidden cursor-pointer justify-center items-center flex flex-col duration-300"
+                          :class="{ 'is-select': m.newScore.scoreOpts.keySign === item.val }"
+                          @click="m.newScore.scoreOpts.keySign = item.val"
+                        >
+                          <img :src="item.img" />
+                          <div class="flex items-center">
+                            <div :style="m.newScore.scoreOpts.keySign === item.val ? 'color: #001F3B' : ''">{{ item.title }}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="relative rounded" style="padding: 10px 18px 0 18px; border-bottom: 2px solid #F5F5F5;">
+                <div class="blue-title">拍号</div>
+                <div class="flex items-center" style="margin: 16px 0">
+                  <img
+                    :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.beatType === 'custom' ? '1' : '2'}.png`"
+                    class="cursor-pointer"
+                    @click="m.newScore.scoreOpts.beatType = 'custom'"
+                  />
+    
+                  <div class="flex h-full items-center duration-300" :class="{ 'pointer-events-none opacity-50': m.newScore.scoreOpts.beatType !== 'custom' }">
+                    <select-input
+                      v-model="m.newScore.scoreOpts.beatNote1"
+                      :list="m.newScore.beatNoteList"
+                      style="width: 64px; margin-left: 10px;"
+                    ></select-input>
+                    <div class="mx-1.5">/</div>
+                    <select-input
+                      v-model="m.newScore.scoreOpts.beatNote2"
+                      :list="m.newScore.beatNoteList2"
+                      style="width: 64px;"
+                    ></select-input> 
+                  </div>
+                  
+                  <img
+                    :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.beatType === 'C' ? '1' : '2'}.png`"
+                    class="cursor-pointer ml-auto"
+                    @click="m.newScore.scoreOpts.beatType = 'C'"
+                  />
+                  <img style="margin-left: 13px" src="assets/music_score_editor/img/beatSign-C.png" />
+                  <img
+                    :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.beatType === 'C|' ? '1' : '2'}.png`"
+                    class="cursor-pointer"
+                    style="margin-right: 13px; margin-left: 44px;"
+                    @click="m.newScore.scoreOpts.beatType = 'C|'"
+                  />
+                  <img style="margin-right: 66px" src="assets/music_score_editor/img/beatSign-CI.png" />
+                </div>
+              </div>
+
+              <div class="relative rounded items-center" style="padding: 10px 18px; border-bottom: 2px solid #F5F5F5;">
+                <div class="flex items-center" style="color: #8F8F8F; font-size: 12px">
+                  <div class="blue-title">排版</div>
+                  <img src="assets/music_score_editor/img/warning.png" style="margin: 0 2px 0 7px;" />
+                  您也可以在创建乐谱后再添加或移除小节。
+                </div>
+                <div class="flex items-center" style="margin-top: 20px;">
+                  <div>行数：</div>
+                  <number-input
+                    v-model="m.newScore.scoreOpts.rows"
+                    style="width: 64px; height: 28px;">
+                  </number-input>
+                  <div class="ml-auto">小节：</div>
+                  <number-input
+                    v-model="m.newScore.scoreOpts.rowBars"
+                    style="width: 64px; height: 28px; margin-right: 6px;">
+                  </number-input>
+                  <div style="margin-right: 75px;">/ 行</div>
+                </div>
+              </div>
+
+              <div class="relative rounded" style="padding: 10px 18px; border-bottom: 2px solid #F5F5F5;">
+                <div class="flex">
+                  <div class="flex cursor-pointer" @click="m.newScore.scoreOpts.isWeak = !m.newScore.scoreOpts.isWeak">
+                    <div class="blue-title">
+                      不完全小节（弱起小节）
+                      <img :src="`assets/music_score_editor/img/checkbox${m.newScore.scoreOpts.isWeak ? '2' : '1'}.png`">
+                    </div>
+                  </div>
+                </div>
+                <div class="items-center flex duration-300 mt-4" :class="{ 'pointer-events-none opacity-50': !m.newScore.scoreOpts.isWeak }">
+                  <select-input v-model="m.newScore.scoreOpts.weakBarBot" :list="m.newScore.beatNoteList3" style="width: 118px; height: 28px; z-index: 52;"></select-input>
+                  <div class="mx-1.5">/</div>
+                  <number-input v-model="m.newScore.scoreOpts.weakBarTop" :min="1" style="width: 64px; height: 28px;"></number-input>
+                  <div style="margin-left: 3px;">个</div>
+                </div>
+              </div>
+
+              <div class="relative rounded" style="padding: 10px 18px; border-bottom: 2px solid #F5F5F5;">
+                <div class="flex">
+                  <div class="flex cursor-pointer" @click="m.newScore.scoreOpts.isWeakEnd = !m.newScore.scoreOpts.isWeakEnd">
+                    <div class="blue-title">
+                      不完全结尾小节
+                      <img :src="`assets/music_score_editor/img/checkbox${m.newScore.scoreOpts.isWeakEnd ? '2' : '1'}.png`">
+                    </div>
+                  </div>
+                </div>
+                <div class="items-center flex duration-300 mt-4" :class="{ 'pointer-events-none opacity-50': !m.newScore.scoreOpts.isWeakEnd }">
+                  <select-input v-model="m.newScore.scoreOpts.weakEndBot" :list="m.newScore.beatNoteList3" style="width: 118px; height: 28px; z-index: 52;"></select-input>
+                  <div class="mx-1.5">/</div>
+                  <number-input v-model="m.newScore.scoreOpts.weakEndTop" :min="1" style="width: 64px; height: 28px;"></number-input>
+                  <div style="margin-left: 3px;">个</div>
+                </div>
+              </div>
+
+              <div class="relative rounded" style="padding: 10px 18px;">
+                <div class="blue-title" style="margin-bottom: 16px;">速度</div>
+                <div class="flex items-center ">
+                  <div class="flex items-center h-full cursor-pointer mb-2" @click="setSpeedType('none')">
+                    <img
+                      :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.speedType === 'none' ? '1' : '2'}.png`"
+                      class="cursor-pointer mr-2"
+                    />
+                    <div>无速度</div>
+                  </div>
+                </div>
+                <div class="flex items-center ">
+                  <div class="flex items-center h-full cursor-pointer" @click="setSpeedType('txt')">
+                    <img class="cursor-pointer mr-2" :src="`assets/music_score_editor/img/checkbox${(m.newScore.scoreOpts.speedType=='txt' || m.newScore.scoreOpts.speedType=='txt_n_sign') ? '2' : '1'}.png`">
+
+                    <!-- <img
+                      :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.speedType === 'txt' ? '1' : '2'}.png`"
+                      class="cursor-pointer mr-2"
+                    /> -->
+                    <div>速度文本：</div>
+                  </div>
+                  <select-input
+                    v-model="m.newScore.scoreOpts.speedText"
+                    :list="speedTxtOptsList"
+                    style="height: 28px;"
+                    :class="{ 'opacity-50 pointer-events-none': !(m.newScore.scoreOpts.speedType === 'txt' || m.newScore.scoreOpts.speedType=='txt_n_sign') }">
+                  </select-input>
+                </div>
+                <div class="flex items-center" style="margin-top: 10px;">
+                  <div class="flex items-center h-full cursor-pointer" @click="setSpeedType('sign')">
+                    <img class="cursor-pointer mr-2" :src="`assets/music_score_editor/img/checkbox${(m.newScore.scoreOpts.speedType=='sign' || m.newScore.scoreOpts.speedType=='txt_n_sign') ? '2' : '1'}.png`">
+
+                    <!-- <img
+                      :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.speedType === 'sign' ? '1' : '2'}.png`"
+                      class="cursor-pointer mr-2"
+                      :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.speedType !== 'sign' }"
+                    /> -->
+                    <div>节拍器标记：</div>
+                  </div>
+                  <div class="flex h-full items-center" :class="{ 'opacity-50 pointer-events-none': !(m.newScore.scoreOpts.speedType === 'sign' || m.newScore.scoreOpts.speedType=='txt_n_sign') }">
+                    <select-input v-model="m.newScore.scoreOpts.speedNote" :list="m.newScore.speedNoteList" style="height: 28px;"></select-input>
+                    <div style="margin: 0 10px;">=</div>
+                    <number-input v-model="m.newScore.scoreOpts.speedNum" :min="1" style="width: 64px; height: 28px;"></number-input>
+                  </div>
+                </div>
+              </div>
+
+              <div class="relative rounded" style="padding: 10px 18px;">
+                <div class="blue-title" style="margin-bottom: 16px;">术语</div>
+                <div class="flex items-center ">
+                  <div class="flex items-center h-full cursor-pointer mb-2" @click="setFaceType('none')">
+                    <img
+                      :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.faceType === 'none' ? '1' : '2'}.png`"
+                      class="cursor-pointer mr-2"
+                    />
+                    <div>无术语</div>
+                  </div>
+                </div>
+                <div class="flex items-center ">
+                  <div class="flex items-center h-full cursor-pointer" @click="setFaceType('sign')">
+                    <img
+                      :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.faceType === 'sign' ? '1' : '2'}.png`"
+                      class="cursor-pointer mr-2"
+                    />
+                    <div>常用术语：</div>
+                  </div>
+                  <select-input
+                    v-model="m.newScore.scoreOpts.faceText"
+                    :list="(m.newScore.scoreOpts.musicType!=='easy'?staffEmoTxtList:easyEmoTxtList)"
+                    style="height: 28px;"
+                    :width="'165px'"
+                    :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.faceType !== 'sign' }">
+                  </select-input>
+                </div>
+                <div class="flex items-center" style="margin-top: 10px;">
+                  <div class="flex items-center h-full cursor-pointer" @click="setFaceType('txt')">
+                    <img
+                      :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.faceType === 'txt' ? '1' : '2'}.png`"
+                      class="cursor-pointer mr-2"
+                      :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.faceType !== 'txt' }"
+                    />
+                    <div>其他术语：</div>
+                  </div>
+                  <div class="flex h-full items-center" :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.faceType !== 'txt' }">
+                    <el-input v-if="m.newScore.scoreOpts.faceType === 'txt'" v-model="m.newScore.scoreOpts.faceText" placeholder="" size="mini"></el-input>
+                    <el-input v-else placeholder="" size="mini"></el-input>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex sticky bottom-0 bg-white z-40" style="right: 10px; width: 100%; padding: 20px 17px 20px 17px;">
+                <div class="_btn _border" @click="m.newScore.scoreOptsShow = m.newScore.musicType.show = false">取消</div>
+                <div class="_btn ml-auto mr-2 " @click="m.newScore.scoreOptsShow = false">上一步</div>
+                <div class="_btn" @click="createNewScore">创建</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="fixed rounded-md overflow-hidden at_move_box"
+       :class="{ 'opacity-0 pointer-events-none' : !m.settingBoxShow }"
+       style="z-index: 9998;box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);left: calc(100% - 550px);top: 35px;">
+        <b class="flex justify-between items-center text-xl bg-#f5f5f6 at_move_box_title" style="padding: 10px 20px">
+          <div>乐谱设置面板</div>
+          <img src="assets/music_score_editor/img/close.png" class="cursor-pointer" @click="m.settingBoxShow = false"/>
+        </b>
+
+        <div class="flex relative" style="height: 720px; background: #B5C5D3;">
+          <div class="bg-white overflow-y-auto relative" >  <!-- overflow-y-auto -->
+            <div class="rounded" style="padding: 15px 17px; border-bottom: 2px solid #F5F5F5;">
+              <div class="blue-title" style="margin-bottom: 10px;">基本信息</div>
+              <div class="relative" style="margin-bottom: 16px;">
+                <el-input v-model="m.scoreOpts.title" class="s_title2" placeholder="标题">
+                  <span v-if="m.scoreOpts.title" slot="prefix" class="el-input__icon">标题:</span>
+                </el-input>
+              </div>
+
+              <el-input v-model="m.scoreOpts.subTitle" class="s_title3" placeholder="副标题" style="margin-bottom: 16px;">
+                <span v-if="m.scoreOpts.subTitle" slot="prefix" class="el-input__icon">副标题:</span>
+              </el-input>
+
+              <div class="flex space-x-4">
+                <el-input v-model="m.scoreOpts.compose" class="s_title3" placeholder="曲作者">
+                  <span v-if="m.scoreOpts.compose" slot="prefix" class="el-input__icon">曲作者:</span>
+                </el-input>
+                <el-input v-model="m.scoreOpts.lyricist" class="s_title3" placeholder="词作者">
+                  <span v-if="m.scoreOpts.lyricist" slot="prefix" class="el-input__icon">词作者:</span>
+                </el-input>
+              </div>
+            </div>
+
+            <div class="relative rounded items-center" style="padding: 10px 18px; border-bottom: 2px solid #F5F5F5;">
+              <div class="flex items-center" style="color: #8F8F8F; font-size: 12px">
+                <div class="blue-title">排版</div>
+              </div>
+              <div class="flex items-center" style="margin-top: 20px;">
+                <div>每行小节数：</div>
+                <number-input
+                  v-model="m.scoreOpts.rowBars"
+                  style="width: 64px; height: 28px; margin-right: 6px;">
+                </number-input>
+              </div>
+            </div>
+
+            <div class="relative rounded" style="padding: 10px 18px;">
+              <div class="blue-title" style="margin-bottom: 16px;">速度</div>
+              <div class="flex items-center ">
+                <div class="flex items-center h-full cursor-pointer mb-2" @click="setSpeedType('none')">
+                  <img
+                    :src="`assets/music_score_editor/img/radio${m.scoreOpts.speedType === 'none' ? '1' : '2'}.png`"
+                    class="cursor-pointer mr-2"
+                  />
+                  <div>无速度</div>
+                </div>
+              </div>
+              <div class="flex items-center ">
+                <div class="flex items-center h-full cursor-pointer" @click="setSpeedType('txt')">
+                  <img class="cursor-pointer mr-2" :src="`assets/music_score_editor/img/checkbox${(m.scoreOpts.speedType=='txt' || m.scoreOpts.speedType=='txt_n_sign') ? '2' : '1'}.png`">
+                  <div>速度文本：</div>
+                </div>
+                <select-input
+                  v-model="m.scoreOpts.speedText"
+                  :list="(
+                    speedTxtList.map((item) => {
+                     let obj
+                     if (m.scoreOpts.musicType == 'easy') {
+                       obj = {
+                         val: item.title,
+                         txt: item.title,
+                       }
+                     } else {
+                       obj = {
+                         val: item.txt,
+                         txt: item.txt,
+                       }
+                     }
+                     return obj
+                   })
+                  )"
+                  style="height: 28px;"
+                  :class="{ 'opacity-50 pointer-events-none': !(m.scoreOpts.speedType === 'txt' || m.scoreOpts.speedType=='txt_n_sign') }">
+                </select-input>
+              </div>
+              <div class="flex items-center" style="margin-top: 10px;">
+                <div class="flex items-center h-full cursor-pointer" @click="setSpeedType('sign')">
+                  <img class="cursor-pointer mr-2" :src="`assets/music_score_editor/img/checkbox${(m.scoreOpts.speedType=='sign' || m.scoreOpts.speedType=='txt_n_sign') ? '2' : '1'}.png`">
+                  <div>节拍器标记：</div>
+                </div>
+                <div class="flex h-full items-center" :class="{ 'opacity-50 pointer-events-none': !(m.scoreOpts.speedType === 'sign' || m.scoreOpts.speedType=='txt_n_sign') }">
+                  <select-input v-model="m.scoreOpts.speedNote" :list="m.newScore.speedNoteList" style="height: 28px;"></select-input>
+                  <div style="margin: 0 10px;">=</div>
+                  <number-input v-model="m.scoreOpts.speedNum" :min="1" style="width: 64px; height: 28px;"></number-input>
+                </div>
+              </div>
+            </div>
+
+            <div class="relative rounded" style="padding: 10px 18px;">
+              <div class="blue-title" style="margin-bottom: 16px;">术语</div>
+              <div class="flex items-center ">
+                <div class="flex items-center h-full cursor-pointer mb-2" @click="setFaceType('none')">
+                  <img
+                    :src="`assets/music_score_editor/img/radio${m.scoreOpts.faceType === 'none' ? '1' : '2'}.png`"
+                    class="cursor-pointer mr-2"
+                  />
+                  <div>无术语</div>
+                </div>
+              </div>
+              <div class="flex items-center ">
+                <div class="flex items-center h-full cursor-pointer" @click="setFaceType('sign')">
+                  <img
+                    :src="`assets/music_score_editor/img/radio${m.scoreOpts.faceType === 'sign' ? '1' : '2'}.png`"
+                    class="cursor-pointer mr-2"
+                  />
+                  <div>常用术语：</div>
+                </div>
+                <select-input
+                  v-model="m.scoreOpts.faceText"
+                  :list="(m.scoreOpts.musicType!=='easy'?staffEmoTxtList:easyEmoTxtList)"
+                  style="height: 28px;"
+                  :width="'165px'"
+                  :class="{ 'opacity-50 pointer-events-none': m.scoreOpts.faceType !== 'sign' }">
+                </select-input>
+              </div>
+              <div class="flex items-center" style="margin-top: 10px;">
+                <div class="flex items-center h-full cursor-pointer" @click="setFaceType('txt')">
+                  <img
+                    :src="`assets/music_score_editor/img/radio${m.scoreOpts.faceType === 'txt' ? '1' : '2'}.png`"
+                    class="cursor-pointer mr-2"
+                    :class="{ 'opacity-50 pointer-events-none': m.scoreOpts.faceType !== 'txt' }"
+                  />
+                  <div>其他术语：</div>
+                </div>
+                <div class="flex h-full items-center" :class="{ 'opacity-50 pointer-events-none': m.scoreOpts.faceType !== 'txt' }">
+                  <el-input v-if="m.scoreOpts.faceType === 'txt'" v-model="m.scoreOpts.faceText" placeholder="" size="mini"></el-input>
+                  <el-input v-else placeholder="" size="mini"></el-input>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex sticky bottom-0 bg-white z-40" style="right: 10px;display: flex;flex-direction: row-reverse; width: 100%; padding: 20px 17px 20px 17px;">
+              <div class="_btn" @click="m.settingBoxShow = false">确定</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
       <div
         class="fixed flex top-0 left-0 duration-300 transform-gpu h-screen w-screen items-center justify-center"
         style="z-index: 9998;"
         :class="{ 'opacity-0 pointer-events-none' : !m.saveToScore.isShow }"
       >
-        <div class="rounded-md" style="box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);">
-          <b class="flex justify-between items-center text-xl bg-#f5f5f6 rounded-t-md" style="padding: 10px 20px">
+        <div class="rounded-md at_move_box" style="box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);">
+          <b class="flex justify-between items-center text-xl bg-#f5f5f6 rounded-t-md at_move_box_title" style="padding: 10px 20px">
             <div><img class="mr-2" src="assets/music_score_editor/css/icons/cloud.png"/>保存到谱例库</div>
             <img src="assets/music_score_editor/img/close.png" class="cursor-pointer" @click="m.saveToScore.isShow = false"/>
           </b>
@@ -657,400 +1114,104 @@
         </div>
       </div>
     
-    <div
-      class="fixed flex top-0 left-0 duration-300 transform-gpu h-screen w-screen items-center justify-center"
-      style="z-index: 9998;"
-      :class="{ 'opacity-0 pointer-events-none' : !m.myScore.isShow }"
-    >
-      <div class="rounded-md overflow-hidden" style="min-width: 820px; box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);">
-        <b class="flex justify-between items-center text-xl bg-#f5f5f6" style="padding: 10px 20px">
-          <div>打开谱例</div>
-          <img src="assets/music_score_editor/img/close.png" class="cursor-pointer" @click="() => {
-            m.myScore.isShow = false
-            m.myScore.query.fu_music_type = ''
-            m.myScore.query.fu_name = ''
-            m.myScore.query.page = 1
-            m.myScore.query.page_size = 12
-            m.myScore.index = -1
-          }"/>
-        </b>
+      <div
+        class="fixed flex top-0 left-0 duration-300 transform-gpu h-screen w-screen items-center justify-center"
+        style="z-index: 9998;"
+        :class="{ 'opacity-0 pointer-events-none' : !m.myScore.isShow }"
+      >
+        <div class="rounded-md overflow-hidden at_move_box" style="min-width: 820px; box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);">
+          <b class="flex justify-between items-center text-xl bg-#f5f5f6 at_move_box_title" style="padding: 10px 20px">
+            <div>打开谱例</div>
+            <img src="assets/music_score_editor/img/close.png" class="cursor-pointer" @click="() => {
+              m.myScore.isShow = false
+              m.myScore.query.fu_music_type = ''
+              m.myScore.query.fu_name = ''
+              m.myScore.query.page = 1
+              m.myScore.query.page_size = 12
+              m.myScore.index = -1
+            }"/>
+          </b>
 
-        <div style="padding: 37px 0 23px 0; background: #fff;">
-          <div style="margin: 0 27px 40px 27px;">
-            <div class="relative">
-              <input v-model="m.myScore.query.fu_name" class="form-control pr-24" @keydown.enter="updateMyScoreList"/>
-              <div class="absolute right-3 h-full items-center flex top-0 cursor-pointer" @click="updateMyScoreList">
-                <img src="assets/music_score_editor/img/search.png"/>
-                <div class="text-sm" style="color: #0E518F;">搜索</div>
-              </div>
-            </div>
-            <div class="flex mt-2.5">
-              <div
-                v-for="[txt, val] in [['全部', ''], ['简谱', 'easy'], ['高音谱表', 'treble'], ['低音谱表', 'bass'], ['大谱表', 'big'], ['合唱四声部', 'four']]"
-                class="space-x-1 cursor-pointer flex items-center mr-6"
-                @click="(m.myScore.query.fu_music_type = val) | updateMyScoreList()"
-              >
-                <img :src="val === m.myScore.query.fu_music_type ? 'assets/music_score_editor/img/checkbox2.png' : 'assets/music_score_editor/img/checkbox1.png'"/>
-                <div :style="`color: ${val === m.myScore.query.fu_music_type ? '#0E518F' : '#787878'}`">{{ txt }}</div>
-              </div>
-            </div>
-          </div>
-
-          <div
-            v-if="!!!m.myScore.list.length"
-            class="flex justify-center items-center text-3xl text-gray-400"
-            style="height: 390px"
-          >
-            {{ m.myScore.isLoading ? '加载中…' : '暂无谱例' }}
-          </div>
-          <div v-else class="grid grid-cols-6 gap-y-8 gap-x-8 overflow-y-auto" style="padding: 0 27px; height: 390px;">
-            <div v-for="(item, i) in m.myScore.list" key="item" style="width: 102px;" @click="m.myScore.index = i">
-              <div
-                class="duration-300 cursor-pointer flex"
-                :style="`padding: 8px 10px; width: 102px; height: 129px; border-radius: 17px 6px 6px 6px; border: 2px solid ${m.myScore.index === i ? '#25649E' : '#B6B6B6'}; background: #fff`"
-              >
-                <img
-                  :src="`assets/music_score_editor/img/${{ easy: 'jianpu', bass: 'di_yin', big: 'da_pu_biao', four: 'he_chang', treble: 'gao_yin' }[item.music_type]}.png`"
-                  class="m-auto w-full h-full object-contain"
-                />
-              </div>
-              <div
-                class="_btn mt-3 text-center w-full"
-                :class="{'text-#666 bg-ea' : m.myScore.index !== i}"
-                style="padding-left: 5px; padding-right: 5px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;"
-                :title="item.name"
-              >
-                {{ item.name }}
-              </div>
-            </div>
-          </div>
-
-          <div class="mt-8 flex justify-end items-center space-x-3 pr-7">
-            <div
-              class="_btn"
-              :_disabled="m.myScore.query.page <= 1 || m.myScore.isLoading"
-              @click="(m.myScore.query.page -= 1) | updateMyScoreList()"
-            >
-              上一页
-            </div>
-            <div>
-              {{ m.myScore.query.page }} / {{ m.myScore.totalPage }}
-            </div>
-            <div
-              class="_btn"
-              :_disabled="m.myScore.query.page >= m.myScore.totalPage || m.myScore.isLoading"
-              @click="(m.myScore.query.page += 1) | updateMyScoreList()"
-            >
-              下一页
-            </div>
-            <div
-              class="_btn text-center"
-              style="width: 110px;"
-              :_disabled="m.myScore.index === -1"
-              @click="openMyNewScore"
-            >
-              确认
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="fixed flex top-0 left-0 duration-300 transform-gpu h-screen w-screen items-center justify-center"
-      style="z-index: 9998; margin-top: 5px;"
-      :class="{ 'opacity-0 pointer-events-none' : !m.newScore.scoreOptsShow }"
-    >
-      <div class="rounded-md overflow-hidden at_move_box" style="box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);">
-        <b class="flex justify-between items-center text-xl bg-#f5f5f6 at_move_box_title" style="padding: 10px 20px">
-          <div>新建乐谱</div>
-          <img src="assets/music_score_editor/img/close.png" class="cursor-pointer" @click="m.newScore.scoreOptsShow = m.newScore.musicType.show = false"/>
-        </b>
-
-        <div class="flex relative" style="height: 857px; background: #B5C5D3;">
-          <div style="width: 712px;padding: 20px;">
-            <iframe
-              ref="previewIframeRef"
-              :src="m.newScore.previewUrl"
-              class="w-full h-full rounded-md border-none"
-            ></iframe>
-          </div>
-
-          <div class="bg-white overflow-y-auto" >  <!-- overflow-y-auto -->
-            <div class="rounded" style="padding: 15px 17px; border-bottom: 2px solid #F5F5F5;">
-              <div class="blue-title" style="margin-bottom: 10px;">基本信息</div>
-              <div class="relative" style="margin-bottom: 16px;">
-                <div class="input-group">
-                  <input v-model="m.newScore.scoreOpts.title" class="form-control" placeholder="标题"/>
+          <div style="padding: 37px 0 23px 0; background: #fff;">
+            <div style="margin: 0 27px 40px 27px;">
+              <div class="relative">
+                <input v-model="m.myScore.query.fu_name" class="form-control pr-24" @keydown.enter="updateMyScoreList"/>
+                <div class="absolute right-3 h-full items-center flex top-0 cursor-pointer" @click="updateMyScoreList">
+                  <img src="assets/music_score_editor/img/search.png"/>
+                  <div class="text-sm" style="color: #0E518F;">搜索</div>
                 </div>
               </div>
-
-              <div class="input-group" style="margin-bottom: 16px;">
-                <input v-model="m.newScore.scoreOpts.subTitle" class="form-control" placeholder="副标题"/>
-              </div>
-
-              <div class="flex space-x-4">
-                <input v-model="m.newScore.scoreOpts.compose" class="form-control" placeholder="曲作者"/>
-                <input v-model="m.newScore.scoreOpts.lyricist" class="form-control" placeholder="词作者"/>
-              </div>
-            </div>
-
-            <div class="relative rounded flex-shrink-0" style="width: 491px; padding: 10px 21px 10px 21px; border-bottom: 2px solid #F5F5F5;">
-              <div class="flex items-center">
-                <div class="blue-title">调号</div>
-                <div v-if="m.newScore.scoreOpts.musicType !== 'easy'" class="ml-auto flex justify-center space-x-12 text-#999 relative pb-1" :class="`key-sign-${m.newScore.keySignType}`">
-                  <div class="cursor-pointer" @click="m.newScore.keySignType = 'up'">升记号大调</div>
-                  <div class="cursor-pointer" @click="m.newScore.keySignType = 'down'">降记号大调</div>
-                  <div class="absolute bg-deep-blue w-24 h-1 rounded-full bottom-0 duration-300"></div>
-                </div>
-              </div>
-              <div v-if="m.newScore.scoreOpts.musicType === 'easy'" class="flex items-center" style="margin-top: 16px;">
-                <div>简谱：</div>
-                <div style="margin: 0 13px 0 6px">1=</div>
-                <select-input v-model="m.newScore.scoreOpts.keySign" :list="m.newScore.keySignEasyList" style="z-index: 51;"></select-input>
-              </div>
-              <div v-else class="mt-4 w-full overflow-hidden">
+              <div class="flex mt-2.5">
                 <div
-                  class="flex duration-300"
-                  :style="{
-                    width: '200%',
-                    transform: `translateX(-${m.newScore.keySignType === 'up' ? 0 : 50}%)`,
-                  }"
+                  v-for="[txt, val] in [['全部', ''], ['简谱', 'easy'], ['高音谱表', 'treble'], ['低音谱表', 'bass'], ['大谱表', 'big'], ['合唱四声部', 'four']]"
+                  class="space-x-1 cursor-pointer flex items-center mr-6"
+                  @click="(m.myScore.query.fu_music_type = val) | updateMyScoreList()"
                 >
-                  <div class="w-1/2 grid grid-cols-4 gap-1">
-                    <div
-                      v-for="item in m.newScore.keySignUpList"
-                      :key="item.title"
-                      class="flex justify-center items-center pt-2"
-                    >
-                      <div
-                        class="select-key-sign w-24 h-24 px-2 rounded-md overflow-hidden cursor-pointer justify-center items-center flex flex-col duration-300"
-                        :class="{ 'is-select': m.newScore.scoreOpts.keySign === item.val }"
-                        @click="m.newScore.scoreOpts.keySign = item.val"
-                      >
-                        <img :src="item.img" />
-                        <div class="flex items-center">
-                          <div :style="m.newScore.scoreOpts.keySign === item.val ? 'color: #001F3B' : ''">{{ item.title }}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="w-1/2 grid grid-cols-4 gap-1 items-center">
-                    <div
-                      v-for="item in m.newScore.keySignDownList"
-                      :key="item.title"
-                      class="flex justify-center items-center  pt-2"
-                    >
-                      <div
-                        class="select-key-sign w-24 h-24 px-2 rounded-md overflow-hidden cursor-pointer justify-center items-center flex flex-col duration-300"
-                        :class="{ 'is-select': m.newScore.scoreOpts.keySign === item.val }"
-                        @click="m.newScore.scoreOpts.keySign = item.val"
-                      >
-                        <img :src="item.img" />
-                        <div class="flex items-center">
-                          <div :style="m.newScore.scoreOpts.keySign === item.val ? 'color: #001F3B' : ''">{{ item.title }}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <img :src="val === m.myScore.query.fu_music_type ? 'assets/music_score_editor/img/checkbox2.png' : 'assets/music_score_editor/img/checkbox1.png'"/>
+                  <div :style="`color: ${val === m.myScore.query.fu_music_type ? '#0E518F' : '#787878'}`">{{ txt }}</div>
                 </div>
               </div>
             </div>
 
-            <div class="relative rounded" style="padding: 10px 18px 0 18px; border-bottom: 2px solid #F5F5F5;">
-              <div class="blue-title">拍号</div>
-              <div class="flex items-center" style="margin: 16px 0">
-                <img
-                  :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.beatType === 'custom' ? '1' : '2'}.png`"
-                  class="cursor-pointer"
-                  @click="m.newScore.scoreOpts.beatType = 'custom'"
-                />
-  
-                <div class="flex h-full items-center duration-300" :class="{ 'pointer-events-none opacity-50': m.newScore.scoreOpts.beatType !== 'custom' }">
-                  <select-input
-                    v-model="m.newScore.scoreOpts.beatNote1"
-                    :list="m.newScore.beatNoteList"
-                    style="width: 64px; margin-left: 10px;"
-                  ></select-input>
-                  <div class="mx-1.5">/</div>
-                  <select-input
-                    v-model="m.newScore.scoreOpts.beatNote2"
-                    :list="m.newScore.beatNoteList2"
-                    style="width: 64px;"
-                  ></select-input> 
-                </div>
-                
-                <img
-                  :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.beatType === 'C' ? '1' : '2'}.png`"
-                  class="cursor-pointer ml-auto"
-                  @click="m.newScore.scoreOpts.beatType = 'C'"
-                />
-                <img style="margin-left: 13px" src="assets/music_score_editor/img/beatSign-C.png" />
-                <img
-                  :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.beatType === 'C|' ? '1' : '2'}.png`"
-                  class="cursor-pointer"
-                  style="margin-right: 13px; margin-left: 44px;"
-                  @click="m.newScore.scoreOpts.beatType = 'C|'"
-                />
-                <img style="margin-right: 66px" src="assets/music_score_editor/img/beatSign-CI.png" />
-              </div>
+            <div
+              v-if="!!!m.myScore.list.length"
+              class="flex justify-center items-center text-3xl text-gray-400"
+              style="height: 390px"
+            >
+              {{ m.myScore.isLoading ? '加载中…' : '暂无谱例' }}
             </div>
-
-            <div class="relative rounded items-center" style="padding: 10px 18px; border-bottom: 2px solid #F5F5F5;">
-              <div class="flex items-center" style="color: #8F8F8F; font-size: 12px">
-                <div class="blue-title">排版</div>
-                <img src="assets/music_score_editor/img/warning.png" style="margin: 0 2px 0 7px;" />
-                您也可以在创建乐谱后再添加或移除小节。
-              </div>
-              <div class="flex items-center" style="margin-top: 20px;">
-                <div>行数：</div>
-                <number-input
-                  v-model="m.newScore.scoreOpts.rows"
-                  style="width: 64px; height: 28px;">
-                </number-input>
-                <div class="ml-auto">小节：</div>
-                <number-input
-                  v-model="m.newScore.scoreOpts.rowBars"
-                  style="width: 64px; height: 28px; margin-right: 6px;">
-                </number-input>
-                <div style="margin-right: 75px;">/ 行</div>
-              </div>
-            </div>
-
-            <div class="relative rounded" style="padding: 10px 18px; border-bottom: 2px solid #F5F5F5;">
-              <div class="flex">
-                <div class="flex cursor-pointer" @click="m.newScore.scoreOpts.isWeak = !m.newScore.scoreOpts.isWeak">
-                  <div class="blue-title">
-                    不完全小节（弱起小节）
-                    <img :src="`assets/music_score_editor/img/checkbox${m.newScore.scoreOpts.isWeak ? '2' : '1'}.png`">
-                  </div>
-                </div>
-              </div>
-              <div class="items-center flex duration-300 mt-4" :class="{ 'pointer-events-none opacity-50': !m.newScore.scoreOpts.isWeak }">
-                <select-input v-model="m.newScore.scoreOpts.weakBarBot" :list="m.newScore.beatNoteList3" style="width: 118px; height: 28px; z-index: 52;"></select-input>
-                <div class="mx-1.5">/</div>
-                <number-input v-model="m.newScore.scoreOpts.weakBarTop" :min="1" style="width: 64px; height: 28px;"></number-input>
-                <div style="margin-left: 3px;">个</div>
-              </div>
-            </div>
-
-            <div class="relative rounded" style="padding: 10px 18px; border-bottom: 2px solid #F5F5F5;">
-              <div class="flex">
-                <div class="flex cursor-pointer" @click="m.newScore.scoreOpts.isWeakEnd = !m.newScore.scoreOpts.isWeakEnd">
-                  <div class="blue-title">
-                    不完全结尾小节
-                    <img :src="`assets/music_score_editor/img/checkbox${m.newScore.scoreOpts.isWeakEnd ? '2' : '1'}.png`">
-                  </div>
-                </div>
-              </div>
-              <div class="items-center flex duration-300 mt-4" :class="{ 'pointer-events-none opacity-50': !m.newScore.scoreOpts.isWeakEnd }">
-                <select-input v-model="m.newScore.scoreOpts.weakEndBot" :list="m.newScore.beatNoteList3" style="width: 118px; height: 28px; z-index: 52;"></select-input>
-                <div class="mx-1.5">/</div>
-                <number-input v-model="m.newScore.scoreOpts.weakEndTop" :min="1" style="width: 64px; height: 28px;"></number-input>
-                <div style="margin-left: 3px;">个</div>
-              </div>
-            </div>
-
-            <div class="relative rounded" style="padding: 10px 18px;">
-              <div class="blue-title" style="margin-bottom: 16px;">速度</div>
-              <div class="flex items-center ">
-                <div class="flex items-center h-full cursor-pointer mb-2" @click="setSpeedType('none')">
+            <div v-else class="grid grid-cols-6 gap-y-8 gap-x-8 overflow-y-auto" style="padding: 0 27px; height: 390px;">
+              <div v-for="(item, i) in m.myScore.list" key="item" style="width: 102px;" @click="m.myScore.index = i">
+                <div
+                  class="duration-300 cursor-pointer flex"
+                  :style="`padding: 8px 10px; width: 102px; height: 129px; border-radius: 17px 6px 6px 6px; border: 2px solid ${m.myScore.index === i ? '#25649E' : '#B6B6B6'}; background: #fff`"
+                >
                   <img
-                    :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.speedType === 'none' ? '1' : '2'}.png`"
-                    class="cursor-pointer mr-2"
+                    :src="`assets/music_score_editor/img/${{ easy: 'jianpu', bass: 'di_yin', big: 'da_pu_biao', four: 'he_chang', treble: 'gao_yin' }[item.music_type]}.png`"
+                    class="m-auto w-full h-full object-contain"
                   />
-                  <div>无速度</div>
                 </div>
-              </div>
-              <div class="flex items-center ">
-                <div class="flex items-center h-full cursor-pointer" @click="setSpeedType('txt')">
-                  <img class="cursor-pointer mr-2" :src="`assets/music_score_editor/img/checkbox${(m.newScore.scoreOpts.speedType=='txt' || m.newScore.scoreOpts.speedType=='txt_n_sign') ? '2' : '1'}.png`">
-
-                  <!-- <img
-                    :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.speedType === 'txt' ? '1' : '2'}.png`"
-                    class="cursor-pointer mr-2"
-                  /> -->
-                  <div>速度文本：</div>
-                </div>
-                <select-input
-                  v-model="m.newScore.scoreOpts.speedText"
-                  :list="speedTxtOptsList"
-                  style="height: 28px;"
-                  :class="{ 'opacity-50 pointer-events-none': !(m.newScore.scoreOpts.speedType === 'txt' || m.newScore.scoreOpts.speedType=='txt_n_sign') }">
-                </select-input>
-              </div>
-              <div class="flex items-center" style="margin-top: 10px;">
-                <div class="flex items-center h-full cursor-pointer" @click="setSpeedType('sign')">
-                  <img class="cursor-pointer mr-2" :src="`assets/music_score_editor/img/checkbox${(m.newScore.scoreOpts.speedType=='sign' || m.newScore.scoreOpts.speedType=='txt_n_sign') ? '2' : '1'}.png`">
-
-                  <!-- <img
-                    :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.speedType === 'sign' ? '1' : '2'}.png`"
-                    class="cursor-pointer mr-2"
-                    :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.speedType !== 'sign' }"
-                  /> -->
-                  <div>节拍器标记：</div>
-                </div>
-                <div class="flex h-full items-center" :class="{ 'opacity-50 pointer-events-none': !(m.newScore.scoreOpts.speedType === 'sign' || m.newScore.scoreOpts.speedType=='txt_n_sign') }">
-                  <select-input v-model="m.newScore.scoreOpts.speedNote" :list="m.newScore.speedNoteList" style="height: 28px;"></select-input>
-                  <div style="margin: 0 10px;">=</div>
-                  <number-input v-model="m.newScore.scoreOpts.speedNum" :min="1" style="width: 64px; height: 28px;"></number-input>
+                <div
+                  class="_btn mt-3 text-center w-full"
+                  :class="{'text-#666 bg-ea' : m.myScore.index !== i}"
+                  style="padding-left: 5px; padding-right: 5px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;"
+                  :title="item.name"
+                >
+                  {{ item.name }}
                 </div>
               </div>
             </div>
 
-            <div class="relative rounded" style="padding: 10px 18px;">
-              <div class="blue-title" style="margin-bottom: 16px;">术语</div>
-              <div class="flex items-center ">
-                <div class="flex items-center h-full cursor-pointer mb-2" @click="setFaceType('none')">
-                  <img
-                    :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.faceType === 'none' ? '1' : '2'}.png`"
-                    class="cursor-pointer mr-2"
-                  />
-                  <div>无术语</div>
-                </div>
+            <div class="mt-8 flex justify-end items-center space-x-3 pr-7">
+              <div
+                class="_btn"
+                :_disabled="m.myScore.query.page <= 1 || m.myScore.isLoading"
+                @click="(m.myScore.query.page -= 1) | updateMyScoreList()"
+              >
+                上一页
               </div>
-              <div class="flex items-center ">
-                <div class="flex items-center h-full cursor-pointer" @click="setFaceType('txt')">
-                  <img
-                    :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.faceType === 'txt' ? '1' : '2'}.png`"
-                    class="cursor-pointer mr-2"
-                  />
-                  <div>常用术语：</div>
-                </div>
-                <select-input
-                  v-model="m.newScore.scoreOpts.faceText"
-                  :list="(m.newScore.scoreOpts.musicType!=='easy'?staffEmoTxtList:easyEmoTxtList)"
-                  style="height: 28px;"
-                  :width="'165px'"
-                  :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.faceType !== 'txt' }">
-                </select-input>
+              <div>
+                {{ m.myScore.query.page }} / {{ m.myScore.totalPage }}
               </div>
-              <div class="flex items-center" style="margin-top: 10px;">
-                <div class="flex items-center h-full cursor-pointer" @click="setFaceType('sign')">
-                  <img
-                    :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.faceType === 'sign' ? '1' : '2'}.png`"
-                    class="cursor-pointer mr-2"
-                    :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.faceType !== 'sign' }"
-                  />
-                  <div>其他术语：</div>
-                </div>
-                <div class="flex h-full items-center" :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.faceType !== 'sign' }">
-                  <el-input v-if="m.newScore.scoreOpts.faceType === 'sign'" v-model="m.newScore.scoreOpts.faceText" placeholder="" size="mini"></el-input>
-                  <el-input v-else placeholder="" size="mini"></el-input>
-                </div>
+              <div
+                class="_btn"
+                :_disabled="m.myScore.query.page >= m.myScore.totalPage || m.myScore.isLoading"
+                @click="(m.myScore.query.page += 1) | updateMyScoreList()"
+              >
+                下一页
+              </div>
+              <div
+                class="_btn text-center"
+                style="width: 110px;"
+                :_disabled="m.myScore.index === -1"
+                @click="openMyNewScore"
+              >
+                确认
               </div>
             </div>
-          </div>
-
-          <div class="flex absolute bottom-0 bg-white z-40" style="right: 10px; width: 481px; padding: 20px 17px 20px 17px;">
-            <div class="_btn _border" @click="m.newScore.scoreOptsShow = m.newScore.musicType.show = false">取消</div>
-            <div class="_btn ml-auto mr-2 " @click="m.newScore.scoreOptsShow = false">上一步</div>
-            <div class="_btn" @click="createNewScore">创建</div>
           </div>
         </div>
       </div>
-    </div>
 
 
       <div
@@ -1169,53 +1330,76 @@
         </div>
       </div>     
 
-    <div
-      :class="m.shortcutsPanel.index !== -1 ? '_show' : '_hide'"
-      class="fixed top-0 left-0 duration-300 h-screen w-screen flex items-center justify-center"
-      style="z-index: 9998;"
-    >
       <div
-        class="rounded-xl overflow-hidden"
-        style="background: #F5F5F5; box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);"
+        :class="m.shortcutsPanel.index !== -1 ? '_show' : '_hide'"
+        class="fixed top-0 left-0 duration-300 h-screen w-screen flex items-center justify-center"
+        style="z-index: 9998;"
       >
-        <b class="flex justify-between items-center text-xl py-3 px-5">
-          <div>快捷键</div>
-          <img src="assets/music_score_editor/img/close.png" class="cursor-pointer" @click="m.shortcutsPanel.index = -1"/>
-        </b>
+        <div
+          class="rounded-xl overflow-hidden"
+          style="background: #F5F5F5; box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);"
+        >
+          <b class="flex justify-between items-center text-xl py-3 px-5">
+            <div>快捷键</div>
+            <img src="assets/music_score_editor/img/close.png" class="cursor-pointer" @click="m.shortcutsPanel.index = -1"/>
+          </b>
 
-        <div class="flex bg-white" style="height: 503px; padding: 22px 30px 22px 30px; width: 876px; color: #535353;">
-          <div class="h-full rounded p-0.5 mr-2 text-#535353" style="border: 2px solid #E7E7E7;">
-            <div
-              v-for="(item, i) in m.shortcutsPanel.typeList.map(item => item.title)"
-              :key="i"
-              class="cursor-pointer duration-300 px-3 py-2 mb-2"
-              :class="{ 'bg-deep-blue text-white': m.shortcutsPanel.index === i }"
-              style="width: 145px;"
-              @click="m.shortcutsPanel.index = i"
-            >
-              {{ item }}
+          <div class="flex bg-white" style="height: 503px; padding: 22px 30px 22px 30px; width: 876px; color: #535353;">
+            <div class="h-full rounded p-0.5 mr-2 text-#535353" style="border: 2px solid #E7E7E7;">
+              <div
+                v-for="(item, i) in m.shortcutsPanel.typeList.map(item => item.title)"
+                :key="i"
+                class="cursor-pointer duration-300 px-3 py-2 mb-2"
+                :class="{ 'bg-deep-blue text-white': m.shortcutsPanel.index === i }"
+                style="width: 145px;"
+                @click="m.shortcutsPanel.index = i"
+              >
+                {{ item }}
+              </div>
             </div>
-          </div>
-          <!-- <div style="padding: 20px 25px 12px 25px; border: 2px solid #E7E7E7;"></div> -->
-          <div class="flex h-full flex-1 rounded" style=" border: 2px solid #E7E7E7;">
+            <!-- <div style="padding: 20px 25px 12px 25px; border: 2px solid #E7E7E7;"></div> -->
+            <div class="flex h-full flex-1 rounded" style=" border: 2px solid #E7E7E7;">
 
-            <div class=" flex-1" style="border-right: 2px solid #E7E7E7;">
+              <div class=" flex-1" style="border-right: 2px solid #E7E7E7;">
+                <div style="padding: 20px 25px 12px 25px;" >
+                  <div
+                    v-for="item in m.shortcutsPanel.typeList[m.shortcutsPanel.index]?.leftList"
+                    :key="item.title"
+                    class="mb-3"
+                  >
+                    <div class="flex">
+                      <div>{{ item.title }}</div>
+                      <div class="flex ml-auto space-x-2 items-center">
+                        <div
+                          v-for="item in item.shortList"
+                          class="rounded"
+                          :style="item !== '/' ? 'background: #F2F2F2; color: #767676; font-size: 14px; padding: 5px 8px;' : ''"
+                        >
+                          {{ item }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-              <div style="padding: 20px 25px 12px 25px;" >
-                <div
-                  v-for="item in m.shortcutsPanel.typeList[m.shortcutsPanel.index]?.leftList"
-                  :key="item.title"
-                  class="mb-3"
-                >
-                  <div class="flex">
-                    <div>{{ item.title }}</div>
-                    <div class="flex ml-auto space-x-2 items-center">
-                      <div
-                        v-for="item in item.shortList"
-                        class="rounded"
-                        :style="item !== '/' ? 'background: #F2F2F2; color: #767676; font-size: 14px; padding: 5px 8px;' : ''"
-                      >
-                        {{ item }}
+              <div class="flex-1">
+                <div style="padding: 20px 25px 12px 25px;">
+                  <div
+                    v-for="item in m.shortcutsPanel.typeList[m.shortcutsPanel.index]?.rightList"
+                    :key="item.title"
+                    class="mb-3"
+                  >
+                    <div class="flex">
+                      <div>{{ item.title }}</div>
+                      <div class="flex ml-auto space-x-2 items-center">
+                        <div
+                          v-for="item2 in item.shortList"
+                          class="rounded"
+                          :style="item2 !== '/' || item.shortList.length === 1 ? 'background: #F2F2F2; color: #767676; font-size: 14px; padding: 5px 8px;' : ''"
+                        >
+                          {{ item2 }}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1223,35 +1407,10 @@
               </div>
 
             </div>
-
-            <div class="flex-1">
-              <div style="padding: 20px 25px 12px 25px;">
-                <div
-                  v-for="item in m.shortcutsPanel.typeList[m.shortcutsPanel.index]?.rightList"
-                  :key="item.title"
-                  class="mb-3"
-                >
-                  <div class="flex">
-                    <div>{{ item.title }}</div>
-                    <div class="flex ml-auto space-x-2 items-center">
-                      <div
-                        v-for="item2 in item.shortList"
-                        class="rounded"
-                        :style="item2 !== '/' || item.shortList.length === 1 ? 'background: #F2F2F2; color: #767676; font-size: 14px; padding: 5px 8px;' : ''"
-                      >
-                        {{ item2 }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
+            
           </div>
-          
         </div>
       </div>
-    </div>
 
       <!-- 导出pdf -->
       <div
@@ -2137,6 +2296,11 @@
           <div class="flex items-center space-x-2.5 cursor-pointer" @click="m.isMusicNoteShow = !m.isMusicNoteShow">
             <img :src="`assets/music_score_editor/img/checkbox${m.isMusicNoteShow ? '2' : '1'}.png`" />
             <div>音符面板</div>
+          </div>
+
+          <div class="flex items-center space-x-2.5 cursor-pointer" @click="m.settingBoxShow = !m.settingBoxShow">
+            <img :src="`assets/music_score_editor/img/checkbox${m.settingBoxShow ? '2' : '1'}.png`" />
+            <div>乐谱设置面板</div>
           </div>
         </div>
 

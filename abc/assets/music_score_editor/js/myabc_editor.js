@@ -3311,9 +3311,37 @@ function setSecTitle(val) {
       //只有主标题，则新增一个
       content = content.replace(matchs[0], matchs[0] + "\nT:" + val);
     } else {
-      console.log("有副标题。。。");
-      content = content.replace(matchs[0], "T:" + $("#T").val());
+      console.log("有副标题。。。", matchs);
+      if(matchs[0]==matchs[1]){
+        content = content.replace(matchs[0], matchs[0].replace("\n", "") + " \n");
+      }
       content = content.replace(matchs[1], "T:" + val);
+    }
+  }
+  $("#source").val(content);
+  src_change();
+}
+//设置词作者（第二个C）
+function setCompose(val, index) {
+  if(!index){
+    set('C:', val);
+    src_change();
+    return;
+  }
+  var content = $("#source").val();
+  var reg = /C:.*/g;
+  var matchs = content.match(reg);
+  if (matchs != null) {
+    if (matchs.length == 1) {
+      console.log("只有一个Compose");
+      //只有主标题，则新增一个
+      content = content.replace(matchs[0], matchs[0] + "\nC:" + val);
+    } else {
+      console.log("有两个Compose");
+      if(matchs[0]==matchs[1]){
+        content = content.replace(matchs[0], matchs[0].replace("\n", "") + " \n");
+      }
+      content = content.replace(matchs[1], "C:" + val);
     }
   }
   $("#source").val(content);

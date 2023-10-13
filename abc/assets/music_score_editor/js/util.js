@@ -3641,6 +3641,7 @@ function decimalsToFractional(decimals) {
 // 设置每行显示小节数
 // %%barsperstaff 4
 function setBarsPerstaff(sourceid, num) {
+  console.log('setBarsPerstaff');
   var content = $("#" + sourceid).val();
   /*老的写法，加barsperstaff;
 	var pattern = /%%barsperstaff\s*(\d)*\n/;
