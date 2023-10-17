@@ -3234,7 +3234,8 @@ function getGchCoorInfo(text) {
   return text;
 }
 const setEmoTxt = (txt) => {
-  $("#zsistart")["val"]($($('[type="note"],[type="rest"],[type="splnum_rest"]')[0]).attr('istart'))
+  // $("#zsistart")["val"]($($('[type="note"],[type="rest"],[type="splnum_rest"]')[0]).attr('istart'))
+  $("#zsistart")["val"]($($(".selected_text")[$(".selected_text").length-1]).attr('istart'))
   $("#zsInput")["val"](txt)
   saveZs()
 }
@@ -3279,6 +3280,8 @@ function saveZs() {
     $("#source")["val"](abc_content);
     src_change();
     doLog();
+  }else{
+    window.top.alert('请选择一个音符');
   }
 }
 function genGchCoorStr() {
