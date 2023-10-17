@@ -6690,7 +6690,9 @@ var content_vue = new Vue({
     },
     'm.scoreOpts.faceText'() {
       console.log('m.scoreOpts.faceText');
-      this.changeSpeed()
+      setTimeout(()=>{
+        this.changeSpeed()
+      }, 200);
     },
     "m.key.val"(val) {
       const valueSelector = this.m.key.list.find(

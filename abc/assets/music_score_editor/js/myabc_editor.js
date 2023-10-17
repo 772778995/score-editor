@@ -1589,6 +1589,9 @@ $(document).ready(function () {
     .on("keydown", function (event) {
       console.log(event.which);
       console.log("keydown");
+      if(content_vue.m.settingBoxShow){
+        return true;
+      }
       var e = event || window.event || arguments.callee.caller.arguments[0];
       var obj = $(event.srcElement || e.target);
       user.isCtrl = false;
