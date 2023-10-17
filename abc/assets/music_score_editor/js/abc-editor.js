@@ -6270,6 +6270,7 @@ var content_vue = new Vue({
       // })
     },
     getSelectedNote() {
+      console.log('getSelectedNote', $(".selected_text").length);
       if($(".selected_text").length){
         setTimeout(function(){
           if($(".selected_text").length>1){

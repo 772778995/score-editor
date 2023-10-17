@@ -27991,6 +27991,7 @@ function updatePrachEditor() {
 var initSvgTop = -1;
 //选中连谱号事件
 function selScore(e, obj) {
+  console.log('selScore');
   $("svg[type='rectnode']").remove();
   $("#nodeMenu").hide();
   console.log(e.offsetY, e.pageY, e.clientY);
