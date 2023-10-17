@@ -5960,8 +5960,10 @@ var content_vue = new Vue({
     // ———————————————————————————————————————— 分割线 __method ————————————————————————————————————————
     setFaceType(type){
       console.log('setFaceType', type, this.m.newScore.scoreOpts.faceType);
-      this.m.newScore.scoreOpts.faceText = '';
-      this.m.scoreOpts.faceText = '';
+      if(type=='none'){
+        this.m.newScore.scoreOpts.faceText = '';
+        this.m.scoreOpts.faceText = '';
+      }
       this.m.newScore.scoreOpts.faceType = type;
       this.m.scoreOpts.faceType = type;
     },
@@ -6332,9 +6334,9 @@ var content_vue = new Vue({
         return;
       }
       this.m.newScore.scoreOpts.title = this.m.newScore.scoreOpts.title?this.m.newScore.scoreOpts.title:'标题';
-      this.m.newScore.scoreOpts.subTitle = this.m.newScore.scoreOpts.subTitle?this.m.newScore.scoreOpts.subTitle:' ';
+      this.m.newScore.scoreOpts.subTitle = this.m.newScore.scoreOpts.subTitle?this.m.newScore.scoreOpts.subTitle:'&emsp;';
       this.m.newScore.scoreOpts.compose = this.m.newScore.scoreOpts.compose?this.m.newScore.scoreOpts.compose:' ';
-      this.m.newScore.scoreOpts.lyricist = this.m.newScore.scoreOpts.lyricist?this.m.newScore.scoreOpts.lyricist:' ';
+      this.m.newScore.scoreOpts.lyricist = this.m.newScore.scoreOpts.lyricist?this.m.newScore.scoreOpts.lyricist:'&emsp;';
       if (isNewTab) {
         window.open(
           location.href.replace(/\?.+/, "") +
@@ -6660,15 +6662,21 @@ var content_vue = new Vue({
     'm.scoreOpts.subTitle'(val) {
       console.log('m.scoreOpts.subTitle', val, typeof val);
       setTimeout(()=>{
-        setSecTitle(val)
+        setSecTitle(val?val:'&emsp;')
       }, 200);
+      if(val=='&emsp;'){
+        this.m.scoreOpts.subTitle = '';
+      }
     },
     'm.scoreOpts.compose'(val) {
       set('C:', val);
       abc_change();
     },
     'm.scoreOpts.lyricist'(val) {
-      setCompose(val, 1);
+      setCompose(val?val:'&emsp;', 1);
+      if(val=='&emsp;'){
+        this.m.scoreOpts.lyricist = '';
+      }
     },
     'm.scoreOpts.rowBars'(val) {
       setBarsPerstaff('source', val)
@@ -6691,9 +6699,7 @@ var content_vue = new Vue({
     },
     'm.scoreOpts.faceText'() {
       console.log('m.scoreOpts.faceText');
-      setTimeout(()=>{
-        this.changeSpeed()
-      }, 200);
+      this.changeSpeed();
     },
     "m.key.val"(val) {
       const valueSelector = this.m.key.list.find(
