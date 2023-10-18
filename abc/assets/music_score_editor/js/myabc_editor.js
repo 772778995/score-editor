@@ -70,7 +70,7 @@ var clipdataContent = "";
 最急板201-220
 */
 const speedTxtList = [
-  { type: "staff", val: "40", txt: "Grave", title: '庄板', min: 1, max: 44 },
+  { type: "staff", val: "40", txt: "Grave", title: '庄板', min: 1, max: 44 }, // 20~
   { type: "staff", val: "46", txt: "Largo", title: '广板', min: 45, max: 50 },
   { type: "staff", val: "52", txt: "Lento", title: '慢板', min: 51, max: 54 },
   { type: "staff", val: "56", txt: "Adagio", title: '柔板', min: 55, max: 59 },
@@ -81,8 +81,8 @@ const speedTxtList = [
   { type: "staff", val: "108", txt: "Allegretto", title: '小快板', min: 101, max: 126 },
   { type: "staff", val: "132", txt: "Allegro", title: '快板', min: 125, max: 176 },
   { type: "staff", val: "184", txt: "Presto", title: '急板', min: 177, max: 200  },
-  { type: "staff", val: "208", txt: "Prestissimo", title: '最急板', min: 201, max: 220  },
-  { type: "easy", val: "40", txt: "庄板", min: 1, max: 44 },
+  { type: "staff", val: "208", txt: "Prestissimo", title: '最急板', min: 201, max: 350  }, // ~220
+  { type: "easy", val: "40", txt: "庄板", min: 1, max: 44 }, // 20~
   { type: "easy", val: "46", txt: "广板", min: 45, max: 50 },
   { type: "easy", val: "52", txt: "慢板", min: 51, max: 54 },
   { type: "easy", val: "56", txt: "柔板", min: 55, max: 59 },
@@ -93,7 +93,7 @@ const speedTxtList = [
   { type: "easy", val: "108", txt: "小快板", min: 101, max: 126 },
   { type: "easy", val: "132", txt: "快板", min: 125, max: 176 },
   { type: "easy", val: "184", txt: "急板", min: 177, max: 200 },
-  { type: "easy", val: "208", txt: "最急板", min: 201, max: 220 }
+  { type: "easy", val: "208", txt: "最急板", min: 201, max: 350 } // ~220
 ];
 
 /** 表情术语列表 */
