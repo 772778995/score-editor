@@ -141,7 +141,7 @@ const defaultScoreOpts = {
   rows: 2,
   rowBars: 4,
 
-  speedType: "sign",
+  speedType: "txt",
   speedText: "Moderato",
   speedNote: "1/4",
   speedNum: "88",
@@ -280,7 +280,7 @@ const _getSpeed = (opts) => {
   if (opts.speedType === "txt") {
     return `
 Q: 1/4=${speedTxtList.find((item) => item.txt === opts.speedText || item.title === opts.speedText).val}`;
-  }else if (opts.speedType === "txt_n_sign") {
+  }else if (opts.speedType.indexOf('txt')!==-1 && opts.speedType.indexOf('sign')!==-1) {
     return `
 Q: ${(opts.speedText?'"'+opts.speedText+'"':'')}1/4=${opts.speedNum}`;
   }

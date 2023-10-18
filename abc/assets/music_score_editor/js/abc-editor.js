@@ -5968,33 +5968,26 @@ var content_vue = new Vue({
       this.m.scoreOpts.faceType = type;
     },
     setSpeedType(type){
-      console.log('setSpeedType', type, this.m.newScore.scoreOpts.speedType);
-      let o_type =  this.m.newScore.scoreOpts.speedType;
+      console.log('setSpeedType', type, this.m.scoreOpts.speedType);
+      let o_type =  this.m.scoreOpts.speedType;
       if(type!='none'){
-        // none txt sign txt_n_sign
-        if(o_type=='txt_n_sign'){
-          if(type=='txt'){
-            o_type = 'sign';
+        // none txt sign hide
+        if(o_type=='none'){
+          o_type = type;
+        }else{
+          var o_type_arr = o_type.split('_');
+          var o_index = o_type_arr.indexOf(type);
+          if(o_index!==-1){
+            // 移除
+            o_type_arr.splice(o_index, 1);
           }else{
-            o_type = 'txt';
+            // 添加
+            o_type_arr.push(type);
           }
-        }else if(o_type=='txt'){
-          if(type=='txt'){
+          if(o_type_arr.length){
+            o_type = o_type_arr.join('_');
+          }else{
             o_type = 'none';
-          }else{
-            o_type = 'txt_n_sign';
-          }
-        }else if(o_type=='sign'){
-          if(type=='sign'){
-            o_type = 'none';
-          }else{
-            o_type = 'txt_n_sign';
-          }
-        }else if(o_type=='none'){
-          if(type=='sign'){
-            o_type = 'sign';
-          }else{
-            o_type = 'txt';
           }
         }
       }else{
@@ -6022,7 +6015,7 @@ var content_vue = new Vue({
         // switchSpeedShow('hide');
       }else{
         // switchSpeedShow('show');
-        if(o_type==='txt'){
+        if(o_type.indexOf('txt')!==-1){
           var qdesc = speedText;
           if (qdesc != "") {
             qdesc = '"' + qdesc + '"';
@@ -6031,7 +6024,7 @@ var content_vue = new Vue({
           var q = speedNote;
           set("Q:", qdesc + q + "=" + qv);
           src_change();
-        }else if(o_type==='sign'){
+        }else{
           var qdesc = speedText;
           if (qdesc != "") {
             qdesc = '"' + qdesc + '"';
@@ -6039,15 +6032,6 @@ var content_vue = new Vue({
           var qv = speedNum;
           var q = speedNote;
           set("Q:", q + "=" + qv);
-          src_change();
-        }else if(o_type==='txt_n_sign'){
-          var qdesc = speedText;
-          if (qdesc != "") {
-            qdesc = '"' + qdesc + '"';
-          }
-          var qv = speedNum;
-          var q = speedNote;
-          set("Q:", qdesc + q + "=" + qv);
           src_change();
         }
       }
@@ -6551,7 +6535,7 @@ var content_vue = new Vue({
     },
     'm.newScore.scoreOpts.speedType'(type) {
       if (type !== 'none') return
-      this.m.newScore.scoreOpts.speedNum = '88'
+      this.m.newScore.scoreOpts.speedNum = '100' // '88'
     },
     'm.newScore.scoreOpts.speedNum'(speedNum) {
       var speedNum = parseInt(speedNum);
@@ -6732,6 +6716,9 @@ var content_vue = new Vue({
     },
     'm.scoreOpts.speedType'(val) {
       // console.log('m.scoreOpts.speedType');
+      if (val === 'none') {
+        this.m.newScore.scoreOpts.speedNum = '100' // '88'
+      }
       this.changeSpeed()
     },
     'm.scoreOpts.speedNote'(val) {

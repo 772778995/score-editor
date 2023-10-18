@@ -22288,10 +22288,10 @@ abc2svg = {
         str = [];
       if (s.tempo_str) return;
       set_font("tempo");
-      // console.log('tempo_build message', s);
+      console.log('tempo_build message', s);
       if (s.tempo_str1) {
         // str.push(s.tempo_str1);
-        str.push(`<tspan type="speed_text">${s.tempo_str1}</tspan>`);
+        str.push(`<tspan type="speed_text speed_text1">${s.tempo_str1}</tspan>`);
         w += strwh(s.tempo_str1)[0];
       }
       if((content_vue.m.scoreOpts.faceType==='txt' || content_vue.m.scoreOpts.faceType==='sign') && content_vue.m.scoreOpts.faceText){
@@ -22352,7 +22352,7 @@ abc2svg = {
           s.tempo_str +=`<tspan type="face_text"> ${content_vue.m.scoreOpts.faceText}</tspan>`;
         }
       }
-      else if (content_vue.m.scoreOpts.speedType === "none") {
+      else if (content_vue.m.scoreOpts.speedType === "none" || content_vue.m.scoreOpts.speedType.indexOf('hide')!==-1) {
         s.tempo_str = `<tspan></tspan>`
         if((content_vue.m.scoreOpts.faceType==='txt' || content_vue.m.scoreOpts.faceType==='sign') && content_vue.m.scoreOpts.faceText){
           s.tempo_str +=`<tspan type="face_text">${content_vue.m.scoreOpts.faceText}</tspan>`;

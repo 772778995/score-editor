@@ -818,38 +818,33 @@
                     <div>无速度</div>
                   </div>
                 </div>
-                <div class="flex items-center ">
+                <div class="flex items-center">
                   <div class="flex items-center h-full cursor-pointer" @click="setSpeedType('txt')">
-                    <img class="cursor-pointer mr-2" :src="`assets/music_score_editor/img/checkbox${(m.newScore.scoreOpts.speedType=='txt' || m.newScore.scoreOpts.speedType=='txt_n_sign') ? '2' : '1'}.png`">
-
-                    <!-- <img
-                      :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.speedType === 'txt' ? '1' : '2'}.png`"
-                      class="cursor-pointer mr-2"
-                    /> -->
+                    <img class="cursor-pointer mr-2" :src="`assets/music_score_editor/img/checkbox${(m.newScore.scoreOpts.speedType.indexOf('txt')!==-1) ? '2' : '1'}.png`">
                     <div>速度文本：</div>
                   </div>
                   <select-input
                     v-model="m.newScore.scoreOpts.speedText"
                     :list="speedTxtOptsList"
                     style="height: 28px;"
-                    :class="{ 'opacity-50 pointer-events-none': !(m.newScore.scoreOpts.speedType === 'txt' || m.newScore.scoreOpts.speedType=='txt_n_sign') }">
+                    :class="{ 'opacity-50 pointer-events-none': !(m.newScore.scoreOpts.speedType.indexOf('txt')!==-1) }">
                   </select-input>
                 </div>
                 <div class="flex items-center" style="margin-top: 10px;">
                   <div class="flex items-center h-full cursor-pointer" @click="setSpeedType('sign')">
-                    <img class="cursor-pointer mr-2" :src="`assets/music_score_editor/img/checkbox${(m.newScore.scoreOpts.speedType=='sign' || m.newScore.scoreOpts.speedType=='txt_n_sign') ? '2' : '1'}.png`">
-
-                    <!-- <img
-                      :src="`assets/music_score_editor/img/radio${m.newScore.scoreOpts.speedType === 'sign' ? '1' : '2'}.png`"
-                      class="cursor-pointer mr-2"
-                      :class="{ 'opacity-50 pointer-events-none': m.newScore.scoreOpts.speedType !== 'sign' }"
-                    /> -->
+                    <img class="cursor-pointer mr-2" :src="`assets/music_score_editor/img/checkbox${(m.newScore.scoreOpts.speedType.indexOf('sign')!==-1) ? '2' : '1'}.png`">
                     <div>节拍器标记：</div>
                   </div>
-                  <div class="flex h-full items-center" :class="{ 'opacity-50 pointer-events-none': !(m.newScore.scoreOpts.speedType === 'sign' || m.newScore.scoreOpts.speedType=='txt_n_sign') }">
+                  <div class="flex h-full items-center" :class="{ 'opacity-50 pointer-events-none': !(m.newScore.scoreOpts.speedType.indexOf('sign')!==-1) }">
                     <select-input v-model="m.newScore.scoreOpts.speedNote" :list="m.newScore.speedNoteList" style="height: 28px;"></select-input>
                     <div style="margin: 0 10px;">=</div>
                     <number-input v-model="m.newScore.scoreOpts.speedNum" :min="1" style="width: 64px; height: 28px;"></number-input>
+                  </div>
+                </div>
+                <div class="flex items-center" style="margin-top: 10px;">
+                  <div class="flex items-center h-full cursor-pointer" @click="setSpeedType('hide')">
+                    <img class="cursor-pointer mr-2" :src="`assets/music_score_editor/img/checkbox${(m.newScore.scoreOpts.speedType.indexOf('hide')!==-1) ? '2' : '1'}.png`">
+                    <div>隐藏</div>
                   </div>
                 </div>
               </div>
@@ -964,27 +959,33 @@
                   <div>无速度</div>
                 </div>
               </div>
-              <div class="flex items-center ">
+              <div class="flex items-center">
                 <div class="flex items-center h-full cursor-pointer" @click="setSpeedType('txt')">
-                  <img class="cursor-pointer mr-2" :src="`assets/music_score_editor/img/checkbox${(m.scoreOpts.speedType=='txt' || m.scoreOpts.speedType=='txt_n_sign') ? '2' : '1'}.png`">
+                  <img class="cursor-pointer mr-2" :src="`assets/music_score_editor/img/checkbox${(m.scoreOpts.speedType.indexOf('txt')!==-1) ? '2' : '1'}.png`">
                   <div>速度文本：</div>
                 </div>
                 <select-input
                   v-model="m.scoreOpts.speedText"
                   :list="defaultSpeedTxtOptsList"
                   style="height: 28px;"
-                  :class="{ 'opacity-50 pointer-events-none': !(m.scoreOpts.speedType === 'txt' || m.scoreOpts.speedType=='txt_n_sign') }">
+                  :class="{ 'opacity-50 pointer-events-none': !(m.scoreOpts.speedType.indexOf('txt')!==-1) }">
                 </select-input>
               </div>
               <div class="flex items-center" style="margin-top: 10px;">
                 <div class="flex items-center h-full cursor-pointer" @click="setSpeedType('sign')">
-                  <img class="cursor-pointer mr-2" :src="`assets/music_score_editor/img/checkbox${(m.scoreOpts.speedType=='sign' || m.scoreOpts.speedType=='txt_n_sign') ? '2' : '1'}.png`">
+                  <img class="cursor-pointer mr-2" :src="`assets/music_score_editor/img/checkbox${(m.scoreOpts.speedType.indexOf('sign')!==-1) ? '2' : '1'}.png`">
                   <div>节拍器标记：</div>
                 </div>
-                <div class="flex h-full items-center" :class="{ 'opacity-50 pointer-events-none': !(m.scoreOpts.speedType === 'sign' || m.scoreOpts.speedType=='txt_n_sign') }">
+                <div class="flex h-full items-center" :class="{ 'opacity-50 pointer-events-none': !(m.scoreOpts.speedType.indexOf('sign')!==-1) }">
                   <select-input v-model="m.scoreOpts.speedNote" :list="m.newScore.speedNoteList" style="height: 28px;"></select-input>
                   <div style="margin: 0 10px;">=</div>
                   <number-input v-model="m.scoreOpts.speedNum" :min="1" style="width: 64px; height: 28px;"></number-input>
+                </div>
+              </div>
+              <div class="flex items-center" style="margin-top: 10px;">
+                <div class="flex items-center h-full cursor-pointer" @click="setSpeedType('hide')">
+                  <img class="cursor-pointer mr-2" :src="`assets/music_score_editor/img/checkbox${(m.scoreOpts.speedType.indexOf('hide')!==-1) ? '2' : '1'}.png`">
+                  <div>隐藏</div>
                 </div>
               </div>
             </div>
@@ -3811,13 +3812,13 @@
                         style="transform: scale(.85)"
                       >
                         <img
-                          :src="`assets/music_score_editor/img/radio${(m.scoreOpts.speedType === 'sign' || m.scoreOpts.speedType === 'txt_n_sign') ? '1' : '2'}.png`"
+                          :src="`assets/music_score_editor/img/radio${(m.scoreOpts.speedType.indexOf('sign')!==-1) ? '1' : '2'}.png`"
                           class="cursor-pointer mr-3"
                           @click="m.scoreOpts.speedType = 'sign'"
                         />
                         <div
                           class="flex h-full items-center relative z-50 duration-300"
-                          :class="{ 'opacity-50 pointer-events-none': (m.scoreOpts.speedType !== 'sign' && m.scoreOpts.speedType !== 'txt_n_sign') }"
+                          :class="{ 'opacity-50 pointer-events-none': (m.scoreOpts.speedType.indexOf('sign')!==-1) }"
                         >
                           <select-input v-model="m.scoreOpts.speedNote" :list="m.newScore.speedNoteList" style="height: 28px;"></select-input>
                           <div style="margin: 0 10px;">=</div>
@@ -3839,11 +3840,30 @@
                           :title="item.title"
                           @click="() => {
                             console.log(scoreOpts.speedType);
-                            if(scoreOpts.speedType === 'none'){
-                              scoreOpts.speedType = 'txt'
-                            }else if(scoreOpts.speedType === 'sign'){
-                              scoreOpts.speedType = 'txt_n_sign'
+                            var type = 'txt';
+                            var o_type =  scoreOpts.speedType;
+                            if(type!='none' && o_type.indexOf(type)===-1){
+                              // none txt sign hide
+                              if(o_type=='none'){
+                                o_type = type;
+                              }else{
+                                var o_type_arr = o_type.split('_');
+                                var o_index = o_type_arr.indexOf(type);
+                                if(o_index!==-1){
+                                  // 移除
+                                  o_type_arr.splice(o_index, 1);
+                                }else{
+                                  // 添加
+                                  o_type_arr.push(type);
+                                }
+                                if(o_type_arr.length){
+                                  o_type = o_type_arr.join('_');
+                                }else{
+                                  o_type = 'none';
+                                }
+                              }
                             }
+                            scoreOpts.speedType = o_type;
                             scoreOpts.speedText = item.txt
                             changeSpeed()
                             // abc_change()
