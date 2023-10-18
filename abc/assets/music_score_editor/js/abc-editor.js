@@ -3757,7 +3757,7 @@ var content_vue = new Vue({
           faceText: "",
           faceType: "none",
         },
-        previewUrl: "assets/music_score_editor/preview.html?v=1.0.12",
+        previewUrl: "assets/music_score_editor/preview.html?v=1.0.13",
       },
       toolList: [
         {
