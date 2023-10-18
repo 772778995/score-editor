@@ -1654,7 +1654,7 @@ function graphMouseDownHandle(_0x1A4C3) {
   }
 }
 function moveingRenderBar(_0x16062) {
-  console["log"]("\u5728\u79fb\u52a8\u5c0f\u8282\u7c7b\u7684\u88c5\u9970\u97f3", _0x16062);
+  console.log("在移动小节类的装饰音", _0x16062);
   var startpoint_element_target = _0x16062["target"];
   if (startpoint_element_target["tagName"] == "svg") {
     var _0x17688 = startpoint_element_target;
@@ -4890,7 +4890,7 @@ function genNoteDeco(val, insert_content, position, type) {
   }
   if (["$mergeAll", "$mergeLeft", "$mergeRight"].includes(val)) return;
   console["log"]("cen", cen);
-  var rectbar = $("svg[type='rectbar']");
+  var rectbar = $("svg[type='rectbar'],svg[type='rectnode']");
   if (rectbar["length"] > 0) {
     console.log("这里拖动的是小节类型的----选中的小节序号：", $(rectbar)["attr"]("barIndex"));
     genBarDeco(

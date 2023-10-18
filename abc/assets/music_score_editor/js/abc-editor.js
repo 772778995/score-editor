@@ -665,6 +665,7 @@ function replaceCharsInRange(str, start, end, newChars) {
  * @param { (str: string, rawTxt: string) => string } cb 更改 abc 代码回调函数
  */
 function changeAbc(cb) {
+  console.log('changeAbc');
   const info = getSelectAbcCodeInfo();
   if (!info) return alert("未选中音符：请选取一个音符，然后重试");
   let { istart, iend, txt } = info;
@@ -4746,68 +4747,76 @@ var content_vue = new Vue({
           cols: 2,
           imgList: [
             {
+              class: "cmenu",
               url: "assets/music_score_editor/img/notepanel/repeat (1).png",
               value: "!segno!",
               title: "记号",
               position: "preInsert",
               type: "nodeline",
-              fn: () => setRepeatAndJump('!segno!')
+              fn: () => setRepeatAndJump('!segno!', 'preInsert')
             },
             {
+              class: "cmenu",
               title: "反复省略记号",
               url: "assets/music_score_editor/img/notepanel/repeat (2).png",
               value: "!coda!",
               position: "preInsert",
               type: "nodeline",
-              fn: () => setRepeatAndJump('!coda!')
+              fn: () => setRepeatAndJump('!coda!', 'preInsert')
             },
             {
+              class: "cmenu",
               title: "曲终",
               url: "assets/music_score_editor/img/notepanel/repeat (3).png",
               value: "!fine!",
               position: "afterInsert",
               type: "nodeline",
-              fn: () => setRepeatAndJump('!fine!')
+              fn: () => setRepeatAndJump('!fine!', 'afterInsert')
             },
             {
+              class: "cmenu",
               title: "到结尾",
               url: "assets/music_score_editor/img/notepanel/repeat (4).png",
               value: "!tocoda!",
               position: "afterInsert",
               type: "nodeline",
-              fn: () => setRepeatAndJump('!tocoda!')
+              fn: () => setRepeatAndJump('!tocoda!', 'afterInsert')
             },
             {
+              class: "cmenu",
               url: "assets/music_score_editor/img/notepanel/repeat (5).png",
               value: "!D.C.!",
               title: "从头开始反复",
               position: "afterInsert",
               type: "nodeline",
-              fn: () => setRepeatAndJump('!D.C.!')
+              fn: () => setRepeatAndJump('!D.C.!', 'afterInsert')
             },
             {
+              class: "cmenu",
               url: "assets/music_score_editor/img/notepanel/repeat (6).png",
               value: "!D.S.!",
               title: "从记号处反复",
               position: "afterInsert",
               type: "nodeline",
-              fn: () => setRepeatAndJump('!D.S.!')
+              fn: () => setRepeatAndJump('!D.S.!', 'afterInsert')
             },
             {
+              class: "cmenu",
               url: "assets/music_score_editor/img/notepanel/repeat (7).png",
               value: "!D.C.alfine!",
               title: "从头反复到结束",
               position: "afterInsert",
               type: "nodeline",
-              fn: () => setRepeatAndJump('!D.C.alfine!')
+              fn: () => setRepeatAndJump('!D.C.alfine!', 'afterInsert')
             },
             {
+              class: "cmenu",
               url: "assets/music_score_editor/img/notepanel/repeat (8).png",
               value: "!D.C.alcoda!",
               title: "跳过反复到结尾",
               position: "afterInsert",
               type: "nodeline",
-              fn: () => setRepeatAndJump('!D.C.alcoda!')
+              fn: () => setRepeatAndJump('!D.C.alcoda!', 'afterInsert')
             },
           ],
         },
@@ -7854,13 +7863,17 @@ const changeSelectBar = (cb, isRepeatAndJmp = false) => {
   if (bar === undefined) return
   return bar.change(cb)
 }
-const setRepeatAndJump = (sign) => {
-  const bar = getSelectBar()
-  if (bar === undefined) return
-  (bar.prev || bar).change(s => {
-    console.log(s)
-    return s.replace(/((\!fine\!)|(\!D\.S\.\!)|(\!D\.C\.((alfine)|(alcoda))*\!)|(\!(to)?coda\!)|(\!segno\!)(:?\|)?)$/, '') + sign
-  })
+const setRepeatAndJump = (sign, position) => {
+  console.log('setRepeatAndJump', sign, position);
+  alert("请拖拽到小节");
+  return false;
+  // const bar = getSelectBar()
+  // console.log('setRepeatAndJump', bar);
+  // if (bar === undefined) return
+  // (bar.prev || bar).change(s => {
+  //   console.log('setRepeatAndJump', s)
+  //   return s.replace(/((\!fine\!)|(\!D\.S\.\!)|(\!D\.C\.((alfine)|(alcoda))*\!)|(\!(to)?coda\!)|(\!segno\!)(:?\|)?)$/, '') + sign
+  // })
 }
 
 const setRepeatBracket = (sign) => {
