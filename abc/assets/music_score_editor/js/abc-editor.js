@@ -6382,6 +6382,15 @@ var content_vue = new Vue({
     },
   },
   computed: {
+    defaultSpeedTxtOptsList() {
+      if (this.m.scoreOpts.musicType === 'easy') {
+        const list = this.m.newScore.speedTxtList.filter(item => item.type === 'easy')
+        // this.m.scoreOpts.speedText = '中板'
+        return list
+      }
+      // this.m.scoreOpts.speedText = 'Moderato'
+      return this.m.newScore.speedTxtList.filter(item => item.type !== 'easy')
+    },
     speedTxtOptsList() {
       if (this.m.newScore.scoreOpts.musicType === 'easy') {
         const list = this.m.newScore.speedTxtList.filter(item => item.type === 'easy')

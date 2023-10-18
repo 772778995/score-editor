@@ -971,23 +971,7 @@
                 </div>
                 <select-input
                   v-model="m.scoreOpts.speedText"
-                  :list="(
-                    speedTxtList.map((item) => {
-                     let obj
-                     if (m.scoreOpts.musicType == 'easy') {
-                       obj = {
-                         val: item.title,
-                         txt: item.title,
-                       }
-                     } else {
-                       obj = {
-                         val: item.txt,
-                         txt: item.txt,
-                       }
-                     }
-                     return obj
-                   })
-                  )"
+                  :list="defaultSpeedTxtOptsList"
                   style="height: 28px;"
                   :class="{ 'opacity-50 pointer-events-none': !(m.scoreOpts.speedType === 'txt' || m.scoreOpts.speedType=='txt_n_sign') }">
                 </select-input>
