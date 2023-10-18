@@ -6553,6 +6553,46 @@ var content_vue = new Vue({
       if (type !== 'none') return
       this.m.newScore.scoreOpts.speedNum = '88'
     },
+    'm.newScore.scoreOpts.speedNum'(speedNum) {
+      var speedNum = parseInt(speedNum);
+      if (this.m.newScore.scoreOpts.musicType === 'easy') {
+        for(var i=0; i<speedTxtList.length; i++){
+          if(speedTxtList[i].type==='easy' && speedNum>=speedTxtList[i].min && speedNum<=speedTxtList[i].max){
+            if(this.m.newScore.scoreOpts.speedText!==speedTxtList[i].txt){
+              this.m.newScore.scoreOpts.speedText = speedTxtList[i].txt;
+            }
+            break;
+          }
+        }
+      }else{
+        for(var i=0; i<speedTxtList.length; i++){
+          if(speedTxtList[i].type!=='easy' && speedNum>=speedTxtList[i].min && speedNum<=speedTxtList[i].max){
+            if(this.m.newScore.scoreOpts.speedText!=speedTxtList[i].txt){
+              this.m.newScore.scoreOpts.speedText = speedTxtList[i].txt;
+            }
+            break;
+          }
+        }
+      }
+    },
+    'm.newScore.scoreOpts.speedText'(val) {
+      // console.log('m.newScore.scoreOpts.speedText', val);
+      if (this.m.newScore.scoreOpts.musicType === 'easy') {
+        for(var i=0; i<speedTxtList.length; i++){
+          if(speedTxtList[i].type==='easy' && speedTxtList[i].txt==val){
+            this.m.newScore.scoreOpts.speedNum = speedTxtList[i].val
+            break;
+          }
+        }
+      }else{
+        for(var i=0; i<speedTxtList.length; i++){
+          if(speedTxtList[i].type!=='easy' && speedTxtList[i].txt==val){
+            this.m.newScore.scoreOpts.speedNum = speedTxtList[i].val
+            break;
+          }
+        }
+      }
+    },
     'm.panzoom.scale'(scale) {
       if (scale >= 150) this.m.panzoom.scale = 150
       if (scale <= 50) this.m.panzoom.scale = 50
@@ -6690,20 +6730,55 @@ var content_vue = new Vue({
     'm.scoreOpts.rowBars'(val) {
       setBarsPerstaff('source', val)
     },
-    'm.scoreOpts.speedText'(val) {
-      console.log('m.scoreOpts.speedText');
-      this.changeSpeed()
-    },
     'm.scoreOpts.speedType'(val) {
-      console.log('m.scoreOpts.speedType');
+      // console.log('m.scoreOpts.speedType');
       this.changeSpeed()
     },
     'm.scoreOpts.speedNote'(val) {
-      console.log('m.scoreOpts.speedNote', val);
+      // console.log('m.scoreOpts.speedNote', val);
       this.changeSpeed()
     },
-    'm.scoreOpts.speedNum'() {
-      console.log('m.scoreOpts.speedNum');
+    'm.scoreOpts.speedNum'(speedNum) {
+      // console.log('m.scoreOpts.speedNum');
+      var speedNum = parseInt(speedNum);
+      if (this.m.scoreOpts.musicType === 'easy') {
+        for(var i=0; i<speedTxtList.length; i++){
+          if(speedTxtList[i].type==='easy' && speedNum>=speedTxtList[i].min && speedNum<=speedTxtList[i].max){
+            if(this.m.scoreOpts.speedText!==speedTxtList[i].txt){
+              this.m.scoreOpts.speedText = speedTxtList[i].txt;
+            }
+            break;
+          }
+        }
+      }else{
+        for(var i=0; i<speedTxtList.length; i++){
+          if(speedTxtList[i].type!=='easy' && speedNum>=speedTxtList[i].min && speedNum<=speedTxtList[i].max){
+            if(this.m.scoreOpts.speedText!=speedTxtList[i].txt){
+              this.m.scoreOpts.speedText = speedTxtList[i].txt;
+            }
+            break;
+          }
+        }
+      }
+      this.changeSpeed()
+    },
+    'm.scoreOpts.speedText'(val) {
+      // console.log('m.scoreOpts.speedText');
+      if (this.m.scoreOpts.musicType === 'easy') {
+        for(var i=0; i<speedTxtList.length; i++){
+          if(speedTxtList[i].type==='easy' && speedTxtList[i].txt==val){
+            this.m.scoreOpts.speedNum = speedTxtList[i].val
+            break;
+          }
+        }
+      }else{
+        for(var i=0; i<speedTxtList.length; i++){
+          if(speedTxtList[i].type!=='easy' && speedTxtList[i].txt==val){
+            this.m.scoreOpts.speedNum = speedTxtList[i].val
+            break;
+          }
+        }
+      }
       this.changeSpeed()
     },
     'm.scoreOpts.faceText'() {
