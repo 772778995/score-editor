@@ -6698,12 +6698,14 @@ var content_vue = new Vue({
     // },
     'm.scoreOpts.title'(val) {
       console.log('m.scoreOpts.title', val, typeof val);
-      set('T:', val);
+      val = val.replace(/ /g, '&emsp;'); // 空格替换成标记符
+      set('T:', val?val:'&emsp;');
       abc_change();
     },
     'm.scoreOpts.subTitle'(val) {
       console.log('m.scoreOpts.subTitle', val, typeof val);
       setTimeout(()=>{
+        val = val.replace(/ /g, '&emsp;'); // 空格替换成标记符
         setSecTitle(val?val:'&emsp;')
       }, 200);
       if(val=='&emsp;'){
@@ -6711,10 +6713,12 @@ var content_vue = new Vue({
       }
     },
     'm.scoreOpts.compose'(val) {
-      set('C:', val);
+      val = val.replace(/ /g, '&emsp;'); // 空格替换成标记符
+      set('C:', val?val:'&emsp;');
       abc_change();
     },
     'm.scoreOpts.lyricist'(val) {
+      val = val.replace(/ /g, '&emsp;'); // 空格替换成标记符
       setCompose(val?val:'&emsp;', 1);
       if(val=='&emsp;'){
         this.m.scoreOpts.lyricist = '';
