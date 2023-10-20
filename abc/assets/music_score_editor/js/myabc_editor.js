@@ -154,6 +154,23 @@ const defaultScoreOpts = {
   beatNote2: "4",
 
   musicType: "treble",
+
+  voiceParts: [{
+    clef: 'treble', // treble: 高音 bass: 低音 alto: 中音 tenor: 次中音
+    name: '', // Piano 等等
+    subname: '', // Pno. 等简称
+    tone: '', // 音色
+    isRhythm: false, // 是否为节奏谱
+    rhythmSigns: {
+      1: 'X',
+      2: 'X',
+      3: 'X',
+      4: 'X',
+      5: 'X',
+      6: 'X',
+      7: 'X',
+    }, // 节奏标记
+  }],
 };
 let scoreOpts = JSON.parse(
   new URLSearchParams(window.location.search).get("scoreOpts") || "{}"

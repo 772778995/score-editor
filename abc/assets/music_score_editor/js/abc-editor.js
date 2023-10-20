@@ -222,6 +222,22 @@ const initNewScoreOpts = {
   rowBars: "4",
   faceText: "",
   faceType: "none",
+  voiceParts: [{
+    clef: 'treble', // treble: 高音 bass: 低音 alto: 中音 tenor: 次中音
+    name: '', // Piano 等等
+    subname: '', // Pno. 等简称
+    tone: '', // 音色
+    isRhythm: false, // 是否为节奏谱
+    rhythmSigns: {
+      1: 'X',
+      2: 'X',
+      3: 'X',
+      4: 'X',
+      5: 'X',
+      6: 'X',
+      7: 'X',
+    }, // 节奏标记
+  }],
 };
 
 function createMusicNextEvent() {
@@ -3757,6 +3773,22 @@ var content_vue = new Vue({
           rowBars: "4",
           faceText: "",
           faceType: "none",
+          voiceParts: [{
+            clef: 'treble', // treble: 高音 bass: 低音 alto: 中音 tenor: 次中音
+            name: '', // Piano 等等
+            subname: '', // Pno. 等简称
+            tone: '', // 音色
+            isRhythm: false, // 是否为节奏谱
+            rhythmSigns: {
+              1: 'X',
+              2: 'X',
+              3: 'X',
+              4: 'X',
+              5: 'X',
+              6: 'X',
+              7: 'X',
+            }, // 节奏标记
+          }],
         },
         previewUrl: "assets/music_score_editor/preview.html?v=1.0.13",
       },
