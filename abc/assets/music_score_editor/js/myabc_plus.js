@@ -931,6 +931,83 @@ function genVSetting(_0x14CAF) {
   _0x11C11 += "%%vsetting_end\x0A";
   return _0x11C11;
 }
+
+function genVSetting2(c) {
+  console.log('genVSetting2', content_vue.m.scoreOpts.voiceParts);
+  var voiceParts = content_vue.m.scoreOpts.voiceParts;
+
+  var staff_num = voiceParts.length;
+  var v_setting_str = "%%vsetting_start\x0A";
+  var v_num = 1; // 声部序号
+  var score_str = "";
+  if (c) {
+    var abc_content = $("#source")["val"]();
+    var check_score = /%%score.*|%%staves.*/;
+    var _0x13F49 = abc_content["match"](check_score);
+    if (_0x13F49 != null) {
+      score_str = _0x13F49[0];
+    }
+  } else {
+    score_str = "%%score ";
+    for (var i = 0; i < staff_num; i++) {
+      score_str += i + 1 + " ";
+    }
+  }
+  score_str += "\x0A";
+  v_setting_str += score_str;
+
+  
+  // 所有声部设置信息
+  for(var i=0; i<voiceParts.length; i++){
+    var staffclef = voiceParts[i]['clef'];
+    var name = voiceParts[i]['name'];
+    var subname = voiceParts[i]['subname'];
+    var tone = voiceParts[i]['tone'];
+    var isRhythm = voiceParts[i]['isRhythm'];
+
+    var tmp_v_setting = "V:" + v_num++;
+    if (staffclef && staffclef != "") {
+      tmp_v_setting += " clef=" + staffclef;
+    } else {
+      if (i % 2 == 0) {
+        tmp_v_setting += " treble";
+      } else {
+        tmp_v_setting += " bass";
+      }
+    }
+    if (isRhythm) {
+      tmp_v_setting += " perc stafflines=1";
+    }
+    if (name && name != "") {
+      tmp_v_setting += ' nm="' + name + '"';
+    }
+    if (subname && subname != "") {
+      tmp_v_setting += ' snm="' + subname + '"';
+    }
+    if (tone && tone != "") {
+      tmp_v_setting += "\x0A%%MIDI program " + tone;
+    } else {
+      tmp_v_setting += "\x0A%%MIDI program 0";
+    }
+    v_setting_str += tmp_v_setting + "\x0A";
+  }
+
+  if (v_num == 1) {
+    for (var i = 0; i < staff_num; i++) {
+      var tmp_v_setting = "";
+      if (i % 2 == 0) {
+        tmp_v_setting = "treble";
+      } else {
+        tmp_v_setting = "bass";
+      }
+      v_setting_str += "V:" + (i + 1) + " " + tmp_v_setting + "\x0A";
+      v_setting_str += "%%MIDI program 0\x0A";
+    }
+  }
+  v_setting_str += "%%vsetting_end\x0A";
+  return v_setting_str;
+}
+
 function genNodesByCount(node_count, beat) {
   // 通过谱面信息计算
   var m = get("M:");
@@ -985,16 +1062,81 @@ function genNodesByCount(node_count, beat) {
   return nn_str;
 }
 function updateStaffProp() {
+  console.log('updateStaffProp');
   var abc_content = $("#source")["val"]();
-  var _0x1836D = genVSetting(true);
-  var _0x12357 = /%%vsetting_start[\s\S]*%%vsetting_end\n/;
-  var _0x13F49 = abc_content["match"](_0x12357);
-  if (_0x13F49 != null) {
-    abc_content = abc_content["replace"](_0x13F49[0], _0x1836D);
+  var v_setting = genVSetting(true);
+  console.log('updateStaffProp genVSetting', v_setting);
+  var m_str = /%%vsetting_start[\s\S]*%%vsetting_end\n/;
+  var m_arr = abc_content["match"](m_str);
+  if (m_arr != null) {
+    abc_content = abc_content["replace"](m_arr[0], v_setting);
     $("#source")["val"](abc_content);
     src_change();
   }
 }
+
+// 更新声部设置信息
+function updateStaffProp2() {
+  console.log('updateStaffProp2');
+
+  var staff_info = getStaffInfo("source");
+  var staff_num = content_vue.m.scoreOpts.voiceParts.length;
+  if (staff_num != staff_info["vocalCount"]) {
+    handleStaffChange2();
+  }
+
+  var abc_content = $("#source").val();
+  var v_setting = genVSetting2(true);
+  console.log('updateStaffProp2 genVSetting', v_setting);
+  var m_str = /%%vsetting_start[\s\S]*%%vsetting_end\n/;
+  var m_arr = abc_content.match(m_str);
+  // console.log('updateStaffProp2', m_arr);
+  // console.log('updateStaffProp2', abc_content);
+  if (m_arr != null) {
+    abc_content = abc_content["replace"](m_arr[0], v_setting);
+    // console.log(abc_content);
+    $("#source")["val"](abc_content);
+    src_change();
+  }
+  switchRhythm2();
+}
+
+// 设置节奏谱
+function switchRhythm2() {
+  console.log('switchRhythm2');
+  var voiceParts = content_vue.m.scoreOpts.voiceParts;
+  var abc_content = '';
+  for(var i=0; i<voiceParts.length; i++){
+    abc_content = switchRhythmContent2(voiceParts[i].isRhythm, i+1, abc_content);
+  }
+  $("#source").val(abc_content);
+  src_change();
+  doLog();
+}
+function switchRhythmContent2(isRhythm, staff_num, abc_content) {
+  if(!abc_content){
+    var abc_content = $("#source").val();
+  }
+  var v_reg = new RegExp("V:\\s*" + staff_num + ".*", "g");
+  // console.log('switchRhythm2', v_reg);
+  var v_arr = abc_content.match(v_reg);
+  // console.log('switchRhythm2', v_reg);
+  if (v_arr != null) {
+    for (var i = 0; i < v_arr.length; i++) {
+      var ac_abc_content = v_arr[i];
+      if (isRhythm) {
+        abc_content = abc_content.replace(ac_abc_content, ac_abc_content + " perc stafflines=1");
+      } else {
+        abc_content = abc_content.replace(
+          ac_abc_content,
+          ac_abc_content.replace("perc stafflines=1", "")
+        );
+      }
+    }
+  }
+  return abc_content;
+}
+
 function appendNodes(num) {
   var staff_num = parseInt($("#STAFFNUM")["val"]());
   var abc_content = $("#source")["val"]();
@@ -1128,6 +1270,91 @@ function handleStaffChange() {
   $("#source")["val"](_0x11C11);
   src_change(doLog);
 }
+
+// 更新谱表数
+function handleStaffChange2() {
+  console.log('handleStaffChange2', content_vue.m.scoreOpts.voiceParts);
+  var lines_info = getLinesInfo($("#source").val());
+  var staff_info = getStaffInfo("source");
+  var staff_num = content_vue.m.scoreOpts.voiceParts.length;
+  var new_abc_content = "";
+  var o_staff_index_arr = [];
+  var staff_index_arr = [];
+  if (staff_num > staff_info["vocalCount"]) {
+    // 添加
+    var add_abc_content = "";
+    for (
+      var i = staff_info["vocalCount"] + 1;
+      i <= staff_num;
+      i++
+    ) {
+      staff_index_arr.push(i);
+      add_abc_content += getNewStaffStr(i, staff_info["barCount"]);
+    }
+    var new_abc_content = $("#source").val() + add_abc_content;
+    new_abc_content = replaceBlankLine(new_abc_content);
+  } else {
+    // 删除最底部声部
+    if (staff_num < staff_info["vocalCount"]) {
+      for (
+        var i = staff_info["vocalCount"];
+        i > staff_num;
+        i--
+      ) {
+        o_staff_index_arr["push"](i);
+      }
+      for (var j = 0; j < lines_info["length"]; j++) {
+        var line_info = lines_info[j];
+        if (o_staff_index_arr["indexOf"](line_info["v"] + 1) < 0) {
+          if (line_info["type"] == "v") {
+            if (o_staff_index_arr["indexOf"](line_info["vNum"] + 1) < 0) {
+              new_abc_content += line_info["lineStr"] + "\x0A";
+            }
+          } else {
+            new_abc_content += line_info["lineStr"] + "\x0A";
+          }
+        }
+      }
+      new_abc_content = replaceBlankLine(new_abc_content);
+    }
+  }
+  var check_score = /%%score|%%staves/;
+  $("#source").val(new_abc_content);
+  // 更新 score 里的声部参数
+  lines_info = getLinesInfo($("#source").val());
+  var new_abc_content = "";
+  for (var n = 0; n < lines_info.length; n++) {
+    var line_info = lines_info[n];
+    var line_str = line_info["lineStr"];
+    var score_arr = line_str.match(check_score);
+    if (score_arr != null) {
+      // var score_str = score_arr[0];
+      if (o_staff_index_arr > 0) {
+        for (var m = 0; m < o_staff_index_arr.length; m++) {
+          line_str = line_str.replace(o_staff_index_arr[m], "");
+        }
+      } else {
+        if (staff_index_arr.length > 0) {
+          var v_str = "";
+          for (var m = 0; m < staff_index_arr.length; m++) {
+            v_str += " " + staff_index_arr[m];
+          }
+          line_str += v_str;
+        }
+      }
+      console.log(line_str);
+      var v_arr = line_str.match(/\d/g);
+      if(v_arr && v_arr.length>1){
+        line_str = `%%score {${v_arr.join(' ')}}`;
+      }
+      console.log(line_str);
+    }
+    new_abc_content += line_str + "\x0A";
+  }
+  $("#source").val(new_abc_content);
+  src_change(doLog);
+}
+
 function getNewStaffStr(_0x150E5, _0x15021) {
   var _0x137A1 = "\x0AV:" + _0x150E5 + " treble\x0A";
   var _0x15083 = genNodesByCount(_0x15021);

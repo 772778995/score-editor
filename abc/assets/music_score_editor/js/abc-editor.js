@@ -226,7 +226,7 @@ const initNewScoreOpts = {
     clef: 'treble', // treble: 高音 bass: 低音 alto: 中音 tenor: 次中音
     name: '', // Piano 等等
     subname: '', // Pno. 等简称
-    tone: '', // 音色
+    tone: 0, // 音色
     isRhythm: false, // 是否为节奏谱
     rhythmSigns: {
       1: 'X',
@@ -3777,7 +3777,7 @@ var content_vue = new Vue({
             clef: 'treble', // treble: 高音 bass: 低音 alto: 中音 tenor: 次中音
             name: '', // Piano 等等
             subname: '', // Pno. 等简称
-            tone: '', // 音色
+            tone: 0, // 音色
             isRhythm: false, // 是否为节奏谱
             rhythmSigns: {
               1: 'X',
@@ -5999,6 +5999,35 @@ var content_vue = new Vue({
     },
 
     // ———————————————————————————————————————— 分割线 __method ————————————————————————————————————————
+    addVoicePart(){
+      if(this.m.newScore.scoreOpts.voiceParts.length>=8){
+        alert('最多添加8个声部');
+        return;
+      }
+      var voicePart = {
+        clef: 'treble', // treble: 高音 bass: 低音 alto: 中音 tenor: 次中音
+        name: '', // Piano 等等
+        subname: '', // Pno. 等简称
+        tone: 0, // 音色
+        isRhythm: false, // 是否为节奏谱
+        rhythmSigns: {
+          1: 'X',
+          2: 'X',
+          3: 'X',
+          4: 'X',
+          5: 'X',
+          6: 'X',
+          7: 'X',
+        }, // 节奏标记
+      };
+      // this.m.scoreOpts.voiceParts.push(voicePart);
+      this.m.newScore.scoreOpts.voiceParts.push(voicePart);
+    },
+    removeVoicePart(index){
+      // console.log('removeVoicePart', index);
+      // this.m.scoreOpts.voiceParts.splice(index, 1);
+      this.m.newScore.scoreOpts.voiceParts.splice(index, 1);
+    },
     setFaceType(type){
       console.log('setFaceType', type, this.m.newScore.scoreOpts.faceType);
       if(type=='none'){
@@ -6574,6 +6603,157 @@ var content_vue = new Vue({
       console.log('weakBarTop', val, oldval);
       $("#barTimeTop").val(val);
     },
+    'm.newScore.scoreOpts.musicType'(musicType) {
+      console.log('m.newScore.scoreOpts.musicType', musicType);
+      // var that = this;
+      var voiceParts = [];
+      switch (musicType){
+        // easy big treble bass four
+        case 'four':
+          voiceParts = [
+            {
+              clef: 'treble', // treble: 高音 bass: 低音 alto: 中音 tenor: 次中音
+              name: '', // Piano 等等
+              subname: '', // Pno. 等简称
+              tone: 0, // 音色
+              isRhythm: false, // 是否为节奏谱
+              rhythmSigns: {
+                1: 'X',
+                2: 'X',
+                3: 'X',
+                4: 'X',
+                5: 'X',
+                6: 'X',
+                7: 'X',
+              }, // 节奏标记
+            },
+            {
+              clef: 'treble',
+              name: '',
+              subname: '',
+              tone: '',
+              isRhythm: false,
+              rhythmSigns: {
+                1: 'X',
+                2: 'X',
+                3: 'X',
+                4: 'X',
+                5: 'X',
+                6: 'X',
+                7: 'X',
+              },
+            },
+            {
+              clef: 'treble',
+              name: '',
+              subname: '',
+              tone: '',
+              isRhythm: false,
+              rhythmSigns: {
+                1: 'X',
+                2: 'X',
+                3: 'X',
+                4: 'X',
+                5: 'X',
+                6: 'X',
+                7: 'X',
+              },
+            },
+            {
+              clef: 'treble',
+              name: '',
+              subname: '',
+              tone: '',
+              isRhythm: false,
+              rhythmSigns: {
+                1: 'X',
+                2: 'X',
+                3: 'X',
+                4: 'X',
+                5: 'X',
+                6: 'X',
+                7: 'X',
+              },
+            }
+          ];
+        break;
+        case 'big':
+          voiceParts = [
+            {
+              clef: 'treble', // treble: 高音 bass: 低音 alto: 中音 tenor: 次中音
+              name: '', // Piano 等等
+              subname: '', // Pno. 等简称
+              tone: 0, // 音色
+              isRhythm: false, // 是否为节奏谱
+              rhythmSigns: {
+                1: 'X',
+                2: 'X',
+                3: 'X',
+                4: 'X',
+                5: 'X',
+                6: 'X',
+                7: 'X',
+              }, // 节奏标记
+            },
+            {
+              clef: 'bass',
+              name: '',
+              subname: '',
+              tone: '',
+              isRhythm: false,
+              rhythmSigns: {
+                1: 'X',
+                2: 'X',
+                3: 'X',
+                4: 'X',
+                5: 'X',
+                6: 'X',
+                7: 'X',
+              },
+            }
+          ];
+        break;
+        case 'bass':
+          voiceParts = [{
+            clef: 'bass', // treble: 高音 bass: 低音 alto: 中音 tenor: 次中音
+            name: '', // Piano 等等
+            subname: '', // Pno. 等简称
+            tone: 0, // 音色
+            isRhythm: false, // 是否为节奏谱
+            rhythmSigns: {
+              1: 'X',
+              2: 'X',
+              3: 'X',
+              4: 'X',
+              5: 'X',
+              6: 'X',
+              7: 'X',
+            }, // 节奏标记
+          }];
+        break;
+        case 'easy':
+        case 'treble': 
+        default :
+          voiceParts = [{
+            clef: 'treble', // treble: 高音 bass: 低音 alto: 中音 tenor: 次中音
+            name: '', // Piano 等等
+            subname: '', // Pno. 等简称
+            tone: 0, // 音色
+            isRhythm: false, // 是否为节奏谱
+            rhythmSigns: {
+              1: 'X',
+              2: 'X',
+              3: 'X',
+              4: 'X',
+              5: 'X',
+              6: 'X',
+              7: 'X',
+            }, // 节奏标记
+          }];
+        break;
+      }
+      this.m.newScore.scoreOpts.voiceParts = voiceParts;
+    },
     'm.newScore.scoreOpts.speedType'(type) {
       if (type !== 'none') return
       this.m.newScore.scoreOpts.speedNum = '100' // '88'
@@ -6816,6 +6996,13 @@ var content_vue = new Vue({
     'm.scoreOpts.faceText'() {
       console.log('m.scoreOpts.faceText');
       this.changeSpeed();
+    },
+    "m.scoreOpts.voiceParts": {
+      handler(val) {
+        console.log('m.scoreOpts.voiceParts', val);
+        updateStaffProp2();
+      },
+      deep: true,
     },
     "m.key.val"(val) {
       const valueSelector = this.m.key.list.find(

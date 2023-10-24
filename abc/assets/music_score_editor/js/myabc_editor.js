@@ -159,7 +159,7 @@ const defaultScoreOpts = {
     clef: 'treble', // treble: 高音 bass: 低音 alto: 中音 tenor: 次中音
     name: '', // Piano 等等
     subname: '', // Pno. 等简称
-    tone: '', // 音色
+    tone: 0, // 音色
     isRhythm: false, // 是否为节奏谱
     rhythmSigns: {
       1: 'X',

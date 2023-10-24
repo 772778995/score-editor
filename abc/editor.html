@@ -812,11 +812,33 @@
                     </el-table-column>
                     <el-table-column
                       align="center"
+                      label="音色"
+                      width="80">
+                      <template slot-scope="scope">
+                        <select 
+                          style="width: 100%;"
+                          v-model="scope.row.tone"
+                        >
+                          <option v-for="item in instrumentList" :value="item.code">{{ item.name }}</option>
+                        </select>
+                      </template>
+                    </el-table-column>
+                    <el-table-column
+                      align="center"
                       label="节奏谱"
                       width="80">
                       <template slot-scope="scope">
                         <select 
                           v-model="scope.row.isRhythm"
+                          @change="()=>{
+                            console.log('scope.row.isRhythm', scope.row.isRhythm);
+                            if(scope.row.isRhythm){
+                              scope.row.tone = 115; // 木鱼
+                            }else{
+                              scope.row.tone = 0; // 默认
+                            }
+                            // switchRhythm2(scope.row.isRhythm, scope.$index+1);
+                          }"
                         >
                           <option :value="false">否</option>
                           <option :value="true">是</option>
@@ -828,11 +850,12 @@
                       label=""
                       width="35">
                       <template slot-scope="scope">
-                        <img v-if="scope.$index!=0" @click="removevoicePart(scope.row)" src="assets/music_score_editor/img/close.png" class="cursor-pointer">
+                        <img v-if="scope.$index!=0" @click="removeVoicePart(scope.$index)" src="assets/music_score_editor/img/close.png" title="删除声部" class="cursor-pointer">
                       </template>
                     </el-table-column>
                   </el-table>
                 </div>
+                <div @click="addVoicePart()" class="_btn _border" style="width: auto;margin-top: 5px;padding: 5px 15px;text-align: center;display: inline-block;">添加声部</div>
               </div>
 
               <div class="relative rounded" style="padding: 10px 18px; border-bottom: 2px solid #F5F5F5;">
@@ -1008,6 +1031,91 @@
                   style="width: 64px; height: 28px; margin-right: 6px;">
                 </number-input>
               </div>
+            </div>
+
+            <div class="relative rounded" style="padding: 10px 18px; border-bottom: 2px solid #F5F5F5;">
+              <div class="flex" style="color: #8F8F8F; font-size: 12px">
+                <div class="blue-title">声部</div>
+              </div>
+              <div class="flex vp_table" style="margin-top: 20px;">
+                <el-table
+                  :data="m.scoreOpts.voiceParts"
+                  style="width: 100%">
+                  <el-table-column
+                    label="声部名称">
+                    <template slot-scope="scope">
+                      <input style="width: 100%;" v-model="scope.row.name" type="text" />
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    label="简称"
+                    width="130">
+                    <template slot-scope="scope">
+                      <input style="width: 100%;" v-model="scope.row.subname" type="text" />
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    align="center"
+                    label="声部谱号"
+                    width="80">
+                    <template slot-scope="scope">
+                      <select 
+                        style="width: 100%;"
+                        v-model="scope.row.clef"
+                      >
+                        <option :value="'treble'">高音</option>
+                        <option :value="'bass'">低音</option>
+                        <option :value="'alto'">中音</option>
+                        <option :value="'tenor'">次中音</option>
+                      </select>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    align="center"
+                    label="音色"
+                    width="80">
+                    <template slot-scope="scope">
+                      <select 
+                        style="width: 100%;"
+                        v-model="scope.row.tone"
+                      >
+                        <option v-for="item in instrumentList" :value="item.code">{{ item.name }}</option>
+                      </select>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    align="center"
+                    label="节奏谱"
+                    width="80">
+                    <template slot-scope="scope">
+                      <select 
+                        v-model="scope.row.isRhythm"
+                        @change="()=>{
+                          console.log('scope.row.isRhythm', scope.row.isRhythm);
+                          if(scope.row.isRhythm){
+                            scope.row.tone = 115; // 木鱼
+                          }else{
+                            scope.row.tone = 0; // 默认
+                          }
+                          // switchRhythm2(scope.row.isRhythm, scope.$index+1);
+                        }"
+                      >
+                        <option :value="false">否</option>
+                        <option :value="true">是</option>
+                      </select>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    align="center"
+                    label=""
+                    width="35">
+                    <template slot-scope="scope">
+                      <img v-if="scope.$index!=0" @click="removeVoicePart(scope.$index)" src="assets/music_score_editor/img/close.png" title="删除声部" class="cursor-pointer">
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </div>
+              <div @click="addVoicePart()" class="_btn _border" style="width: auto;margin-top: 5px;padding: 5px 15px;text-align: center;display: inline-block;">添加声部</div>
             </div>
 
             <div class="relative rounded" style="padding: 10px 18px;">
