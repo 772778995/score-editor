@@ -408,9 +408,11 @@ K: ${opts.keySign}`;
 const getAbcContCode = (opts) => {
   return {
     easy: `
+%%vsetting_start
 %%score 1
 V:1 treble
 %%MIDI program 0
+%%vsetting_end
 V:1
 ${getAbcNoteCode(opts)}`,
     big: `
@@ -426,15 +428,19 @@ ${getAbcNoteCode(opts)}
 V:2
 ${getAbcNoteCode(opts)}`,
     treble: `
+%%vsetting_start
 %%score 1
 V:1 treble
 %%MIDI program 0
+%%vsetting_end
 V:1
 ${getAbcNoteCode(opts)}`,
     bass: `
+%%vsetting_start
 %%score 1
 V:1 bass
 %%MIDI program 0
+%%vsetting_end
 V:1
 ${getAbcNoteCode(opts)}`,
     four: `
@@ -500,26 +506,26 @@ var defstr =
   "z,8|z,8|z,8|z,8|$z,8|z,8|z,8|z,8|%V1line0end";
 // 默认的双谱表
 var defstr2 =
-  "%%staffsep 110\n%%sysstaffsep 60\n%%contbarnb 1\n%%leftmargin 20\n%%rightmargin 10\n%%titlefont Microsoft-YaHei 28\n%%stretchlast 0.7\n%%pos vocal down \nI:abc-charset utf-8\nX: 1\nT: 标题\nC: 作曲\nQ: 1/4=88\nM: 2/4\nL: 1/8\nK: C\n%%MIDI program 0\nV:1 treble\nz\nV:2 bass\nz";
+  "%%staffsep 110\n%%sysstaffsep 60\n%%contbarnb 1\n%%leftmargin 20\n%%rightmargin 10\n%%titlefont Microsoft-YaHei 28\n%%stretchlast 0.7\n%%pos vocal down \nI:abc-charset utf-8\nX: 1\nT: 标题\nC: 作曲\nQ: 1/4=88\nM: 2/4\nL: 1/8\nK: C\n%%vsetting_start\n%%MIDI program 0\n%%vsetting_end\nV:1 treble\nz\nV:2 bass\nz";
 var staffTypes = {
   treble:
     headStr +
-    "%%score 1\nV:1 treble\n%%MIDI program 0\nz,8|z,8|z,8|z,8|$z,8|z,8|z,8|z,8|",
+    "%%vsetting_start\n%%score 1\nV:1 treble\n%%MIDI program 0\n%%vsetting_end\nz,8|z,8|z,8|z,8|$z,8|z,8|z,8|z,8|",
   bass:
     headStr +
-    "%%score 1\nV:1 bass\n%%MIDI program 0\nz,8|z,8|z,8|z,8|$z,8|z,8|z,8|z,8|",
+    "%%vsetting_start\n%%score 1\nV:1 bass\n%%MIDI program 0\n%%vsetting_end\nz,8|z,8|z,8|z,8|$z,8|z,8|z,8|z,8|",
   alto:
     headStr +
-    "%%score 1\nV:1 alto\n%%MIDI program 0\nz,8|z,8|z,8|z,8|$z,8|z,8|z,8|z,8|",
+    "%%vsetting_start\n%%score 1\nV:1 alto\n%%MIDI program 0\n%%vsetting_end\nz,8|z,8|z,8|z,8|$z,8|z,8|z,8|z,8|",
   tenor:
     headStr +
-    "%%score 1\nV:1 tenor\n%%MIDI program 0\nz,8|z,8|z,8|z,8|$z,8|z,8|z,8|z,8|",
+    "%%vsetting_start\n%%score 1\nV:1 tenor\n%%MIDI program 0\n%%vsetting_end\nz,8|z,8|z,8|z,8|$z,8|z,8|z,8|z,8|",
   hit:
     headStr +
-    '%%score 1\nV:1 perc stafflines=1 nm="木鱼" snm="木鱼"\n%%MIDI program 115\nz,8|z,8|z,8|z,8|$z,8|z,8|z,8|z,8|',
+    '%%vsetting_start\n%%score 1\nV:1 perc stafflines=1 nm="木鱼" snm="木鱼"\n%%MIDI program 115\n%%vsetting_end\nz,8|z,8|z,8|z,8|$z,8|z,8|z,8|z,8|',
   mic:
     headStr +
-    "%%score 1\n%%singleline \n%%notespace 2\nV:1 \n%%MIDI program 0\nz,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|",
+    "%%vsetting_start\n%%score 1\n%%singleline \n%%notespace 2\nV:1 \n%%MIDI program 0\n%%vsetting_end\nz,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|z,8|",
   piano:
     headStr +
     "%%vsetting_start\n" +
