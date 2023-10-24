@@ -2951,6 +2951,7 @@ var content_vue = new Vue({
           page_size: 12,
           fu_name: "",
           fu_music_type: "",
+          is_private: 1
         },
       },
       saveToScore: {
