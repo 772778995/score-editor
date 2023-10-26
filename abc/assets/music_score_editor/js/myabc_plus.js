@@ -1345,7 +1345,7 @@ function handleStaffChange2() {
       console.log(line_str);
       var v_arr = line_str.match(/\d/g);
       if(v_arr && v_arr.length>1){
-        line_str = `%%score {${v_arr.join(' ')}}`;
+        line_str = `%%score [${v_arr.join(' ')}]`; // {} 通常是打谱表，同乐器[] 简谱或重奏不同乐器
       }
       console.log(line_str);
     }
