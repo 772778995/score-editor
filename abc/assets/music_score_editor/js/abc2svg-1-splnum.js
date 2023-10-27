@@ -27847,7 +27847,7 @@ function mousemovehandler(e) {
 }
 
 function mouseouthandler(e) {
-  console.log("———————————", e);
+  console.log("mouseouthandler::", e);
   select_note_info = null;
   cen = null;
   editSvgLineIndex = -1;

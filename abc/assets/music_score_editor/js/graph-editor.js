@@ -5831,6 +5831,7 @@ function updateNextNote(inputNote, noteIndex, chordInput, _0x1C197) {
   if (dragSplNum) {
     selected_len = 1;
   }
+  console.log('selected_len', selected_len);
   if (!dragSplNum && selected_len == 0 && lastMidiReplaceNoteIstart == -1) {
     var sym_item = null;
     for (var i = 0; i < syms["length"]; i++) {
@@ -5849,6 +5850,7 @@ function updateNextNote(inputNote, noteIndex, chordInput, _0x1C197) {
     }
     selected_len = $(".selected_text").length;
   }
+  console.log('selected_len :', selected_len, lastMidiReplaceNoteIstart);
   if (selected_len > 0 || lastMidiReplaceNoteIstart != -1) {
     midiInStatus = true;
     if (selected_len > 0) {
@@ -5907,8 +5909,9 @@ function updateNextNote(inputNote, noteIndex, chordInput, _0x1C197) {
         return;
       }
       appendNodes(1);
-      setTimeout(function () {
-        console.log('updateNextNote', inputNote, noteIndex);
+      changeLineBars(); // 按全局换行排列自动换行，影响临时换行
+      setTimeout(() => {
+        console.log('updateNextNote appendNodes:', inputNote, noteIndex);
         updateNextNote(inputNote, noteIndex);
       }, 500);
       midiInStatus = false;

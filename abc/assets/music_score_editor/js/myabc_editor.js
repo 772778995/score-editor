@@ -3565,18 +3565,10 @@ function getK() {
 }
 
 const changeLineBars = (() => {
-  if (window.isPreview) return () => {}
-  let lastBars = 0;
+  // if (window.isPreview) return () => {}
   return () => {
     try {
-      const bars = getVocalList()
-        .map((item) => item.barList)
-        .flat().length;
-      if (lastBars === bars) return;
-      lastBars = bars;
-      const num = content_vue.m.foldLine.show
-        ? content_vue.m.foldLine.previewV
-        : content_vue.m.foldLine.line;
+      const num = content_vue.m.scoreOpts.rowBars;
       $("#barsperstaff").val(num);
       var newContent = handleBreakLine($("#source").val(), num);
       $($("#source")).val(newContent);
@@ -8967,24 +8959,27 @@ function insertNodes(num, isAfter, isFirst, isLast) {
   }
   if(isLast){
     appendNodes(num);
+    changeLineBars();
   }else{
     if(!isAfter){
       for (let i = 1; i <= num; i++) {
         insertNodeByIndex(barIndex);
+        changeLineBars();
       }
     }else{
       barIndex++;
       if(barIndex>=bar_count){
         // bar_count 全局变量
         appendNodes(num);
+        changeLineBars();
       }else{
         for (let i = 1; i <= num; i++) {
           insertNodeByIndex(barIndex);
+          changeLineBars();
         }
       }
     }
   }
-  changeLineBars();
 }
 /**
  * 改变连音线弧度

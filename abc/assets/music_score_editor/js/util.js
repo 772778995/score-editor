@@ -3642,6 +3642,7 @@ function decimalsToFractional(decimals) {
 // %%barsperstaff 4
 function setBarsPerstaff(sourceid, num) {
   console.log('setBarsPerstaff');
+  sourceid = sourceid?sourceid:'source';
   var content = $("#" + sourceid).val();
   /*老的写法，加barsperstaff;
 	var pattern = /%%barsperstaff\s*(\d)*\n/;
@@ -3664,7 +3665,13 @@ function setBarsPerstaff(sourceid, num) {
   abc_change();
 }
 
-// 设置每行显示小节数
+// 设置特定小节前后换行
+function setBarsPerstaffNearNode(nodeIndex) {
+  console.log('setBarsPerstaffNearNode', nodeIndex);
+  // TODO: 像 changeLineBars();
+}
+
+// 设置每行显示小节数 (改方法被 myabc_plus.js 的同名方法替换)
 function handleBreakLine(content, num){
   var pattern = /%%barsperstaff\s*(\d)*\n/;
 	if(parseInt(num)<1){
@@ -8398,6 +8405,7 @@ function insertNodeByIndex(nodeIndex) {
 }
 //重新换行，原来的换行只在第一声部换行，如果不显示第一声部，则会出现问题
 function reBr(sourceid) {
+  sourceid = sourceid?sourceid:'source';
   var content = $("#" + sourceid).val();
   if (
     content.indexOf("%%linebreak") < 0 &&
@@ -8467,6 +8475,78 @@ function reBr(sourceid) {
   }
 
   return newContent;
+}
+// 通过临近换行号设置后面换行
+function reBr2(nodeIndex) {
+  var content = $("#source").val();
+  if (
+    content.indexOf("%%linebreak") < 0 &&
+    content.indexOf("%%breakline") < 0
+  ) {
+    return content;
+  }
+  var lines = getNodesInfo(content);
+  var brNodes = new Array();
+  for (var i = 0; i < lines.length; i++) {
+    var lineObj = lines[i];
+    if (lineObj.v == 0 && lineObj.type == "note") {
+      var nodes = lineObj.nodes;
+      var lineStr = lineObj.lineStr;
+      var nodeIndex = 0;
+      if (nodes) {
+        for (var j = 0; j < nodes.length; j++) {
+          var node = nodes[j];
+          nodeIndex = node.nodeIndex;
+          if (node.nodeStr && node.nodeStr.indexOf("$") > -1) {
+            brNodes.push(node.nodeIndex);
+          }
+        }
+      }
+      var strs = lineStr.split("|");
+      if (strs.length > 0) {
+        //这里处理最后一个小节是换行符的情况|$
+        var lastStr = strs[strs.length - 1];
+        if (lastStr.replace(/\s|\||\]|\:/g, "").indexOf("$") == 0) {
+          brNodes.push(nodeIndex + 1);
+        }
+      }
+    }
+  }
+  var newContent = "";
+  for (var i = 0; i < lines.length; i++) {
+    var lineObj = lines[i];
+    if (lineObj.v != 0 && lineObj.type == "note") {
+      var nodes = lineObj.nodes;
+      var nodeEndIend = -1;
+      if (nodes) {
+        for (var j = 0; j < nodes.length; j++) {
+          var node = nodes[j];
+          nodeEndIend = node.endSeq;
+          if (
+            brNodes.indexOf(node.nodeIndex) > -1 &&
+            node.nodeStr.indexOf("$") < 0
+          ) {
+            if (j != 0) {
+              newContent = newContent + "$" + node.nodeStr;
+            } else {
+              newContent = newContent + node.nodeStr;
+            }
+          } else {
+            newContent = newContent + node.nodeStr;
+          }
+        }
+      }
+      if (nodeEndIend != lineObj.endSeq) {
+        newContent += content.substring(nodeEndIend, lineObj.endSeq);
+      } else {
+        newContent += "\n";
+      }
+    } else {
+      newContent = newContent + lineObj.lineStr + "\n";
+    }
+  }
+
+  $("#source").val(newContent);
 }
 //替换js
 function replacejscssfile(oldfilename, newfilename, filetype) {
