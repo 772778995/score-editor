@@ -8950,26 +8950,39 @@ function delSelectedNode() {
   }
 }
 //插入小节
-function insertNodes(num, isAfter, isFirst) {
-  console.log('insertNodes', num, isAfter, isFirst);
+function insertNodes(num, isAfter, isFirst, isLast) {
+  console.log('insertNodes', num, isAfter, isFirst, isLast);
   const barRectEl = $("svg[type='rectnode'],svg[type='rectbar']")
-  const barIndex = barRectEl.attr('barIndex') || barRectEl.attr('barindex')
-  console.log(barIndex, bar_count);
-  if (barIndex >= bar_count) return appendNodes(num);
+  var barIndex = barRectEl.attr('barIndex') || barRectEl.attr('barindex')
+  console.log('insertNodes barIndex:', barIndex, bar_count);
+
+  // appendNodes(num); 向谱最后小节加入小节
+  // insertNodeByIndex(yourBarIndex); 向当前小节前面加入1小节
   if (!isFirst && !content_vue.checkIsSelectBar()) return;
-  if(!isAfter){
-    for (let i = 1; i <= num; i++) {
-      let yourBarIndex = barIndex
-      if (isAfter) yourBarIndex = + yourBarIndex + 1;
-      if (isFirst) yourBarIndex = 0;
-      if (bar_count === yourBarIndex) {
-        appendNodes(1)
-      } else {
-        insertNodeByIndex(yourBarIndex);
+
+  if(isFirst){
+    // 谱的第一小节前面
+    barIndex = 0;
+    isAfter = false;
+  }
+  if(isLast){
+    appendNodes(num);
+  }else{
+    if(!isAfter){
+      for (let i = 1; i <= num; i++) {
+        insertNodeByIndex(barIndex);
+      }
+    }else{
+      barIndex++;
+      if(barIndex>=bar_count){
+        // bar_count 全局变量
+        appendNodes(num);
+      }else{
+        for (let i = 1; i <= num; i++) {
+          insertNodeByIndex(barIndex);
+        }
       }
     }
-  }else{
-    appendNodes(num);
   }
   changeLineBars();
 }
