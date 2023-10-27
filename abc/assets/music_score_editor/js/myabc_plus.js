@@ -1138,54 +1138,44 @@ function switchRhythmContent2(isRhythm, staff_num, abc_content) {
 }
 
 function appendNodes(num) {
-  var staff_num = parseInt($("#STAFFNUM")["val"]());
+  // var staff_num = parseInt($("#STAFFNUM")["val"]());
   var abc_content = $("#source")["val"]();
-  var _0x12A3B = genNodesByCount(num);
-  var _0x11A89 = getLinesInfo(abc_content);
-  var _0x12B61 =
-    /(\|[1-9\.]+)|(\|\[[1-9\.]+)|(:\|\|:)|(:\|:)|(:\|)|(::)|(\|:)|(\|\|)|(\|\])|(\|)/g;
+  var add_content = genNodesByCount(num);
+  var lines_info = getLinesInfo(abc_content);
+  // var bar_reg = /(\|[1-9\.]+)|(\|\[[1-9\.]+)|(:\|\|:)|(:\|:)|(:\|)|(::)|(\|:)|(\|\|)|(\|\])|(\|)/g;
   var node_count = 0;
-  var _0x11C11 = "";
-  var _0x12AFF = new Map();
-  var _0x12C25 = 0;
-  for (
-    var _0x119C5 = _0x11A89["length"] - 1, _0x11901 = _0x119C5;
-    _0x11901 > 0;
-    _0x11901--
-  ) {
-    var _0x11A27 = _0x11A89[_0x11901];
-    var _0x11AEB = _0x11A27["lineStr"];
-    var _0x11B4D = "";
-    if (_0x11A27["type"] == "note") {
-      if (_0x12AFF["get"]("key" + _0x11A27["v"]) == null) {
-        _0x12AFF["set"]("key" + _0x11A27["v"], true);
-        _0x11A27["lineStr"] = _0x11A27["lineStr"]["replace"](
+  var new_abc_content = "";
+  var v_obj = new Map();
+  var n_num = 0;
+  for ( var i = lines_info["length"] - 1; i > 0; i-- ) {
+    var line_info = lines_info[i];
+    if (line_info["type"] == "note") {
+      if (v_obj["get"]("key" + line_info["v"]) == null) {
+        v_obj["set"]("key" + line_info["v"], true);
+        line_info["lineStr"] = line_info["lineStr"]["replace"](
           /(.*\|)/,
-          "$1" + _0x12A3B
+          "$1" + add_content
         );
       }
-      _0x12C25++;
+      n_num++;
     }
   }
-  var _0x11C11 = "";
-  for (
-    var _0x11901 = 0, _0x119C5 = _0x11A89["length"];
-    _0x11901 < _0x119C5;
-    _0x11901++
-  ) {
-    var _0x11A27 = _0x11A89[_0x11901];
-    _0x11C11 += _0x11A27["lineStr"] + "\x0A";
+  var new_abc_content = "";
+  for ( var i = 0; i < lines_info["length"]; i++ ) {
+    var line_info = lines_info[i];
+    new_abc_content += line_info["lineStr"] + "\x0A";
   }
-  if (_0x12C25 == 0) {
-    _0x11C11 += "\x0A" + _0x12A3B;
+  if (n_num == 0) {
+    new_abc_content += "\x0A" + add_content;
   }
-  var barsperstaff = $("#barsperstaff")["val"]();
-  _0x11C11 = replaceBlankLine(_0x11C11);
-  $("#source")["val"](_0x11C11);
+  // var barsperstaff = $("#barsperstaff")["val"]();
+  new_abc_content = replaceBlankLine(new_abc_content);
+  $("#source")["val"](new_abc_content);
   changeLineBars();
   src_change();
   doLog();
 }
+
 function popAppendNode() {
   $("#APPEND_NODE_div .modal-content")["css"](
     "left",
@@ -1360,17 +1350,18 @@ function getNewStaffStr(_0x150E5, _0x15021) {
   var _0x15083 = genNodesByCount(_0x15021);
   return _0x137A1 + _0x15083 + "\x0A";
 }
-function addBr() {
+function addBr(barIndex) {
+  console.log('addBr');
   var _0x1183D = $("#btnAddBr")["html"]();
   if (_0x1183D == "\u53d6\u6d88\u6362\u884c") {
     cancelBr();
     return;
   }
   var _0x117DB = $("#nodeMenu")["attr"]("barIndex");
-  if (!_0x117DB) {
+  if (!_0x117DB && !barIndex) {
     return;
   }
-  _0x117DB = parseInt(_0x117DB);
+  _0x117DB = barIndex?parseInt(barIndex):parseInt(_0x117DB);
   var abc_content = $("#source")["val"]();
   abc_content = abc_content["replace"](/%%barsperstaff.*\n/, "");
   var _0x11A89 = getNodesInfo(abc_content);
