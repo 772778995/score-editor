@@ -850,12 +850,12 @@
                       label=""
                       width="35">
                       <template slot-scope="scope">
-                        <img v-if="scope.$index!=0" @click="removeVoicePart(scope.$index)" src="assets/music_score_editor/img/close.png" title="删除声部" class="cursor-pointer">
+                        <img v-if="scope.$index!=0" @click="removeVoicePart(scope.$index, 1)" src="assets/music_score_editor/img/close.png" title="删除声部" class="cursor-pointer">
                       </template>
                     </el-table-column>
                   </el-table>
                 </div>
-                <div @click="addVoicePart()" class="_btn _border" style="width: auto;margin-top: 5px;padding: 5px 15px;text-align: center;display: inline-block;">添加声部</div>
+                <div @click="addVoicePart(1)" class="_btn _border" style="width: auto;margin-top: 5px;padding: 5px 15px;text-align: center;display: inline-block;">添加声部</div>
               </div>
 
               <div class="relative rounded" style="padding: 10px 18px; border-bottom: 2px solid #F5F5F5;">

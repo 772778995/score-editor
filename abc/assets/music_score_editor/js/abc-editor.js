@@ -6000,7 +6000,7 @@ var content_vue = new Vue({
     },
 
     // ———————————————————————————————————————— 分割线 __method ————————————————————————————————————————
-    addVoicePart(){
+    addVoicePart(n){
       if(this.m.newScore.scoreOpts.voiceParts.length>=8){
         alert('最多添加8个声部');
         return;
@@ -6021,13 +6021,21 @@ var content_vue = new Vue({
           7: 'X',
         }, // 节奏标记
       };
-      // this.m.scoreOpts.voiceParts.push(voicePart);
-      this.m.newScore.scoreOpts.voiceParts.push(voicePart);
+      // 
+      if(n){
+        this.m.newScore.scoreOpts.voiceParts.push(voicePart);
+      }else{
+        this.m.scoreOpts.voiceParts.push(voicePart);
+      }
     },
-    removeVoicePart(index){
+    removeVoicePart(index, n){
       // console.log('removeVoicePart', index);
-      // this.m.scoreOpts.voiceParts.splice(index, 1);
-      this.m.newScore.scoreOpts.voiceParts.splice(index, 1);
+      // 
+      if(n){
+        this.m.newScore.scoreOpts.voiceParts.splice(index, 1);
+      }else{
+        this.m.scoreOpts.voiceParts.splice(index, 1);
+      }
     },
     setFaceType(type){
       console.log('setFaceType', type, this.m.newScore.scoreOpts.faceType);
