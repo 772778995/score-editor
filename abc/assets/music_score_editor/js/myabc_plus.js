@@ -1335,7 +1335,14 @@ function handleStaffChange2() {
       console.log(line_str);
       var v_arr = line_str.match(/\d/g);
       if(v_arr && v_arr.length>1){
-        line_str = `%%score [${v_arr.join(' ')}]`; // {} 通常是打谱表，同乐器[] 简谱或重奏不同乐器
+         // 声部括号 {} 通常是大谱表，同乐器[] 简谱或重奏不同乐器
+        if(v_arr.length==2 && content_vue && content_vue.m && content_vue.m.scoreOpts && content_vue.m.scoreOpts.musicType=='big'){
+          line_str = `%%score {${v_arr.join(' ')}}`;
+        }else{
+          line_str = `%%score [${v_arr.join(' ')}]`;
+        }
+      }else if(v_arr && v_arr.length==1){
+        line_str = `%%score ${v_arr[0]}`;
       }
       console.log(line_str);
     }
