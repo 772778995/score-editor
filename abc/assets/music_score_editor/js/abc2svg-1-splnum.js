@@ -3644,8 +3644,13 @@ abc2svg = {
       h = staff_tb[i].y + staff_tb[i].topbar * staff_tb[i].staffscale - yb;
       // create lhj
       if (musicType == 2) {
+        // style="stroke:none;" // 去掉简谱的细线
+        var score_staff_bar_style = '';
+        if(content_vue && content_vue.m && content_vue.m.scoreOpts && content_vue.m.scoreOpts.musicType && content_vue.m.scoreOpts.musicType=='easy'){
+          score_staff_bar_style = 'style="stroke:none;"';
+        }
         out_XYAB(
-          '<path type="score" onclick="selScore(event,this)" class="A" d="mX Y\n',
+          '<path type="score" '+ score_staff_bar_style +' onclick="selScore(event,this)" class="A" d="mX Y\n',
           x,
           yb - addH,
           "stroke",
