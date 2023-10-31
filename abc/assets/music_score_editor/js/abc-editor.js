@@ -8214,14 +8214,14 @@ function updateNodeVoicePart(){
   if($('svg[type="rectnode"]').length){
     var rectnode = $('svg[type="rectnode"]').eq($('svg[type="rectnode"]').length-1);
     var s_node_arr = rectnode.attr('id').replace('mysvgnode', '').split('_');
-    var v_index = parseInt(s_node_arr[0]);
+    // var v_index = parseInt(s_node_arr[0]);
     var node_index = parseInt(s_node_arr[1]);
-    console.log('updateNodeVoicePart s_node_arr', v_index, node_index);
+    // console.log('updateNodeVoicePart s_node_arr', v_index, node_index);
     if(content_vue.m.VoicePartNodeData.update_type==2){
       node_index -= 1; // 当前小节起
     }
     var LinesInfo = getLinesInfo($('#source').val());
-    console.log('LinesInfo', LinesInfo);
+    // console.log('LinesInfo', LinesInfo);
     var new_abc_content = "";
     var node_count_arr = [0];
     var v_arr = [1];
@@ -8241,11 +8241,11 @@ function updateNodeVoicePart(){
           }
         }
       }else if(LineInfo['type']=='note'){
-        console.log('updateNodeVoicePart lineStr', lineStr, node_count_arr);
-        console.log('updateNodeVoicePart new_abc_content', new_abc_content);
+        // console.log('updateNodeVoicePart lineStr', lineStr, node_count_arr);
+        // console.log('updateNodeVoicePart new_abc_content', new_abc_content);
         var n_arr = lineStr.split('|'); // 最后一个是空字符串
-        if(node_index>=n_arr-1+node_count_arr[LineInfo['v']]){
-          node_count_arr[LineInfo['v']] = n_arr-1;
+        if(node_index>=n_arr.length-1+node_count_arr[LineInfo['v']]){
+          node_count_arr[LineInfo['v']] += n_arr.length-1;
           new_abc_content += lineStr + "\x0A";
         }else{
           for(var j=0; j<n_arr.length-1; j++){
@@ -8263,7 +8263,7 @@ function updateNodeVoicePart(){
       }
       new_abc_content += lineStr + "\x0A";
     }
-    console.log('new_abc_content', new_abc_content);
+    // console.log('new_abc_content', new_abc_content);
     // 添加声部
     var add_abc_content = '';
     add_abc_content += '$' + "\x0A";
@@ -8296,8 +8296,8 @@ function updateNodeVoicePart(){
       add_abc_content += "\x0A";
       add_abc_content += genNodesByCount(content_vue.m.scoreOpts.rowBars) + '$' + "\x0A";
     }
-    console.log('new_abc_content', new_abc_content);
-    console.log('add_abc_content', add_abc_content);
+    // console.log('new_abc_content', new_abc_content);
+    // console.log('add_abc_content', add_abc_content);
     $("#source")["val"](new_abc_content + add_abc_content);
     src_change();
     doLog();
@@ -8305,6 +8305,8 @@ function updateNodeVoicePart(){
     alert('请选择小节');
   }
 }
+
+
 
 // jquery 事件
 $(function(){ 
