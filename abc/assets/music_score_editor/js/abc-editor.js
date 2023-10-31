@@ -8306,7 +8306,167 @@ function updateNodeVoicePart(){
   }
 }
 
-
+// 更新音符显示为自定字符
+function updateSignNote(){
+  console.log('updateSignNote');
+  if($('svg[type="rectnode"]').length){
+    var rectnode = $('svg[type="rectnode"]').eq($('svg[type="rectnode"]').length-1);
+    var s_node_arr = rectnode.attr('id').replace('mysvgnode', '').split('_');
+    var v_index = parseInt(s_node_arr[0]);
+    var node_index = parseInt(s_node_arr[1]);
+    console.log('updateSignNote s_node_arr', v_index, node_index);
+    var LinesInfo = getLinesInfo($('#source').val());
+    // console.log('LinesInfo', LinesInfo);
+    var new_abc_content = "";
+    var node_count_arr = [0];
+    var v_arr = [1];
+    var add_sign_status = 0;
+    var e_node_count = 0;
+    var add_sign_str = '';
+    var has_build_sign = false;
+    for (var i = 0; i < LinesInfo.length; i++) {
+      var LineInfo = LinesInfo[i];
+      var lineStr = LineInfo["lineStr"];
+      if(LineInfo['type']=='score'){
+        v_arr = lineStr.match(/\d/g);
+        if(!v_arr.length){
+          v_arr = [1];
+        }
+        for(var j=0; j<v_arr.length; j++){
+          if(typeof node_count_arr[j]=='undefined'){
+            node_count_arr[j] = typeof node_count_arr[0]!='undefined'?node_count_arr[0]:0;
+          }else if(node_count_arr[0] && node_count_arr[j]<node_count_arr[0]){
+            node_count_arr[j] = node_count_arr[0];
+          }
+        }
+      }else if(LineInfo['type']=='note'){
+        var n_arr = lineStr.split('|'); // 最后一个是空字符串
+        if(node_index>=n_arr.length-1+node_count_arr[LineInfo['v']] || LineInfo['v']!=v_index || has_build_sign){
+          node_count_arr[LineInfo['v']] += n_arr.length-1;
+          new_abc_content += lineStr + "\x0A";
+          function checkAfterHasSign(LinesInfo, i){
+            for (var k = i+1; k < LinesInfo.length; k++) {
+              var LineInfo = LinesInfo[k];
+              if(LineInfo['type']=='v'){
+                return 0;
+              }else if(LineInfo['type']=='S'){
+                return 1;
+              }
+            }
+            return 0;
+          }
+          add_sign_status = checkAfterHasSign(LinesInfo, i);
+          if(!add_sign_status){
+            new_abc_content += 'S: ';
+            for(var j=0; j<n_arr.length-1; j++){
+              new_abc_content += ' |';
+            }
+            new_abc_content += "\x0A";
+            add_sign_status = 0;
+          }
+        }else{
+          new_abc_content += lineStr + "\x0A";
+          if(LineInfo['v']==v_index){
+            // 当前小节
+            // 检查后面是否已经存在sign标记
+            function checkAfterHasSign(LinesInfo, i){
+              for (var k = i+1; k < LinesInfo.length; k++) {
+                var LineInfo = LinesInfo[k];
+                if(LineInfo['type']=='v'){
+                  return 0;
+                }else if(LineInfo['type']=='S'){
+                  return 1;
+                }
+              }
+              return 0;
+            }
+            add_sign_status = checkAfterHasSign(LinesInfo, i);
+            
+            e_node_count = node_count_arr[LineInfo['v']];
+            if(!add_sign_status){
+              console.log('updateSignNote add_sign_status', e_node_count);
+              new_abc_content += 'S: ';
+              for(var j=0; j<n_arr.length-1; j++){
+                if(e_node_count+j==node_index){
+                  var nodestr = n_arr[j];
+                  console.log('updateSignNote nodestr', nodestr);
+                  nodestr = nodestr.replaceAll(
+                    /((![0-9]*!)|(![a-zA-Z]*!)|(!\>!)|(!\<\(!)|(!\<\)!)|(!\>\(!)|(!\>\)!)|\.|v|u|\>|P)/g,
+                    ""
+                  );
+                  var nodes_arr = nodestr.match(/[A-Ga-g]/g);
+                  var new_nodestr = nodes_arr.join(' ');
+                  nodestr = new_nodestr.replace(/[Aa]/g, '壹');
+                  nodestr = nodestr.replace(/[Bb]/g, '贰');
+                  nodestr = nodestr.replace(/[Cc]/g, '三');
+                  nodestr = nodestr.replace(/[Dd]/g, '四');
+                  nodestr = nodestr.replace(/[Ee]/g, '五');
+                  nodestr = nodestr.replace(/[Ff]/g, '六');
+                  nodestr = nodestr.replace(/[Gg]/g, '七');
+                  new_abc_content += nodestr + '|';
+                  console.log('updateSignNote add_sign_status', nodestr);
+                }else{
+                  new_abc_content += ' |';
+                }
+              }
+              new_abc_content += "\x0A";
+              add_sign_status = 0;
+            }else{
+              // add_sign_str 
+              for(var j=0; j<n_arr.length-1; j++){
+                if(e_node_count+j==node_index){
+                  var nodestr = n_arr[j];
+                  nodestr = nodestr.replaceAll(
+                    /((![0-9]*!)|(![a-zA-Z]*!)|(!\>!)|(!\<\(!)|(!\<\)!)|(!\>\(!)|(!\>\)!)|\.|v|u|\>|P)/g,
+                    ""
+                  );
+                  var nodes_arr = nodestr.match(/[A-Ga-g]/g);
+                  var new_nodestr = nodes_arr.join(' ');
+                  nodestr = new_nodestr.replace(/[Aa]/g, '壹');
+                  nodestr = nodestr.replace(/[Bb]/g, '贰');
+                  nodestr = nodestr.replace(/[Cc]/g, '三');
+                  nodestr = nodestr.replace(/[Dd]/g, '四');
+                  nodestr = nodestr.replace(/[Ee]/g, '五');
+                  nodestr = nodestr.replace(/[Ff]/g, '六');
+                  nodestr = nodestr.replace(/[Gg]/g, '七');
+                  add_sign_str += nodestr;
+                }
+              }
+            }
+            has_build_sign = true;
+          }
+          node_count_arr[LineInfo['v']] += n_arr.length-1;
+        }
+        continue;
+      }else if(LineInfo['type']=='S'){
+        if(add_sign_status){
+          var n_arr = lineStr.split('|');
+          for(var j=0; j<n_arr.length-1; j++){
+            if(e_node_count+j==node_index){
+              new_abc_content += add_sign_str + '|';
+            }else{
+              new_abc_content += n_arr[j] + '|';
+            }
+          }
+          new_abc_content += "\x0A";
+          add_sign_str = '';
+          add_sign_status = 0;
+          continue;
+        }
+      }else if(LineInfo['type']=='v'){
+        add_sign_str = '';
+        add_sign_status = 0;
+      }
+      new_abc_content += lineStr + "\x0A";
+    }
+    // console.log('new_abc_content', new_abc_content);
+    $("#source")["val"](new_abc_content);
+    src_change();
+    doLog();
+  }else{
+    alert('请选择小节');
+  }
+}
 
 // jquery 事件
 $(function(){ 
