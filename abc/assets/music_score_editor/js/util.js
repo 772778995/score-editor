@@ -3762,6 +3762,7 @@ function showLineFirstNodeSeq(sourceid) {
 // 取得不同声部的数据
 function getVoicePart(sourceid, varr) {
   //all_s(true);
+  sourceid = sourceid?sourceid:'source';
   var content = $("#" + sourceid).val();
   var lines = content.split("\n");
   var body = "";

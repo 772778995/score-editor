@@ -2962,6 +2962,26 @@ var content_vue = new Vue({
         isFoucs: false
       },
       settingBoxShow: false,
+      VoicePartBoxShow: false,
+      VoicePartNodeData: {
+        update_type: 0, // 0:不更新 1:后一小节起 2:当前小节起
+        voiceParts: [{
+          clef: 'treble', // treble: 高音 bass: 低音 alto: 中音 tenor: 次中音
+          name: '', // Piano 等等
+          subname: '', // Pno. 等简称
+          tone: 0, // 音色
+          isRhythm: false, // 是否为节奏谱
+          rhythmSigns: {
+            1: 'X',
+            2: 'X',
+            3: 'X',
+            4: 'X',
+            5: 'X',
+            6: 'X',
+            7: 'X',
+          }, // 节奏标记
+        }]
+      },
       isMusicNoteShow: false,
       addBar: {
         show: false,
@@ -6037,6 +6057,34 @@ var content_vue = new Vue({
         this.m.scoreOpts.voiceParts.splice(index, 1);
       }
     },
+    addNodeVoicePart(n){
+      if(this.m.VoicePartNodeData.voiceParts.length>=8){
+        alert('最多添加8个声部');
+        return;
+      }
+      var voicePart = {
+        clef: 'treble', // treble: 高音 bass: 低音 alto: 中音 tenor: 次中音
+        name: '', // Piano 等等
+        subname: '', // Pno. 等简称
+        tone: 0, // 音色
+        isRhythm: false, // 是否为节奏谱
+        rhythmSigns: {
+          1: 'X',
+          2: 'X',
+          3: 'X',
+          4: 'X',
+          5: 'X',
+          6: 'X',
+          7: 'X',
+        }, // 节奏标记
+      };
+      // 
+      this.m.VoicePartNodeData.voiceParts.push(voicePart);
+    },
+    removeNodeVoicePart(index, n){
+      // console.log('removeVoicePart', index);
+      this.m.VoicePartNodeData.voiceParts.splice(index, 1);
+    },
     setFaceType(type){
       console.log('setFaceType', type, this.m.newScore.scoreOpts.faceType);
       if(type=='none'){
@@ -6530,6 +6578,13 @@ var content_vue = new Vue({
           title: "添加术语",
           disabled: !isSelectNote,
           fn: () => editorCurrNoteAnnot(),
+        },
+        {
+          title: "设置小节声部",
+          disabled: !isSelectBar,
+          fn: () => {
+            content_vue.m.VoicePartBoxShow = true;
+          },
         },
         { type: "line" },
         {
@@ -8146,6 +8201,108 @@ const setRepeatBracket = (sign) => {
         break;
       }
     }
+  }
+}
+
+// 设置小节声部
+function updateNodeVoicePart(){
+  console.log('updateNodeVoicePart');
+  content_vue.m.VoicePartBoxShow = false;
+  if(content_vue.m.VoicePartNodeData.update_type==0){
+    return;
+  }
+  if($('svg[type="rectnode"]').length){
+    var rectnode = $('svg[type="rectnode"]').eq($('svg[type="rectnode"]').length-1);
+    var s_node_arr = rectnode.attr('id').replace('mysvgnode', '').split('_');
+    var v_index = parseInt(s_node_arr[0]);
+    var node_index = parseInt(s_node_arr[1]);
+    console.log('updateNodeVoicePart s_node_arr', v_index, node_index);
+    if(content_vue.m.VoicePartNodeData.update_type==2){
+      node_index -= 1; // 当前小节起
+    }
+    var LinesInfo = getLinesInfo($('#source').val());
+    console.log('LinesInfo', LinesInfo);
+    var new_abc_content = "";
+    var node_count_arr = [0];
+    var v_arr = [1];
+    for (var i = 0; i < LinesInfo.length; i++) {
+      var LineInfo = LinesInfo[i];
+      var lineStr = LineInfo["lineStr"];
+      if(LineInfo['type']=='score'){
+        v_arr = lineStr.match(/\d/g);
+        if(!v_arr.length){
+          v_arr = [1];
+        }
+        for(var j=0; j<v_arr.length; j++){
+          if(typeof node_count_arr[j]=='undefined'){
+            node_count_arr[j] = typeof node_count_arr[0]!='undefined'?node_count_arr[0]:0;
+          }else if(node_count_arr[0] && node_count_arr[j]<node_count_arr[0]){
+            node_count_arr[j] = node_count_arr[0];
+          }
+        }
+      }else if(LineInfo['type']=='note'){
+        console.log('updateNodeVoicePart lineStr', lineStr, node_count_arr);
+        console.log('updateNodeVoicePart new_abc_content', new_abc_content);
+        var n_arr = lineStr.split('|'); // 最后一个是空字符串
+        if(node_index>=n_arr-1+node_count_arr[LineInfo['v']]){
+          node_count_arr[LineInfo['v']] = n_arr-1;
+          new_abc_content += lineStr + "\x0A";
+        }else{
+          for(var j=0; j<n_arr.length-1; j++){
+            if(node_count_arr[LineInfo['v']]<=node_index){
+              new_abc_content += n_arr[j] + "|";
+              node_count_arr[LineInfo['v']]++;
+            }
+          }
+          new_abc_content +=  '$' + "\x0A";
+          if(LineInfo['v']==v_arr.length-1 && node_count_arr[LineInfo['v']]>node_index){
+            break;
+          }
+        }
+        continue;
+      }
+      new_abc_content += lineStr + "\x0A";
+    }
+    console.log('new_abc_content', new_abc_content);
+    // 添加声部
+    var add_abc_content = '';
+    add_abc_content += '$' + "\x0A";
+    var voiceParts = content_vue.m.VoicePartNodeData.voiceParts;
+    if(voiceParts.length>1){
+      add_abc_content += "%%score ";
+      add_abc_content += "[";
+      for (var i = 0; i < voiceParts.length; i++) {
+        if(i==0){
+          add_abc_content += i+1;
+        }else{
+          add_abc_content += " " + (i+1);
+        }
+      }
+      add_abc_content += "]" + "\x0A";
+    }else{
+      add_abc_content += "%%score 1" + "\x0A";
+    }
+    for(var i=0; i<voiceParts.length; i++){
+      add_abc_content += 'V:'+(i+1)+' clef='+voiceParts[i]['clef'];
+      add_abc_content += voiceParts[i]['name']?('  nm="'+ voiceParts[i]['name'] +'"'):'';
+      add_abc_content += voiceParts[i]['subname']?('  snm="'+ voiceParts[i]['subname'] +'"'):'';
+      add_abc_content += voiceParts[i]['isRhythm']?' perc stafflines=1':'';
+      add_abc_content += "\x0A";
+      add_abc_content += '%%MIDI program ' + voiceParts[i]['tone'] + "\x0A";
+    }
+    for(var i=0; i<voiceParts.length; i++){
+      add_abc_content += 'V:'+(i+1)+' clef='+voiceParts[i]['clef'];
+      add_abc_content += voiceParts[i]['isRhythm']?' perc stafflines=1':'';
+      add_abc_content += "\x0A";
+      add_abc_content += genNodesByCount(content_vue.m.scoreOpts.rowBars) + '$' + "\x0A";
+    }
+    console.log('new_abc_content', new_abc_content);
+    console.log('add_abc_content', add_abc_content);
+    $("#source")["val"](new_abc_content + add_abc_content);
+    src_change();
+    doLog();
+  }else{
+    alert('请选择小节');
   }
 }
 

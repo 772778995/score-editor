@@ -1211,6 +1211,146 @@
       </div>
 
 
+      <div class="fixed rounded-md overflow-hidden at_move_box"
+       :class="{ 'opacity-0 pointer-events-none' : !m.VoicePartBoxShow }"
+       style="z-index: 9998;box-shadow: 4px 4px 30px 0px rgba(3,35,63,0.28);left: calc(100% - 580px);top: 85px;">
+        <b class="flex justify-between items-center text-xl bg-#f5f5f6 at_move_box_title" style="padding: 10px 20px">
+          <div>小节声部设置</div>
+          <img src="assets/music_score_editor/img/close.png" class="cursor-pointer" @click="m.VoicePartBoxShow = false"/>
+        </b>
+
+        <div class="flex relative" style="background: #B5C5D3;">
+          <div class="bg-white overflow-y-auto relative" >  <!-- overflow-y-auto -->
+
+            <div class="relative rounded" style="padding: 10px 18px; border-bottom: 2px solid #F5F5F5;">
+              
+
+              <div class="blue-title" style="margin-bottom: 16px;">更新方式</div>
+              <div class="flex items-center ">
+                <div class="flex items-center h-full cursor-pointer mb-2" @click="m.VoicePartNodeData.update_type=0">
+                  <img
+                    :src="`assets/music_score_editor/img/radio${m.VoicePartNodeData.update_type == 0 ? '1' : '2'}.png`"
+                    class="cursor-pointer mr-2"
+                  />
+                  <div>不改变</div>
+                </div>
+              </div>
+              <div class="flex items-center ">
+                <div class="flex items-center h-full cursor-pointer mb-2" @click="m.VoicePartNodeData.update_type=1">
+                  <img
+                    :src="`assets/music_score_editor/img/radio${m.VoicePartNodeData.update_type == 1 ? '1' : '2'}.png`"
+                    class="cursor-pointer mr-2"
+                  />
+                  <div>当前小节后起更新</div>
+                </div>
+              </div>
+              <div class="flex items-center ">
+                <div class="flex items-center h-full cursor-pointer mb-2" @click="m.VoicePartNodeData.update_type=2">
+                  <img
+                    :src="`assets/music_score_editor/img/radio${m.VoicePartNodeData.update_type == 2 ? '1' : '2'}.png`"
+                    class="cursor-pointer mr-2"
+                  />
+                  <div>当前小节起更新</div>
+                </div>
+              </div>
+              
+              <div v-if="m.VoicePartNodeData.update_type!==0">
+                <div class="flex" style="color: #8F8F8F; font-size: 12px">
+                  <div class="blue-title">声部</div>
+                </div>
+                <div class="flex vp_table" style="margin-top: 20px;">
+                  <el-table
+                    :data="m.VoicePartNodeData.voiceParts"
+                    style="width: 100%">
+                    <el-table-column
+                      label="声部名称">
+                      <template slot-scope="scope">
+                        <input style="width: 100%;" v-model="scope.row.name" type="text" />
+                      </template>
+                    </el-table-column>
+                    <el-table-column
+                      label="简称"
+                      width="130">
+                      <template slot-scope="scope">
+                        <input style="width: 100%;" v-model="scope.row.subname" type="text" />
+                      </template>
+                    </el-table-column>
+                    <el-table-column
+                      align="center"
+                      label="声部谱号"
+                      width="80">
+                      <template slot-scope="scope">
+                        <select 
+                          style="width: 100%;"
+                          v-model="scope.row.clef"
+                        >
+                          <option :value="'treble'">高音</option>
+                          <option :value="'bass'">低音</option>
+                          <option :value="'alto'">中音</option>
+                          <option :value="'tenor'">次中音</option>
+                        </select>
+                      </template>
+                    </el-table-column>
+                    <el-table-column
+                      align="center"
+                      label="音色"
+                      width="80">
+                      <template slot-scope="scope">
+                        <select 
+                          style="width: 100%;"
+                          v-model="scope.row.tone"
+                        >
+                          <option v-for="item in instrumentList" :value="item.code">{{ item.name }}</option>
+                        </select>
+                      </template>
+                    </el-table-column>
+                    <el-table-column
+                      align="center"
+                      label="节奏谱"
+                      width="80">
+                      <template slot-scope="scope">
+                        <select 
+                          v-model="scope.row.isRhythm"
+                          @change="()=>{
+                            console.log('scope.row.isRhythm', scope.row.isRhythm);
+                            if(scope.row.isRhythm){
+                              scope.row.tone = 115; // 木鱼
+                            }else{
+                              scope.row.tone = 0; // 默认
+                            }
+                            // switchRhythm2(scope.row.isRhythm, scope.$index+1);
+                          }"
+                        >
+                          <option :value="false">否</option>
+                          <option :value="true">是</option>
+                        </select>
+                      </template>
+                    </el-table-column>
+                    <el-table-column
+                      align="center"
+                      label=""
+                      width="35">
+                      <template slot-scope="scope">
+                        <img v-if="scope.$index!=0" @click="removeNodeVoicePart(scope.$index)" src="assets/music_score_editor/img/close.png" title="删除声部" class="cursor-pointer">
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </div>
+
+                <div @click="addNodeVoicePart()" class="_btn _border" style="width: auto;margin-top: 5px;padding: 5px 15px;text-align: center;display: inline-block;">添加声部</div>
+              </div>
+              
+            </div>
+
+            <div class="flex sticky bottom-0 bg-white z-40" style="right: 10px;display: flex;flex-direction: row-reverse; width: 100%; padding: 20px 17px 20px 17px;">
+              <div class="_btn" @click="updateNodeVoicePart()">确定</div>
+              <div @click="m.VoicePartBoxShow = false" class="_btn _border" style="width: auto;margin-right: 15px;padding: 5px 15px;text-align: center;display: inline-block;">取消</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
       <div
         class="fixed flex top-0 left-0 duration-300 transform-gpu h-screen w-screen items-center justify-center"
         style="z-index: 9998;"
