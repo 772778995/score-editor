@@ -2964,7 +2964,7 @@ var content_vue = new Vue({
       settingBoxShow: false,
       VoicePartBoxShow: false,
       VoicePartNodeData: {
-        update_type: 0, // 0:不更新 1:后一小节起 2:当前小节起
+        update_type: 1, // 0:不更新 1:后一小节起 2:当前小节起
         voiceParts: [{
           clef: 'treble', // treble: 高音 bass: 低音 alto: 中音 tenor: 次中音
           name: '', // Piano 等等

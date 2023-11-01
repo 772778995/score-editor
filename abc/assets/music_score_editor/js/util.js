@@ -3665,12 +3665,6 @@ function setBarsPerstaff(sourceid, num) {
   abc_change();
 }
 
-// 设置特定小节前后换行
-function setBarsPerstaffNearNode(nodeIndex) {
-  console.log('setBarsPerstaffNearNode', nodeIndex);
-  // TODO: 像 changeLineBars();
-}
-
 // 设置每行显示小节数 (改方法被 myabc_plus.js 的同名方法替换)
 function handleBreakLine(content, num){
   var pattern = /%%barsperstaff\s*(\d)*\n/;

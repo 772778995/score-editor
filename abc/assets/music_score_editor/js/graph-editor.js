@@ -5909,7 +5909,7 @@ function updateNextNote(inputNote, noteIndex, chordInput, _0x1C197) {
         return;
       }
       appendNodes(1);
-      changeLineBars(); // 按全局换行排列自动换行，影响临时换行
+      autoChangeLineBars(); // 按全局换行排列自动换行，影响临时换行
       setTimeout(() => {
         console.log('updateNextNote appendNodes:', inputNote, noteIndex);
         updateNextNote(inputNote, noteIndex);
@@ -6012,6 +6012,14 @@ function updateNextNote(inputNote, noteIndex, chordInput, _0x1C197) {
     window.top.alert('请选中1个音符开始输入');
   }
   return ts_istart;
+}
+
+// 自动设置折行
+function autoChangeLineBars() {
+  console.log('autoChangeLineBars');
+  // TODO: 像 changeLineBars();
+  changeLineBars();
+  // var nodes_info = getNodesInfo($('#source').val());
 }
 
 function showLyricInput() {

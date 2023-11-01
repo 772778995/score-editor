@@ -788,7 +788,7 @@
                       </template>
                     </el-table-column>
                     <el-table-column
-                      label="简称"
+                      label="副名称"
                       width="90">
                       <template slot-scope="scope">
                         <input style="width: 100%;" v-model="scope.row.subname" type="text" />
@@ -1048,7 +1048,7 @@
                     </template>
                   </el-table-column>
                   <el-table-column
-                    label="简称"
+                    label="副名称"
                     width="90">
                     <template slot-scope="scope">
                       <input style="width: 100%;" v-model="scope.row.subname" type="text" />
@@ -1224,8 +1224,10 @@
 
             <div class="relative rounded" style="padding: 10px 18px; border-bottom: 2px solid #F5F5F5;">
               
-
-              <div class="blue-title" style="margin-bottom: 16px;">更新方式</div>
+              <div class="flex items-center" style="color: #8F8F8F;">
+                提示：在小节后插入声部
+              </div>
+              <!-- <div class="blue-title" style="margin-bottom: 16px;">更新方式</div>
               <div class="flex items-center ">
                 <div class="flex items-center h-full cursor-pointer mb-2" @click="m.VoicePartNodeData.update_type=0">
                   <img
@@ -1252,7 +1254,7 @@
                   />
                   <div>当前小节起更新</div>
                 </div>
-              </div>
+              </div> -->
               
               <div v-if="m.VoicePartNodeData.update_type!==0">
                 <div class="flex" style="color: #8F8F8F; font-size: 12px">
@@ -1269,7 +1271,7 @@
                       </template>
                     </el-table-column>
                     <el-table-column
-                      label="简称"
+                      label="副名称"
                       width="90">
                       <template slot-scope="scope">
                         <input style="width: 100%;" v-model="scope.row.subname" type="text" />
