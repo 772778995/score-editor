@@ -229,13 +229,13 @@ const initNewScoreOpts = {
     tone: 0, // 音色
     isRhythm: false, // 是否为节奏谱
     rhythmSigns: {
-      1: 'X',
-      2: 'X',
-      3: 'X',
-      4: 'X',
-      5: 'X',
-      6: 'X',
-      7: 'X',
+      a: 'X',
+      b: 'X',
+      c: 'X',
+      d: 'X',
+      e: 'X',
+      f: 'X',
+      g: 'X',
     }, // 节奏标记
   }],
 };
@@ -2972,13 +2972,13 @@ var content_vue = new Vue({
           tone: 0, // 音色
           isRhythm: false, // 是否为节奏谱
           rhythmSigns: {
-            1: 'X',
-            2: 'X',
-            3: 'X',
-            4: 'X',
-            5: 'X',
-            6: 'X',
-            7: 'X',
+            a: 'X',
+            b: 'X',
+            c: 'X',
+            d: 'X',
+            e: 'X',
+            f: 'X',
+            g: 'X',
           }, // 节奏标记
         }]
       },
@@ -3801,13 +3801,13 @@ var content_vue = new Vue({
             tone: 0, // 音色
             isRhythm: false, // 是否为节奏谱
             rhythmSigns: {
-              1: 'X',
-              2: 'X',
-              3: 'X',
-              4: 'X',
-              5: 'X',
-              6: 'X',
-              7: 'X',
+              a: 'X',
+              b: 'X',
+              c: 'X',
+              d: 'X',
+              e: 'X',
+              f: 'X',
+              g: 'X',
             }, // 节奏标记
           }],
         },
@@ -6032,13 +6032,13 @@ var content_vue = new Vue({
         tone: 0, // 音色
         isRhythm: false, // 是否为节奏谱
         rhythmSigns: {
-          1: 'X',
-          2: 'X',
-          3: 'X',
-          4: 'X',
-          5: 'X',
-          6: 'X',
-          7: 'X',
+          a: 'X',
+          b: 'X',
+          c: 'X',
+          d: 'X',
+          e: 'X',
+          f: 'X',
+          g: 'X',
         }, // 节奏标记
       };
       // 
@@ -6069,13 +6069,13 @@ var content_vue = new Vue({
         tone: 0, // 音色
         isRhythm: false, // 是否为节奏谱
         rhythmSigns: {
-          1: 'X',
-          2: 'X',
-          3: 'X',
-          4: 'X',
-          5: 'X',
-          6: 'X',
-          7: 'X',
+          a: 'X',
+          b: 'X',
+          c: 'X',
+          d: 'X',
+          e: 'X',
+          f: 'X',
+          g: 'X',
         }, // 节奏标记
       };
       // 
@@ -6410,6 +6410,14 @@ var content_vue = new Vue({
     openCtxMenu(e) {
       this.m.ctxMenu.x = e.clientX;
       this.m.ctxMenu.y = e.clientY;
+      if($('#shortcut_menu').height()+e.clientY>$(window).height()){
+        // 防止右键菜单超出可视区
+        this.m.ctxMenu.y = $(window).height()-$('#shortcut_menu').height()-10;
+      }
+      if($('#shortcut_menu').width()+e.clientX>$(window).width()){
+        // 防止右键菜单超出可视区
+        this.m.ctxMenu.x = $(window).width()-$('#shortcut_menu').width()-10;
+      }
       this.m.ctxMenu.isSelectNote = !!this.getSelectedNote();
       this.m.ctxMenu.isSelectBar = !!this.getSelectedBar();
       this.m.ctxMenu.copyNodeInfo = user.copyNoteInfo;
@@ -6682,13 +6690,13 @@ var content_vue = new Vue({
               tone: 0, // 音色
               isRhythm: false, // 是否为节奏谱
               rhythmSigns: {
-                1: 'X',
-                2: 'X',
-                3: 'X',
-                4: 'X',
-                5: 'X',
-                6: 'X',
-                7: 'X',
+                a: 'X',
+                b: 'X',
+                c: 'X',
+                d: 'X',
+                e: 'X',
+                f: 'X',
+                g: 'X',
               }, // 节奏标记
             },
             {
@@ -6698,13 +6706,13 @@ var content_vue = new Vue({
               tone: '',
               isRhythm: false,
               rhythmSigns: {
-                1: 'X',
-                2: 'X',
-                3: 'X',
-                4: 'X',
-                5: 'X',
-                6: 'X',
-                7: 'X',
+                a: 'X',
+                b: 'X',
+                c: 'X',
+                d: 'X',
+                e: 'X',
+                f: 'X',
+                g: 'X',
               },
             },
             {
@@ -6714,13 +6722,13 @@ var content_vue = new Vue({
               tone: '',
               isRhythm: false,
               rhythmSigns: {
-                1: 'X',
-                2: 'X',
-                3: 'X',
-                4: 'X',
-                5: 'X',
-                6: 'X',
-                7: 'X',
+                a: 'X',
+                b: 'X',
+                c: 'X',
+                d: 'X',
+                e: 'X',
+                f: 'X',
+                g: 'X',
               },
             },
             {
@@ -6730,13 +6738,13 @@ var content_vue = new Vue({
               tone: '',
               isRhythm: false,
               rhythmSigns: {
-                1: 'X',
-                2: 'X',
-                3: 'X',
-                4: 'X',
-                5: 'X',
-                6: 'X',
-                7: 'X',
+                a: 'X',
+                b: 'X',
+                c: 'X',
+                d: 'X',
+                e: 'X',
+                f: 'X',
+                g: 'X',
               },
             }
           ];
@@ -6750,13 +6758,13 @@ var content_vue = new Vue({
               tone: 0, // 音色
               isRhythm: false, // 是否为节奏谱
               rhythmSigns: {
-                1: 'X',
-                2: 'X',
-                3: 'X',
-                4: 'X',
-                5: 'X',
-                6: 'X',
-                7: 'X',
+                a: 'X',
+                b: 'X',
+                c: 'X',
+                d: 'X',
+                e: 'X',
+                f: 'X',
+                g: 'X',
               }, // 节奏标记
             },
             {
@@ -6766,13 +6774,13 @@ var content_vue = new Vue({
               tone: '',
               isRhythm: false,
               rhythmSigns: {
-                1: 'X',
-                2: 'X',
-                3: 'X',
-                4: 'X',
-                5: 'X',
-                6: 'X',
-                7: 'X',
+                a: 'X',
+                b: 'X',
+                c: 'X',
+                d: 'X',
+                e: 'X',
+                f: 'X',
+                g: 'X',
               },
             }
           ];
@@ -6785,13 +6793,13 @@ var content_vue = new Vue({
             tone: 0, // 音色
             isRhythm: false, // 是否为节奏谱
             rhythmSigns: {
-              1: 'X',
-              2: 'X',
-              3: 'X',
-              4: 'X',
-              5: 'X',
-              6: 'X',
-              7: 'X',
+              a: 'X',
+              b: 'X',
+              c: 'X',
+              d: 'X',
+              e: 'X',
+              f: 'X',
+              g: 'X',
             }, // 节奏标记
           }];
         break;
@@ -6805,13 +6813,13 @@ var content_vue = new Vue({
             tone: 0, // 音色
             isRhythm: false, // 是否为节奏谱
             rhythmSigns: {
-              1: 'X',
-              2: 'X',
-              3: 'X',
-              4: 'X',
-              5: 'X',
-              6: 'X',
-              7: 'X',
+              a: 'X',
+              b: 'X',
+              c: 'X',
+              d: 'X',
+              e: 'X',
+              f: 'X',
+              g: 'X',
             }, // 节奏标记
           }];
         break;
