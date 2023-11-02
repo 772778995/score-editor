@@ -6508,7 +6508,8 @@ var content_vue = new Vue({
     editorWordInput(){
       if (this.m.editor.type !== 'lyric') return
       const lines = this.m.editor.val.split('\n')
-      this.m.editor.style.height = lines.length * 23 + 20 + 'px'
+      this.m.editor.style.height = lines.length * 23 + 20 + 'px';
+      this.m.editor.isTab = false;
     },
     // 歌词、文字输入 （键盘 tab 按键触发）
     editorWord(isTab){

@@ -7213,6 +7213,7 @@ function createLyricEditor(lyricStr, noteIstart) {
     if(typeof noteList[eindex]!='undefined'){
       el = noteList[eindex];
     }
+    content_vue.m.editor.isTab = false; // 获取下个焦点后初始tab状态
     // console.log('editorWord el1', content_vue.m.editor.noteIstart, content_vue.m.editor.isTab, el);
   }
 
