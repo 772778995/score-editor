@@ -5821,18 +5821,32 @@ function moveDeco(_0x16062) {
 var lastMidiReplaceNoteIstart = -1;
 var lastMidiReplaceNoteV = -1;
 var midiInStatus = false;
+// 午夜更新音符的时刻，程序员正在战斗
 function updateNextNote(inputNote, noteIndex, chordInput, _0x1C197) {
-  console.log('updateNextNote:', inputNote, noteIndex, chordInput, _0x1C197);
+  // 代码开始执行，时间戳
+  console.log('开始更新音符：', inputNote, noteIndex, chordInput, _0x1C197);
+
+  // 检查一下，如果图形不需要更新且输入不是 'z'
   if (!graph_update && inputNote !== 'z') {
+    // 可能在做梦，不用担心，返回吧！
     return;
   }
+
+  // 计算被选中的文本块数量
   var selected_len = $(".selected_text").length;
-  console.log('updateNextNote dragSplNum', dragSplNum);
+  console.log('正在检查 dragSplNum', dragSplNum);
+
+  // 如果 dragSplNum 存在，那么只有一个文本块被选中，不多不少
   if (dragSplNum) {
     selected_len = 1;
   }
-  console.log('selected_len', selected_len);
+
+  // 打印一下被选中文本块的数量，似乎我们的程序正在数羊
+  console.log('当前选中的文本块数', selected_len);
+
+  // 如果没有 dragSplNum 且一个文本块都没被选中，同时上一个 MIDI 音符索引为 -1
   if (!dragSplNum && selected_len == 0 && lastMidiReplaceNoteIstart == -1) {
+    // 寻找一个特殊的符号，典型的需求：找钥匙开宝箱
     var sym_item = null;
     for (var i = 0; i < syms["length"]; i++) {
       var sym_data = syms[i];
@@ -5843,26 +5857,44 @@ function updateNextNote(inputNote, noteIndex, chordInput, _0x1C197) {
         }
       }
     }
+
+    // 如果找到了特殊符号，我们来标记对应的文本块
     if (sym_item != null) {
       $("text[istart='" + sym_data["istart"] + "']")["addClass"](
         "selected_text"
       );
     }
+
+    // 重新计算被选中文本块的数量
     selected_len = $(".selected_text").length;
   }
-  console.log('selected_len :', selected_len, lastMidiReplaceNoteIstart);
+
+  // 打印最新的被选中文本块数量和上一个 MIDI 音符索引，看起来程序在数羊，这次数多了一些
+  console.log('被选中文本块数：', selected_len, lastMidiReplaceNoteIstart);
+
+  // 如果有被选中文本块或者上一个 MIDI 音符索引不为 -1
   if (selected_len > 0 || lastMidiReplaceNoteIstart != -1) {
+    // 程序正在 MIDI 模式下运行
     midiInStatus = true;
+
+    // 如果文本块被选中，重置上一个 MIDI 音符索引和音符值
     if (selected_len > 0) {
       lastMidiReplaceNoteIstart = -1;
       lastMidiReplaceNoteV = -1;
     }
+
+    // 接下来，我们来找出下一个需要被更新的音符的索引
     var ts_istart = -1;
+
+    // 如果上一个 MIDI 音符索引大于 0
     if (lastMidiReplaceNoteIstart > 0) {
       if (!syms[lastMidiReplaceNoteIstart]) {
         return;
       }
+
       var ts_next = syms[lastMidiReplaceNoteIstart]["next"];
+
+      // 不停地寻找下一个音符，直到我们找到它
       while (ts_next) {
         if (ts_next["type"] == 8 || ts_next["type"] == 10) {
           ts_istart = ts_next["istart"];
@@ -5874,13 +5906,13 @@ function updateNextNote(inputNote, noteIndex, chordInput, _0x1C197) {
           }
         }
       }
+
+      // 如果找不到下一个音符，不妨尝试去梦中找
       if (ts_istart === -1) {
         var _0x1C13D = syms[lastMidiReplaceNoteIstart]["my_line"] + 1;
-        for (
-          var i = 0, _0x1881C = syms["length"];
-          i < _0x1881C;
-          i++
-        ) {
+
+        // 梦中继续寻找，或许是隐藏在云层之上
+        for (var i = 0, _0x1881C = syms["length"]; i < _0x1881C; i++) {
           var _0x1C1C4 = syms[i];
           if (
             _0x1C1C4 &&
@@ -5897,10 +5929,14 @@ function updateNextNote(inputNote, noteIndex, chordInput, _0x1C197) {
       ts_istart = $($(".selected_text")[$(".selected_text")["length"] - 1])["attr"](
         "istart"
       );
+
+      // 如果有 dragSplNum，那么我们只需取得给定的音符索引
       if (dragSplNum) {
         ts_istart = noteIndex;
       }
     }
+
+    // 如果还是找不到，那就去别的梦境里看看
     if (ts_istart === -1) {
       if (
         graphEditor["pianoImpro"] &&
@@ -5908,28 +5944,40 @@ function updateNextNote(inputNote, noteIndex, chordInput, _0x1C197) {
       ) {
         return;
       }
+
+      // 增加一个音符节点，这就像是在一个音乐会上找到自己的座位一样
       appendNodes(1);
-      autoChangeLineBars(); // 按全局换行排列自动换行，影响临时换行
+      changeLineBars(); // 按照全局排列自动换行，可能影响到暂时的换行
       setTimeout(() => {
-        console.log('updateNextNote appendNodes:', inputNote, noteIndex);
+        console.log('更新后添加音符节点：', inputNote, noteIndex);
         updateNextNote(inputNote, noteIndex);
       }, 500);
       midiInStatus = false;
       return;
     }
+
+    // 找到下一个音符，我们继续操作
     var sym_data = syms[ts_istart];
     if (sym_data) {
       lastMidiReplaceNoteIstart = ts_istart;
       lastMidiReplaceNoteV = sym_data["v"];
+
+      // 生成音符和持续时间信息
       var _0x18C54 = genNoteAndDur(inputNote, sym_data);
-      console.log("noteInfo:", _0x18C54);
+      console.log("音符信息：", _0x18C54);
+
+      // 如果音符字符串以空格开头，我们需要向前移动一位
       if (_0x18C54["noteStr"]["startWith"](" ")) {
         lastMidiReplaceNoteIstart++;
       }
+
+      // 更新音符为输入的音符
       _0x18C54["note"] = inputNote;
       var _0x18BFA = _0x18C54["noteStr"];
       midiInStatus = false;
+
       if (sym_data["type"] == 10) {
+        // 替换 MIDI 音符，好像替换了一个顽皮的猫咪
         replaceNote(
           "source",
           sym_data["istart"],
@@ -5942,7 +5990,10 @@ function updateNextNote(inputNote, noteIndex, chordInput, _0x1C197) {
           if (sym_data["tie_s"]) {
             _0x18C27 += sym_data["tie_s"]["dur"];
           }
+
+          // 如果持续时间和设置的一样
           if (_0x18C27 == durSetting) {
+            // 创建和弦音符，是不是像吉他手一样？
             var _0x18A0B = genChordNote(sym_data, inputNote, durSetting);
             if (
               rest_status == "" &&
@@ -5951,6 +6002,8 @@ function updateNextNote(inputNote, noteIndex, chordInput, _0x1C197) {
             ) {
               _0x18C54["noteStr"] = _0x18A0B["chordNoteStr"];
             }
+
+            // 替换音符，像换了一张新的银行卡一样
             replaceNote(
               "source",
               sym_data["istart"],
@@ -5958,6 +6011,7 @@ function updateNextNote(inputNote, noteIndex, chordInput, _0x1C197) {
               _0x18C54
             );
           } else {
+            // 修改音符持续时间，就像更改飞行航线一样
             _0x18C54["note_dur"] = durSetting;
             replaceNote(
               "source",
@@ -5969,22 +6023,34 @@ function updateNextNote(inputNote, noteIndex, chordInput, _0x1C197) {
         }
       }
     }
+
+    // 如果是和弦输入，让我们来点亮方块
     if (chordInput) {
       $("rect[istart='" + ts_istart + "']")
         ["css"]("fill-opacity", "0.4")
         ["click"]();
       $("text[istart='" + ts_istart + "']")["addClass"]("selected_text");
       clearFocus();
+
+      // 任务完成，返回吧！
       return ts_istart;
     }
+
+    // 如果还找不到，那就再试一次
     if (!syms[ts_istart]) {
       ts_istart++;
     }
+
     if (!_0x1C197) {
+      // 重置更新音符的索引
       update_note_istart = -1;
+
+      // 如果还是找不到，继续找梦境中的音符
       if (!syms[ts_istart]) {
         return;
       }
+
+      // 找到下一个音符，尝试点击一下
       var _0x1C1C4 = syms[ts_istart]["next"];
       if (_0x1C1C4) {
         while (_0x1C1C4["type"] != 8 && _0x1C1C4["type"] != 10) {
@@ -5993,6 +6059,8 @@ function updateNextNote(inputNote, noteIndex, chordInput, _0x1C197) {
             break;
           }
         }
+
+        // 按钮被点击，仿佛是一次愉快的购物
         if (_0x1C1C4) {
           $("rect[istart='" + _0x1C1C4["istart"] + "']")
             ["css"]("fill-opacity", "0.4")
@@ -6000,26 +6068,25 @@ function updateNextNote(inputNote, noteIndex, chordInput, _0x1C197) {
           $("text[istart='" + _0x1C1C4["istart"] + "']")["addClass"](
             "selected_text"
           );
+
+          // 如果开启了帮助音符，就来添加一个
           if (showHelpNote) {
             addHelpAssessant(_0x1C1C4["istart"]);
           }
+
+          // 清空焦点，仿佛是按了一键清理
           clearFocus();
         }
       }
     }
   } else {
-    console.log('没有选中音符');
+    // 如果什么都没有被选中，哎呀，这就糟糕了
+    console.log('啊哦，没有选中任何音符');
     window.top.alert('请选中1个音符开始输入');
   }
-  return ts_istart;
-}
 
-// 自动设置折行
-function autoChangeLineBars() {
-  console.log('autoChangeLineBars');
-  // TODO: 像 changeLineBars();
-  changeLineBars();
-  // var nodes_info = getNodesInfo($('#source').val());
+  // 任务完成，返回音符索引，以便下次继续探险
+  return ts_istart;
 }
 
 function showLyricInput() {
@@ -7180,7 +7247,7 @@ function createLyricEditor(lyricStr, noteIstart) {
     } else {
       top = $($(`g[type="staff"]`)[line]).offset().top
     }
-    top += 50 * content_vue.m.panzoom.scale / 100
+    top -= 30 * content_vue.m.panzoom.scale / 100
     top += 'px'
     let left
     if (content_vue.m.scoreOpts.musicType === 'easy') {
@@ -7241,13 +7308,6 @@ function createLyricEditor(lyricStr, noteIstart) {
   top += 'px'
   let { left } = el.offset()
   left +='px'
-  content_vue.m.editor.style = {
-    top,
-    left,
-    width: '100px',
-    height: '40px',
-    minHeight: '40px'
-  }
   content_vue.m.editor.lyricIndex = istart
   content_vue.$nextTick(() => {
     $('#editor').focus()
