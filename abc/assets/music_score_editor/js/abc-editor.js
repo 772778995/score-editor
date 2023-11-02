@@ -3811,7 +3811,7 @@ var content_vue = new Vue({
             }, // 节奏标记
           }],
         },
-        previewUrl: "assets/music_score_editor/preview.html?v=1.0.15",
+        previewUrl: "assets/music_score_editor/preview.html?v=1.0.16",
       },
       toolList: [
         {
