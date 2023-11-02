@@ -6453,9 +6453,9 @@ var content_vue = new Vue({
         return;
       }
       this.m.newScore.scoreOpts.title = this.m.newScore.scoreOpts.title?this.m.newScore.scoreOpts.title:'标题';
-      this.m.newScore.scoreOpts.subTitle = this.m.newScore.scoreOpts.subTitle?this.m.newScore.scoreOpts.subTitle:'&emsp;';
-      this.m.newScore.scoreOpts.compose = this.m.newScore.scoreOpts.compose?this.m.newScore.scoreOpts.compose:' ';
-      this.m.newScore.scoreOpts.lyricist = this.m.newScore.scoreOpts.lyricist?this.m.newScore.scoreOpts.lyricist:'&emsp;';
+      this.m.newScore.scoreOpts.subTitle = this.m.newScore.scoreOpts.subTitle?this.m.newScore.scoreOpts.subTitle:' ';
+      this.m.newScore.scoreOpts.compose = this.m.newScore.scoreOpts.compose?this.m.newScore.scoreOpts.compose:'&emsp;';
+      this.m.newScore.scoreOpts.lyricist = this.m.newScore.scoreOpts.lyricist?this.m.newScore.scoreOpts.lyricist:' ';
       if (isNewTab) {
         window.open(
           location.href.replace(/\?.+/, "") +
