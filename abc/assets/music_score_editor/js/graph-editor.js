@@ -7205,12 +7205,28 @@ function createLyricEditor(lyricStr, noteIstart) {
     })
     return
   }
-  /** @type {ReturnType<JQueryStatic>} */
-  let el = $('.selected_text')[0]
-  if (!el) return
+
+  let el = null;
+  if(content_vue.m.editor.isTab && content_vue.m.editor.noteIstart){
+    const noteList = [...$(`rect[ondblclick][type='rest'],rect[ondblclick][type='note'],rect[ondblclick][type='splnum_note'],rect[ondblclick][type='splnum_rest']`)]
+    const eindex = noteList.findIndex(el => el.getAttribute('istart') === content_vue.m.editor.noteIstart)
+    if(typeof noteList[eindex]!='undefined'){
+      el = noteList[eindex];
+    }
+    // console.log('editorWord el1', content_vue.m.editor.noteIstart, content_vue.m.editor.isTab, el);
+  }
+
+  if(!el){
+    /** @type {ReturnType<JQueryStatic>} */
+    el = $('.selected_text')[0]
+    // console.log('editorWord el', content_vue.m.editor.noteIstart, content_vue.m.editor.isTab, el);
+    if (!el) return
+  }
 
   el = $(el)
+  // console.log('editorWord el :', el);
   const istart = el.attr('istart')
+  // console.log('editorWord istart :', istart);
   content_vue.m.editor.noteIstart = istart
   const s = syms[istart]
   const line = s.my_line

@@ -5211,7 +5211,7 @@ var content_vue = new Vue({
                 shortList: ["L"],
                 valueList: ["l"],
                 fn: () =>
-                  content_vue.checkIsSelectNote() && createLyricEditor(),
+                  content_vue.checkIsSelectNote() && editCurrNoteLyric(), // editCurrNoteLyric() createLyricEditor()
               },
               {
                 title: "节拍器",
@@ -6499,6 +6499,64 @@ var content_vue = new Vue({
         }
       }
     },
+    // 退出歌词输入状态
+    editorWordExit(isEsc){
+      if(isEsc) this.m.editor.isEsc = true;
+      this.m.editor.type = '';
+    },
+    // 歌词输入状态
+    editorWordInput(){
+      if (this.m.editor.type !== 'lyric') return
+      const lines = this.m.editor.val.split('\n')
+      this.m.editor.style.height = lines.length * 23 + 20 + 'px'
+    },
+    // 歌词、文字输入 （键盘 tab 按键触发）
+    editorWord(isTab){
+      if(isTab) this.m.editor.isTab = true;
+      this.m.editor.type = '';
+      setTimeout(()=>{
+        const noteList = [...$(`rect[ondblclick][type='rest'],rect[ondblclick][type='note'],rect[ondblclick][type='splnum_note'],rect[ondblclick][type='splnum_rest']`)]
+        const index = noteList.findIndex(el => el.getAttribute('istart') === this.m.editor.noteIstart)
+        // console.log('editorWord Istart', this.m.editor.noteIstart, index);
+        if (noteList < 0) return
+        const nextIstart = noteList[index + 1]?.getAttribute('istart')
+        // console.log('editorWord nextIstart', nextIstart);
+        if (!nextIstart) return
+        $('.selected_text').removeClass('selected_text')
+        const note = [...$(`text[istart=${nextIstart}]`)].find(el => {
+          el = $(el)
+          // console.log(el.attr('type'))
+          return ['r1', 'r2', 'r4', 'r8', 'r16', 'r32', 'r64', 'hd', 'note'].includes(el.attr('type'))
+        })
+        const istart = $(note).attr('istart');
+        // console.log('editorWord nextIstart2', istart);
+        this.m.editor.noteIstart = istart
+        const s = syms[istart]
+        let top
+        if (content_vue.m.scoreOpts.musicType === 'easy') {
+          top = $(note).offset().top
+        } else {
+          const line = s.my_line
+          top = $($(`g[type='staff']`)[line]).offset().top
+        }
+        top += 50 * content_vue.m.panzoom.scale / 100
+        top += 'px'
+        let { left } = $(note).offset()
+        left +='px'
+        this.m.editor.style = {
+          top,
+          left,
+          width: '100px',
+          height: '40px',
+          minHeight: '40px'
+        }
+        this.m.editor.lyricIndex = istart
+        const val = s.a_ly?.map(item => item.t).join('\n') || ''
+        this.m.editor.val = val
+        this.m.editor.type = 'lyric';
+        $('#editor').focus();
+      }, 200);
+    },
   },
   computed: {
     defaultSpeedTxtOptsList() {
@@ -6580,7 +6638,7 @@ var content_vue = new Vue({
           title: "添加歌词",
           subTitle: "L",
           disabled: !isSelectNote,
-          fn: () => createLyricEditor(),
+          fn: () => editCurrNoteLyric(), // editCurrNoteLyric(), createLyricEditor()
         },
         {
           title: "添加术语",
