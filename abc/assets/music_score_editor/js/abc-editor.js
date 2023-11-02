@@ -6501,11 +6501,43 @@ var content_vue = new Vue({
     },
     // 退出歌词输入状态
     editorWordExit(isEsc){
-      if(isEsc) this.m.editor.isEsc = true;
+      console.log('editorWord editorWordExit', isEsc);
+      if(isEsc){
+        // 正常 Esc 退出
+        this.m.editor.isEsc = true;
+      }else{
+        // 点击或tab失去焦点
+        if(this.m.editor.isTab){
+          console.log('editorWord editorWordExit Tab 方式跳出');
+        }else{
+          console.log('editorWord editorWordExit 其他点击跳出');
+        }
+      }
+      // 
+      var type = this.m.editor.type;
+      if (type === 'lyric' || type === 'lyric2') {
+        const s = this.m.editor.s || syms[this.m.editor.lyricIndex]
+        this.saveEditorWord(this.m.editor.val, type, s);
+      }else{
+        // if (!this.m.editor.val && type!='lyricist' && type!='compose' && type!='subTitle') {
+        //   $('#editor').focus(); // 恢复焦点
+        //   return alert({
+        //     title: '标题',
+        //     subTitle: '副标题',
+        //     compose: '曲作者',
+        //     lyricist: '词作者'
+        //   }[type] + '不能为空')
+        // }
+        this.saveEditorWord(this.m.editor.val, type);
+      }
+      this.m.editor.val = '';
+      this.m.editor.s = null;
+      this.m.editor.lyricIndex = -1;
       this.m.editor.type = '';
     },
     // 歌词输入状态
     editorWordInput(){
+      console.log('editorWord editorWordInput');
       if (this.m.editor.type !== 'lyric') return
       const lines = this.m.editor.val.split('\n')
       this.m.editor.style.height = lines.length * 23 + 20 + 'px';
@@ -6513,8 +6545,9 @@ var content_vue = new Vue({
     },
     // 歌词、文字输入 （键盘 tab 按键触发）
     editorWord(isTab){
+      console.log('editorWord editorWord', isTab, this.m.editor.type);
       if(isTab) this.m.editor.isTab = true;
-      this.m.editor.type = '';
+      // this.m.editor.type = '';
       setTimeout(()=>{
         const noteList = [...$(`rect[ondblclick][type='rest'],rect[ondblclick][type='note'],rect[ondblclick][type='splnum_note'],rect[ondblclick][type='splnum_rest']`)]
         const index = noteList.findIndex(el => el.getAttribute('istart') === this.m.editor.noteIstart)
@@ -6555,7 +6588,41 @@ var content_vue = new Vue({
         const val = s.a_ly?.map(item => item.t).join('\n') || ''
         this.m.editor.val = val
         this.m.editor.type = 'lyric';
-        $('#editor').focus();
+        setTimeout(()=>{
+          $('#editor').focus();
+          console.log('editorWord focus3');
+        }, 200);
+      }, 200);
+    },
+    saveEditorWord(word, type, sym){
+      if(!type && typeof content_vue.m.o_editor!='undefined' && content_vue.m.o_editor && content_vue.m.o_editor.type){
+        const s = content_vue.m.o_editor.s || syms[content_vue.m.o_editor.lyricIndex];
+        return this.saveEditorWord(content_vue.m.o_editor.val, content_vue.m.o_editor.type, s);
+      }
+      console.log('saveEditorWord', word, type, sym);
+      if (type === 'lyric' || type === 'lyric2') {
+        updateLyrics(sym, word.split('\n'))
+      }else{
+        if(!word || word==' '){
+          word = '&emsp;';
+        }
+        const abcCode = $('#source').val()
+        const replaceRegs = {
+          title: /(?<=T:\s*).+/,
+          subTitle: /(?<=T:.+\nT:\s*).+/,
+          compose: /(?<=C:\s*).+/,
+          lyricist: /(?<=C:.+\nC:\s*).+/
+        }
+        const strMatch = abcCode.match(replaceRegs[type])
+        const [str] = strMatch
+        const start = strMatch.index
+        const end = str.length + start
+        const newCode = replaceCharsInRange(abcCode, start, end, word)
+        $('#source').val(newCode)
+        abc_change()
+      }
+      setTimeout(()=>{
+        content_vue.m.o_editor = null;
       }, 200);
     },
   },
@@ -6987,52 +7054,55 @@ var content_vue = new Vue({
         this.m.saveToScore.title = ''
       }
     },
-    'm.editor.type'(val, type) {
-      if (val) {
-        this.$nextTick(() => {
-          $('#editor').focus()
-        })
-      }
-      else {
-        if (this.m.editor.isEsc) {
-          this.m.editor.isEsc = false
-          return
-        }
-        if (type === 'lyric' || type === 'lyric2') {
-          const s = this.m.editor.s || syms[this.m.editor.lyricIndex]
-          updateLyrics(s, this.m.editor.val.split('\n'))
-          this.m.editor.val = ''
-          this.m.editor.s = 0
-          this.m.editor.lyricIndex = 0
-          return
-        }
-        if (!this.m.editor.val && type!='lyricist' && type!='compose' && type!='subTitle') {
-          return alert({
-            title: '标题',
-            subTitle: '副标题',
-            compose: '曲作者',
-            lyricist: '词作者'
-          }[type] + '不能为空')
-        }
-        const abcCode = $('#source').val()
-        const replaceRegs = {
-          title: /(?<=T:\s*).+/,
-          subTitle: /(?<=T:.+\nT:\s*).+/,
-          compose: /(?<=C:\s*).+/,
-          lyricist: /(?<=C:.+\nC:\s*).+/
-        }
-        const strMatch = abcCode.match(replaceRegs[type])
-        const [str] = strMatch
-        const start = strMatch.index
-        const end = str.length + start
-        const newCode = replaceCharsInRange(abcCode, start, end, this.m.editor.val)
-        $('#source').val(newCode)
-        abc_change()
-        this.m.editor.val = ''
-        this.m.editor.s = 0
-        this.m.editor.lyricIndex = 0
-      }
-    },
+    
+    // 'm.editor.type'(val, type) {
+    //   console.log('editorWord editor.type', val, type);
+    //   if (val) {
+    //     this.$nextTick(() => {
+    //       $('#editor').focus()
+    //     })
+    //   }
+    //   else {
+    //     if (this.m.editor.isEsc) {
+    //       this.m.editor.isEsc = false
+    //       return
+    //     }
+    //     if (type === 'lyric' || type === 'lyric2') {
+    //       const s = this.m.editor.s || syms[this.m.editor.lyricIndex]
+    //       updateLyrics(s, this.m.editor.val.split('\n'))
+    //       this.m.editor.val = ''
+    //       this.m.editor.s = 0
+    //       this.m.editor.lyricIndex = 0
+    //       return
+    //     }
+    //     if (!this.m.editor.val && type!='lyricist' && type!='compose' && type!='subTitle') {
+    //       return alert({
+    //         title: '标题',
+    //         subTitle: '副标题',
+    //         compose: '曲作者',
+    //         lyricist: '词作者'
+    //       }[type] + '不能为空')
+    //     }
+    //     const abcCode = $('#source').val()
+    //     const replaceRegs = {
+    //       title: /(?<=T:\s*).+/,
+    //       subTitle: /(?<=T:.+\nT:\s*).+/,
+    //       compose: /(?<=C:\s*).+/,
+    //       lyricist: /(?<=C:.+\nC:\s*).+/
+    //     }
+    //     const strMatch = abcCode.match(replaceRegs[type])
+    //     const [str] = strMatch
+    //     const start = strMatch.index
+    //     const end = str.length + start
+    //     const newCode = replaceCharsInRange(abcCode, start, end, this.m.editor.val)
+    //     $('#source').val(newCode)
+    //     abc_change()
+    //     this.m.editor.val = ''
+    //     this.m.editor.s = 0
+    //     this.m.editor.lyricIndex = 0
+    //   }
+    // },
+
     // "m.scoreOpts": {
     //   handler(val) {
     //     console.log('m.scoreOpts', val);
