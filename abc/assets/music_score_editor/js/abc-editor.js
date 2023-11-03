@@ -6508,6 +6508,10 @@ var content_vue = new Vue({
       if(isEsc){
         // 正常 Esc 退出
         this.m.editor.isEsc = true;
+        if(content_vue.m.editor.type){
+          content_vue.m.o_editor = { ...content_vue.m.editor };
+          // editor 关闭前保存好数据
+        }
       }else{
         // 点击或tab失去焦点
         if(this.m.editor.isTab){
