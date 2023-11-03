@@ -2291,38 +2291,6 @@
         @mouseup="m.numberKeypad.isMove = false"
       >
       </div>
-
-      <input
-        v-if="m.editor.type && !['lyric', 'lyric2'].includes(m.editor.type)"
-        id="editor"
-        v-model.trim="m.editor.val"
-        class="form-control fixed z-50"
-        :class="m.editor.type"
-        style="min-width: 100px"
-        :style="m.editor.style"
-        @keydown.esc.stop="() => {
-          m.editor.isEsc = true
-          m.editor.type = ''
-        }"
-        @keydown.enter.stop="m.editor.type = ''"
-        @blur="m.editor.type = ''"
-        @click.stop
-      >
-      </input>
-      <textarea
-        id="editor"
-        v-else-if="['lyric', 'lyric2'].includes(m.editor.type)"
-        v-model="m.editor.val"
-        class="form-control fixed z-50 overflow-y-hidden"
-        :style="m.editor.style"
-        @keydown.esc.stop="editorWordExit(1)"
-        @click.stop
-        @keydown.tab.stop="editorWord(1)"
-        @keydown.ctrl.enter.stop="editorWordExit()"
-        @blur="editorWordExit()"
-        @input="editorWordInput()"
-      >
-      </textarea>
       
       <div
         v-show="m.numberKeypad.isShow"
@@ -4385,7 +4353,37 @@
                   padding: `${m.panzoom.scale / 100 * 40}px 0px ${m.panzoom.scale / 100 * 40}px 0px`,
                   transform: `scale(${m.panzoom.scale / 100})`,
                 }">
-
+                <input
+                  v-if="m.editor.type && !['lyric', 'lyric2'].includes(m.editor.type)"
+                  id="editor"
+                  v-model.trim="m.editor.val"
+                  class="form-control absolute z-50"
+                  :class="m.editor.type"
+                  style="min-width: 100px; transform: translateY(-84px);"
+                  :style="m.editor.style"
+                  @keydown.esc.stop="() => {
+                    m.editor.isEsc = true
+                    m.editor.type = ''
+                  }"
+                  @keydown.enter.stop="m.editor.type = ''"
+                  @blur="m.editor.type = ''"
+                  @click.stop
+                >
+                </input>
+                <textarea
+                  id="editor"
+                  v-else-if="['lyric', 'lyric2'].includes(m.editor.type)"
+                  v-model="m.editor.val"
+                  class="form-control absolute z-50 overflow-y-hidden"
+                  :style="m.editor.style"
+                  @keydown.esc.stop="editorWordExit(1)"
+                  @click.stop
+                  @keydown.tab.stop="editorWord(1)"
+                  @keydown.ctrl.enter.stop="editorWordExit()"
+                  @blur="editorWordExit()"
+                  @input="editorWordInput()"
+                >
+                </textarea>
                   <div
                     id="target"
                     class="panzoom-exclude box-content"

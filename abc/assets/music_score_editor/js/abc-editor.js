@@ -6543,7 +6543,7 @@ var content_vue = new Vue({
           const line = s.my_line
           top = $($(`g[type='staff']`)[line]).offset().top
         }
-        top += 50 * content_vue.m.panzoom.scale / 100
+        top += -30 + $('.abc-content').scrollTop() * content_vue.m.panzoom.scale / 100
         top += 'px'
         let { left } = $(note).offset()
         left +='px'
