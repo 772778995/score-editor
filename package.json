@@ -6,12 +6,14 @@
   "scripts": {
     "dev": "node app.js",
     "build": "gulp",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "update-api": "npx apifox-to-axios-ts@~0.0.0 update"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/jquery": "^3.5.25",
     "clean-css": "^5.3.2",
     "gulp-clean-css": "^4.3.0",
     "gulp-htmlmin": "^5.0.1",
