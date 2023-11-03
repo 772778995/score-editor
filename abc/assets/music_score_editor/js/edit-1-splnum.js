@@ -2317,8 +2317,109 @@ function showFirstBarSeq() {
     );
   });
 }
+
 var timer;
-function src_change(_0xC154) {
+function src_change(cb) {
+    $("#target")["css"]("cursor", "default");
+    $("#insertWord")["removeClass"]("menu-pressed");
+    var abc_content = $("#source")["val"]();
+    if (abc_content == "") {
+        return
+    }
+    if (user["srcChangeCount"] == 0) {
+        user["defaultMusicType"] = musicType
+    }
+    user["pitNoteData"] = null;
+    line0X = -1;
+    line1X = -1;
+    $("svg[type=\'rect\']")["remove"]();
+    $("svg[type=\'note_rect\']")["remove"]();
+    $("svg[type=\'lyric_bg_rect\']")["remove"]();
+    user["invisibleMeter"] = null;
+    try {
+        has_weak_node = false;
+        bar_count = 0;
+        last_bar_time = 0;
+        bar_visible = {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0,
+            "8": 0,
+            "9": 0,
+            "10": 0,
+            "11": 0,
+            "12": 0,
+            "13": 0,
+            "14": 0,
+            "15": 0
+        };
+        max_st_nodenum = 0;
+        last_bar_x = 0
+    } catch (e) {
+        console["error"](e)
+    }
+    showBeat = false;
+    showKew = false;
+    showSD = false;
+    isInFirstNode = true;
+    firstNodeNotes = new Array();
+    renderStaffMeterCount = 0;
+    if (!elt_ref["source"]) {
+        return
+    }
+    var v_arr = new Array(); // 声部
+    var check_v = /V\s*:\s*([0-9]*)/g;
+    var v_info_arr = abc_content["match"](check_v);
+    isStave = false;
+    notAutoSFBarSeq = -1;
+    if (v_info_arr != null && v_info_arr["length"] > 0) {
+        for (var i = 0; i < v_info_arr["length"]; i++) {
+            var v_info = v_info_arr[i];
+            var v_index = v_info["match"](/V\s*:\s*([0-9]*)/)[1];
+            if (v_arr["indexOf"](v_index) < 0) {
+                v_arr["push"](v_index)
+            }
+        }
+    }
+    if (v_arr["length"] > 1) {
+        isStave = true
+    } else {
+        if (v_arr["length"] == 1) {
+            if (v_arr[0] == "9") {
+                isStave = true
+            }
+        }
+    }
+    if (!isStave && musicType == 2) {
+        if (false) {
+            var abc_content = $("#source")["val"]();
+            if (abc_content["indexOf"]("%%indent") > -1) {
+                abc_content = abc_content["replace"](/\%\%indent.*/, "%%indent " + firstMeterWidth);
+                $("#source")["val"](abc_content)
+            } else {
+                $("#source")["val"]("%%indent " + firstMeterWidth + "\x0A" + $("#source")["val"]())
+            }
+        }
+    } else {
+        $("#source")["val"]($("#source")["val"]()["replaceAll"]("%%indent .*\x0A", ""))
+    }
+    play_stop();
+    play["playing"] = false;
+    if (!play["playing"]) {
+        timer = setTimeout(render, 100, cb)
+    }
+    if (elt_ref["source"] && $("#source")["val"]() != "" && $("#source")["val"]()["indexOf"]("showfirstmeasure") > -1) {
+        setTimeout(showFirstBarSeq, 100)
+    }
+    getVoiceVol("source")
+}
+
+function src_change_bak(_0xC154) {
   $("#target")["css"]("cursor", "default");
   $("#insertWord")["removeClass"]("menu-pressed");
   var _0xA18E = $("#source")["val"]();

@@ -3644,7 +3644,9 @@ function setBarsPerstaff(sourceid, num) {
   console.log('setBarsPerstaff');
   sourceid = sourceid?sourceid:'source';
   var content = $("#" + sourceid).val();
-  /*老的写法，加barsperstaff;
+  
+  /*
+  // 老的写法，加barsperstaff;
 	var pattern = /%%barsperstaff\s*(\d)*\n/;
 	if(parseInt(num)<1){
 		// 不限制
@@ -3659,14 +3661,24 @@ function setBarsPerstaff(sourceid, num) {
 			content = str + content;
 		}
 	}
-	*/
+
+  $("#" + sourceid).val(content);
+  doLog();
+  src_change();
+	return;
+  */
+
   var newContent = handleBreakLine(content, num);
+  // console.log(newContent);
   $("#" + sourceid).val(newContent);
-  abc_change();
+  doLog();
+  src_change();
+  // abc_change();
 }
 
 // 设置每行显示小节数 (改方法被 myabc_plus.js 的同名方法替换)
-function handleBreakLine(content, num){
+function handleBreakLine_bak(content, num){
+  console.log('handleBreakLine o');
   var pattern = /%%barsperstaff\s*(\d)*\n/;
 	if(parseInt(num)<1){
 		// 不限制
