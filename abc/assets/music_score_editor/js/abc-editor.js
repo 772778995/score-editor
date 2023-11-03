@@ -65,8 +65,11 @@ function debounce(fn, delay) {
 }
 
 /**
- *
- * @param {Parameters<JQueryStatic['ajax']>[0] & { params: Object } | string} opts
+ * @template { import('../../../../typings/apis').ApiDetails } Apis
+ * @template { keyof Apis } M
+ * @template { keyof Apis[M] } OU
+ * @template { OU extends `api${infer Rest}` ? Rest : OU } U
+ * @param {Parameters<JQueryStatic['ajax']>[0] & { params: Apis[M][U]['params'], method: M, url: U } | string} opts
  */
 const request = async (opts = {}) => {
   return new Promise((resolve, reject) => {
@@ -6573,7 +6576,7 @@ var content_vue = new Vue({
           const line = s.my_line
           top = $($(`g[type='staff']`)[line]).offset().top
         }
-        top += 50 * content_vue.m.panzoom.scale / 100
+        top += -30 + $('.abc-content').scrollTop() * content_vue.m.panzoom.scale / 100
         top += 'px'
         let { left } = $(note).offset()
         left +='px'
