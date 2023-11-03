@@ -1432,6 +1432,11 @@ var delObj = null;
 var svgArr = new Array();
 var clickTimeMill = -1;
 function graphMouseDownHandle(_0x1A4C3) {
+  console.log('graphMouseDownHandle', content_vue.m.editor.type, content_vue.m.editor.val);
+  if(content_vue.m.editor.type){
+    content_vue.m.o_editor = { ...content_vue.m.editor };
+    // editor 关闭前保存好数据
+  }
   if ($("rect[type='startpoint']")["length"]) {
     src_change();
     return;
@@ -7169,6 +7174,13 @@ function genLinkClef(type) {
   doLog();
 }
 function createLyricEditor(lyricStr, noteIstart) {
+  console.log('createLyricEditor editorWord', lyricStr, noteIstart);
+  if(content_vue.m.o_editor!='undefined' && content_vue.m.o_editor){
+    console.log('createLyricEditor editorWord input...');
+    $('.selected_text').removeClass('selected_text');
+    $('._select-note').removeClass('_select-note');
+    return;
+  }
   if (lyricStr && noteIstart) {
     const line = syms[noteIstart].my_line
     const lines = lyricStr.split('\n').length
@@ -7201,7 +7213,10 @@ function createLyricEditor(lyricStr, noteIstart) {
     content_vue.m.editor.val = lyricStr
     content_vue.m.editor.type = 'lyric2'
     content_vue.$nextTick(() => {
-      $('#editor').focus()
+      setTimeout(()=>{
+        $('#editor').focus();
+        console.log('editorWord focus1');
+      }, 200);
     })
     return
   }
@@ -7250,7 +7265,10 @@ function createLyricEditor(lyricStr, noteIstart) {
   }
   content_vue.m.editor.lyricIndex = istart
   content_vue.$nextTick(() => {
-    $('#editor').focus()
+    setTimeout(()=>{
+      $('#editor').focus();
+      console.log('editorWord focus2');
+    }, 200);
   })
   const val = s.a_ly?.map(item => item.t).join('\n') || ''
   content_vue.m.editor.val = val
