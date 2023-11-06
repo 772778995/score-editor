@@ -23396,6 +23396,7 @@ abc2svg = {
         staff_d = new Int16Array(new Array(m * 2)),
         staff_noo = new Int8Array(new Array(m));
 
+      // 这，就是设置高低八度记号！
       function ottava_add(s, ottava, start) {
         var dc_st = ["15mb(", "8vb(", null, "8va(", "15ma("],
           dc_en = ["15mb)", "8vb)", null, "8va)", "15ma)"];
@@ -23438,7 +23439,8 @@ abc2svg = {
               for (m = s.nhd; m >= 0; m--) {
                 note = s.notes[m];
                 if (!note.opit) note.opit = note.pit;
-                note.pit += delta;
+                // 取消更改八度
+                // note.pit += delta;
               }
             }
             break;
@@ -23449,7 +23451,8 @@ abc2svg = {
                 for (m = 0; m <= g.nhd; m++) {
                   note = g.notes[m];
                   if (!note.opit) note.opit = note.pit;
-                  note.pit += delta;
+                  // 取消更改八度
+                  // note.pit += delta;
                 }
               }
             }
