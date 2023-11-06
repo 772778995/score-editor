@@ -109,6 +109,17 @@ function followMouse(e) {
   } else {
     cen = null;
   }
+
+  const clefList = syms.filter(v => v.type === 1).sort((p, n) => p.istart > n.istart ? 1 : -1)
+  // 如果拖到全局谱号，并且不是第一行的全局谱号
+  if (cen === clefList[0] && _0x186B4.istart !== clefList[0].istart) {
+    const id = $(target).attr('id')
+    if (id !== '0') {
+      const barList = syms.filter(v => v.type === 0 && v.my_line === +id - 1).sort((p, n) => p.bar_num > n.bar_num ? -1 : 1)
+      // 将 cen 改为上一行最后一小节线
+      cen = barList[0]
+    }
+  }
   if (isSelectDeco) {
     if (selectDecoType == "nodeline") {
       moveingRenderBar(e);
