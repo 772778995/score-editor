@@ -4782,6 +4782,12 @@ abc2svg = {
         startIstart = path[0].istart;
         endIstart = path[path.length - 1].istart;
       }
+      var type = "slur";
+      if(path){
+        if(path[0].tie_s){
+          type="tie";
+        }
+      }
       // 简谱的连音线往上画弧
       if (!dotted) {
         output +=
@@ -4793,7 +4799,7 @@ abc2svg = {
           startIstart +
           '" end="' +
           endIstart +
-          '" type="slur" class="fill" d="M';
+          '" type="'+ type +'" class="fill" d="M';
       } else {
         output +=
           '<path id="' +
@@ -4804,7 +4810,7 @@ abc2svg = {
           startIstart +
           '" end="' +
           endIstart +
-          '" type="slur" class="stroke" stroke-dasharray="5,5" d="M';
+          '" type="'+ type +'" class="stroke" stroke-dasharray="5,5" d="M';
       }
       if (isLowerCase) {
         output = output.replace('d="M', 'd="m');
@@ -5713,11 +5719,14 @@ abc2svg = {
       } else if (s1.notes[0].pit == s2.notes[0].pit) {
         s2.slur_istart = s1.istart;
       }
+      var path = [];
+      path.push(s1);
+      path.push(s2);
       if (2 != musicType) {
-        slur_out(x1, y, x2, y, dir, h, not1.tie_ty & C.SL_DOTTED);
+        slur_out(x1, y, x2, y, dir, h, not1.tie_ty & C.SL_DOTTED, null, path);
       }
       // 同音的连音“-”
-      slur_out_spl(s1, s2, x1, x2, h, true, s1.notes[m1].ti1, slur_out, m1);
+      slur_out_spl(s1, s2, x1, x2, h, true, s1.notes[m1].ti1, slur_out, m1, path);
     }
 
     // 简谱的连音线（此处可调高低）

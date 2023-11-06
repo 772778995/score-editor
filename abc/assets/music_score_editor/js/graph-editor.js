@@ -2046,7 +2046,7 @@ function findNearDeco(_0x16062, _0x1792B, _0x16008, _0x16035) {
         }
         if (musicType != 2 && type == "wedge") {
         }
-        if (type == "slur") {
+        if (type == "slur" || type == "tie") {
           var _0x17F25 =
             $(this)["parents"]("svg")["offset"]()["top"] +
             $("#target")["scrollTop"]();
@@ -3973,7 +3973,14 @@ function delSelectDeco() {
     var abc_content_c = abc_content["substring"](istart);
     abc_content_temp_p1 = abc_content_p + abc_content_c;
   } else {
-    if (eqs("jq,jr,slur,8va,8vb,15ma,15mb", type)) {
+    if (type == "tie") {
+      var istart = $(selectDecoInfo)["attr"]("start");
+      var s_end = $(selectDecoInfo)["attr"]("end");
+      var abc_content_p = abc_content["substring"](0, istart);
+      var abc_content_s = abc_content["substring"](istart, s_end)["replace"]("-", "");
+      var abc_content_c = abc_content["substring"](s_end);
+      abc_content_temp_p1 = abc_content_p + abc_content_s + abc_content_c;
+    }else if (eqs("jq,jr,slur,8va,8vb,15ma,15mb", type)) {
       var abc_content_p, abc_content_s, abc_content_c;
       var start = deco_params[type]["start"];
       var end = deco_params[type]["end"];
