@@ -4344,6 +4344,7 @@ var content_vue = new Vue({
               value: "-",
               class: "cmenu",
               position: "after",
+              fn: () => changeAbc((txt) => `${txt}-`),
             },
           ],
           isShow: !0,
