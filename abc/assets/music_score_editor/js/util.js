@@ -6887,7 +6887,8 @@ function getStaffInfo(sourceid) {
   }
 
   //调号
-  staff.key = getStaffKey().value;
+  var staff_key = getStaffKey();
+  staff.key = staff_key?staff_key.value:'C';
 
   //标题字体
   staff.titleFontSize = null;
