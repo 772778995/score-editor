@@ -722,8 +722,8 @@ abc2svg = {
         "cresc.": '6 crescword 18 4 10 ""',
         "decresc.": '6 decrescword 18 4 10 ""',
         "dim.": '6 dimword 18 4 10 ""',
-        ped: "4 ped 30 0 0", //修改了第一个参数
-        "ped-up": "4 pedoff 20 0 0", //修改了第一个参数
+        ped: "4 ped 0 0 0", //修改了第一个参数
+        "ped-up": "4 pedoff 0 0 0", //修改了第一个参数
         pedoff: "4 pedoff 20 0 0", //修改了第一个参数
         pedall: "4 pedall 30 0 0", //新增
         pedall2: "4 pedall2 30 0 0", //新增
@@ -4744,7 +4744,6 @@ abc2svg = {
           path[i].my_inslur = 1;
         }
       }
-
       //	    	console.log("x1:",x1,"  y1:",y1," x2:",x2," y2:",y2)
       var dx,
         dy,
@@ -4915,7 +4914,7 @@ abc2svg = {
       return 0;
     }
 
-    // 连音线
+    // 这，就是渲染连音线！
     function draw_slur(path, not1, sl) {
       console.log("draw_slur");
       var i,

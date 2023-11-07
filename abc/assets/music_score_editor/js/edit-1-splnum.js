@@ -17,6 +17,13 @@ const updateLastSelect = () => {
     transform: `translateY(${content_vue.m.scoreOpts.musicType === 'easy' ? '-5px' : '0'})`
   })
   console.log($('[type="zs"]'))
+
+  $('[type="ped"]').css({
+    transform: 'translateY(30px)'
+  })
+  $('[type="pedoff"]').css({
+    transform: 'translateY(25px)'
+  })
 }
 
 const asyncRect = () => {
