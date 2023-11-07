@@ -7,8 +7,8 @@
     {
       "type": "msedge",
       "request": "launch",
-      "name": "针对 localhost 启动 Edge",
-      "url": "http://127.0.0.1:54088/abc/editor.html",
+      "name": "踩下记号测试",
+      "url": "http://127.0.0.1:54088/abc/editor.html?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiMmZjYzEyN2EwYWRhMDNhODlkNzhhNzU1YzE1YTMxNGVlZTQ1ZGQwMDE0MjJlZTRjODI4ZWY1YTExYjM5NzVlNjI4MGYyZmMwOGY2YTkxY2EiLCJpYXQiOjE2OTg4OTY0NzUuNDkxMDk1LCJuYmYiOjE2OTg4OTY0NzUuNDkxMTAyLCJleHAiOjE3MDQwODA0NzUuNDc5MTkxLCJzdWIiOiIxIiwic2NvcGVzIjpbIioiXX0.N8_gLBdNlX_MNPgAa5q3fivRhFRUAkj-Yntr1FuBrMzHIlpO4PcW4ppcZJX5WPrkolIuEv7o4DGVIp5DKXPSHAPrURL66dN7MPx6l6d2EcL1njuda3R-MqvopT0c_363cyWNbL_JutEOJ5NcEVdOIIzEOs1UBcLXWdcrG_y_vslxvtKtHgPaLu6P7jZzpYPdMhDqR6edG7FJJZo8mKlfErqMnLpTRpO-cLEcd5_kYr9mhzncZMXjGpYR4XXdfeKnMclBKyw-DaxMdxcR9GAkhpFhWhnL9osoBQscgiy7zU4bje9BVn-joeol49tSibrDFJRQV-TtNfbHBJ4453FNioXvUgilhRkbh3AFL82rLAhmTC-4Bl-1hIq0o9QrRo4kcq-jgiWoN7b7T195mKPOAgF_-qvMDrReHDBYI-ckLZFXmlMAek07u0WwbxYCS1v-VtOqPTVmLVCB0iDERPQo70T7qJRKHHgbTF83m1W5pSPBQyk1znPKgjOD2IzQWRjhI5IFFVZb0i5WnlAsLg0OtaGXzclNqVD9LLBqjAi_uyLOHVfsU93HhfeI6jdV1Tf5XviQwb1229fi8FOX8EW01m8WxKiw7d6vD93b2IpGfiaa5ZewoT93j7F509Opm8evbSebV03XRSAUstW-ZDvSe-kmCjhUefXgYg5ChD_BAoc&id=667",
       "webRoot": "${workspaceFolder}"
     }
   ]
