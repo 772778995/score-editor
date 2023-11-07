@@ -8,11 +8,11 @@
         set() { return () => {} }
       });
       window.AE = {
+        // api_url: 'https://dev2.midiplusedu.com/api',
         api_url: '{{$api_url}}',
         base_url: '{{$base_url}}',
         file_url: '{{$file_url}}'
       };
-      if (window.AE.api_url === '{{$api_url}' + '}') window.AE.api_url = 'https://dev2.midiplusedu.com/api'
       //文件服务器地址
       var file_server_url = "";
       var FILE_URL = window.AE.file_url || '';
@@ -851,8 +851,8 @@
                           }"
                         >
                           <option :selected="!scope.row.isRhythm && !scope.row.isNoteSign" :value="0">旋律谱</option>
-                          <option v-if="m.scoreOpts=='easy'" :selected="scope.row.isRhythm" :value="1">节奏谱</option>
-                          <option v-if="m.scoreOpts=='easy'" :selected="scope.row.isNoteSign" :value="2">念谱</option>
+                          <option v-if="m.newScore.scoreOpts.musicType=='easy'" :selected="scope.row.isRhythm" :value="1">节奏谱</option>
+                          <option v-if="m.newScore.scoreOpts.musicType=='easy'" :selected="scope.row.isNoteSign" :value="2">念谱</option>
                         </select>
                       </template>
                     </el-table-column>
@@ -1122,8 +1122,8 @@
                         }"
                       >
                         <option :selected="!scope.row.isRhythm && !scope.row.isNoteSign" :value="0">旋律谱</option>
-                        <option v-if="m.scoreOpts=='easy'" :selected="scope.row.isRhythm" :value="1">节奏谱</option>
-                        <option v-if="m.scoreOpts=='easy'" :selected="scope.row.isNoteSign" :value="2">念谱</option>
+                        <option v-if="m.scoreOpts.musicType=='easy'" :selected="scope.row.isRhythm" :value="1">节奏谱</option>
+                        <option v-if="m.scoreOpts.musicType=='easy'" :selected="scope.row.isNoteSign" :value="2">念谱</option>
                       </select>
                     </template>
                   </el-table-column>
@@ -1356,8 +1356,8 @@
                           }"
                         >
                           <option :selected="!scope.row.isRhythm && !scope.row.isNoteSign" :value="0">旋律谱</option>
-                          <option v-if="m.scoreOpts=='easy'" :selected="scope.row.isRhythm" :value="1">节奏谱</option>
-                          <option v-if="m.scoreOpts=='easy'" :selected="scope.row.isNoteSign" :value="2">念谱</option>
+                          <option v-if="m.scoreOpts.musicType=='easy'" :selected="scope.row.isRhythm" :value="1">节奏谱</option>
+                          <option v-if="m.scoreOpts.musicType=='easy'" :selected="scope.row.isNoteSign" :value="2">念谱</option>
                         </select>
                       </template>
                     </el-table-column>
