@@ -8,11 +8,11 @@
         set() { return () => {} }
       });
       window.AE = {
-        // api_url: 'https://dev2.midiplusedu.com/api',
         api_url: '{{$api_url}}',
         base_url: '{{$base_url}}',
         file_url: '{{$file_url}}'
       };
+      if (window.AE.api_url === '{{$api_url}' + '}') window.AE.api_url = 'https://dev2.midiplusedu.com/api'
       //文件服务器地址
       var file_server_url = "";
       var FILE_URL = window.AE.file_url || '';
