@@ -825,13 +825,23 @@
                     </el-table-column>
                     <el-table-column
                       align="center"
-                      label="节奏谱"
+                      label="谱类型"
                       width="80">
                       <template slot-scope="scope">
                         <select 
-                          v-model="scope.row.isRhythm"
-                          @change="()=>{
-                            console.log('scope.row.isRhythm', scope.row.isRhythm);
+                          style="width: 100%;"
+                          @change="(e)=>{
+                            console.log('scope.row.isRhythm', e.target.value);
+                            if(e.target.value==0){
+                              scope.row.isRhythm = false;
+                              scope.row.isNoteSign = false;
+                            }else if(e.target.value==1){
+                              scope.row.isRhythm = true;
+                              scope.row.isNoteSign = false;
+                            }else if(e.target.value==2){
+                              scope.row.isRhythm = true;
+                              scope.row.isNoteSign = true;
+                            }
                             if(scope.row.isRhythm){
                               scope.row.tone = 115; // 木鱼
                             }else{
@@ -840,8 +850,9 @@
                             // switchRhythm2(scope.row.isRhythm, scope.$index+1);
                           }"
                         >
-                          <option :value="false">否</option>
-                          <option :value="true">是</option>
+                          <option :selected="!scope.row.isRhythm && !scope.row.isNoteSign" :value="0">旋律谱</option>
+                          <option :selected="scope.row.isRhythm" :value="1">节奏谱</option>
+                          <option :selected="scope.row.isNoteSign" :value="2">念谱</option>
                         </select>
                       </template>
                     </el-table-column>
@@ -1085,13 +1096,23 @@
                   </el-table-column>
                   <el-table-column
                     align="center"
-                    label="节奏谱"
+                    label="谱类型"
                     width="80">
                     <template slot-scope="scope">
                       <select 
-                        v-model="scope.row.isRhythm"
-                        @change="()=>{
-                          console.log('scope.row.isRhythm', scope.row.isRhythm);
+                        style="width: 100%;"
+                        @change="(e)=>{
+                          console.log('scope.row.isRhythm', e.target.value);
+                          if(e.target.value==0){
+                            scope.row.isRhythm = false;
+                            scope.row.isNoteSign = false;
+                          }else if(e.target.value==1){
+                            scope.row.isRhythm = true;
+                            scope.row.isNoteSign = false;
+                          }else if(e.target.value==2){
+                            scope.row.isRhythm = true;
+                            scope.row.isNoteSign = true;
+                          }
                           if(scope.row.isRhythm){
                             scope.row.tone = 115; // 木鱼
                           }else{
@@ -1100,8 +1121,9 @@
                           // switchRhythm2(scope.row.isRhythm, scope.$index+1);
                         }"
                       >
-                        <option :value="false">否</option>
-                        <option :value="true">是</option>
+                        <option :selected="!scope.row.isRhythm && !scope.row.isNoteSign" :value="0">旋律谱</option>
+                        <option :selected="scope.row.isRhythm" :value="1">节奏谱</option>
+                        <option :selected="scope.row.isNoteSign" :value="2">念谱</option>
                       </select>
                     </template>
                   </el-table-column>
@@ -1308,13 +1330,23 @@
                     </el-table-column>
                     <el-table-column
                       align="center"
-                      label="节奏谱"
+                      label="谱类型"
                       width="80">
                       <template slot-scope="scope">
                         <select 
-                          v-model="scope.row.isRhythm"
-                          @change="()=>{
-                            console.log('scope.row.isRhythm', scope.row.isRhythm);
+                          style="width: 100%;"
+                          @change="(e)=>{
+                            console.log('scope.row.isRhythm', e.target.value);
+                            if(e.target.value==0){
+                              scope.row.isRhythm = false;
+                              scope.row.isNoteSign = false;
+                            }else if(e.target.value==1){
+                              scope.row.isRhythm = true;
+                              scope.row.isNoteSign = false;
+                            }else if(e.target.value==2){
+                              scope.row.isRhythm = true;
+                              scope.row.isNoteSign = true;
+                            }
                             if(scope.row.isRhythm){
                               scope.row.tone = 115; // 木鱼
                             }else{
@@ -1323,8 +1355,9 @@
                             // switchRhythm2(scope.row.isRhythm, scope.$index+1);
                           }"
                         >
-                          <option :value="false">否</option>
-                          <option :value="true">是</option>
+                          <option :selected="!scope.row.isRhythm && !scope.row.isNoteSign" :value="0">旋律谱</option>
+                          <option :selected="scope.row.isRhythm" :value="1">节奏谱</option>
+                          <option :selected="scope.row.isNoteSign" :value="2">念谱</option>
                         </select>
                       </template>
                     </el-table-column>

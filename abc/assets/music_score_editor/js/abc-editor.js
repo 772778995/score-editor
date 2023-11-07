@@ -231,7 +231,8 @@ const initNewScoreOpts = {
     subname: '', // Pno. 等简称
     tone: 0, // 音色
     isRhythm: false, // 是否为节奏谱
-    rhythmSigns: {
+    isNoteSign: false,
+    noteSigns: {
       a: 'X',
       b: 'X',
       c: 'X',
@@ -2974,7 +2975,8 @@ var content_vue = new Vue({
           subname: '', // Pno. 等简称
           tone: 0, // 音色
           isRhythm: false, // 是否为节奏谱
-          rhythmSigns: {
+          isNoteSign: false,
+          noteSigns: {
             a: 'X',
             b: 'X',
             c: 'X',
@@ -3803,7 +3805,8 @@ var content_vue = new Vue({
             subname: '', // Pno. 等简称
             tone: 0, // 音色
             isRhythm: false, // 是否为节奏谱
-            rhythmSigns: {
+            isNoteSign: false,
+            noteSigns: {
               a: 'X',
               b: 'X',
               c: 'X',
@@ -6072,7 +6075,8 @@ var content_vue = new Vue({
         subname: '', // Pno. 等简称
         tone: 0, // 音色
         isRhythm: false, // 是否为节奏谱
-        rhythmSigns: {
+        isNoteSign: false,
+        noteSigns: {
           a: 'X',
           b: 'X',
           c: 'X',
@@ -6823,7 +6827,8 @@ var content_vue = new Vue({
               subname: '', // Pno. 等简称
               tone: 0, // 音色
               isRhythm: false, // 是否为节奏谱
-              rhythmSigns: {
+              isNoteSign: false,
+              noteSigns: {
                 a: 'X',
                 b: 'X',
                 c: 'X',
@@ -6839,7 +6844,8 @@ var content_vue = new Vue({
               subname: '',
               tone: '',
               isRhythm: false,
-              rhythmSigns: {
+              isNoteSign: false,
+              noteSigns: {
                 a: 'X',
                 b: 'X',
                 c: 'X',
@@ -6855,7 +6861,8 @@ var content_vue = new Vue({
               subname: '',
               tone: '',
               isRhythm: false,
-              rhythmSigns: {
+              isNoteSign: false,
+              noteSigns: {
                 a: 'X',
                 b: 'X',
                 c: 'X',
@@ -6871,7 +6878,8 @@ var content_vue = new Vue({
               subname: '',
               tone: '',
               isRhythm: false,
-              rhythmSigns: {
+              isNoteSign: false,
+              noteSigns: {
                 a: 'X',
                 b: 'X',
                 c: 'X',
@@ -6891,7 +6899,8 @@ var content_vue = new Vue({
               subname: '', // Pno. 等简称
               tone: 0, // 音色
               isRhythm: false, // 是否为节奏谱
-              rhythmSigns: {
+              isNoteSign: false,
+              noteSigns: {
                 a: 'X',
                 b: 'X',
                 c: 'X',
@@ -6907,7 +6916,8 @@ var content_vue = new Vue({
               subname: '',
               tone: '',
               isRhythm: false,
-              rhythmSigns: {
+              isNoteSign: false,
+              noteSigns: {
                 a: 'X',
                 b: 'X',
                 c: 'X',
@@ -6926,7 +6936,8 @@ var content_vue = new Vue({
             subname: '', // Pno. 等简称
             tone: 0, // 音色
             isRhythm: false, // 是否为节奏谱
-            rhythmSigns: {
+            isNoteSign: false,
+            noteSigns: {
               a: 'X',
               b: 'X',
               c: 'X',
@@ -6946,7 +6957,8 @@ var content_vue = new Vue({
             subname: '', // Pno. 等简称
             tone: 0, // 音色
             isRhythm: false, // 是否为节奏谱
-            rhythmSigns: {
+            isNoteSign: false,
+            noteSigns: {
               a: 'X',
               b: 'X',
               c: 'X',
