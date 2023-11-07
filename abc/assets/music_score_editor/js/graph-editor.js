@@ -109,6 +109,17 @@ function followMouse(e) {
   } else {
     cen = null;
   }
+
+  const clefList = syms.filter(v => v.type === 1).sort((p, n) => p.istart > n.istart ? 1 : -1)
+  // 如果拖到全局谱号，并且不是第一行的全局谱号
+  if (cen === clefList[0] && _0x186B4.istart !== clefList[0].istart) {
+    const id = $(target).attr('id')
+    if (id !== '0') {
+      const barList = syms.filter(v => v.type === 0 && v.my_line === +id - 1).sort((p, n) => p.bar_num > n.bar_num ? -1 : 1)
+      // 将 cen 改为上一行最后一小节线
+      cen = barList[0]
+    }
+  }
   if (isSelectDeco) {
     if (selectDecoType == "nodeline") {
       moveingRenderBar(e);
@@ -4424,12 +4435,12 @@ var dragObj = null;
 function initDecoDrag() {
   var _0x1A928 = false;
   var _0x1A8FB = false;
-  var _0x1A955 = null;
+  var _timer = null;
   var _0x1A8CE = ".cmenu";
   $(_0x1A8CE)["attr"]("draggable", false);
-  $(_0x1A8CE)["off"]("touchstart")["on"]("touchstart", _0x1A8A1);
-  $(_0x1A8CE)["off"]("mousedown")["mousedown"](_0x1A8A1);
-  function _0x1A8A1(_0x16062) {
+  $(_0x1A8CE)["off"]("touchstart")["on"]("touchstart", _fn);
+  $(_0x1A8CE)["off"]("mousedown")["mousedown"](_fn);
+  function _fn(el) {
     if ($("rect[type='startpoint']")["length"] > 0) {
       src_change();
     }
@@ -4445,68 +4456,68 @@ function initDecoDrag() {
       }
       $("#selectedStatus")["removeClass"]("menu-pressed");
     }
-    var _0x1A9DC = _0x16062["touches"]
-      ? _0x16062["touches"][0]["pageX"]
-      : _0x16062["pageX"];
-    var _0x1AA09 = _0x16062["touches"]
-      ? _0x16062["touches"][0]["pageY"]
-      : _0x16062["pageY"];
-    var _0x1A9AF = _0x16062["touches"] ? "touchmove" : "mousemove";
-    var _0x193B6 = _0x16062["touches"] ? "touchend" : "mouseup";
+    var _pageX = el["touches"]
+      ? el["touches"][0]["pageX"]
+      : el["pageX"];
+    var _pageY = el["touches"]
+      ? el["touches"][0]["pageY"]
+      : el["pageY"];
+    var _move_method = el["touches"] ? "touchmove" : "mousemove";
+    var _move_stop_method = el["touches"] ? "touchend" : "mouseup";
     var $that = $(this);
     dragObj = this;
-    var _0x1AA36 = $that["attr"]("src");
-    _0x1A955 = setTimeout(function () {
+    var _attr_src = $that["attr"]("src");
+    _timer = setTimeout(function () {
       isSelectDeco = true;
-      var _0x1AB71 = {
+      var _bounds = {
         left: $("#target")["offset"]()["left"],
         top: $("#target")["offset"]()["top"],
         width: $("#target")["width"](),
         height: $("#target")["height"](),
       };
-      var _0x1AAEA = true;
-      var _0x1AABD = '<img draggable="false" ondragstart="return false;" src="_src" class="drag-note-img" style="top:_top;left:_left;"/>';
-      var _0x1AA90 = $that["attr"]("data-code");
+      var _flag = true;
+      var _img_el_str = '<img draggable="false" ondragstart="return false;" src="_src" class="drag-note-img" style="top:_top;left:_left;"/>';
+      var _attr_data_code = $that["attr"]("data-code");
       var type = $that["attr"]("data-type");
-      var _0x1AB44 = $that["attr"]("data-music-type");
-      var _0x1824F = $that["attr"]("value");
-      var _0x1ABCB = $that["attr"]("value2");
-      var _0x18A65 = $that["attr"]("dur");
-      var _0x1AB17 = $that["attr"]("data-know-id");
-      var _0x1AB9E = $that["attr"]("position");
+      var _attr_data_music_type = $that["attr"]("data-music-type");
+      var _attr_value = $that["attr"]("value");
+      var _attr_insert_content = $that["attr"]("value2");
+      var _attr_dur = $that["attr"]("dur");
+      var _attr_data_know_id = $that["attr"]("data-know-id");
+      var _attr_position = $that["attr"]("position");
       var type = $that["attr"]("type");
       console["log"]("----------", type);
       selectDecoType = type;
-      var _0x1AA63 = $that["attr"]("class");
+      var _attr_class = $that["attr"]("class");
       if (typeof draw_editor != undefined) {
         draw_editor = true;
       }
-      _0x1AABD = _0x1AABD["replace"]("_top", _0x1AA09 + "px")
-        ["replace"]("_left", _0x1A9DC + "px")
-        ["replace"]("_src", _0x1AA36);
+      _img_el_str = _img_el_str["replace"]("_top", _pageY + "px")
+        ["replace"]("_left", _pageX + "px")
+        ["replace"]("_src", _attr_src);
       $(".drag-note-img")["remove"]();
-      $("body")["append"](_0x1AABD);
-      if (_0x16062 && _0x16062["stopPropagation"]) {
-        _0x16062["stopPropagation"]();
+      $("body")["append"](_img_el_str);
+      if (el && el["stopPropagation"]) {
+        el["stopPropagation"]();
       } else {
         window["event"]["cancelBubble"] = true;
       }
       $(document)
-        ["off"](_0x1A9AF)
-        ["on"](_0x1A9AF, function (_0x16062) {
-          _0x1A9DC = _0x16062["touches"]
+        ["off"](_move_method)
+        ["on"](_move_method, function (_0x16062) {
+          _pageX = _0x16062["touches"]
             ? _0x16062["touches"][0]["pageX"]
             : _0x16062["pageX"];
-          _0x1AA09 = _0x16062["touches"]
+          _pageY = _0x16062["touches"]
             ? _0x16062["touches"][0]["pageY"]
             : _0x16062["pageY"];
-          if (_0x1AAEA) {
-            $(".drag-note-img")["css"]({ top: _0x1AA09, left: _0x1A9DC });
+          if (_flag) {
+            $(".drag-note-img")["css"]({ top: _pageY, left: _pageX });
             if (
-              _0x1A9DC > _0x1AB71["left"] &&
-              _0x1A9DC < _0x1AB71["left"] + _0x1AB71["width"] &&
-              _0x1AA09 > _0x1AB71["top"] &&
-              _0x1AA09 < _0x1AB71["top"] + _0x1AB71["height"]
+              _pageX > _bounds["left"] &&
+              _pageX < _bounds["left"] + _bounds["width"] &&
+              _pageY > _bounds["top"] &&
+              _pageY < _bounds["top"] + _bounds["height"]
             ) {
               _0x1A928 = false;
               _0x1A8FB = true;
@@ -4519,12 +4530,12 @@ function initDecoDrag() {
                 ) {
                   var _0x1646D = _0x1ABF8["eq"](i);
                   if (
-                    _0x1A9DC > _0x1646D["offset"]()["left"] &&
-                    _0x1AA09 > _0x1646D["offset"]()["top"] &&
-                    _0x1A9DC <
+                    _pageX > _0x1646D["offset"]()["left"] &&
+                    _pageY > _0x1646D["offset"]()["top"] &&
+                    _pageX <
                       _0x1646D["offset"]()["left"] +
                         _0x1646D["width"]() &&
-                    _0x1AA09 <
+                    _pageY <
                       _0x1646D["offset"]()["top"] +
                         _0x1646D["height"]()
                   ) {
@@ -4553,17 +4564,17 @@ function initDecoDrag() {
             }
           }
         })
-        ["off"](_0x193B6)
-        ["on"](_0x193B6, function (_0x16062) {
-          _0x1AAEA = false;
+        ["off"](_move_stop_method)
+        ["on"](_move_stop_method, function (_0x16062) {
+          _flag = false;
           if (!isSelectDeco) {
             return;
           }
           $(".drag-note-img")["remove"]();
           console["log"]("---end");
           dragObj = null;
-          console["log"]("value:", _0x1824F, "position", _0x1AB9E);
-          genNoteDeco(_0x1824F, _0x1ABCB, _0x1AB9E, type);
+          console["log"]("value:", _attr_value, "position", _attr_position);
+          genNoteDeco(_attr_value, _attr_insert_content, _attr_position, type);
           isSelectDeco = false;
           selectDecoType = "";
           if (!$("#graphEditorMenu")["hasClass"]("menu-pressed")) {
@@ -4575,8 +4586,8 @@ function initDecoDrag() {
   $(_0x1A8CE)
     ["off"]("mouseup")
     ["mouseup"](function () {
-      if (_0x1A955 != null) {
-        clearTimeout(_0x1A955);
+      if (_timer != null) {
+        clearTimeout(_timer);
       }
       if (typeof draw_editor != undefined) {
         draw_editor = false;
@@ -4584,8 +4595,8 @@ function initDecoDrag() {
     })
     ["off"]("touchend")
     ["on"]("touchend", function () {
-      if (_0x1A955 != null) {
-        clearTimeout(_0x1A955);
+      if (_timer != null) {
+        clearTimeout(_timer);
       }
     });
 }
@@ -5030,6 +5041,7 @@ function genNoteDeco(val, insert_content, position, type) {
     replaceNote("source", cen["istart"], cen["iend"], g_note_obj);
     return;
   }
+  // 这，就是放置谱号到谱号！
   if (val["indexOf"]("[K:") == 0 && cen["type"] == 1) {
     var _0x18D08 = abc_content["substring"](cen["istart"], cen["iend"]);
     var _0x19302 = /(treble)|(bass)|(alto)|(tenor)/;
@@ -5428,6 +5440,7 @@ function genNoteDeco(val, insert_content, position, type) {
           var abc_content_s = getMidStr(cen);
           if (abc_content_s["indexOf"](val) < 0) {
             let head = abc_content["substring"](0, cen["istart"])
+            // 这，就是放置开头谱号！
             if (/\[K:[^\]]+\]/.test(val)) {
               head = head.replace(/\[K:[^\]]+\]\|?$/, s => s.indexOf('|') > -1 ? '|' : '')
             }

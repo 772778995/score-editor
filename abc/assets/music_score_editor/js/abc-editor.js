@@ -3203,7 +3203,7 @@ var content_vue = new Vue({
                 if (!content_vue.checkIsSelectNote()) return;
                 const { head, tail, txt } =  getSelectAbcCodeInfo()
                 keepSelectNote(() => {
-                  $('#source').val(`${head.replace(/\!tenuto\!$/, '')}!tenuto!${txt}${tail}`)
+                  $('#source').val(`${head.replace(/\!emb\!$/, '')}!emb!${txt}${tail}`)
                   abc_change()
                 })
               },
@@ -4730,7 +4730,7 @@ var content_vue = new Vue({
             {
               title: '保持音',
               url: "assets/music_score_editor/img/notepanel/playMark (3).png",
-              value: "!tenuto!",
+              value: "!emb!",
               class: "cmenu",
               position: "before",
               fn: () => {
@@ -4738,7 +4738,7 @@ var content_vue = new Vue({
                 if (!info) return
                 const { head, tail, txt } = info
                 keepSelectNote(() => {
-                  $('#source').val(`${head.replace(/\!tenuto\!$/, '')}!tenuto!${txt}${tail}`)
+                  $('#source').val(`${head.replace(/\!emb\!$/, '')}!emb!${txt}${tail}`)
                   abc_change()
                 })
               },
