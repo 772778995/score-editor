@@ -7134,6 +7134,9 @@ var content_vue = new Vue({
       val = val.replace(/ /g, '&emsp;'); // 空格替换成标记符
       set('T:', val?val:'&emsp;');
       abc_change();
+      if(val=='&emsp;'){
+        this.m.scoreOpts.title = '';
+      }
     },
     'm.scoreOpts.subTitle'(val) {
       console.log('m.scoreOpts.subTitle', val, typeof val);
@@ -7149,6 +7152,9 @@ var content_vue = new Vue({
       val = val.replace(/ /g, '&emsp;'); // 空格替换成标记符
       set('C:', val?val:'&emsp;');
       abc_change();
+      if(val=='&emsp;'){
+        this.m.scoreOpts.compose = ''; // 乐谱面板 &emsp; 标记显示为空
+      }
     },
     'm.scoreOpts.lyricist'(val) {
       val = val.replace(/ /g, '&emsp;'); // 空格替换成标记符
