@@ -6031,6 +6031,10 @@ function handleKeyPress(e, editorType) {
               if (editorType == "editor") {
                 var new_note_str = inputNoteBuild(vals[j]);
                 updateNextNote(new_note_str, -1);
+                setTimeout(()=>{
+                  console.log('input note and updateSignNote 2');
+                  updateSignNote();
+                }, 200);
                 return;
               } else {
                 var selectText = getSelectText("source");
@@ -6138,6 +6142,10 @@ function handleNumPress(e, editorType) {
               console.log('updateNextNote', note_str, pressShiftKey, chordInput);
               //updateNextNote(vals[j],-1); //这样会输入选中的那个区域的，比如G调会变成1234567为GABCDEF
               updateNextNote(note_str, -1, pressShiftKey || chordInput); //这样的输入比较合理，比如G调1234567分别为GABcdef
+              setTimeout(()=>{
+                console.log('input note and updateSignNote 1');
+                updateSignNote();
+              }, 200);
               return;
             } else {
               var selectText = getSelectText("source");

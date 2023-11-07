@@ -6064,6 +6064,7 @@ var content_vue = new Vue({
         this.m.scoreOpts.voiceParts.splice(index, 1);
       }
     },
+    // 小节后添加声部（更新到面板、确定后生效）
     addNodeVoicePart(n){
       if(this.m.VoicePartNodeData.voiceParts.length>=8){
         alert('最多添加8个声部');
@@ -6089,6 +6090,7 @@ var content_vue = new Vue({
       // 
       this.m.VoicePartNodeData.voiceParts.push(voicePart);
     },
+    // 小节后删除声部（更新到面板、确定后生效）
     removeNodeVoicePart(index, n){
       // console.log('removeVoicePart', index);
       this.m.VoicePartNodeData.voiceParts.splice(index, 1);
@@ -8367,7 +8369,7 @@ const setRepeatBracket = (sign) => {
   }
 }
 
-// 设置小节声部
+// 设置小节后临时加减声部
 function updateNodeVoicePart(){
   console.log('updateNodeVoicePart');
   content_vue.m.VoicePartBoxShow = false;
@@ -8472,6 +8474,75 @@ function updateNodeVoicePart(){
 // 更新音符显示为自定字符
 function updateSignNote(){
   console.log('updateSignNote');
+  if(content_vue.m.scoreOpts.voiceParts){
+    var voiceParts = content_vue.m.scoreOpts.voiceParts;
+    // 被标记要显示特殊字符的声部
+    var sv_arr = [];
+    for(var i=0; i<voiceParts.length; i++ ){
+      if(voiceParts[i]['isNoteSign']){
+        sv_arr.push(i);
+      }
+    }
+    if(sv_arr.length){
+      // 标记的声部
+      var LinesInfo = getNodesInfo($('#source').val()); // getLinesInfo($('#source').val());
+      var new_abc_content = "";
+      for (var i = 0; i < LinesInfo.length; i++) {
+        var LineInfo = LinesInfo[i];
+        var lineStr = LineInfo["lineStr"];
+        if(LineInfo['type']=='note'){
+          if(sv_arr.indexOf(LineInfo['v'])!==-1){
+            new_abc_content += lineStr + "\x0A";
+
+            var noteSigns = voiceParts[LineInfo['v']]['noteSigns'];
+
+            var signStr = '';
+            var nodes = LineInfo['nodes'];
+            for(var j=0; j<nodes.length; j++){
+              var nodestr = nodes[j]['nodeStr'];
+              // console.log(nodestr);
+              nodestr = nodestr.replaceAll(
+                /((![0-9]*!)|(![a-zA-Z]*!)|(!\>!)|(!\<\(!)|(!\<\)!)|(!\>\(!)|(!\>\)!)|\.|v|u|\>|P)/g,
+                ""
+              );
+              // console.log(nodestr);
+              var nodes_arr = nodestr.match(/[A-Ga-g]/g);
+              // console.log(nodes_arr);
+              if(nodes_arr){
+                var new_nodestr = nodes_arr.join(' ');
+                nodestr = new_nodestr.replace(/[Aa]/g, noteSigns['a']?noteSigns['a']:'X');
+                nodestr = nodestr.replace(/[Bb]/g, noteSigns['b']?noteSigns['b']:'X');
+                nodestr = nodestr.replace(/[Cc]/g, noteSigns['c']?noteSigns['c']:'X');
+                nodestr = nodestr.replace(/[Dd]/g, noteSigns['d']?noteSigns['d']:'X');
+                nodestr = nodestr.replace(/[Ee]/g, noteSigns['e']?noteSigns['e']:'X');
+                nodestr = nodestr.replace(/[Ff]/g, noteSigns['f']?noteSigns['f']:'X');
+                nodestr = nodestr.replace(/[Gg]/g, noteSigns['g']?noteSigns['g']:'X');
+
+                // console.log('updateSignNote add_sign_status', nodestr);
+                signStr += nodestr + '|';
+              }else{
+                signStr += ' |';
+              }
+            }
+
+            new_abc_content += 'S: '+ signStr + "\x0A";
+            continue;
+          }
+        }else if(LineInfo['type']=='S'){
+          continue;
+        }
+        new_abc_content += lineStr + "\x0A";
+      }
+      // console.log('new_abc_content', new_abc_content);
+      $("#source").val(new_abc_content);
+      src_change();
+      // doLog();
+    }
+  }
+}
+
+// 更新小节字符标记音符（dev）
+function updateNodeSign(){
   if($('svg[type="rectnode"]').length){
     var rectnode = $('svg[type="rectnode"]').eq($('svg[type="rectnode"]').length-1);
     var s_node_arr = rectnode.attr('id').replace('mysvgnode', '').split('_');
