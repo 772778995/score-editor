@@ -4201,6 +4201,10 @@ function graphMouseMoveHandle(_0x16062) {
       _0x16062["touches"][0]["pageY"] -
       _0x17688["offset"]()["top"];
   }
+  const curtEl = $('._select-note')
+  const dynamicMarks = ['f', 'ff', 'fff', 'mf', 'p', 'pp', 'ppp', 'mp', 'sf', 'sfz', 'sfp']
+  if (dynamicMarks.includes(curtEl.val())) return
+  if ($(`[type=${dynamicMarks}]`).hasClass('_select-note')) return
   var _0x176B5 = getYinfo(
     $(select_note_info["click_obj"])["parents"]("svg"),
     _0x16062["offsetY"] / scale
