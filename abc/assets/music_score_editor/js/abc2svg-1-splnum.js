@@ -5153,6 +5153,8 @@ abc2svg = {
       height *= getNoteSlurHeight(path[0]); //处理单 独设置的连音线高度
       if (musicType != 2) {
         slur_out(x1, y1, x2, y2, dir, height, ty & C.SL_DOTTED, null, path);
+      } else {
+        x2 += 3
       }
       if (k2.grace != true) {
         // 简谱的滑音使用本身的连音（最后一个参数，表示和弦音的个数）---这里注释掉是因为简谱最后如果是连音线及倚音，就会显示不出连音线 2021-8-3 hxs

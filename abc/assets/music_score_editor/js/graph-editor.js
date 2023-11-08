@@ -6926,6 +6926,7 @@ function genBarDeco(val, insert_content, position, type, index) {
       return;
     }
   }
+  // 这，就是放置调号！
   if (val["indexOf"]("K:") > -1 && index == 0) {
     var _0x187C2 = val["replace"](/[\[\]]/g, "");
     var _0x18795 = _0x187C2["replace"](/K\:/, "")["replace"](
