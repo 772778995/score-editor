@@ -9566,7 +9566,9 @@ abc2svg = {
               last_acc = acc.acc;
             }
           }
+          // 这，就是调号宽度间距！
           s.wr = 5.5 * n1 + esp;
+          if (musicType === 2) s.wr = 0
           return;
         case C.METER:
           wlw = 0;
