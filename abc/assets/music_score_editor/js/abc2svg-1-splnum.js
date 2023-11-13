@@ -4822,9 +4822,15 @@ abc2svg = {
         sufXIn = getXIndent(path[path.length - 1]);
         x2 = x2 + sufXIn;
       }
+      if (musicType === 2) {
+        if (path[0].dur !== path[0].dur_orig || path[1].dur !== path[1].dur_orig) {
+          y1 -= 45
+          y2 -= 45
+          yy1 -= 55;
+          yy2 -= 55;
+        }
+      }
       out_sxsy(x1, " ", y1);
-      //	        yy1 -= 20;
-      //	        yy2 -= 20;
       var cy1 = ((y1 - yy1) / scale_y).toFixed(2);
       var t = up && radianHei ? radianHei : 0;
       if (up && cy1 > 0) {
